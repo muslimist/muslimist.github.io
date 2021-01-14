@@ -1,1 +1,1 @@
-# muslimist.github.io
+# muslimist.com (muslimist.github.io)
