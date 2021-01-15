@@ -1,2 +1,2 @@
 # muslimist.com
-### (muslimist.github.io)
+![CodeQL](https://github.com/muslimist/muslimist.github.io/workflows/CodeQL/badge.svg)
