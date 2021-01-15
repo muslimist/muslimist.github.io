@@ -1,0 +1,56 @@
+{
+    "name": "muslimist",
+    "short_name": "muslimist",
+    "description": "an ad-free, open source, non-spying collection of tools for muslims",
+    "start_url": "/",
+    "scope": "/",
+    "theme_color": "#000000",
+    "background_color": "#FFFFFF",
+    "display": "fullscreen",
+    "orientation": "portrait",
+    "dir": "ltr",
+    "lang": "en-US",
+    "intent_filters": {
+      "scope_url_scheme": "https",
+      "scope_url_host": "muslimist.github.io.test",
+      "scope_url_path": "/"
+    },
+    "shortcuts": [
+      {
+        "name": "Prayer Times",
+        "short_name": "Prayer Times",
+        "url": "/prayertimes",
+        "icons": [{ "src": "/assets/shortcuts/prayertimes.png", "sizes": "192x192" }]
+      }
+    ],
+    "icons": [
+      {
+        "src": "/assets/icons/manifest-icon-192.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "maskable any"
+      },
+      {
+        "src": "/assets/icons/manifest-icon-512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "maskable any"
+      }
+    ],
+    "share_target": {
+      "action": "/share-photo",
+      "method": "POST",
+      "enctype": "multipart/form-data",
+      "params": {
+        "title": "name",
+        "text": "description",
+        "url": "link",
+        "files": [
+          {
+            "name": "photos",
+            "accept": "image/png"
+          }
+        ]
+      }
+    }
+  }
