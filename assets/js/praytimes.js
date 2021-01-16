@@ -68,6 +68,7 @@ function PrayTimes(method) {
 	
 	// Time Names
 	timeNames = {
+		tahajjud : 'Tahajjud',
 		imsak    : 'Imsak',
 		fajr     : 'Fajr',
 		sunrise  : 'Sunrise',
@@ -418,6 +419,9 @@ function PrayTimes(method) {
 		times.midnight = (setting.midnight == 'Jafari') ? 
 				times.sunset+ this.timeDiff(times.sunset, times.fajr)/ 2 :
 				times.sunset+ this.timeDiff(times.sunset, times.sunrise)/ 2;
+
+		// add tahajjud time
+		times.tahajjud = times.sunset+ (this.timeDiff(times.sunset, times.sunrise)/ 3) * 2;
 
 		times = this.tuneTimes(times);
 		return this.modifyFormats(times);
