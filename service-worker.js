@@ -1,6 +1,6 @@
 // VERSION: 2
 
-var devMode = 0;
+var devMode = 1;
 
 if (devMode == 1) {
   caches.keys().then(keys => {
