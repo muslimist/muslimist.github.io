@@ -12,6 +12,10 @@
         "name": "Prayer Times",
         "url": "/prayertimes",
         "icons": [{ "src": "/assets/images/shortcuts.prayertimes.png", "sizes": "192x192" }]
+      },{
+        "name": "Qibla",
+        "url": "/qibla",
+        "icons": [{ "src": "/assets/images/shortcuts.prayertimes.png", "sizes": "192x192" }]
       }
     ],
     "icons": [
