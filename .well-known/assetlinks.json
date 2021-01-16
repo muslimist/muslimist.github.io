@@ -1,5 +1,10 @@
 [{
-      "relation": ["delegate_permission/common.handle_all_urls"],
-      "target" : { "namespace": "android_app", "package_name": "com.muslimist.twa",
-                   "sha256_cert_fingerprints": ["92:0B:44:F0:2D:89:7C:D6:82:DB:EE:7A:00:41:E8:D0:D6:BF:85:7C:9C:22:BE:16:33:80:E4:01:F5:37:F0:D7"] }
-    }]
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.muslimist.twa",
+    "sha256_cert_fingerprints": [
+      "47:A5:AD:9F:01:E5:D4:11:6C:34:C5:85:6C:82:A0:A2:5E:86:EE:79:1E:2F:97:5A:F8:F7:16:C9:C3:30:19:5B"
+    ]
+  }
+}]
