@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.muslimist.twa",
+    "sha256_cert_fingerprints": [
+      "92:0B:44:F0:2D:89:7C:D6:82:DB:EE:7A:00:41:E8:D0:D6:BF:85:7C:9C:22:BE:16:33:80:E4:01:F5:37:F0:D7"
+    ]
+  }
+}]
