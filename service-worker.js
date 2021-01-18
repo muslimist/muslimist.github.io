@@ -1,4 +1,4 @@
-// VERSION: 2
+// VERSION: 1
 
 var devMode = 1;
 

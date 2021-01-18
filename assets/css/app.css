@@ -9021,3 +9021,28 @@ input, select, textarea {
 	.banner.onscroll-image-fade-in.is-inactive .image img {
 		opacity: 1;
 	}
+
+
+
+	/* darkmode */
+
+.darkmode-layer, .darkmode-toggle {
+  z-index: 500;
+}
+body.darkmode--activated img, body.darkmode--activated i, body.darkmode--activated .darkmode-ignore {
+  mix-blend-mode: difference;
+}
+
+
+
+/* no select */
+
+
+html {
+	-webkit-touch-callout: none;
+	  -webkit-user-select: none;
+	   -khtml-user-select: none;
+	     -moz-user-select: none;
+	      -ms-user-select: none;
+	          user-select: none;
+}
