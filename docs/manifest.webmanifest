@@ -1,0 +1,35 @@
+{
+    "name": "muslimist",
+    "short_name": "muslimist",
+    "description": "an ad-free, open source, non-spying collection of tools for muslims",
+    "start_url": "/",
+    "theme_color": "#000000",
+    "background_color": "#FFFFFF",
+    "display": "standalone",
+    "orientation": "any",
+    "shortcuts": [
+      {
+        "name": "Prayer Times",
+        "url": "/prayertimes",
+        "icons": [{ "src": "/assets/images/shortcuts.prayertimes.png", "sizes": "192x192" }]
+      },{
+        "name": "Qibla",
+        "url": "/qibla",
+        "icons": [{ "src": "/assets/images/shortcuts.prayertimes.png", "sizes": "192x192" }]
+      }
+    ],
+    "icons": [
+      {
+        "src": "/assets/icons/manifest-icon-192.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "maskable any"
+      },
+      {
+        "src": "/assets/icons/manifest-icon-512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "maskable any"
+      }
+    ]
+  }
