@@ -66,10 +66,350 @@
           <div class="index align-left">
             <section>
               <header>
-                hi
+                <h3>Audio</h3>
               </header>
               <div class="content">
-                bye
+                <audio onended="playnext()" id="audio" controls="controls">
+                  <source id="audioSource" src=""></source>
+                  Your browser does not support the audio format.
+                </audio>
+                <div class="table-wrapper" id="table-wrapper"></div>
+              </div>
+            </section>
+            <section>
+              <header>
+                <h3>Options</h3>
+              </header>
+              <div class="content">
+                <form method="post" action="#">
+                  <div class="fields">
+
+
+                    <div class="field">
+                      <label for="chapter">Chapter</label>
+                      <select name="chapter" id="chapter" onchange="update()">
+                        <option value="1" selected="selected">1: Al-Faatiha</option>
+                        <option value="2">2: Al-Baqara</option>
+                        <option value="3">3: Aal-i-Imraan</option>
+                        <option value="4">4: An-Nisaa</option>
+                        <option value="5">5: Al-Maaida</option>
+                        <option value="6">6: Al-An'aam</option>
+                        <option value="7">7: Al-A'raaf</option>
+                        <option value="8">8: Al-Anfaal</option>
+                        <option value="9">9: At-Tawba</option>
+                        <option value="10">10: Yunus</option>
+                        <option value="11">11: Hud</option>
+                        <option value="12">12: Yusuf</option>
+                        <option value="13">13: Ar-Ra'd</option>
+                        <option value="14">14: Ibrahim</option>
+                        <option value="15">15: Al-Hijr</option>
+                        <option value="16">16: An-Nahl</option>
+                        <option value="17">17: Al-Israa</option>
+                        <option value="18">18: Al-Kahf</option>
+                        <option value="19">19: Maryam</option>
+                        <option value="20">20: Taa-Haa</option>
+                        <option value="21">21: Al-Anbiyaa</option>
+                        <option value="22">22: Al-Hajj</option>
+                        <option value="23">23: Al-Muminoon</option>
+                        <option value="24">24: An-Noor</option>
+                        <option value="25">25: Al-Furqaan</option>
+                        <option value="26">26: Ash-Shu'araa</option>
+                        <option value="27">27: An-Naml</option>
+                        <option value="28">28: Al-Qasas</option>
+                        <option value="29">29: Al-Ankaboot</option>
+                        <option value="30">30: Ar-Room</option>
+                        <option value="31">31: Luqman</option>
+                        <option value="32">32: As-Sajda</option>
+                        <option value="33">33: Al-Ahzaab</option>
+                        <option value="34">34: Saba</option>
+                        <option value="35">35: Faatir</option>
+                        <option value="36">36: Yaseen</option>
+                        <option value="37">37: As-Saaffaat</option>
+                        <option value="38">38: Saad</option>
+                        <option value="39">39: Az-Zumar</option>
+                        <option value="40">40: Al-Ghaafir</option>
+                        <option value="41">41: Fussilat</option>
+                        <option value="42">42: Ash-Shura</option>
+                        <option value="43">43: Az-Zukhruf</option>
+                        <option value="44">44: Ad-Dukhaan</option>
+                        <option value="45">45: Al-Jaathiya</option>
+                        <option value="46">46: Al-Ahqaf</option>
+                        <option value="47">47: Muhammad</option>
+                        <option value="48">48: Al-Fath</option>
+                        <option value="49">49: Al-Hujuraat</option>
+                        <option value="50">50: Qaaf</option>
+                        <option value="51">51: Adh-Dhaariyat</option>
+                        <option value="52">52: At-Tur</option>
+                        <option value="53">53: An-Najm</option>
+                        <option value="54">54: Al-Qamar</option>
+                        <option value="55">55: Ar-Rahmaan</option>
+                        <option value="56">56: Al-Waaqia</option>
+                        <option value="57">57: Al-Hadid</option>
+                        <option value="58">58: Al-Mujaadila</option>
+                        <option value="59">59: Al-Hashr</option>
+                        <option value="60">60: Al-Mumtahana</option>
+                        <option value="61">61: As-Saff</option>
+                        <option value="62">62: Al-Jumu'a</option>
+                        <option value="63">63: Al-Munaafiqoon</option>
+                        <option value="64">64: At-Taghaabun</option>
+                        <option value="65">65: At-Talaaq</option>
+                        <option value="66">66: At-Tahrim</option>
+                        <option value="67">67: Al-Mulk</option>
+                        <option value="68">68: Al-Qalam</option>
+                        <option value="69">69: Al-Haaqqa</option>
+                        <option value="70">70: Al-Ma'aarij</option>
+                        <option value="71">71: Nooh</option>
+                        <option value="72">72: Al-Jinn</option>
+                        <option value="73">73: Al-Muzzammil</option>
+                        <option value="74">74: Al-Muddaththir</option>
+                        <option value="75">75: Al-Qiyaama</option>
+                        <option value="76">76: Al-Insaan</option>
+                        <option value="77">77: Al-Mursalaat</option>
+                        <option value="78">78: An-Naba</option>
+                        <option value="79">79: An-Naazi'aat</option>
+                        <option value="80">80: Abasa</option>
+                        <option value="81">81: At-Takwir</option>
+                        <option value="82">82: Al-Infitaar</option>
+                        <option value="83">83: Al-Mutaffifin</option>
+                        <option value="84">84: Al-Inshiqaaq</option>
+                        <option value="85">85: Al-Burooj</option>
+                        <option value="86">86: At-Taariq</option>
+                        <option value="87">87: Al-A'laa</option>
+                        <option value="88">88: Al-Ghaashiya</option>
+                        <option value="89">89: Al-Fajr</option>
+                        <option value="90">90: Al-Balad</option>
+                        <option value="91">91: Ash-Shams</option>
+                        <option value="92">92: Al-Lail</option>
+                        <option value="93">93: Ad-Dhuhaa</option>
+                        <option value="94">94: Ash-Sharh</option>
+                        <option value="95">95: At-Tin</option>
+                        <option value="96">96: Al-Alaq</option>
+                        <option value="97">97: Al-Qadr</option>
+                        <option value="98">98: Al-Bayyina</option>
+                        <option value="99">99: Az-Zalzala</option>
+                        <option value="100">100: Al-Aadiyaat</option>
+                        <option value="101">101: Al-Qaari'a</option>
+                        <option value="102">102: At-Takaathur</option>
+                        <option value="103">103: Al-Asr</option>
+                        <option value="104">104: Al-Humaza</option>
+                        <option value="105">105: Al-Fil</option>
+                        <option value="106">106: Quraish</option>
+                        <option value="107">107: Al-Maa'un</option>
+                        <option value="108">108: Al-Kawthar</option>
+                        <option value="109">109: Al-Kaafiroon</option>
+                        <option value="110">110: An-Nasr</option>
+                        <option value="111">111: Al-Masad</option>
+                        <option value="112">112: Al-Ikhlaas</option>
+                        <option value="113">113: Al-Falaq</option>
+                        <option value="114">114: An-Naas</option>
+                      </select>
+                    </div>
+                    <div class="field">
+                      <label for="reciter">Reciter</label>
+                      <select name="reciter" id="reciter" onchange="update()">
+                        <option value="AbdulSamad_64kbps_QuranExplorer.Com">AbdulSamad_64kbps_QuranExplorer.Com</option>
+                        <option value="Abdul_Basit_Mujawwad_128kbps">Abdul_Basit_Mujawwad_128kbps</option>
+                        <option value="Abdul_Basit_Murattal_192kbps">Abdul_Basit_Murattal_192kbps</option>
+                        <option value="Abdul_Basit_Murattal_64kbps">Abdul_Basit_Murattal_64kbps</option>
+                        <option value="Abdullaah_3awwaad_Al-Juhaynee_128kbps">Abdullaah_3awwaad_Al-Juhaynee_128kbps</option>
+                        <option value="Abdullah_Basfar_192kbps">Abdullah_Basfar_192kbps</option>
+                        <option value="Abdullah_Basfar_32kbps">Abdullah_Basfar_32kbps</option>
+                        <option value="Abdullah_Basfar_64kbps">Abdullah_Basfar_64kbps</option>
+                        <option value="Abdullah_Matroud_128kbps">Abdullah_Matroud_128kbps</option>
+                        <option value="Abdurrahmaan_As-Sudais_192kbps">Abdurrahmaan_As-Sudais_192kbps</option>
+                        <option value="Abdurrahmaan_As-Sudais_64kbps">Abdurrahmaan_As-Sudais_64kbps</option>
+                        <option value="Abu_Bakr_Ash-Shaatree_128kbps">Abu_Bakr_Ash-Shaatree_128kbps</option>
+                        <option value="Abu_Bakr_Ash-Shaatree_64kbps">Abu_Bakr_Ash-Shaatree_64kbps</option>
+                        <option value="Ahmed_Neana_128kbps">Ahmed_Neana_128kbps</option>
+                        <option value="Ahmed_ibn_Ali_al-Ajamy_128kbps_ketaballah.net">Ahmed_ibn_Ali_al-Ajamy_128kbps_ketaballah.net</option>
+                        <option value="Ahmed_ibn_Ali_al-Ajamy_64kbps_QuranExplorer.Com">Ahmed_ibn_Ali_al-Ajamy_64kbps_QuranExplorer.Com</option>
+                        <option value="Akram_AlAlaqimy_128kbps">Akram_AlAlaqimy_128kbps</option>
+                        <option value="Alafasy_128kbps" selected="selected">Alafasy_128kbps</option>
+                        <option value="Alafasy_64kbps">Alafasy_64kbps</option>
+                        <option value="Ali_Hajjaj_AlSuesy_128kbps">Ali_Hajjaj_AlSuesy_128kbps</option>
+                        <option value="Ali_Jaber_64kbps">Ali_Jaber_64kbps</option>
+                        <option value="Ayman_Sowaid_64kbps">Ayman_Sowaid_64kbps</option>
+                        <option value="English/Sahih_Intnl_Ibrahim_Walk_192kbps">English/Sahih_Intnl_Ibrahim_Walk_192kbps</option>
+                        <option value="Fares_Abbad_64kbps">Fares_Abbad_64kbps</option>
+                        <option value="Ghamadi_40kbps">Ghamadi_40kbps</option>
+                        <option value="Hani_Rifai_192kbps">Hani_Rifai_192kbps</option>
+                        <option value="Hani_Rifai_64kbps">Hani_Rifai_64kbps</option>
+                        <option value="Hudhaify_128kbps">Hudhaify_128kbps</option>
+                        <option value="Hudhaify_32kbps">Hudhaify_32kbps</option>
+                        <option value="Hudhaify_64kbps">Hudhaify_64kbps</option>
+                        <option value="Husary_128kbps">Husary_128kbps</option>
+                        <option value="Husary_128kbps_Mujawwad">Husary_128kbps_Mujawwad</option>
+                        <option value="Husary_64kbps">Husary_64kbps</option>
+                        <option value="Husary_Muallim_128kbps">Husary_Muallim_128kbps</option>
+                        <option value="Husary_Mujawwad_64kbps">Husary_Mujawwad_64kbps</option>
+                        <option value="Ibrahim_Akhdar_32kbps">Ibrahim_Akhdar_32kbps</option>
+                        <option value="Ibrahim_Akhdar_64kbps">Ibrahim_Akhdar_64kbps</option>
+                        <option value="Karim_Mansoori_40kbps">Karim_Mansoori_40kbps</option>
+                        <option value="Khaalid_Abdullaah_al-Qahtaanee_192kbps">Khaalid_Abdullaah_al-Qahtaanee_192kbps</option>
+                        <option value="MaherAlMuaiqly128kbps">MaherAlMuaiqly128kbps</option>
+                        <option value="Maher_AlMuaiqly_64kbps">Maher_AlMuaiqly_64kbps</option>
+                        <option value="Menshawi_16kbps">Menshawi_16kbps</option>
+                        <option value="Menshawi_32kbps">Menshawi_32kbps</option>
+                        <option value="Minshawy_Mujawwad_192kbps">Minshawy_Mujawwad_192kbps</option>
+                        <option value="Minshawy_Mujawwad_64kbps">Minshawy_Mujawwad_64kbps</option>
+                        <option value="Minshawy_Murattal_128kbps">Minshawy_Murattal_128kbps</option>
+                        <option value="Mohammad_al_Tablaway_128kbps">Mohammad_al_Tablaway_128kbps</option>
+                        <option value="Mohammad_al_Tablaway_64kbps">Mohammad_al_Tablaway_64kbps</option>
+                        <option value="Muhammad_AbdulKareem_128kbps">Muhammad_AbdulKareem_128kbps</option>
+                        <option value="Muhammad_Ayyoub_128kbps">Muhammad_Ayyoub_128kbps</option>
+                        <option value="Muhammad_Ayyoub_32kbps">Muhammad_Ayyoub_32kbps</option>
+                        <option value="Muhammad_Ayyoub_64kbps">Muhammad_Ayyoub_64kbps</option>
+                        <option value="Muhammad_Jibreel_128kbps">Muhammad_Jibreel_128kbps</option>
+                        <option value="Muhammad_Jibreel_64kbps">Muhammad_Jibreel_64kbps</option>
+                        <option value="Muhsin_Al_Qasim_192kbps">Muhsin_Al_Qasim_192kbps</option>
+                        <option value="MultiLanguage/Basfar_Walk_192kbps">MultiLanguage/Basfar_Walk_192kbps</option>
+                        <option value="Mustafa_Ismail_48kbps">Mustafa_Ismail_48kbps</option>
+                        <option value="Nasser_Alqatami_128kbps">Nasser_Alqatami_128kbps</option>
+                        <option value="Parhizgar_48kbps">Parhizgar_48kbps</option>
+                        <option value="Sahl_Yassin_128kbps">Sahl_Yassin_128kbps</option>
+                        <option value="Salaah_AbdulRahman_Bukhatir_128kbps">Salaah_AbdulRahman_Bukhatir_128kbps</option>
+                        <option value="Salah_Al_Budair_128kbps">Salah_Al_Budair_128kbps</option>
+                        <option value="Saood_ash-Shuraym_128kbps">Saood_ash-Shuraym_128kbps</option>
+                        <option value="Saood_ash-Shuraym_64kbps">Saood_ash-Shuraym_64kbps</option>
+                        <option value="Yaser_Salamah_128kbps">Yaser_Salamah_128kbps</option>
+                        <option value="Yasser_Ad-Dussary_128kbps">Yasser_Ad-Dussary_128kbps</option>
+                        <option value="ahmed_ibn_ali_al_ajamy_128kbps">ahmed_ibn_ali_al_ajamy_128kbps</option>
+                        <option value="aziz_alili_128kbps">aziz_alili_128kbps</option>
+                        <option value="khalefa_al_tunaiji_64kbps">khalefa_al_tunaiji_64kbps</option>
+                        <option value="mahmoud_ali_al_banna_32kbps">mahmoud_ali_al_banna_32kbps</option>
+                        <option value="translations/Fooladvand_Hedayatfar_40Kbps">translations/Fooladvand_Hedayatfar_40Kbps</option>
+                        <option value="translations/Makarem_Kabiri_16Kbps">translations/Makarem_Kabiri_16Kbps</option>
+                        <option value="translations/azerbaijani/balayev">translations/azerbaijani/balayev</option>
+                        <option value="translations/besim_korkut_ajet_po_ajet">translations/besim_korkut_ajet_po_ajet</option>
+                        <option value="translations/urdu_farhat_hashmi">translations/urdu_farhat_hashmi</option>
+                        <option value="translations/urdu_shamshad_ali_khan_46kbps">translations/urdu_shamshad_ali_khan_46kbps</option>
+                        <option value="warsh/warsh_Abdul_Basit_128kbps">warsh/warsh_Abdul_Basit_128kbps</option>
+                        <option value="warsh/warsh_ibrahim_aldosary_128kbps">warsh/warsh_ibrahim_aldosary_128kbps</option>
+                        <option value="warsh/warsh_yassin_al_jazaery_64kbps">warsh/warsh_yassin_al_jazaery_64kbps</option>
+                      </select>
+                    </div>
+                    <div class="field">
+                      <label for="translation">Translation</label>
+                      <select name="translation" id="translation" onchange="update()">
+                        <option value="sq.nahi">Albanian - Hasan Efendi Nahi</option>
+                        <option value="sq.mehdiu">Albanian - Feti Mehdiu</option>
+                        <option value="sq.ahmeti">Albanian - Sherif Ahmeti</option>
+                        <option value="ber.mensur">Amazigh - Ramdane At Mansour</option>
+                        <option value="ar.jalalayn">Arabic - Jalal ad-Din al-Mahalli and Jalal ad-Din as-Suyuti</option>
+                        <option value="ar.muyassar">Arabic - King Fahad Quran Complex</option>
+                        <option value="am.sadiq">Amharic - Muhammed Sadiq and Muhammed Sani Habib</option>
+                        <option value="az.mammadaliyev">Azerbaijani - Vasim Mammadaliyev and Ziya Bunyadov</option>
+                        <option value="az.musayev">Azerbaijani - Alikhan Musayev</option>
+                        <option value="bn.hoque">Bengali - Zohurul Hoque</option>
+                        <option value="bn.bengali">Bengali - Muhiuddin Khan</option>
+                        <option value="bs.korkut">Bosnian - Besim Korkut</option>
+                        <option value="bs.mlivo">Bosnian - Mustafa Mlivo</option>
+                        <option value="bg.theophanov">Bulgarian - Tzvetan Theophanov</option>
+                        <option value="zh.jian">Chinese - Ma Jian</option>
+                        <option value="zh.majian">Chinese - Ma Jian (Traditional)</option>
+                        <option value="cs.hrbek">Czech - Preklad I. Hrbek</option>
+                        <option value="cs.nykl">Czech - A. R. Nykl</option>
+                        <option value="dv.divehi">Divehi - Office of the President of Maldives</option>
+                        <option value="nl.keyzer">Dutch - Salomo Keyzer</option>
+                        <option value="nl.leemhuis">Dutch - Fred Leemhuis</option>
+                        <option value="nl.siregar">Dutch - Sofian S. Siregar</option>
+                        <option value="en.ahmedali">English - Ahmed Ali</option>
+                        <option value="en.ahmedraza">English - Ahmed Raza Khan</option>
+                        <option value="en.arberry">English - A. J. Arberry</option>
+                        <option value="en.daryabadi">English - Abdul Majid Daryabadi</option>
+                        <option value="en.hilali">English - Muhammad Taqi-ud-Din al-Hilali and Muhammad Muhsin Khan</option>
+                        <option value="en.itani">English - Talal Itani</option>
+                        <option value="en.maududi">English - Abul Ala Maududi</option>
+                        <option value="en.mubarakpuri">English - Safi-ur-Rahman al-Mubarakpuri</option>
+                        <option value="en.pickthall">English - Mohammed Marmaduke William Pickthall</option>
+                        <option value="en.qarai">English - Ali Quli Qarai</option>
+                        <option value="en.qaribullah">English - Hasan al-Fatih Qaribullah and Ahmad Darwish</option>
+                        <option value="en.sahih" selected="selected">English - Saheeh International</option>
+                        <option value="en.sarwar">English - Muhammad Sarwar</option>
+                        <option value="en.shakir">English - Mohammad Habib Shakir</option>
+                        <option value="en.transliteration">English - English Transliteration</option>
+                        <option value="en.wahiduddin">English - Wahiduddin Khan</option>
+                        <option value="en.yusufali">English - Abdullah Yusuf Ali</option>
+                        <option value="fr.hamidullah">French - Muhammad Hamidullah</option>
+                        <option value="de.aburida">German - Abu Rida Muhammad ibn Ahmad ibn Rassoul</option>
+                        <option value="de.bubenheim">German - A. S. F. Bubenheim and N. Elyas</option>
+                        <option value="de.khoury">German - Adel Theodor Khoury</option>
+                        <option value="de.zaidan">German - Amir Zaidan</option>
+                        <option value="ha.gumi">Hausa - Abubakar Mahmoud Gumi</option>
+                        <option value="hi.farooq">Hindi - Muhammad Farooq Khan and Muhammad Ahmed</option>
+                        <option value="hi.hindi">Hindi - Suhel Farooq Khan and Saifur Rahman Nadwi</option>
+                        <option value="id.indonesian">Indonesian - Indonesian Ministry of Religious Affairs</option>
+                        <option value="id.jalalayn">Indonesian - Muhammad Quraish Shihab et al.</option>
+                        <option value="id.muntakhab">Indonesian - Jalal ad-Din al-Mahalli and Jalal ad-Din as-Suyuti</option>
+                        <option value="it.piccardo">Italian - Hamza Roberto Piccardo</option>
+                        <option value="ja.japanese">Japanese - Unknown</option>
+                        <option value="ko.korean">Korean - Unknown</option>
+                        <option value="ku.asan">Kurdish - Burhan Muhammad-Amin</option>
+                        <option value="ms.basmeih">Malay - Abdullah Muhammad Basmeih</option>
+                        <option value="ml.abdulhameed">Malayalam - Cheriyamundam Abdul Hameed and Kunhi Mohammed Parappoor</option>
+                        <option value="ml.karakunnu">Malayalam - Muhammad Karakunnu and Vanidas Elayavoor</option>
+                        <option value="no.berg">Norwegian - Einar Berg</option>
+                        <option value="ps.abdulwali">Pashto - Abdulwali Khan</option>
+                        <option value="fa.ansarian">Persian - Hussain Ansarian</option>
+                        <option value="fa.ayati">Persian - AbdolMohammad Ayati</option>
+                        <option value="fa.bahrampour">Persian - Abolfazl Bahrampour</option>
+                        <option value="fa.gharaati">Persian - Mohsen Gharaati</option>
+                        <option value="fa.ghomshei">Persian - Mahdi Elahi Ghomshei</option>
+                        <option value="fa.khorramdel">Persian - Mostafa Khorramdel</option>
+                        <option value="fa.khorramshahi">Persian - Baha'oddin Khorramshahi</option>
+                        <option value="fa.sadeqi">Persian - Mohammad Sadeqi Tehrani</option>
+                        <option value="fa.fooladvand">Persian - Mohammad Mahdi Fooladvand</option>
+                        <option value="fa.mojtabavi">Persian - Sayyed Jalaloddin Mojtabavi</option>
+                        <option value="fa.moezzi">Persian - Mohammad Kazem Moezzi</option>
+                        <option value="fa.makarem">Persian - Naser Makarem Shirazi</option>
+                        <option value="pl.bielawskiego">Polish - Józefa Bielawskiego</option>
+                        <option value="pt.elhayek">Portuguese - Samir El-Hayek</option>
+                        <option value="ro.grigore">Romanian - George Grigore</option>
+                        <option value="ru.abuadel">Russian - Abu Adel</option>
+                        <option value="ru.muntahab">Russian - Ministry of Awqaf, Egypt</option>
+                        <option value="ru.krachkovsky">Russian - Ignaty Yulianovich Krachkovsky</option>
+                        <option value="ru.kuliev">Russian - Elmir Kuliev</option>
+                        <option value="ru.kuliev-alsaadi">Russian - Elmir Kuliev (with Abd ar-Rahman as-Saadi's commentaries)</option>
+                        <option value="ru.osmanov">Russian - Magomed-Nuri Osmanovich Osmanov</option>
+                        <option value="ru.porokhova">Russian - V. Porokhova</option>
+                        <option value="ru.sablukov">Russian - Gordy Semyonovich Sablukov</option>
+                        <option value="sd.amroti">Sindhi - Taj Mehmood Amroti</option>
+                        <option value="so.abduh">Somali - Mahmud Muhammad Abduh</option>
+                        <option value="es.bornez">Spanish - Raúl González Bórnez</option>
+                        <option value="es.cortes">Spanish - Julio Cortes</option>
+                        <option value="es.garcia">Spanish - Muhammad Isa García</option>
+                        <option value="sw.barwani">Swahili - Ali Muhsin Al-Barwani</option>
+                        <option value="sv.bernstrom">Swedish - Knut Bernström</option>
+                        <option value="tg.ayati">Tajik - AbdolMohammad Ayati</option>
+                        <option value="ta.tamil">Tamil - Jan Turst Foundation</option>
+                        <option value="tt.nugman">Tatar - Yakub Ibn Nugman</option>
+                        <option value="th.thai">Thai - King Fahad Quran Complex</option>
+                        <option value="tr.golpinarli">Turkish - Abdulbaki Golpinarli</option>
+                        <option value="tr.bulac">Turkish - Alİ Bulaç</option>
+                        <option value="tr.transliteration">Turkish - Muhammet Abay</option>
+                        <option value="tr.diyanet">Turkish - Diyanet Isleri</option>
+                        <option value="tr.vakfi">Turkish - Diyanet Vakfi</option>
+                        <option value="tr.yuksel">Turkish - Edip Yüksel</option>
+                        <option value="tr.yazir">Turkish - Elmalili Hamdi Yazir</option>
+                        <option value="tr.ozturk">Turkish - Yasar Nuri Ozturk</option>
+                        <option value="tr.yildirim">Turkish - Suat Yildirim</option>
+                        <option value="tr.ates">Turkish - Suleyman Ates</option>
+                        <option value="ur.maududi">Urdu - Abul A'ala Maududi</option>
+                        <option value="ur.kanzuliman">Urdu - Ahmed Raza Khan</option>
+                        <option value="ur.ahmedali">Urdu - Ahmed Ali</option>
+                        <option value="ur.jalandhry">Urdu - Fateh Muhammad Jalandhry</option>
+                        <option value="ur.qadri">Urdu - Tahir ul Qadri</option>
+                        <option value="ur.jawadi">Urdu - Syed Zeeshan Haider Jawadi</option>
+                        <option value="ur.junagarhi">Urdu - Muhammad Junagarhi</option>
+                        <option value="ur.najafi">Urdu - Muhammad Hussain Najafi</option>
+                        <option value="ug.saleh">Uyghur - Muhammad Saleh</option>
+                        <option value="uz.sodik">Uzbek - Muhammad Sodik Muhammad Yusuf</option>
+                      </select>
+                    </div>
+
+
+                  </div>
+                </form>
               </div>
             </section>
           </div>
@@ -86,6 +426,126 @@
     </div>
 
     <script src="/assets/js/app.min.js"></script>
+    <script type="text/javascript">
+
+    if (localStorage.quran_chapter) {
+      $('chapter').value = localStorage.getItem("quran_chapter");
+    } else {
+      localStorage.setItem("quran_chapter", $('chapter').value);
+    }
+
+    if (localStorage.quran_translation) {
+      $('translation').value = localStorage.getItem("quran_translation");
+    } else {
+      localStorage.setItem("quran_translation", $('translation').value);
+    }
+
+    if (localStorage.quran_reciter) {
+      $('reciter').value = localStorage.getItem("quran_reciter");
+    } else {
+      localStorage.setItem("quran_reciter", $('reciter').value);
+    }
+
+    localStorage.setItem("quran_verse", 1);
+
+
+    function update() {
+
+
+      if (localStorage.quran_chapter != $('chapter').value) {
+        localStorage.setItem("quran_chapter", $('chapter').value);
+        localStorage.setItem("quran_verse", 1);
+      }
+      var chapter = localStorage.getItem("quran_chapter");
+      var verse = localStorage.getItem("quran_verse");
+
+      if (localStorage.quran_translation != $('translation').value) {
+        localStorage.setItem("quran_translation", $('translation').value);
+      }
+      var translation = localStorage.getItem("quran_translation");
+
+      if (localStorage.quran_reciter != $('reciter').value) {
+        localStorage.setItem("quran_reciter", $('reciter').value);
+      }
+      var reciter = localStorage.getItem("quran_reciter");
+
+
+      var audio = document.getElementById('audio');
+      var source = document.getElementById('audioSource');
+      source.src = "https://www.everyayah.com/data/" + reciter + "/" + threeDigits(chapter) + threeDigits(verse) + ".mp3";
+      audio.load(); //call this to just preload the audio without playing
+      audio.play(); //call this to play the song right away
+
+
+/*
+      var html = '<table>';
+      html += '<tbody>';
+      for(var i in list)  {
+        html += '<tr><td>'+ list[i]+ '</td>';
+        html += '<td>'+ times[list[i].toLowerCase()]+ '</td></tr>';
+      }
+      html += '<tbody></table>';
+      $('table-wrapper').innerHTML = html;
+*/
+
+    }
+
+
+    function playnext() {
+
+      var reciter = localStorage.getItem("quran_reciter");
+      var chapter = localStorage.getItem("quran_chapter");
+      var verse = localStorage.getItem("quran_verse");
+
+      verse = parseInt(verse) + 1;
+
+      var chapterverses = [7,286,200,176,120,165,206,75,129,109,123,111,43,52,99,128,111,110,98,135,112,78,118,64,77,227,93,88,69,60,34,30,73,54,45,83,182,88,75,85,54,53,89,59,37,35,38,29,18,45,60,49,62,55,78,96,29,22,24,13,14,11,11,18,12,12,30,52,52,44,28,28,20,56,40,31,50,40,46,42,29,19,36,25,22,17,19,26,30,20,15,21,11,8,8,19,5,8,8,11,11,8,3,9,5,4,7,3,6,3,5,4,5,6];
+
+      var maxchapters = 114
+
+      var repeatsurah = 0;
+
+      if (verse > chapterverses[chapter-1]) {
+        if (repeatsurah == 1) {
+          localStorage.setItem("quran_verse", 1);
+          verse = 1;
+        } else {
+          chapter = parseInt(chapter) + 1;
+          if (chapter > maxchapters) {
+            chapter = 1;
+          }
+          document.getElementById('chapter').options[chapter-1].selected = 'selected';
+
+          localStorage.setItem("quran_chapter", chapter);
+          verse = 1;
+        }
+      }
+
+      localStorage.setItem("quran_verse", verse);
+
+      var audio = document.getElementById('audio');
+      var source = document.getElementById('audioSource');
+      source.src = "https://www.everyayah.com/data/" + reciter + "/" + threeDigits(chapter) + threeDigits(verse) + ".mp3";
+      audio.load(); //call this to just preload the audio without playing
+      audio.play(); //call this to play the song right away
+
+
+    }
+
+
+
+    function $(id) {
+      return document.getElementById(id);
+    }
+
+    function threeDigits(num) {
+      var temp = '000'+ num;
+      return temp.substr(temp.length-3);
+    }
+
+    update();
+
+  </script>
 
   </body>
 </html>
