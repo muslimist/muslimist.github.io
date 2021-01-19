@@ -1,0 +1,567 @@
+[
+  {
+    "line":"Albanian",
+    "value1":"Efendi Nahi",
+    "value2":"Hasan Efendi Nahi"
+  },
+  {
+    "line":"Albanian",
+    "value1":"Feti Mehdiu",
+    "value2":"Feti Mehdiu"
+  },
+  {
+    "line":"Albanian",
+    "value1":"Sherif Ahmeti",
+    "value2":"Sherif Ahmeti"
+  },
+  {
+    "line":"Amazigh",
+    "value1":"At Mensur",
+    "value2":"Ramdane At Mansour *"
+  },
+  {
+    "line":"Arabic",
+    "value1":"تفسير الجلالين",
+    "value2":"Jalal ad-Din al-Mahalli and Jalal ad-Din as-Suyuti *"
+  },
+  {
+    "line":"Arabic",
+    "value1":"تفسير المیسر",
+    "value2":"King Fahad Quran Complex *"
+  },
+  {
+    "line":"Amharic",
+    "value1":"ሳዲቅ & ሳኒ ሐቢብ",
+    "value2":"Muhammed Sadiq and Muhammed Sani Habib *"
+  },
+  {
+    "line":"Azerbaijani",
+    "value1":"Məmmədəliyev & Bünyadov",
+    "value2":"Vasim Mammadaliyev and Ziya Bunyadov * †"
+  },
+  {
+    "line":"Azerbaijani",
+    "value1":"Musayev",
+    "value2":"Alikhan Musayev"
+  },
+  {
+    "line":"Bengali",
+    "value1":"জহুরুল হক",
+    "value2":"Zohurul Hoque *"
+  },
+  {
+    "line":"Bengali",
+    "value1":"মুহিউদ্দীন খান",
+    "value2":"Muhiuddin Khan"
+  },
+  {
+    "line":"Bosnian",
+    "value1":"Korkut",
+    "value2":"Besim Korkut *"
+  },
+  {
+    "line":"Bosnian",
+    "value1":"Mlivo",
+    "value2":"Mustafa Mlivo"
+  },
+  {
+    "line":"Bulgarian",
+    "value1":"Теофанов",
+    "value2":"Tzvetan Theophanov"
+  },
+  {
+    "line":"Chinese",
+    "value1":"Ma Jian",
+    "value2":"Ma Jian"
+  },
+  {
+    "line":"Chinese",
+    "value1":"Ma Jian (Traditional)",
+    "value2":"Ma Jian"
+  },
+  {
+    "line":"Czech",
+    "value1":"Hrbek",
+    "value2":"Preklad I. Hrbek"
+  },
+  {
+    "line":"Czech",
+    "value1":"Nykl",
+    "value2":"A. R. Nykl"
+  },
+  {
+    "line":"Divehi",
+    "value1":"ދިވެހި",
+    "value2":"Office of the President of Maldives"
+  },
+  {
+    "line":"Dutch",
+    "value1":"Keyzer",
+    "value2":"Salomo Keyzer"
+  },
+  {
+    "line":"Dutch",
+    "value1":"Leemhuis",
+    "value2":"Fred Leemhuis"
+  },
+  {
+    "line":"Dutch",
+    "value1":"Siregar",
+    "value2":"Sofian S. Siregar"
+  },
+  {
+    "line":"English",
+    "value1":"Ahmed Ali",
+    "value2":"Ahmed Ali *"
+  },
+  {
+    "line":"English",
+    "value1":"Ahmed Raza Khan",
+    "value2":"Ahmed Raza Khan *"
+  },
+  {
+    "line":"English",
+    "value1":"Arberry",
+    "value2":"A. J. Arberry *"
+  },
+  {
+    "line":"English",
+    "value1":"Daryabadi",
+    "value2":"Abdul Majid Daryabadi *"
+  },
+  {
+    "line":"English",
+    "value1":"Hilali & Khan",
+    "value2":"Muhammad Taqi-ud-Din al-Hilali and Muhammad Muhsin Khan *"
+  },
+  {
+    "line":"English",
+    "value1":"Itani",
+    "value2":"Talal Itani"
+  },
+  {
+    "line":"English",
+    "value1":"Maududi",
+    "value2":"Abul Ala Maududi *"
+  },
+  {
+    "line":"English",
+    "value1":"Mubarakpuri",
+    "value2":"Safi-ur-Rahman al-Mubarakpuri *"
+  },
+  {
+    "line":"English",
+    "value1":"Pickthall",
+    "value2":"Mohammed Marmaduke William Pickthall *"
+  },
+  {
+    "line":"English",
+    "value1":"Qarai",
+    "value2":"Ali Quli Qarai"
+  },
+  {
+    "line":"English",
+    "value1":"Qaribullah & Darwish",
+    "value2":"Hasan al-Fatih Qaribullah and Ahmad Darwish"
+  },
+  {
+    "line":"English",
+    "value1":"Saheeh International",
+    "value2":"Saheeh International *"
+  },
+  {
+    "line":"English",
+    "value1":"Sarwar",
+    "value2":"Muhammad Sarwar *"
+  },
+  {
+    "line":"English",
+    "value1":"Shakir",
+    "value2":"Mohammad Habib Shakir *"
+  },
+  {
+    "line":"English",
+    "value1":"Transliteration",
+    "value2":"English Transliteration"
+  },
+  {
+    "line":"English",
+    "value1":"Wahiduddin Khan",
+    "value2":"Wahiduddin Khan *"
+  },
+  {
+    "line":"English",
+    "value1":"Yusuf Ali",
+    "value2":"Abdullah Yusuf Ali *"
+  },
+  {
+    "line":"French",
+    "value1":"Hamidullah",
+    "value2":"Muhammad Hamidullah *"
+  },
+  {
+    "line":"German",
+    "value1":"Abu Rida",
+    "value2":"Abu Rida Muhammad ibn Ahmad ibn Rassoul"
+  },
+  {
+    "line":"German",
+    "value1":"Bubenheim & Elyas",
+    "value2":"A. S. F. Bubenheim and N. Elyas *"
+  },
+  {
+    "line":"German",
+    "value1":"Khoury",
+    "value2":"Adel Theodor Khoury *"
+  },
+  {
+    "line":"German",
+    "value1":"Zaidan",
+    "value2":"Amir Zaidan"
+  },
+  {
+    "line":"Hausa",
+    "value1":"Gumi",
+    "value2":"Abubakar Mahmoud Gumi"
+  },
+  {
+    "line":"Hindi",
+    "value1":"फ़ारूक़ ख़ान & अहमद",
+    "value2":"Muhammad Farooq Khan and Muhammad Ahmed"
+  },
+  {
+    "line":"Hindi",
+    "value1":"फ़ारूक़ ख़ान & नदवी",
+    "value2":"Suhel Farooq Khan and Saifur Rahman Nadwi"
+  },
+  {
+    "line":"Indonesian",
+    "value1":"Bahasa Indonesia",
+    "value2":"Indonesian Ministry of Religious Affairs"
+  },
+  {
+    "line":"Indonesian",
+    "value1":"Quraish Shihab",
+    "value2":"Muhammad Quraish Shihab et al. *"
+  },
+  {
+    "line":"Indonesian",
+    "value1":"Tafsir Jalalayn",
+    "value2":"Jalal ad-Din al-Mahalli and Jalal ad-Din as-Suyuti *"
+  },
+  {
+    "line":"Italian",
+    "value1":"Piccardo",
+    "value2":"Hamza Roberto Piccardo *"
+  },
+  {
+    "line":"Japanese",
+    "value1":"Japanese",
+    "value2":"Unknown"
+  },
+  {
+    "line":"Korean",
+    "value1":"Korean",
+    "value2":"Unknown"
+  },
+  {
+    "line":"Kurdish",
+    "value1":"ته‌فسیری ئاسان",
+    "value2":"Burhan Muhammad-Amin"
+  },
+  {
+    "line":"Malay",
+    "value1":"Basmeih",
+    "value2":"Abdullah Muhammad Basmeih"
+  },
+  {
+    "line":"Malayalam",
+    "value1":"അബ്ദുല്‍ ഹമീദ് & പറപ്പൂര്‍",
+    "value2":"Cheriyamundam Abdul Hameed and Kunhi Mohammed Parappoor"
+  },
+  {
+    "line":"Malayalam",
+    "value1":"കാരകുന്ന് & എളയാവൂര്",
+    "value2":"Muhammad Karakunnu and Vanidas Elayavoor *"
+  },
+  {
+    "line":"Norwegian",
+    "value1":"Einar Berg",
+    "value2":"Einar Berg"
+  },
+  {
+    "line":"Pashto",
+    "value1":"عبدالولي",
+    "value2":"Abdulwali Khan"
+  },
+  {
+    "line":"Persian",
+    "value1":"انصاریان",
+    "value2":"Hussain Ansarian *"
+  },
+  {
+    "line":"Persian",
+    "value1":"آیتی",
+    "value2":"AbdolMohammad Ayati *"
+  },
+  {
+    "line":"Persian",
+    "value1":"بهرام پور",
+    "value2":"Abolfazl Bahrampour *"
+  },
+  {
+    "line":"Persian",
+    "value1":"قرائتی",
+    "value2":"Mohsen Gharaati *"
+  },
+  {
+    "line":"Persian",
+    "value1":"الهی قمشه‌ای",
+    "value2":"Mahdi Elahi Ghomshei *"
+  },
+  {
+    "line":"Persian",
+    "value1":"خرمدل",
+    "value2":"Mostafa Khorramdel *"
+  },
+  {
+    "line":"Persian",
+    "value1":"خرمشاهی",
+    "value2":"Baha'oddin Khorramshahi *"
+  },
+  {
+    "line":"Persian",
+    "value1":"صادقی تهرانی",
+    "value2":"Mohammad Sadeqi Tehrani *"
+  },
+  {
+    "line":"Persian",
+    "value1":"فولادوند",
+    "value2":"Mohammad Mahdi Fooladvand *"
+  },
+  {
+    "line":"Persian",
+    "value1":"مجتبوی",
+    "value2":"Sayyed Jalaloddin Mojtabavi *"
+  },
+  {
+    "line":"Persian",
+    "value1":"معزی",
+    "value2":"Mohammad Kazem Moezzi"
+  },
+  {
+    "line":"Persian",
+    "value1":"مکارم شیرازی",
+    "value2":"Naser Makarem Shirazi *"
+  },
+  {
+    "line":"Polish",
+    "value1":"Bielawskiego",
+    "value2":"Józefa Bielawskiego"
+  },
+  {
+    "line":"Portuguese",
+    "value1":"El-Hayek",
+    "value2":"Samir El-Hayek"
+  },
+  {
+    "line":"Romanian",
+    "value1":"Grigore",
+    "value2":"George Grigore"
+  },
+  {
+    "line":"Russian",
+    "value1":"Абу Адель",
+    "value2":"Abu Adel"
+  },
+  {
+    "line":"Russian",
+    "value1":"Аль-Мунтахаб",
+    "value2":"Ministry of Awqaf, Egypt"
+  },
+  {
+    "line":"Russian",
+    "value1":"Крачковский",
+    "value2":"Ignaty Yulianovich Krachkovsky *"
+  },
+  {
+    "line":"Russian",
+    "value1":"Кулиев",
+    "value2":"Elmir Kuliev"
+  },
+  {
+    "line":"Russian",
+    "value1":"Кулиев + ас-Саади",
+    "value2":"Elmir Kuliev (with Abd ar-Rahman as-Saadi's commentaries)"
+  },
+  {
+    "line":"Russian",
+    "value1":"Османов",
+    "value2":"Magomed-Nuri Osmanovich Osmanov"
+  },
+  {
+    "line":"Russian",
+    "value1":"Порохова",
+    "value2":"V. Porokhova"
+  },
+  {
+    "line":"Russian",
+    "value1":"Саблуков",
+    "value2":"Gordy Semyonovich Sablukov"
+  },
+  {
+    "line":"Sindhi",
+    "value1":"امروٽي",
+    "value2":"Taj Mehmood Amroti"
+  },
+  {
+    "line":"Somali",
+    "value1":"Abduh",
+    "value2":"Mahmud Muhammad Abduh"
+  },
+  {
+    "line":"Spanish",
+    "value1":"Bornez",
+    "value2":"Raúl González Bórnez *"
+  },
+  {
+    "line":"Spanish",
+    "value1":"Cortes",
+    "value2":"Julio Cortes"
+  },
+  {
+    "line":"Spanish",
+    "value1":"Garcia",
+    "value2":"Muhammad Isa García *"
+  },
+  {
+    "line":"Swahili",
+    "value1":"Al-Barwani",
+    "value2":"Ali Muhsin Al-Barwani"
+  },
+  {
+    "line":"Swedish",
+    "value1":"Bernström",
+    "value2":"Knut Bernström"
+  },
+  {
+    "line":"Tajik",
+    "value1":"Оятӣ",
+    "value2":"AbdolMohammad Ayati"
+  },
+  {
+    "line":"Tamil",
+    "value1":"ஜான் டிரஸ்ட்",
+    "value2":"Jan Turst Foundation"
+  },
+  {
+    "line":"Tatar",
+    "value1":"Yakub Ibn Nugman",
+    "value2":"Yakub Ibn Nugman"
+  },
+  {
+    "line":"Thai",
+    "value1":"ภาษาไทย",
+    "value2":"King Fahad Quran Complex"
+  },
+  {
+    "line":"Turkish",
+    "value1":"Abdulbakî Gölpınarlı",
+    "value2":"Abdulbaki Golpinarli"
+  },
+  {
+    "line":"Turkish",
+    "value1":"Alİ Bulaç",
+    "value2":"Alİ Bulaç"
+  },
+  {
+    "line":"Turkish",
+    "value1":"Çeviriyazı",
+    "value2":"Muhammet Abay"
+  },
+  {
+    "line":"Turkish",
+    "value1":"Diyanet İşleri",
+    "value2":"Diyanet Isleri"
+  },
+  {
+    "line":"Turkish",
+    "value1":"Diyanet Vakfı",
+    "value2":"Diyanet Vakfi"
+  },
+  {
+    "line":"Turkish",
+    "value1":"Edip Yüksel",
+    "value2":"Edip Yüksel"
+  },
+  {
+    "line":"Turkish",
+    "value1":"Elmalılı Hamdi Yazır",
+    "value2":"Elmalili Hamdi Yazir"
+  },
+  {
+    "line":"Turkish",
+    "value1":"Öztürk",
+    "value2":"Yasar Nuri Ozturk *"
+  },
+  {
+    "line":"Turkish",
+    "value1":"Suat Yıldırım",
+    "value2":"Suat Yildirim"
+  },
+  {
+    "line":"Turkish",
+    "value1":"Süleyman Ateş",
+    "value2":"Suleyman Ates"
+  },
+  {
+    "line":"Urdu",
+    "value1":"ابوالاعلی مودودی",
+    "value2":"Abul A'ala Maududi *"
+  },
+  {
+    "line":"Urdu",
+    "value1":"احمد رضا خان",
+    "value2":"Ahmed Raza Khan *"
+  },
+  {
+    "line":"Urdu",
+    "value1":"احمد علی",
+    "value2":"Ahmed Ali *"
+  },
+  {
+    "line":"Urdu",
+    "value1":"جالندہری",
+    "value2":"Fateh Muhammad Jalandhry"
+  },
+  {
+    "line":"Urdu",
+    "value1":"طاہر القادری",
+    "value2":"Tahir ul Qadri *"
+  },
+  {
+    "line":"Urdu",
+    "value1":"علامہ جوادی",
+    "value2":"Syed Zeeshan Haider Jawadi"
+  },
+  {
+    "line":"Urdu",
+    "value1":"محمد جوناگڑھی",
+    "value2":"Muhammad Junagarhi *"
+  },
+  {
+    "line":"Urdu",
+    "value1":"محمد حسین نجفی",
+    "value2":"Muhammad Hussain Najafi  *"
+  },
+  {
+    "line":"Uyghur",
+    "value1":"محمد صالح",
+    "value2":"Muhammad Saleh"
+  },
+  {
+    "line":"Uzbek",
+    "value1":"Мухаммад Содик",
+    "value2":"Muhammad Sodik Muhammad Yusuf"
+  }
+]
