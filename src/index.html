@@ -87,5 +87,25 @@ url: https://muslimist.com
 			</section>
 
 
+			<script src="/assets/js/app.min.js"></script>
+			<script>
+			let deferredPrompt;
+			window.addEventListener('beforeinstallprompt', (e) => {
+			    e.preventDefault();
+			    deferredPrompt = e;
+			    document.getElementById("installbutton").style.visibility = "visible";
+			});
+
+			function installApp() {
+			    deferredPrompt.prompt();
+			    deferredPrompt.userChoice.then((choiceResult) => {
+			        if (choiceResult.outcome === 'accepted') {
+			            document.getElementById("installbutton").style.visibility = "hidden";
+			        }
+			    });
+			}
+			</script>
+
+
 
 {% include footer %}

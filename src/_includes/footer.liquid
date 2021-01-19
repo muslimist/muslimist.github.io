@@ -6,14 +6,14 @@
 						<a href="/">home</a> - 
 						<a href="/prayertimes">prayer times</a> - 
 						<a href="/qibla">qibla</a> - 
-						<a>quran</a>
+						<a href="/quran">quran</a>
 						<br>
 						<br>
 						made with <span style="color: #e25555;"><i class="fas fa-heart"></i></span> by muslims for muslims
 						<br>
 						
 						<a target="_blank" href="https://github.com/muslimist">github</a> - 
-						<a href="/">privacy</a> - 
+						<a>privacy</a> - 
 						<a onclick="toggledarkmode()">dark mode</a>
 					</p>
 				</div>
@@ -21,24 +21,7 @@
 
 
 		</div>
-		<script src="/assets/js/app.min.js"></script>
-		<script>
-		let deferredPrompt;
-		window.addEventListener('beforeinstallprompt', (e) => {
-		    e.preventDefault();
-		    deferredPrompt = e;
-		    document.getElementById("installbutton").style.visibility = "visible";
-		});
 
-		function installApp() {
-		    deferredPrompt.prompt();
-		    deferredPrompt.userChoice.then((choiceResult) => {
-		        if (choiceResult.outcome === 'accepted') {
-		            document.getElementById("installbutton").style.visibility = "hidden";
-		        }
-		    });
-		}
-		</script>
 
 	</body>
 </html>
