@@ -5,6 +5,23 @@ url: https://muslimist.com/quran
 ---
 {% include header %}
 
+<style>
+.quran {
+    font-family: "me_quran", serif;
+    font-size: 2em;
+    font-weight: 300;
+    line-height: initial;
+    letter-spacing: 0;
+    text-align: center;
+}
+@font-face {
+    font-family: "me_quran";
+    src: url('/assets/fonts/me_quran.eot');
+    src: url('/assets/fonts/me_quran.eot') format('embedded-opentype'),
+    url('/assets/fonts/me_quran.ttf') format('truetype');
+}
+</style>
+
 
       <section class="banner style1 orient-left content-align-left image-position-right fullscreen onload-image-fade-in onload-content-fade-right">
         <div class="content">
@@ -25,7 +42,7 @@ url: https://muslimist.com/quran
               <header>
                 <h3>Quran</h3>
               </header>
-              <div id="qurancontent" class="content" style="text-align: center;"></div>
+              <div id="qurancontent" class="quran" style="text-align: center;"></div>
             </section>
             <br>
 
