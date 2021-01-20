@@ -64,18 +64,36 @@
       <section class="wrapper style1 align-center">
         <div class="inner" style="padding: 2rem 4rem 2rem 4rem;">
           <div class="index align-left">
+
+            <section>
+              <header>
+                <h3>Quran</h3>
+              </header>
+              <div id="qurancontent" class="content"></div>
+            </section>
+            <br>
+
+            <section>
+              <header>
+                <h3>Translation</h3>
+              </header>
+              <div id="translationcontent" class="content"></div>
+            </section>
+            <br>
+
             <section>
               <header>
                 <h3>Audio</h3>
               </header>
               <div class="content">
-                <audio onended="playnext()" id="audio" controls="controls">
+                <audio onended="nextAudio()" id="audio" controls autoplay>
                   <source id="audioSource" src=""></source>
                   Your browser does not support the audio format.
                 </audio>
-                <div class="table-wrapper" id="table-wrapper"></div>
               </div>
             </section>
+            <br>
+            
             <section>
               <header>
                 <h3>Options</h3>
@@ -85,10 +103,10 @@
                   <div class="fields">
 
 
-                    <div class="field">
+                    <div class="field half">
                       <label for="chapter">Chapter</label>
-                      <select name="chapter" id="chapter" onchange="update()">
-                        <option value="1" selected="selected">1: Al-Faatiha</option>
+                      <select name="chapter" id="chapter" onchange="onchangeChapter()">
+                        <option value="1">1: Al-Faatiha</option>
                         <option value="2">2: Al-Baqara</option>
                         <option value="3">3: Aal-i-Imraan</option>
                         <option value="4">4: An-Nisaa</option>
@@ -204,93 +222,95 @@
                         <option value="114">114: An-Naas</option>
                       </select>
                     </div>
+                    <div class="field half">
+                      <label for="verse">Verse</label>
+                      <select name="verse" id="verse" onchange="onchangeVerse()">
+                      </select>
+                    </div>
                     <div class="field">
                       <label for="reciter">Reciter</label>
-                      <select name="reciter" id="reciter" onchange="update()">
-                        <option value="AbdulSamad_64kbps_QuranExplorer.Com">AbdulSamad_64kbps_QuranExplorer.Com</option>
-                        <option value="Abdul_Basit_Mujawwad_128kbps">Abdul_Basit_Mujawwad_128kbps</option>
-                        <option value="Abdul_Basit_Murattal_192kbps">Abdul_Basit_Murattal_192kbps</option>
-                        <option value="Abdul_Basit_Murattal_64kbps">Abdul_Basit_Murattal_64kbps</option>
-                        <option value="Abdullaah_3awwaad_Al-Juhaynee_128kbps">Abdullaah_3awwaad_Al-Juhaynee_128kbps</option>
-                        <option value="Abdullah_Basfar_192kbps">Abdullah_Basfar_192kbps</option>
-                        <option value="Abdullah_Basfar_32kbps">Abdullah_Basfar_32kbps</option>
-                        <option value="Abdullah_Basfar_64kbps">Abdullah_Basfar_64kbps</option>
-                        <option value="Abdullah_Matroud_128kbps">Abdullah_Matroud_128kbps</option>
-                        <option value="Abdurrahmaan_As-Sudais_192kbps">Abdurrahmaan_As-Sudais_192kbps</option>
-                        <option value="Abdurrahmaan_As-Sudais_64kbps">Abdurrahmaan_As-Sudais_64kbps</option>
-                        <option value="Abu_Bakr_Ash-Shaatree_128kbps">Abu_Bakr_Ash-Shaatree_128kbps</option>
-                        <option value="Abu_Bakr_Ash-Shaatree_64kbps">Abu_Bakr_Ash-Shaatree_64kbps</option>
-                        <option value="Ahmed_Neana_128kbps">Ahmed_Neana_128kbps</option>
-                        <option value="Ahmed_ibn_Ali_al-Ajamy_128kbps_ketaballah.net">Ahmed_ibn_Ali_al-Ajamy_128kbps_ketaballah.net</option>
-                        <option value="Ahmed_ibn_Ali_al-Ajamy_64kbps_QuranExplorer.Com">Ahmed_ibn_Ali_al-Ajamy_64kbps_QuranExplorer.Com</option>
-                        <option value="Akram_AlAlaqimy_128kbps">Akram_AlAlaqimy_128kbps</option>
-                        <option value="Alafasy_128kbps" selected="selected">Alafasy_128kbps</option>
-                        <option value="Alafasy_64kbps">Alafasy_64kbps</option>
-                        <option value="Ali_Hajjaj_AlSuesy_128kbps">Ali_Hajjaj_AlSuesy_128kbps</option>
-                        <option value="Ali_Jaber_64kbps">Ali_Jaber_64kbps</option>
-                        <option value="Ayman_Sowaid_64kbps">Ayman_Sowaid_64kbps</option>
-                        <option value="English/Sahih_Intnl_Ibrahim_Walk_192kbps">English/Sahih_Intnl_Ibrahim_Walk_192kbps</option>
-                        <option value="Fares_Abbad_64kbps">Fares_Abbad_64kbps</option>
-                        <option value="Ghamadi_40kbps">Ghamadi_40kbps</option>
-                        <option value="Hani_Rifai_192kbps">Hani_Rifai_192kbps</option>
-                        <option value="Hani_Rifai_64kbps">Hani_Rifai_64kbps</option>
-                        <option value="Hudhaify_128kbps">Hudhaify_128kbps</option>
-                        <option value="Hudhaify_32kbps">Hudhaify_32kbps</option>
-                        <option value="Hudhaify_64kbps">Hudhaify_64kbps</option>
-                        <option value="Husary_128kbps">Husary_128kbps</option>
-                        <option value="Husary_128kbps_Mujawwad">Husary_128kbps_Mujawwad</option>
-                        <option value="Husary_64kbps">Husary_64kbps</option>
-                        <option value="Husary_Muallim_128kbps">Husary_Muallim_128kbps</option>
-                        <option value="Husary_Mujawwad_64kbps">Husary_Mujawwad_64kbps</option>
-                        <option value="Ibrahim_Akhdar_32kbps">Ibrahim_Akhdar_32kbps</option>
-                        <option value="Ibrahim_Akhdar_64kbps">Ibrahim_Akhdar_64kbps</option>
-                        <option value="Karim_Mansoori_40kbps">Karim_Mansoori_40kbps</option>
-                        <option value="Khaalid_Abdullaah_al-Qahtaanee_192kbps">Khaalid_Abdullaah_al-Qahtaanee_192kbps</option>
-                        <option value="MaherAlMuaiqly128kbps">MaherAlMuaiqly128kbps</option>
-                        <option value="Maher_AlMuaiqly_64kbps">Maher_AlMuaiqly_64kbps</option>
-                        <option value="Menshawi_16kbps">Menshawi_16kbps</option>
-                        <option value="Menshawi_32kbps">Menshawi_32kbps</option>
-                        <option value="Minshawy_Mujawwad_192kbps">Minshawy_Mujawwad_192kbps</option>
-                        <option value="Minshawy_Mujawwad_64kbps">Minshawy_Mujawwad_64kbps</option>
-                        <option value="Minshawy_Murattal_128kbps">Minshawy_Murattal_128kbps</option>
-                        <option value="Mohammad_al_Tablaway_128kbps">Mohammad_al_Tablaway_128kbps</option>
-                        <option value="Mohammad_al_Tablaway_64kbps">Mohammad_al_Tablaway_64kbps</option>
-                        <option value="Muhammad_AbdulKareem_128kbps">Muhammad_AbdulKareem_128kbps</option>
-                        <option value="Muhammad_Ayyoub_128kbps">Muhammad_Ayyoub_128kbps</option>
-                        <option value="Muhammad_Ayyoub_32kbps">Muhammad_Ayyoub_32kbps</option>
-                        <option value="Muhammad_Ayyoub_64kbps">Muhammad_Ayyoub_64kbps</option>
-                        <option value="Muhammad_Jibreel_128kbps">Muhammad_Jibreel_128kbps</option>
-                        <option value="Muhammad_Jibreel_64kbps">Muhammad_Jibreel_64kbps</option>
-                        <option value="Muhsin_Al_Qasim_192kbps">Muhsin_Al_Qasim_192kbps</option>
-                        <option value="MultiLanguage/Basfar_Walk_192kbps">MultiLanguage/Basfar_Walk_192kbps</option>
-                        <option value="Mustafa_Ismail_48kbps">Mustafa_Ismail_48kbps</option>
-                        <option value="Nasser_Alqatami_128kbps">Nasser_Alqatami_128kbps</option>
-                        <option value="Parhizgar_48kbps">Parhizgar_48kbps</option>
-                        <option value="Sahl_Yassin_128kbps">Sahl_Yassin_128kbps</option>
-                        <option value="Salaah_AbdulRahman_Bukhatir_128kbps">Salaah_AbdulRahman_Bukhatir_128kbps</option>
-                        <option value="Salah_Al_Budair_128kbps">Salah_Al_Budair_128kbps</option>
-                        <option value="Saood_ash-Shuraym_128kbps">Saood_ash-Shuraym_128kbps</option>
-                        <option value="Saood_ash-Shuraym_64kbps">Saood_ash-Shuraym_64kbps</option>
-                        <option value="Yaser_Salamah_128kbps">Yaser_Salamah_128kbps</option>
-                        <option value="Yasser_Ad-Dussary_128kbps">Yasser_Ad-Dussary_128kbps</option>
-                        <option value="ahmed_ibn_ali_al_ajamy_128kbps">ahmed_ibn_ali_al_ajamy_128kbps</option>
-                        <option value="aziz_alili_128kbps">aziz_alili_128kbps</option>
-                        <option value="khalefa_al_tunaiji_64kbps">khalefa_al_tunaiji_64kbps</option>
-                        <option value="mahmoud_ali_al_banna_32kbps">mahmoud_ali_al_banna_32kbps</option>
-                        <option value="translations/Fooladvand_Hedayatfar_40Kbps">translations/Fooladvand_Hedayatfar_40Kbps</option>
-                        <option value="translations/Makarem_Kabiri_16Kbps">translations/Makarem_Kabiri_16Kbps</option>
-                        <option value="translations/azerbaijani/balayev">translations/azerbaijani/balayev</option>
-                        <option value="translations/besim_korkut_ajet_po_ajet">translations/besim_korkut_ajet_po_ajet</option>
-                        <option value="translations/urdu_farhat_hashmi">translations/urdu_farhat_hashmi</option>
-                        <option value="translations/urdu_shamshad_ali_khan_46kbps">translations/urdu_shamshad_ali_khan_46kbps</option>
-                        <option value="warsh/warsh_Abdul_Basit_128kbps">warsh/warsh_Abdul_Basit_128kbps</option>
-                        <option value="warsh/warsh_ibrahim_aldosary_128kbps">warsh/warsh_ibrahim_aldosary_128kbps</option>
-                        <option value="warsh/warsh_yassin_al_jazaery_64kbps">warsh/warsh_yassin_al_jazaery_64kbps</option>
+                      <select name="reciter" id="reciter" onchange="onchangeReciter()">
+                        <option value="Abdul_Basit_Murattal_192kbps">Abdul Basit (Murattal) - 192kbps</option>
+                        <option value="Abdul_Basit_Murattal_64kbps">Abdul Basit (Murattal) - 64kbps</option>
+                        <option value="Abdul_Basit_Mujawwad_128kbps">Abdul Basit (Mujawwad) - 128kbps</option>
+                        <option value="AbdulSamad_64kbps_QuranExplorer.Com">Abdul Basit (Mujawwad) - 64kbps</option>
+                        <option value="Abdullaah_3awwaad_Al-Juhaynee_128kbps">Abdullah Awad Al Juhany - 128kbps</option>
+                        <option value="Abdullah_Basfar_192kbps">Abdullah Basfar - 192kbps</option>
+                        <option value="Abdullah_Basfar_64kbps">Abdullah Basfar - 64kbps</option>
+                        <option value="Abdullah_Basfar_32kbps">Abdullah Basfar - 32kbps</option>
+                        <option value="Abdullah_Matroud_128kbps">Abdullah Matroud - 128kbps</option>
+                        <option value="Abdurrahmaan_As-Sudais_192kbps">Abdurrahmaan As-Sudais - 192kbps</option>
+                        <option value="Abdurrahmaan_As-Sudais_64kbps">Abdurrahmaan As-Sudais - 64kbps</option>
+                        <option value="Abu_Bakr_Ash-Shaatree_128kbps">Abu Bakr Ash-Shaatree - 128kbps</option>
+                        <option value="Abu_Bakr_Ash-Shaatree_64kbps">Abu Bakr Ash-Shaatree - 64kbps</option>
+                        <option value="Ahmed_Neana_128kbps">Ahmed Neana - 128kbps</option>
+                        <option value="ahmed_ibn_ali_al_ajamy_128kbps">Ahmed Ibn Ali Al-Ajamy - 128kbps</option>
+                        <option value="Ahmed_ibn_Ali_al-Ajamy_128kbps_ketaballah.net">Ahmed Ibn Ali Al-Ajamy - 128kbps</option>
+                        <option value="Ahmed_ibn_Ali_al-Ajamy_64kbps_QuranExplorer.Com">Ahmed Ibn Ali Al-Ajamy - 64kbps</option>
+                        <option value="Akram_AlAlaqimy_128kbps">Akram Al Alaqimy - 128kbps</option>
+                        <option value="Alafasy_128kbps">Alafasy - 128kbps</option>
+                        <option value="Alafasy_64kbps">Alafasy - 64kbps</option>
+                        <option value="Ali_Hajjaj_AlSuesy_128kbps">Ali Hajjaj AlSuesy - 128kbps</option>
+                        <option value="Ali_Jaber_64kbps">Ali Jaber - 64kbps</option>
+                        <option value="Ayman_Sowaid_64kbps">Ayman Sowaid - 64kbps</option>
+                        <option value="aziz_alili_128kbps">Aziz Alili - 128kbps</option>
+                        <option value="Fares_Abbad_64kbps">Fares Abbad - 64kbps</option>
+                        <option value="Ghamadi_40kbps">Ghamadi - 40kbps</option>
+                        <option value="Hani_Rifai_192kbps">Hani Rifai - 192kbps</option>
+                        <option value="Hani_Rifai_64kbps">Hani Rifai - 64kbps</option>
+                        <option value="Hudhaify_128kbps">Hudhaify - 128kbps</option>
+                        <option value="Hudhaify_64kbps">Hudhaify - 64kbps</option>
+                        <option value="Hudhaify_32kbps">Hudhaify - 32kbps</option>
+                        <option value="Husary_128kbps">Husary (Murattal) - 128kbps</option>
+                        <option value="Husary_64kbps">Husary (Murattal) - 64kbps</option>
+                        <option value="Husary_128kbps_Mujawwad">Husary (Mujawwad) - 128kbps</option>
+                        <option value="Husary_Mujawwad_64kbps">Husary (Mujawwad) - 64kbps</option>
+                        <option value="Husary_Muallim_128kbps">Husary (Muallim) - 128kbps</option>
+                        <option value="Ibrahim_Akhdar_32kbps">Ibrahim Akhdar - 32kbps</option>
+                        <option value="warsh/warsh_ibrahim_aldosary_128kbps">Ibrahim Aldosary (Warsh) - 128kbps</option>
+                        <option value="Karim_Mansoori_40kbps">Karim Mansoori - 40kbps</option>
+                        <option value="Khaalid_Abdullaah_al-Qahtaanee_192kbps">Khaalid Abdullaah Al-Qahtaanee - 192kbps</option>
+                        <option value="khalefa_al_tunaiji_64kbps">Khalefa Al Tunaiji - 64kbps</option>
+                        <option value="MaherAlMuaiqly128kbps">Maher Al Muaiqly - 128kbps</option>
+                        <option value="Maher_AlMuaiqly_64kbps">Maher Al Muaiqly - 64kbps</option>
+                        <option value="mahmoud_ali_al_banna_32kbps">Mahmoud Ali Al Banna - 32kbps</option>
+                        <option value="Minshawy_Murattal_128kbps">Minshawi (Murattal) - 128kbps</option>
+                        <option value="Menshawi_16kbps">Minshawi (Murattal) - 16kbps</option>
+                        <option value="Minshawy_Mujawwad_192kbps">Minshawi (Mujawwad) - 192kbps</option>
+                        <option value="Minshawy_Mujawwad_64kbps">Minshawi (Mujawwad) - 64kbps</option>
+                        <option value="Mohammad_al_Tablaway_128kbps">Mohammad Al Tablaway - 128kbps</option>
+                        <option value="Mohammad_al_Tablaway_64kbps">Mohammad Al Tablaway - 64kbps</option>
+                        <option value="Muhammad_AbdulKareem_128kbps">Muhammad AbdulKareem - 128kbps</option>
+                        <option value="Muhammad_Ayyoub_128kbps">Muhammad Ayyoub - 128kbps</option>
+                        <option value="Muhammad_Ayyoub_64kbps">Muhammad Ayyoub - 64kbps</option>
+                        <option value="Muhammad_Ayyoub_32kbps">Muhammad Ayyoub - 32kbps</option>
+                        <option value="Muhammad_Jibreel_128kbps">Muhammad Jibreel - 128kbps</option>
+                        <option value="Muhammad_Jibreel_64kbps">Muhammad Jibreel - 64kbps</option>
+                        <option value="Muhsin_Al_Qasim_192kbps">Muhsin Al Qasim - 192kbps</option>
+                        <option value="Nasser_Alqatami_128kbps">Nasser Alqatami - 128kbps</option>
+                        <option value="Parhizgar_48kbps">Parhizgar - 48kbps</option>
+                        <option value="Sahl_Yassin_128kbps">Sahl Yassin - 128kbps</option>
+                        <option value="Salaah_AbdulRahman_Bukhatir_128kbps">Salaah AbdulRahman Bukhatir - 128kbps</option>
+                        <option value="Salah_Al_Budair_128kbps">Salah Al Budair - 128kbps</option>
+                        <option value="Saood_ash-Shuraym_128kbps">Saood Ash-Shuraym - 128kbps</option>
+                        <option value="Saood_ash-Shuraym_64kbps">Saood Ash-Shuraym - 64kbps</option>
+                        <option value="Yaser_Salamah_128kbps">Yaser Salamah - 128kbps</option>
+                        <option value="Yasser_Ad-Dussary_128kbps">Yasser Ad-Dussary - 128kbps</option>
+                        <option value="warsh/warsh_yassin_al_jazaery_64kbps">Yassin Al Jazaery (Warsh) - 64kbps</option>
+                        <option disabled> -- OTHER LANGUAGES --</option>
+                        <option value="translations/azerbaijani/balayev">Azerbaijani - Azerbaijani Balayev</option>
+                        <option value="translations/besim_korkut_ajet_po_ajet">Bosnian - Besim Korkut Ajet Po Ajet</option>
+                        <option value="English/Sahih_Intnl_Ibrahim_Walk_192kbps">English - Ibrahim Walk - 192kbps</option>
+                        <option value="MultiLanguage/Basfar_Walk_192kbps">English - Ibrahim Walk With Arabic - 192kbps</option>
+                        <option value="translations/Fooladvand_Hedayatfar_40Kbps">Persian - Fooladvand Hedayatfar - 40Kbps</option>
+                        <option value="translations/Makarem_Kabiri_16Kbps">Persian - Makarem Kabiri - 16Kbps</option>
+                        <option value="translations/urdu_farhat_hashmi">Urdu - Farhat Hashmi</option>
+                        <option value="translations/urdu_shamshad_ali_khan_46kbps">Urdu - Shamshad Ali Khan 46kbps</option>
                       </select>
                     </div>
                     <div class="field">
                       <label for="translation">Translation</label>
-                      <select name="translation" id="translation" onchange="update()">
+                      <select name="translation" id="translation" onchange="onchangeTranslation()">
                         <option value="sq.nahi">Albanian - Hasan Efendi Nahi</option>
                         <option value="sq.mehdiu">Albanian - Feti Mehdiu</option>
                         <option value="sq.ahmeti">Albanian - Sherif Ahmeti</option>
@@ -324,7 +344,7 @@
                         <option value="en.pickthall">English - Mohammed Marmaduke William Pickthall</option>
                         <option value="en.qarai">English - Ali Quli Qarai</option>
                         <option value="en.qaribullah">English - Hasan al-Fatih Qaribullah and Ahmad Darwish</option>
-                        <option value="en.sahih" selected="selected">English - Saheeh International</option>
+                        <option value="en.sahih">English - Saheeh International</option>
                         <option value="en.sarwar">English - Muhammad Sarwar</option>
                         <option value="en.shakir">English - Mohammad Habib Shakir</option>
                         <option value="en.transliteration">English - English Transliteration</option>
@@ -422,111 +442,20 @@
     <script src="/assets/js/app.min.js"></script>
     <script type="text/javascript">
 
-    if (localStorage.quran_chapter) {
-      $('chapter').value = localStorage.getItem("quran_chapter");
-    } else {
-      localStorage.setItem("quran_chapter", $('chapter').value);
-    }
+    // variables
 
-    if (localStorage.quran_translation) {
-      $('translation').value = localStorage.getItem("quran_translation");
-    } else {
-      localStorage.setItem("quran_translation", $('translation').value);
-    }
+    const NUMBER_OF_VERSES = [7,286,200,176,120,165,206,75,129,109,123,111,43,52,99,128,111,110,98,135,112,78,118,64,77,227,93,88,69,60,34,30,73,54,45,83,182,88,75,85,54,53,89,59,37,35,38,29,18,45,60,49,62,55,78,96,29,22,24,13,14,11,11,18,12,12,30,52,52,44,28,28,20,56,40,31,50,40,46,42,29,19,36,25,22,17,19,26,30,20,15,21,11,8,8,19,5,8,8,11,11,8,3,9,5,4,7,3,6,3,5,4,5,6];
 
-    if (localStorage.quran_reciter) {
-      $('reciter').value = localStorage.getItem("quran_reciter");
-    } else {
-      localStorage.setItem("quran_reciter", $('reciter').value);
-    }
+    const NUMBER_OF_CHAPTERS = 114;
 
-    localStorage.setItem("quran_verse", 1);
+    const DEFAULT_CHAPTER = 1;
+    const DEFAULT_VERSE = 1;
+    const DEFAULT_RECITER = 'Alafasy_64kbps';
+    const DEFAULT_TRANSLATION = 'en.pickthall';
 
 
-    function update() {
 
-
-      if (localStorage.quran_chapter != $('chapter').value) {
-        localStorage.setItem("quran_chapter", $('chapter').value);
-        localStorage.setItem("quran_verse", 1);
-      }
-      var chapter = localStorage.getItem("quran_chapter");
-      var verse = localStorage.getItem("quran_verse");
-
-      if (localStorage.quran_translation != $('translation').value) {
-        localStorage.setItem("quran_translation", $('translation').value);
-      }
-      var translation = localStorage.getItem("quran_translation");
-
-      if (localStorage.quran_reciter != $('reciter').value) {
-        localStorage.setItem("quran_reciter", $('reciter').value);
-      }
-      var reciter = localStorage.getItem("quran_reciter");
-
-
-      var audio = document.getElementById('audio');
-      var source = document.getElementById('audioSource');
-      source.src = "https://www.everyayah.com/data/" + reciter + "/" + threeDigits(chapter) + threeDigits(verse) + ".mp3";
-      audio.load(); //call this to just preload the audio without playing
-      audio.play(); //call this to play the song right away
-
-
-/*
-      var html = '<table>';
-      html += '<tbody>';
-      for(var i in list)  {
-        html += '<tr><td>'+ list[i]+ '</td>';
-        html += '<td>'+ times[list[i].toLowerCase()]+ '</td></tr>';
-      }
-      html += '<tbody></table>';
-      $('table-wrapper').innerHTML = html;
-*/
-
-    }
-
-
-    function playnext() {
-
-      var reciter = localStorage.getItem("quran_reciter");
-      var chapter = localStorage.getItem("quran_chapter");
-      var verse = localStorage.getItem("quran_verse");
-
-      verse = parseInt(verse) + 1;
-
-      var chapterverses = [7,286,200,176,120,165,206,75,129,109,123,111,43,52,99,128,111,110,98,135,112,78,118,64,77,227,93,88,69,60,34,30,73,54,45,83,182,88,75,85,54,53,89,59,37,35,38,29,18,45,60,49,62,55,78,96,29,22,24,13,14,11,11,18,12,12,30,52,52,44,28,28,20,56,40,31,50,40,46,42,29,19,36,25,22,17,19,26,30,20,15,21,11,8,8,19,5,8,8,11,11,8,3,9,5,4,7,3,6,3,5,4,5,6];
-
-      var maxchapters = 114
-
-      var repeatsurah = 0;
-
-      if (verse > chapterverses[chapter-1]) {
-        if (repeatsurah == 1) {
-          localStorage.setItem("quran_verse", 1);
-          verse = 1;
-        } else {
-          chapter = parseInt(chapter) + 1;
-          if (chapter > maxchapters) {
-            chapter = 1;
-          }
-          document.getElementById('chapter').options[chapter-1].selected = 'selected';
-
-          localStorage.setItem("quran_chapter", chapter);
-          verse = 1;
-        }
-      }
-
-      localStorage.setItem("quran_verse", verse);
-
-      var audio = document.getElementById('audio');
-      var source = document.getElementById('audioSource');
-      source.src = "https://www.everyayah.com/data/" + reciter + "/" + threeDigits(chapter) + threeDigits(verse) + ".mp3";
-      audio.load(); //call this to just preload the audio without playing
-      audio.play(); //call this to play the song right away
-
-
-    }
-
-
+    // functions
 
     function $(id) {
       return document.getElementById(id);
@@ -537,7 +466,149 @@
       return temp.substr(temp.length-3);
     }
 
-    update();
+    function updateVerse(chapter) {
+        document.getElementById('verse').options.length = 0;
+        for (var i = 1; i<=NUMBER_OF_VERSES[chapter-1]; i++) {
+            var opt = document.createElement('option');
+            opt.value = i;
+            opt.innerHTML = i;
+            document.getElementById('verse').appendChild(opt);
+        }
+    }
+
+    function updateAudio() {
+        var audio = document.getElementById('audio');
+        var source = document.getElementById('audioSource');
+        source.src = "https://www.everyayah.com/data/" + localStorage.getItem("quran_reciter") + "/" + threeDigits(localStorage.getItem("quran_chapter")) + threeDigits(localStorage.getItem("quran_verse")) + ".mp3";
+        audio.load(); //call this to just preload the audio without playing
+        audio.play(); //call this to play the song right away
+    }
+
+    function nextAudio() {
+        nextverse = parseInt(localStorage.getItem("quran_verse")) + 1;
+        thischapter = parseInt(localStorage.getItem("quran_chapter"));
+
+        if (nextverse > NUMBER_OF_VERSES[thischapter-1]) {
+            nextchapter = thischapter + 1;
+            if (nextchapter > NUMBER_OF_CHAPTERS) {
+                // chapter 1
+                localStorage.setItem("quran_chapter", DEFAULT_CHAPTER);
+                selectChapter(DEFAULT_CHAPTER);
+                updateVerse(DEFAULT_CHAPTER);
+            } else {
+                // next chapter
+                localStorage.setItem("quran_chapter", nextchapter);
+                selectChapter(nextchapter);
+                updateVerse(nextchapter);
+            }
+            localStorage.setItem("quran_verse", DEFAULT_VERSE);
+            selectVerse(DEFAULT_VERSE);
+        } else {
+            // next verse
+            localStorage.setItem("quran_verse", nextverse);
+            selectVerse(nextverse);
+        }
+
+        updateAudio();
+        preloadAudio();
+    }
+
+
+    function preloadAudio() {
+        nextverse = parseInt(localStorage.getItem("quran_verse")) + 1;
+        thischapter = parseInt(localStorage.getItem("quran_chapter"));
+        nextchapter = parseInt(localStorage.getItem("quran_chapter"));
+
+        if (nextverse > NUMBER_OF_VERSES[thischapter-1]) {
+            nextchapter = thischapter + 1;
+            if (nextchapter > NUMBER_OF_CHAPTERS) {
+                nextchapter = DEFAULT_CHAPTER;
+            }
+            nextverse = DEFAULT_VERSE;
+        }
+
+        url = 'https://www.everyayah.com/data/' + localStorage.getItem("quran_reciter") + '/' + threeDigits(nextchapter) + threeDigits(nextverse) + '.mp3';
+
+        console.log('next media request (preload not working): ' + url);
+
+    }
+
+    function selectVerse(verse) {
+        $('verse').value = verse;
+    }
+
+    function selectChapter(chapter) {
+        $('chapter').value = chapter;
+    }
+
+    function selectReciter(reciter) {
+        $('reciter').value = reciter;
+    }
+
+    function selectTranslation(translation) {
+        $('translation').value = translation;
+    }
+
+    function onchangeChapter() {
+        localStorage.setItem("quran_chapter", $('chapter').value);
+        updateVerse(localStorage.getItem("quran_chapter"));
+        selectVerse(DEFAULT_VERSE);
+        localStorage.setItem("quran_verse", DEFAULT_VERSE);
+        updateAudio();
+    }
+
+    function onchangeVerse() {
+        localStorage.setItem("quran_verse", $('verse').value);
+        updateAudio();
+    }
+
+    function onchangeReciter() {
+        localStorage.setItem("quran_reciter", $('reciter').value);
+        updateAudio();
+    }
+
+    function onchangeTranslation() {
+        localStorage.setItem("quran_translation", $('translation').value);
+        // change text
+    }
+
+
+
+    // set options one time only
+
+    if (!localStorage.quran_chapter) {
+      localStorage.setItem("quran_chapter", DEFAULT_CHAPTER);
+    }
+    selectChapter(localStorage.getItem("quran_chapter"));
+    updateVerse(localStorage.getItem("quran_chapter"));
+
+    if (!localStorage.quran_verse) {
+      localStorage.setItem("quran_verse", DEFAULT_VERSE);
+    }
+    selectVerse(localStorage.getItem("quran_verse"));
+
+    if (!localStorage.quran_translation) {
+      localStorage.setItem("quran_translation", DEFAULT_TRANSLATION);
+    }
+    selectTranslation(localStorage.getItem("quran_translation"));
+
+    if (!localStorage.quran_reciter) {
+      localStorage.setItem("quran_reciter", DEFAULT_RECITER);
+    }
+    selectReciter(localStorage.getItem("quran_reciter"));
+
+
+
+    // start first audio
+    updateAudio();
+    preloadAudio();
+
+
+
+
+
+
+
 
   </script>
 
