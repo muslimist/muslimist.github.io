@@ -69,7 +69,7 @@
               <header>
                 <h3>Quran</h3>
               </header>
-              <div id="qurancontent" class="content"></div>
+              <div id="qurancontent" class="content" style="text-align: center;"></div>
             </section>
             <br>
 
@@ -93,7 +93,7 @@
               </div>
             </section>
             <br>
-            
+
             <section>
               <header>
                 <h3>Options</h3>
@@ -426,6 +426,17 @@
                         <option value="uz.sodik">Uzbek - Muhammad Sodik Muhammad Yusuf</option>
                       </select>
                     </div>
+                    <div class="field">
+                      <label for="script">Translation</label>
+                      <select name="script" id="script" onchange="onchangeScript()">
+                        <option value="quran-uthmani">Uthmani</option>
+                        <option value="quran-uthmani-min">Uthmani Minimal</option>
+                        <option value="quran-simple">Simple</option>
+                        <option value="quran-simple-enhanced">Simple Enhanced</option>
+                        <option value="quran-simple-min">Simple Minimal</option>
+                        <option value="quran-simple-clean">Simple Clean</option>
+                      </select>
+                    </div>
 
 
                   </div>
@@ -452,6 +463,7 @@
     const DEFAULT_VERSE = 1;
     const DEFAULT_RECITER = 'Alafasy_64kbps';
     const DEFAULT_TRANSLATION = 'en.pickthall';
+    const DEFAULT_SCRIPT = 'quran-uthmani';
 
 
 
@@ -476,12 +488,33 @@
         }
     }
 
+    function updateQuranContent() {
+        fetch('/quran/data/'+localStorage.getItem("quran_script")+'.json')
+          .then(response => response.json())
+          .then(quran => document.getElementById("qurancontent").innerHTML = "<h2>"+quran[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1].text)+"</h2>";
+    }
+
+    function updateTranslationContent() {
+        fetch('/quran/data/'+localStorage.getItem("quran_translation")+'.json')
+          .then(response => response.json())
+          .then(quran => document.getElementById("translationcontent").innerHTML = "<h2>"+quran[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1].text)+"</h2>";
+    }
+
     function updateAudio() {
         var audio = document.getElementById('audio');
         var source = document.getElementById('audioSource');
         source.src = "https://www.everyayah.com/data/" + localStorage.getItem("quran_reciter") + "/" + threeDigits(localStorage.getItem("quran_chapter")) + threeDigits(localStorage.getItem("quran_verse")) + ".mp3";
         audio.load(); //call this to just preload the audio without playing
-        audio.play(); //call this to play the song right away
+        //audio.play(); //call this to play the song right away
+
+        var promise = audio.play();
+
+        if (promise !== undefined) {
+            promise.catch(error => {
+                console.log('autoplay error: ' + error);
+            });
+        }
+
     }
 
     function nextAudio() {
@@ -511,6 +544,7 @@
 
         updateAudio();
         preloadAudio();
+        updateQuranContent();
     }
 
 
@@ -529,7 +563,7 @@
 
         url = 'https://www.everyayah.com/data/' + localStorage.getItem("quran_reciter") + '/' + threeDigits(nextchapter) + threeDigits(nextverse) + '.mp3';
 
-        console.log('next media request (preload not working): ' + url);
+        //console.log('next media request (preload not working): ' + url);
 
     }
 
@@ -549,17 +583,23 @@
         $('translation').value = translation;
     }
 
+    function selectScript(script) {
+        $('script').value = script;
+    }
+
     function onchangeChapter() {
         localStorage.setItem("quran_chapter", $('chapter').value);
         updateVerse(localStorage.getItem("quran_chapter"));
         selectVerse(DEFAULT_VERSE);
         localStorage.setItem("quran_verse", DEFAULT_VERSE);
         updateAudio();
+        updateQuranContent();
     }
 
     function onchangeVerse() {
         localStorage.setItem("quran_verse", $('verse').value);
         updateAudio();
+        updateQuranContent();
     }
 
     function onchangeReciter() {
@@ -571,6 +611,13 @@
         localStorage.setItem("quran_translation", $('translation').value);
         // change text
     }
+
+    function onchangeScript() {
+        localStorage.setItem("quran_script", $('script').value);
+        updateQuranContent();
+    }
+
+    
 
 
 
@@ -597,11 +644,17 @@
     }
     selectReciter(localStorage.getItem("quran_reciter"));
 
+    if (!localStorage.quran_script) {
+      localStorage.setItem("quran_script", DEFAULT_SCRIPT);
+    }
+    selectScript(localStorage.getItem("quran_script"));
+
 
 
     // start first audio
     updateAudio();
     preloadAudio();
+    updateQuranContent();
 
 
 
