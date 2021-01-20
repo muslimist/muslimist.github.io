@@ -16,6 +16,10 @@
         "name": "Qibla",
         "url": "/qibla",
         "icons": [{ "src": "/assets/images/shortcuts.prayertimes.png", "sizes": "192x192" }]
+      },{
+        "name": "Quran",
+        "url": "/quran",
+        "icons": [{ "src": "/assets/images/shortcuts.prayertimes.png", "sizes": "192x192" }]
       }
     ],
     "icons": [
