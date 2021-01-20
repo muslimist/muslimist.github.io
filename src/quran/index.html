@@ -59,10 +59,12 @@ url: https://muslimist.com/quran
                 <h3>Audio</h3>
               </header>
               <div class="content">
+                <center>
                 <audio onended="nextAudio()" id="audio" controls autoplay>
                   <source id="audioSource" src=""></source>
                   Your browser does not support the audio format.
                 </audio>
+                </center>
               </div>
             </section>
             <br>
@@ -464,7 +466,7 @@ url: https://muslimist.com/quran
     function updateQuranContent() {
         fetch('/quran/data/'+localStorage.getItem("quran_script")+'.json')
           .then(response => response.json())
-          .then(quran => document.getElementById("qurancontent").innerHTML = "<h2>"+quran[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1].text)+"</h2>";
+          .then(quran => document.getElementById("qurancontent").innerHTML = "<h2 style='line-height: 2; letter-spacing: 0;'>"+quran[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1].text)+"</h2>";
     }
 
     function updateTranslationContent() {
