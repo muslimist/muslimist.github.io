@@ -453,15 +453,14 @@ url: https://muslimist.com/quran
     function updateTranslationContent() {
         fetch('/quran/data/'+localStorage.getItem("quran_translation")+'.json')
           .then(response => response.json())
-          .then(quran => document.getElementById("translationcontent").innerHTML = "<h2>"+quran[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1].text)+"</h2>";
+          .then(translation => document.getElementById("translationcontent").innerHTML = translation.quran.sura[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1]._text);
     }
 
     function updateAudio() {
         var audio = document.getElementById('audio');
         var source = document.getElementById('audioSource');
         source.src = "https://www.everyayah.com/data/" + localStorage.getItem("quran_reciter") + "/" + threeDigits(localStorage.getItem("quran_chapter")) + threeDigits(localStorage.getItem("quran_verse")) + ".mp3";
-        audio.load(); //call this to just preload the audio without playing
-        //audio.play(); //call this to play the song right away
+        audio.load();
 
         var promise = audio.play();
 
@@ -501,6 +500,7 @@ url: https://muslimist.com/quran
         updateAudio();
         preloadAudio();
         updateQuranContent();
+        updateTranslationContent();
     }
 
 
@@ -550,12 +550,14 @@ url: https://muslimist.com/quran
         localStorage.setItem("quran_verse", DEFAULT_VERSE);
         updateAudio();
         updateQuranContent();
+        updateTranslationContent();
     }
 
     function onchangeVerse() {
         localStorage.setItem("quran_verse", $('verse').value);
         updateAudio();
         updateQuranContent();
+        updateTranslationContent();
     }
 
     function onchangeReciter() {
@@ -565,7 +567,7 @@ url: https://muslimist.com/quran
 
     function onchangeTranslation() {
         localStorage.setItem("quran_translation", $('translation').value);
-        // change text
+        updateTranslationContent();
     }
 
     function onchangeScript() {
@@ -611,6 +613,7 @@ url: https://muslimist.com/quran
     updateAudio();
     preloadAudio();
     updateQuranContent();
+    updateTranslationContent();
 
 
 
