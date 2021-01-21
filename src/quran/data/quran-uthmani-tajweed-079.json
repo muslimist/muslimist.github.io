@@ -930,5 +930,31 @@
     ],
     "ayah": 45,
     "surah": 79
+  },
+  {
+    "annotations": [
+      {
+        "end": 7,
+        "rule": "ghunnah",
+        "start": 4
+      },
+      {
+        "end": 46,
+        "rule": "madd_munfasil",
+        "start": 44
+      },
+      {
+        "end": 48,
+        "rule": "silent",
+        "start": 46
+      },
+      {
+        "end": 77,
+        "rule": "madd_2",
+        "start": 76
+      }
+    ],
+    "ayah": 46,
+    "surah": 79
   }
 ]
