@@ -9,15 +9,15 @@
     "orientation": "any",
     "shortcuts": [
       {
-        "name": "Prayer Times",
-        "url": "/prayertimes",
+        "name": "times",
+        "url": "/times",
         "icons": [{ "src": "/assets/images/shortcuts.prayertimes.png", "sizes": "192x192" }]
       },{
-        "name": "Qibla",
+        "name": "qibla",
         "url": "/qibla",
         "icons": [{ "src": "/assets/images/shortcut_quran2.png", "sizes": "192x192" }]
       },{
-        "name": "Quran",
+        "name": "quran",
         "url": "/quran",
         "icons": [{ "src": "/assets/images/shortcut_quran.png", "sizes": "192x192" }]
       }

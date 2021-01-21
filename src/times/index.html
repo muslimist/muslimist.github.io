@@ -1,18 +1,18 @@
 ---
-title: muslimist | prayer times
+title: muslimist | times
 description: an ad-free, open source, non-spying collection of tools for muslims
-url: https://muslimist.com/prayertimes
+url: https://muslimist.com/times
 ---
 {% include header %}
 
 
 			<section class="banner style1 orient-left content-align-left image-position-right fullscreen onload-image-fade-in onload-content-fade-right">
 				<div class="content">
-					<h1>prayer times</h1>
+					<h1>times</h1>
 					<p class="major">calculate the prayer times for your area</p>
 				</div>
 				<div class="image">
-					<img src="/assets/images/prayertimes.header.webp" alt="" />
+					<img src="/assets/images/header_times.webp" alt="" />
 				</div>
 			</section>
 
@@ -30,7 +30,7 @@ url: https://muslimist.com/prayertimes
 						</section>
 						<section>
 							<header>
-								<h3>Settings</h3>
+								<h3>Options</h3>
 							</header>
 							<div class="content">
 								<form method="post" action="#">
@@ -197,44 +197,44 @@ url: https://muslimist.com/prayertimes
 			<script type="text/javascript" src="/assets/js/praytimes.js"></script>
 			<script type="text/javascript">
 
-				if (localStorage.prayertimes_latitude) {
-					$('latitude').value = localStorage.getItem("prayertimes_latitude");
+				if (localStorage.times_latitude) {
+					$('latitude').value = localStorage.getItem("times_latitude");
 				} else {
-					localStorage.setItem("prayertimes_latitude", $('latitude').value);
+					localStorage.setItem("times_latitude", $('latitude').value);
 				}
 
-				if (localStorage.prayertimes_longitude) {
-					$('longitude').value = localStorage.getItem("prayertimes_longitude");
+				if (localStorage.times_longitude) {
+					$('longitude').value = localStorage.getItem("times_longitude");
 				} else {
-					localStorage.setItem("prayertimes_longitude", $('longitude').value);
+					localStorage.setItem("times_longitude", $('longitude').value);
 				}
 
-				if (localStorage.prayertimes_timezone) {
-					$('timezone').value = localStorage.getItem("prayertimes_timezone");
+				if (localStorage.times_timezone) {
+					$('timezone').value = localStorage.getItem("times_timezone");
 				} else {
-					localStorage.setItem("prayertimes_timezone", $('timezone').value);
+					localStorage.setItem("times_timezone", $('timezone').value);
 				}
 
-				if (localStorage.prayertimes_daylightsavingtime) {
-					$('daylightsavingtime').value = localStorage.getItem("prayertimes_daylightsavingtime");
+				if (localStorage.times_daylightsavingtime) {
+					$('daylightsavingtime').value = localStorage.getItem("times_daylightsavingtime");
 				} else {
-					localStorage.setItem("prayertimes_daylightsavingtime", $('daylightsavingtime').value);
+					localStorage.setItem("times_daylightsavingtime", $('daylightsavingtime').value);
 				}
 
-				if (localStorage.prayertimes_method) {
-					$('method').value = localStorage.getItem("prayertimes_method");
+				if (localStorage.times_method) {
+					$('method').value = localStorage.getItem("times_method");
 				} else {
-					localStorage.setItem("prayertimes_method", $('method').value);
+					localStorage.setItem("times_method", $('method').value);
 				}
 
-				if (localStorage.prayertimes_format) {
-					$('format').value = localStorage.getItem("prayertimes_format");
+				if (localStorage.times_format) {
+					$('format').value = localStorage.getItem("times_format");
 				} else {
-					localStorage.setItem("prayertimes_format", $('format').value);
+					localStorage.setItem("times_format", $('format').value);
 				}
 
-				if (localStorage.prayertimes_list) {
-					var list = JSON.parse(localStorage.getItem("prayertimes_list"));
+				if (localStorage.times_list) {
+					var list = JSON.parse(localStorage.getItem("times_list"));
 
 					for (i = 0; i < list.length; i++) {
 						$(list[i].toLowerCase()).checked = true;
@@ -256,35 +256,35 @@ url: https://muslimist.com/prayertimes
 				function update() {
 
 
-					if (localStorage.prayertimes_latitude != $('latitude').value) {
-						localStorage.setItem("prayertimes_latitude", $('latitude').value);
+					if (localStorage.times_latitude != $('latitude').value) {
+						localStorage.setItem("times_latitude", $('latitude').value);
 					}
-					var latitude = localStorage.getItem("prayertimes_latitude");
+					var latitude = localStorage.getItem("times_latitude");
 
-					if (localStorage.prayertimes_longitude != $('longitude').value) {
-						localStorage.setItem("prayertimes_longitude", $('longitude').value);
+					if (localStorage.times_longitude != $('longitude').value) {
+						localStorage.setItem("times_longitude", $('longitude').value);
 					}
-					var longitude = localStorage.getItem("prayertimes_longitude");
+					var longitude = localStorage.getItem("times_longitude");
 
-					if (localStorage.prayertimes_timezone != $('timezone').value) {
-						localStorage.setItem("prayertimes_timezone", $('timezone').value);
+					if (localStorage.times_timezone != $('timezone').value) {
+						localStorage.setItem("times_timezone", $('timezone').value);
 					}
-					var timezone = localStorage.getItem("prayertimes_timezone");
+					var timezone = localStorage.getItem("times_timezone");
 
-					if (localStorage.prayertimes_daylightsavingtime != $('daylightsavingtime').value) {
-						localStorage.setItem("prayertimes_daylightsavingtime", $('daylightsavingtime').value);
+					if (localStorage.times_daylightsavingtime != $('daylightsavingtime').value) {
+						localStorage.setItem("times_daylightsavingtime", $('daylightsavingtime').value);
 					}
-					var daylightsavingtime = localStorage.getItem("prayertimes_daylightsavingtime");
+					var daylightsavingtime = localStorage.getItem("times_daylightsavingtime");
 
-					if (localStorage.prayertimes_method != $('method').value) {
-						localStorage.setItem("prayertimes_method", $('method').value);
+					if (localStorage.times_method != $('method').value) {
+						localStorage.setItem("times_method", $('method').value);
 					}
-					var method = localStorage.getItem("prayertimes_method");
+					var method = localStorage.getItem("times_method");
 
-					if (localStorage.prayertimes_format != $('format').value) {
-						localStorage.setItem("prayertimes_format", $('format').value);
+					if (localStorage.times_format != $('format').value) {
+						localStorage.setItem("times_format", $('format').value);
 					}
-					var format = localStorage.getItem("prayertimes_format");
+					var format = localStorage.getItem("times_format");
 
 					var list = [];
 					if ($('tahajjud').checked == true) { list.push("Tahajjud"); }
@@ -297,12 +297,12 @@ url: https://muslimist.com/prayertimes
 					if ($('maghrib').checked == true) { list.push("Maghrib"); }
 					if ($('isha').checked == true) { list.push("Isha"); }
 					if ($('midnight').checked == true) { list.push("Midnight"); }
-					localStorage.setItem("prayertimes_list", JSON.stringify(list));
+					localStorage.setItem("times_list", JSON.stringify(list));
 					
 					var date = new Date(); // today
 					prayTimes.setMethod(method);
 					var times = prayTimes.getTimes(date, [latitude, longitude], timezone, daylightsavingtime, format);
-					var list = JSON.parse(localStorage.getItem("prayertimes_list"));
+					var list = JSON.parse(localStorage.getItem("times_list"));
 
 					var html = '<table>';
 					html += '<tbody>';
