@@ -60,9 +60,10 @@
 }
 @font-face {
     font-family: "me_quran";
-    src: url('/assets/fonts/me_quran.eot');
+    /*src: url('/assets/fonts/me_quran.eot');
     src: url('/assets/fonts/me_quran.eot') format('embedded-opentype'),
-    url('/assets/fonts/me_quran.ttf') format('truetype');
+    url('/assets/fonts/me_quran.ttf') format('truetype');*/
+    src: url('/quran/UthmanTN1 Ver10.woff2');
 }
 .idghaam_shafawi {
   color: rgba(190, 0, 0, 1);
@@ -162,7 +163,7 @@
             </section>
             <br>
 
-            <section>
+            <section id="translationsection">
               <header>
                 <h3>Translation</h3>
               </header>
@@ -401,6 +402,7 @@
                     <div class="field">
                       <label for="translation">Translation</label>
                       <select name="translation" id="translation" onchange="onchangeTranslation()">
+                        <option value="none">None</option>
                         <option value="sq.nahi">Albanian - Hasan Efendi Nahi</option>
                         <option value="sq.mehdiu">Albanian - Feti Mehdiu</option>
                         <option value="sq.ahmeti">Albanian - Sherif Ahmeti</option>
@@ -592,9 +594,14 @@
     }
 
     function updateTranslationContent() {
-        fetch('/quran/data/'+localStorage.getItem("quran_translation")+'.json')
-          .then(response => response.json())
-          .then(translation => document.getElementById("translationcontent").innerHTML = translation.quran.sura[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1]._text);
+        if (localStorage.getItem("quran_translation") == "none") {
+            document.getElementById("translationsection").style.display = "none";
+        } else {
+            fetch('/quran/data/'+localStorage.getItem("quran_translation")+'.json')
+              .then(response => response.json())
+              .then(translation => document.getElementById("translationcontent").innerHTML = translation.quran.sura[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1]._text);
+            document.getElementById("translationsection").style.display = "flex";
+        }
     }
 
     function updateAudio() {
@@ -751,10 +758,14 @@
               currentrule++;
           }
           if (i == start[currentrule]) {
-              output += "<span class='" + rule[currentrule] + "'>" + input.charAt(i);
-          } else {
-              output += input.charAt(i);
+              output += "<span class='" + rule[currentrule] + "'>";
           }
+          // somewhat fix madd tatweel issue
+          if (input.charAt(i).charCodeAt(0) == "1648") {
+              output += '\u0640';
+          }
+          output += input.charAt(i);
+          
       }
 
       document.getElementById("qurancontent").innerHTML = "<h2 style='line-height: 2; letter-spacing: 0;'>" + output + "</h2>";
