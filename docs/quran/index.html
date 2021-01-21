@@ -60,10 +60,10 @@
 }
 @font-face {
     font-family: "me_quran";
-    /*src: url('/assets/fonts/me_quran.eot');
+    src: url('/assets/fonts/me_quran.eot');
     src: url('/assets/fonts/me_quran.eot') format('embedded-opentype'),
-    url('/assets/fonts/me_quran.ttf') format('truetype');*/
-    src: url('/quran/UthmanTN1 Ver10.woff2');
+    url('/assets/fonts/me_quran.ttf') format('truetype');
+    /*src: url('/quran/UthmanTN1 Ver10.woff2');*/
 }
 .idghaam_shafawi {
   color: rgba(190, 0, 0, 1);
@@ -572,12 +572,12 @@
     }
 
     function updateVerse(chapter) {
-        document.getElementById('verse').options.length = 0;
+        $('verse').options.length = 0;
         for (var i = 1; i<=NUMBER_OF_VERSES[chapter-1]; i++) {
             var opt = document.createElement('option');
             opt.value = i;
             opt.innerHTML = i;
-            document.getElementById('verse').appendChild(opt);
+            $('verse').appendChild(opt);
         }
     }
 
@@ -589,24 +589,24 @@
         } else {
             fetch('/quran/data/'+localStorage.getItem("quran_script")+'.json')
               .then(response => response.json())
-              .then(quran => document.getElementById("qurancontent").innerHTML = "<h2 style='line-height: 2; letter-spacing: 0;'>"+quran[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1].text)+"</h2>";
+              .then(quran => $("qurancontent").innerHTML = "<h2 style='line-height: 2; letter-spacing: 0;'>"+quran[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1].text)+"</h2>";
         }
     }
 
     function updateTranslationContent() {
         if (localStorage.getItem("quran_translation") == "none") {
-            document.getElementById("translationsection").style.display = "none";
+            $("translationsection").style.display = "none";
         } else {
             fetch('/quran/data/'+localStorage.getItem("quran_translation")+'.json')
               .then(response => response.json())
-              .then(translation => document.getElementById("translationcontent").innerHTML = translation.quran.sura[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1]._text);
-            document.getElementById("translationsection").style.display = "flex";
+              .then(translation => $("translationcontent").innerHTML = translation.quran.sura[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1]._text);
+            $("translationsection").style.display = "flex";
         }
     }
 
     function updateAudio() {
-        var audio = document.getElementById('audio');
-        var source = document.getElementById('audioSource');
+        var audio = $('audio');
+        var source = $('audioSource');
         source.src = "https://www.everyayah.com/data/" + localStorage.getItem("quran_reciter") + "/" + threeDigits(localStorage.getItem("quran_chapter")) + threeDigits(localStorage.getItem("quran_verse")) + ".mp3";
         audio.load();
 
@@ -768,7 +768,7 @@
           
       }
 
-      document.getElementById("qurancontent").innerHTML = "<h2 style='line-height: 2; letter-spacing: 0;'>" + output + "</h2>";
+      $("qurancontent").innerHTML = "<h2 style='line-height: 2; letter-spacing: 0;'>" + output + "</h2>";
     }
 
     
