@@ -1,0 +1,138 @@
+[
+  {
+    "annotations": [
+      {
+        "end": 48,
+        "rule": "madd_munfasil",
+        "start": 46
+      },
+      {
+        "end": 58,
+        "rule": "hamzat_wasl",
+        "start": 57
+      },
+      {
+        "end": 63,
+        "rule": "madd_2",
+        "start": 62
+      },
+      {
+        "end": 68,
+        "rule": "madd_246",
+        "start": 67
+      }
+    ],
+    "ayah": 1,
+    "surah": 109
+  },
+  {
+    "annotations": [
+      {
+        "end": 4,
+        "rule": "madd_munfasil",
+        "start": 2
+      },
+      {
+        "end": 27,
+        "rule": "madd_246",
+        "start": 26
+      }
+    ],
+    "ayah": 2,
+    "surah": 109
+  },
+  {
+    "annotations": [
+      {
+        "end": 6,
+        "rule": "madd_munfasil",
+        "start": 4
+      },
+      {
+        "end": 12,
+        "rule": "ikhfa",
+        "start": 9
+      },
+      {
+        "end": 18,
+        "rule": "madd_2",
+        "start": 17
+      },
+      {
+        "end": 30,
+        "rule": "madd_munfasil",
+        "start": 28
+      },
+      {
+        "end": 38,
+        "rule": "qalqalah",
+        "start": 37
+      }
+    ],
+    "ayah": 3,
+    "surah": 109
+  },
+  {
+    "annotations": [
+      {
+        "end": 6,
+        "rule": "madd_munfasil",
+        "start": 4
+      },
+      {
+        "end": 25,
+        "rule": "idghaam_ghunnah",
+        "start": 20
+      },
+      {
+        "end": 32,
+        "rule": "idghaam_mutajanisayn",
+        "start": 31
+      }
+    ],
+    "ayah": 4,
+    "surah": 109
+  },
+  {
+    "annotations": [
+      {
+        "end": 6,
+        "rule": "madd_munfasil",
+        "start": 4
+      },
+      {
+        "end": 12,
+        "rule": "ikhfa",
+        "start": 9
+      },
+      {
+        "end": 18,
+        "rule": "madd_2",
+        "start": 17
+      },
+      {
+        "end": 30,
+        "rule": "madd_munfasil",
+        "start": 28
+      },
+      {
+        "end": 38,
+        "rule": "qalqalah",
+        "start": 37
+      }
+    ],
+    "ayah": 5,
+    "surah": 109
+  },
+  {
+    "annotations": [
+      {
+        "end": 27,
+        "rule": "madd_246",
+        "start": 26
+      }
+    ],
+    "ayah": 6,
+    "surah": 109
+  }
+]

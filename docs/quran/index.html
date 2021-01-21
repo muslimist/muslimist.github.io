@@ -64,6 +64,78 @@
     src: url('/assets/fonts/me_quran.eot') format('embedded-opentype'),
     url('/assets/fonts/me_quran.ttf') format('truetype');
 }
+.idghaam_shafawi {
+  color: rgba(190, 0, 0, 1);
+}
+
+.idghaam_mutajaanisain {
+  color: rgba(190, 0, 0, 1);
+}
+
+.idghaam_mutaqaaribain {
+  color: rgba(190, 0, 0, 1);
+}
+
+.idghaam_ghunnah {
+  color: rgba(190, 0, 0, 1);
+}
+
+.idghaam_no_ghunnah {
+  color: rgba(150, 60, 60, 1);
+}
+
+.ghunnah {
+  color: rgba(0, 180, 0, 1);
+}
+
+.qalqalah {
+  color: rgba(8, 80, 170, 1);
+}
+
+.iqlab {
+  color: rgba(140, 50, 170, 1);
+}
+
+.ikhfa {
+  color: rgba(50, 180, 160, 1);
+}
+
+.ikhfa_shafawi {
+  color: rgba(50, 180, 160, 1);
+}
+
+/* Ikhfa mim saakin */
+.madd_6 {
+  color: rgba(200, 0, 0, 1);
+}
+
+.madd_246 {
+  color: rgba(255, 180, 60, 1);
+}
+
+.madd_2 {
+  color: rgba(50, 180, 160, 1);
+}
+
+.madd_muttasil {
+  color: rgba(255, 0, 0, 1);
+}
+
+.madd_munfasil {
+  color: rgba(0, 221, 147, 1);
+}
+
+.hamzat_wasl {
+  color: rgba(150, 252, 0, 1);
+}
+
+.lam_shamsiyyah {
+  color: rgba(175, 0, 221, 1);
+}
+
+.silent {
+  color: rgb(180, 180, 180);
+}
 </style>
 
 
@@ -453,6 +525,7 @@
                         <option value="quran-simple-enhanced">Simple Enhanced</option>
                         <option value="quran-simple-min">Simple Minimal</option>
                         <option value="quran-simple-clean">Simple Clean</option>
+                        <option value="quran-uthmani-tajweed-min">Uthmani Tajweed</option>
                       </select>
                     </div>
 
@@ -507,9 +580,15 @@
     }
 
     function updateQuranContent() {
-        fetch('/quran/data/'+localStorage.getItem("quran_script")+'.json')
-          .then(response => response.json())
-          .then(quran => document.getElementById("qurancontent").innerHTML = "<h2 style='line-height: 2; letter-spacing: 0;'>"+quran[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1].text)+"</h2>";
+        if (localStorage.getItem("quran_script") == "quran-uthmani-tajweed-min") {
+            fetch('/quran/data/quran-uthmani-tajweed-'+threeDigits(localStorage.getItem("quran_chapter"))+'.json')
+              .then(response => response.json())
+              .then(quran => tajweeds(quran[localStorage.getItem("quran_verse")-1].annotations));
+        } else {
+            fetch('/quran/data/'+localStorage.getItem("quran_script")+'.json')
+              .then(response => response.json())
+              .then(quran => document.getElementById("qurancontent").innerHTML = "<h2 style='line-height: 2; letter-spacing: 0;'>"+quran[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1].text)+"</h2>";
+        }
     }
 
     function updateTranslationContent() {
@@ -635,6 +714,50 @@
     function onchangeScript() {
         localStorage.setItem("quran_script", $('script').value);
         updateQuranContent();
+    }
+
+
+
+
+    function tajweeds(tajweeds) {
+
+      fetch('/quran/data/quran-uthmani.json')
+          .then(response => response.json())
+          .then(quran => tajweeds2(tajweeds,quran[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1].text));
+
+    }
+
+    function tajweeds2(tajweeds,quran) {
+
+      input = quran;
+      output = "";
+
+      start = [];
+      rule = [];
+      end = [];
+
+      currentrule = 0;
+
+      for (tajweed of tajweeds) 
+      {
+          start.push(tajweed.start);
+          rule.push(tajweed.rule);
+          end.push(tajweed.end);
+      }
+
+      for (var i = 0; i < input.length; i++) {
+          if (i == end[currentrule]) {
+              output += "</span>";
+              currentrule++;
+          }
+          if (i == start[currentrule]) {
+              output += "<span class='" + rule[currentrule] + "'>" + input.charAt(i);
+          } else {
+              output += input.charAt(i);
+          }
+      }
+
+      document.getElementById("qurancontent").innerHTML = "<h2 style='line-height: 2; letter-spacing: 0;'>" + output + "</h2>";
     }
 
     

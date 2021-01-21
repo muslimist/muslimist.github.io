@@ -1,0 +1,76 @@
+[
+  {
+    "annotations": [
+      {
+        "end": 50,
+        "rule": "hamzat_wasl",
+        "start": 49
+      },
+      {
+        "end": 62,
+        "rule": "qalqalah",
+        "start": 61
+      }
+    ],
+    "ayah": 1,
+    "surah": 112
+  },
+  {
+    "annotations": [
+      {
+        "end": 9,
+        "rule": "hamzat_wasl",
+        "start": 8
+      },
+      {
+        "end": 10,
+        "rule": "lam_shamsiyyah",
+        "start": 9
+      },
+      {
+        "end": 16,
+        "rule": "qalqalah",
+        "start": 15
+      }
+    ],
+    "ayah": 2,
+    "surah": 112
+  },
+  {
+    "annotations": [
+      {
+        "end": 11,
+        "rule": "qalqalah",
+        "start": 9
+      },
+      {
+        "end": 26,
+        "rule": "qalqalah",
+        "start": 24
+      }
+    ],
+    "ayah": 3,
+    "surah": 112
+  },
+  {
+    "annotations": [
+      {
+        "end": 16,
+        "rule": "idghaam_no_ghunnah",
+        "start": 11
+      },
+      {
+        "end": 19,
+        "rule": "madd_2",
+        "start": 18
+      },
+      {
+        "end": 33,
+        "rule": "qalqalah",
+        "start": 32
+      }
+    ],
+    "ayah": 4,
+    "surah": 112
+  }
+]

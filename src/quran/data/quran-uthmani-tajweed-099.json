@@ -1,0 +1,145 @@
+[
+  {
+    "annotations": [
+      {
+        "end": 57,
+        "rule": "hamzat_wasl",
+        "start": 56
+      }
+    ],
+    "ayah": 1,
+    "surah": 99
+  },
+  {
+    "annotations": [
+      {
+        "end": 14,
+        "rule": "hamzat_wasl",
+        "start": 13
+      }
+    ],
+    "ayah": 2,
+    "surah": 99
+  },
+  {
+    "annotations": [
+      {
+        "end": 9,
+        "rule": "hamzat_wasl",
+        "start": 8
+      },
+      {
+        "end": 16,
+        "rule": "ikhfa",
+        "start": 13
+      },
+      {
+        "end": 17,
+        "rule": "madd_2",
+        "start": 16
+      }
+    ],
+    "ayah": 3,
+    "surah": 99
+  },
+  {
+    "annotations": [
+      {
+        "end": 13,
+        "rule": "ikhfa",
+        "start": 9
+      }
+    ],
+    "ayah": 4,
+    "surah": 99
+  },
+  {
+    "annotations": [
+      {
+        "end": 7,
+        "rule": "ghunnah",
+        "start": 4
+      }
+    ],
+    "ayah": 5,
+    "surah": 99
+  },
+  {
+    "annotations": [
+      {
+        "end": 13,
+        "rule": "idghaam_ghunnah",
+        "start": 9
+      },
+      {
+        "end": 21,
+        "rule": "hamzat_wasl",
+        "start": 20
+      },
+      {
+        "end": 22,
+        "rule": "lam_shamsiyyah",
+        "start": 21
+      },
+      {
+        "end": 25,
+        "rule": "ghunnah",
+        "start": 22
+      },
+      {
+        "end": 43,
+        "rule": "idghaam_no_ghunnah",
+        "start": 37
+      },
+      {
+        "end": 51,
+        "rule": "silent",
+        "start": 49
+      },
+      {
+        "end": 59,
+        "rule": "madd_2",
+        "start": 58
+      }
+    ],
+    "ayah": 6,
+    "surah": 99
+  },
+  {
+    "annotations": [
+      {
+        "end": 8,
+        "rule": "idghaam_ghunnah",
+        "start": 4
+      },
+      {
+        "end": 43,
+        "rule": "idghaam_ghunnah",
+        "start": 38
+      }
+    ],
+    "ayah": 7,
+    "surah": 99
+  },
+  {
+    "annotations": [
+      {
+        "end": 8,
+        "rule": "idghaam_ghunnah",
+        "start": 4
+      },
+      {
+        "end": 35,
+        "rule": "ikhfa",
+        "start": 31
+      },
+      {
+        "end": 42,
+        "rule": "idghaam_ghunnah",
+        "start": 37
+      }
+    ],
+    "ayah": 8,
+    "surah": 99
+  }
+]
