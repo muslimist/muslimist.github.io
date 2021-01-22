@@ -357,9 +357,15 @@ url: https://muslimist.com/times
 				}
 
 				function reset() {
-					localStorage.clear();
-					location.reload();
-				}
+			        localStorage.removeItem("times_format");
+			        localStorage.removeItem("times_method");
+			        localStorage.removeItem("times_daylightsavingtime");
+			        localStorage.removeItem("times_list");
+			        localStorage.removeItem("times_timezone");
+			        localStorage.removeItem("times_longitude");
+			        localStorage.removeItem("times_latitude");
+			        location.reload();
+			    }
 
 			</script>
 
