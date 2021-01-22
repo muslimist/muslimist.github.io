@@ -11,9 +11,9 @@
 		<meta property="og:description" content="an ad-free, open source, non-spying collection of tools for muslims" />
 		<meta property="og:url" content="https://muslimist.com" />
 		<meta property="og:image" content="/assets/icons/apple-splash-1136-640.jpg" />
-		<link rel="preload" href="https://muslimist.github.io.test/assets/fonts/6xKydSBYKcSV-LCoeQqfX1RYOo3ik4zwlxdu3cOWxw.woff2" as="font" crossorigin="anonymous">
-		<link rel="preload" href="https://muslimist.github.io.test/assets/fonts/fa-solid-900.woff2" as="font" crossorigin="anonymous">
-		<link rel="preload" href="https://muslimist.github.io.test/assets/fonts/6xK3dSBYKcSV-LCoeQqfX1RYOo3qOK7lujVj9w.woff2" as="font" crossorigin="anonymous">
+		<link rel="preload" href="/assets/fonts/6xKydSBYKcSV-LCoeQqfX1RYOo3ik4zwlxdu3cOWxw.woff2" as="font" crossorigin="anonymous">
+		<link rel="preload" href="/assets/fonts/fa-solid-900.woff2" as="font" crossorigin="anonymous">
+		<link rel="preload" href="/assets/fonts/6xK3dSBYKcSV-LCoeQqfX1RYOo3qOK7lujVj9w.woff2" as="font" crossorigin="anonymous">
 		<link rel="stylesheet" href="/assets/css/app.min.css" />
 		<link rel="manifest" href="/manifest.webmanifest">
 		<link rel="icon" type="image/png" sizes="196x196" href="/assets/icons/favicon-196.png">
@@ -224,7 +224,6 @@ z-index: 1000;
 					<p>calculate the prayer times for your area</p>
 				</div>
 				<div class="image">
-					<img src="/assets/images/prayertimes.webp" alt="" />
 				</div>
 			</section>
 
@@ -239,7 +238,6 @@ z-index: 1000;
 					<p>find the qibla for your current position</p>
 				</div>
 				<div class="image">
-					<img src="/assets/images/qibla.webp" alt="" />
 				</div>
 			</section>
 
@@ -254,7 +252,6 @@ z-index: 1000;
 					<p>read and listen till your heart is content</p>
 				</div>
 				<div class="image">
-					<img src="/assets/images/quran.webp" alt="" />
 				</div>
 			</section>
 
@@ -294,22 +291,6 @@ z-index: 1000;
 
 		</div>
 		<script src="/assets/js/app.min.js"></script>
-		<script>
-		let deferredPrompt;
-		window.addEventListener('beforeinstallprompt', (e) => {
-		    e.preventDefault();
-		    deferredPrompt = e;
-		    document.getElementById("installbutton").style.visibility = "visible";
-		});
 
-		function installApp() {
-		    deferredPrompt.prompt();
-		    deferredPrompt.userChoice.then((choiceResult) => {
-		        if (choiceResult.outcome === 'accepted') {
-		            document.getElementById("installbutton").style.visibility = "hidden";
-		        }
-		    });
-		}
-		</script>
 	</body>
 </html>

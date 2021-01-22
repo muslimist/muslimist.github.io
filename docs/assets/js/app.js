@@ -19,7 +19,7 @@ if('serviceWorker' in navigator){
           if (reg.waiting) {
           	console.log('restart to complete update (previously installed)');
           	alert('Please close app/tab and reopen to complete update');
-    	  }
+    	    }
         }
 
         
