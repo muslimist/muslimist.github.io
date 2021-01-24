@@ -89,9 +89,11 @@ self.addEventListener('message', evt => {
 
 
 self.addEventListener('notificationclick', function(event) {
+
     event.notification.close();
-    if (event.action === 'get') {
-      console.log('eyeyye!');
+    if (event.action === 'stopathan') {
+      const clickedNotification = event.notification;
+      clickedNotification.close();
     } else {
       console.log('nsnjsnd!');
     }
