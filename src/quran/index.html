@@ -640,7 +640,7 @@ url: https://muslimist.com/quran
                       <label for="script">Quran Script</label>
                       <select name="script" id="script" onchange="onchangeScript()">
                         <option value="quran-uthmani">Uthmani</option>
-                        <option value="quran-uthmani-tajweed-min">Uthmani Tajweed</option>
+                        <option value="quran-uthmani-tajweed">Uthmani Tajweed</option>
                         <option value="quran-uthmani-min">Uthmani Minimal</option>
                         <option value="quran-simple">Simple</option>
                         <option value="quran-simple-enhanced">Simple Enhanced</option>
@@ -717,7 +717,7 @@ url: https://muslimist.com/quran
     const DEFAULT_VERSE = 1;
     const DEFAULT_RECITER = 'Alafasy_64kbps';
     const DEFAULT_TRANSLATION = 'en.pickthall';
-    const DEFAULT_SCRIPT = 'quran-uthmani';
+    const DEFAULT_SCRIPT = 'quran-uthmani-tajweed';
     const DEFAULT_QURANFONT = 'me_quran';
     const DEFAULT_QURANSIZE = 2.0;
     const DEFAULT_TRANSLATIONSIZE = 1.5;
@@ -746,7 +746,7 @@ url: https://muslimist.com/quran
     }
 
     function updateQuranContent() {
-        if (localStorage.getItem("quran_script") == "quran-uthmani-tajweed-min") {
+        if (localStorage.getItem("quran_script") == "quran-uthmani-tajweed") {
             fetch('/quran/data/quran-uthmani-tajweed-'+threeDigits(localStorage.getItem("quran_chapter"))+'.json')
               .then(response => response.json())
               .then(quran => tajweeds(quran[localStorage.getItem("quran_verse")-1].annotations));
