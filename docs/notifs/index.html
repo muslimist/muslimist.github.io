@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Notification Triggers Demo</title>
+    <meta charset="utf-8">    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+      if (location.protocol === 'http:') {
+        location.protocol = 'https:';
+      }
+    </script>
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="/notifs/style.css">
+    
+    <!-- docs.test -->
+    <meta http-equiv="origin-trial" content="AiC2DXE8WxmMvV1cgF58wKWpyfNDF/tU2o1pjEq99XjKeX1kLW+HG3oj+h9febShV16SgTfHLR1svlejbtGV3wMAAABXeyJvcmlnaW4iOiJodHRwczovL2RvY3MudGVzdDo0NDMiLCJmZWF0dXJlIjoiTm90aWZpY2F0aW9uVHJpZ2dlcnMiLCJleHBpcnkiOjE2MTQxMjQ3OTl9">
+
+    <!-- muslimist.com -->
+    <meta http-equiv="origin-trial" content="AmBaifomR/ypgRYhip0CPHRXG6CdCDHCyeqH331SBUamSOmabWsXPpKhJQchUfhTJEG8lnSnWmUuZNRrfN3KrwUAAABbeyJvcmlnaW4iOiJodHRwczovL211c2xpbWlzdC5jb206NDQzIiwiZmVhdHVyZSI6Ik5vdGlmaWNhdGlvblRyaWdnZXJzIiwiZXhwaXJ5IjoxNjE0MTI0Nzk5fQ==">
+        
+    <!-- import the webpage's javascript file -->
+    <script src="/notifs/script.js" defer></script>
+    
+    
+  </head>  
+  <body>
+    <h1>Notification Triggers</h1>
+    <h2>Schedule a notification in the future</h2> 
+    <form>
+      <label>
+        Schedule a notification
+        <input type="text" pattern="\d+" value="2" minlength="1" maxlength="3">
+        seconds from now.
+      </label>
+      <input type="submit" value="Schedule Notification">
+    </form>
+  </body>
+</html>

@@ -86,3 +86,14 @@ self.addEventListener('message', evt => {
   }
 });
 
+
+
+self.addEventListener('notificationclick', function(event) {
+    event.notification.close();
+    if (event.action === 'get') {
+      console.log('eyeyye!');
+    } else {
+      console.log('nsnjsnd!');
+    }
+  }, false);
+

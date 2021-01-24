@@ -1,0 +1,43 @@
+body {
+  font-family: "Helvetica Neue", helvetica, arial, sans-serif;
+  font-size: 100%;
+  margin: 2em;
+}
+
+h1 {
+  color: darkblue;
+}
+
+h2 {
+  color: maroon;
+}
+
+form {
+  margin: 1rem 0;
+}
+
+input[type="text"] {
+  width: 2rem;
+}
+
+input {
+  font: inherit;
+}
+
+table {
+  width: 100%;
+  max-width: 40rem;
+}
+
+td, th {
+  text-align: left;
+  border: solid 1px #eee;
+}
+
+tr:nth-child(even) {
+  background-color: #eee;
+}
+
+.passed {
+  text-decoration: line-through;;
+}
