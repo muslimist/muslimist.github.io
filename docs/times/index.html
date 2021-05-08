@@ -179,6 +179,13 @@
 											</select>
 										</div>
 										<div class="field">
+											<label for="precision">Time Precision</label>
+											<select name="precision" id="precision" onchange="update()">
+												<option value="show" selected="selected">Show Seconds</option>
+												<option value="hide">Hide Seconds</option>
+											</select>
+										</div>
+										<div class="field">
 											<label style="margin: 0 0 0 0;">View Times</label>
 										</div>
 										<div class="field third">
@@ -277,6 +284,12 @@
 					localStorage.setItem("times_format", $('format').value);
 				}
 
+				if (localStorage.times_precision) {
+					$('precision').value = localStorage.getItem("times_precision");
+				} else {
+					localStorage.setItem("times_precision", $('precision').value);
+				}
+
 				if (localStorage.times_list) {
 					var list = JSON.parse(localStorage.getItem("times_list"));
 
@@ -330,6 +343,11 @@
 					}
 					var format = localStorage.getItem("times_format");
 
+					if (localStorage.times_precision != $('precision').value) {
+						localStorage.setItem("times_precision", $('precision').value);
+					}
+					var precision = localStorage.getItem("times_precision");
+
 					var list = [];
 					if ($('tahajjud').checked == true) { list.push("Tahajjud"); }
 					if ($('imsak').checked == true) { list.push("Imsak"); }
@@ -345,7 +363,7 @@
 					
 					var date = new Date(); // today
 					prayTimes.setMethod(method);
-					var times = prayTimes.getTimes(date, [latitude, longitude], timezone, daylightsavingtime, format);
+					var times = prayTimes.getTimes(date, [latitude, longitude], timezone, daylightsavingtime, format, precision);
 					var list = JSON.parse(localStorage.getItem("times_list"));
 
 					var html = '<table>';
@@ -402,6 +420,7 @@
 
 				function reset() {
 			        localStorage.removeItem("times_format");
+			        localStorage.removeItem("times_precision");
 			        localStorage.removeItem("times_method");
 			        localStorage.removeItem("times_daylightsavingtime");
 			        localStorage.removeItem("times_list");

@@ -204,6 +204,7 @@ function PrayTimes(method) {
 	timeFormat = '24h',
 	timeSuffixes = ['am', 'pm'],
 	invalidTime =  '-----',
+	timePrecision = 'show',
 
 	numIterations = 1,
 	offset = {},
@@ -280,11 +281,12 @@ function PrayTimes(method) {
 
 
 	// return prayer times for a given date
-	getTimes: function(date, coords, timezone, dst, format) {
+	getTimes: function(date, coords, timezone, dst, format, precision) {
 		lat = 1* coords[0];
 		lng = 1* coords[1]; 
 		elv = coords[2] ? 1* coords[2] : 0;
 		timeFormat = format || timeFormat;
+		timePrecision = precision || timePrecision;
 		if (date.constructor === Date)
 			date = [date.getFullYear(), date.getMonth()+ 1, date.getDate()];
 		if (typeof(timezone) == 'undefined' || timezone == 'auto')
@@ -305,12 +307,22 @@ function PrayTimes(method) {
 		if (format == 'Float') return time;
 		suffixes = suffixes || timeSuffixes;
 
-		time = DMath.fixHour(time+ 0.5/ 60);  // add 0.5 minutes to round
+		time = DMath.fixHour(time + 0.0 / 60);  // don't add 0.5 minutes to round
+
 		var hours = Math.floor(time); 
-		var minutes = Math.floor((time- hours)* 60);
+		var minutes = Math.floor((time - hours)* 60);
+		var seconds = Math.floor((((time - hours)* 60) - minutes) * 60);
+		console.log(time + " - " + hours + ":" + minutes + ":" + seconds);
+
+
 		var suffix = (format == '12h') ? suffixes[hours < 12 ? 0 : 1] : '';
 		var hour = (format == '24h') ? this.twoDigitsFormat(hours) : ((hours+ 12 -1)% 12+ 1);
-		return hour+ ':'+ this.twoDigitsFormat(minutes)+ (suffix ? ' '+ suffix : '');
+
+		if (timePrecision == 'show') {
+			return hour+ ':' + this.twoDigitsFormat(minutes) + ':' + this.twoDigitsFormat(seconds) + (suffix ? ' '+ suffix : '');
+		} else {
+			return hour+ ':' + this.twoDigitsFormat(minutes) + (suffix ? ' '+ suffix : '');
+		}
 	},
 
 
