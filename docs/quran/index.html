@@ -346,7 +346,7 @@
                   <div class="fields">
 
 
-                    <div class="field third">
+                    <div class="field half">
                       <label for="chapter">Chapter</label>
                       <select name="chapter" id="chapter" onchange="onchangeChapter()">
                         <option value="1">1: Al-Faatiha</option>
@@ -465,7 +465,7 @@
                         <option value="114">114: An-Naas</option>
                       </select>
                     </div>
-                    <div class="field third">
+                    <div class="field half">
                       <label for="verse">Verse</label>
                       <select name="verse" id="verse" onchange="onchangeVerse()">
                       </select>
@@ -549,6 +549,26 @@
                         <option value="translations/Makarem_Kabiri_16Kbps">Persian - Makarem Kabiri - 16Kbps</option>
                         <option value="translations/urdu_farhat_hashmi">Urdu - Farhat Hashmi</option>
                         <option value="translations/urdu_shamshad_ali_khan_46kbps">Urdu - Shamshad Ali Khan 46kbps</option>
+                      </select>
+                    </div>
+                    <div class="field third">
+                      <label for="quranspeed">Playback Speed</label>
+                      <select name="quranspeed" id="quranspeed" onchange="onchangeQuranSpeed()">
+                        <option value="0.4">Slowest</option>
+                        <option value="0.6">Slower</option>
+                        <option value="0.8">Slow</option>
+                        <option value="1">Normal</option>
+                        <option value="1.2">Fast</option>
+                        <option value="1.4">Faster</option>
+                        <option value="1.6">Fastest</option>
+                      </select>
+                    </div>
+                    <div class="field third">
+                      <label for="quranrepeat">Ayah Repeat</label>
+                      <select name="quranrepeat" id="quranrepeat" onchange="onchangeQuranRepeat()">
+                        <option value="1">1 Time</option>
+                        <option value="2">2 Times</option>
+                        <option value="3">3 Times</option>
                       </select>
                     </div>
                     <div class="field half">
@@ -764,6 +784,8 @@
     const DEFAULT_SCRIPT = 'quran-uthmani-tajweed';
     const DEFAULT_QURANFONT = 'me_quran';
     const DEFAULT_QURANSIZE = 2.0;
+    const DEFAULT_QURANSPEED = 1;
+    const DEFAULT_QURANREPEAT = 1;
     const DEFAULT_TRANSLATIONSIZE = 1.5;
 
 
@@ -820,6 +842,15 @@
         $("qurancontent").style.fontSize = localStorage.getItem("quran_quransize") + "em";
     }
 
+    function updateQuranSpeed() {
+        document.getElementById("audio").defaultPlaybackRate = localStorage.getItem("quran_quranspeed");
+        document.getElementById("audio").playbackRate = localStorage.getItem("quran_quranspeed");
+    }
+
+    function updateQuranRepeat() {
+        localStorage.setItem("quran_quranrepeatcurrent", localStorage.getItem("quran_quranrepeat"));
+    }
+
     function updateTranslationSize() {
         $("translationcontent").style.fontSize = localStorage.getItem("quran_translationsize") + "em";
     }
@@ -840,34 +871,44 @@
     }
 
     function nextAudio() {
-        nextverse = parseInt(localStorage.getItem("quran_verse")) + 1;
-        thischapter = parseInt(localStorage.getItem("quran_chapter"));
 
-        if (nextverse > NUMBER_OF_VERSES[thischapter-1]) {
-            nextchapter = thischapter + 1;
-            if (nextchapter > NUMBER_OF_CHAPTERS) {
-                // chapter 1
-                localStorage.setItem("quran_chapter", DEFAULT_CHAPTER);
-                selectChapter(DEFAULT_CHAPTER);
-                updateVerse(DEFAULT_CHAPTER);
+        if (localStorage.getItem("quran_quranrepeatcurrent") == 1) {
+
+            localStorage.setItem("quran_quranrepeatcurrent", localStorage.getItem("quran_quranrepeat"));
+
+            nextverse = parseInt(localStorage.getItem("quran_verse")) + 1;
+            thischapter = parseInt(localStorage.getItem("quran_chapter"));
+
+            if (nextverse > NUMBER_OF_VERSES[thischapter-1]) {
+                nextchapter = thischapter + 1;
+                if (nextchapter > NUMBER_OF_CHAPTERS) {
+                    // chapter 1
+                    localStorage.setItem("quran_chapter", DEFAULT_CHAPTER);
+                    selectChapter(DEFAULT_CHAPTER);
+                    updateVerse(DEFAULT_CHAPTER);
+                } else {
+                    // next chapter
+                    localStorage.setItem("quran_chapter", nextchapter);
+                    selectChapter(nextchapter);
+                    updateVerse(nextchapter);
+                }
+                localStorage.setItem("quran_verse", DEFAULT_VERSE);
+                selectVerse(DEFAULT_VERSE);
             } else {
-                // next chapter
-                localStorage.setItem("quran_chapter", nextchapter);
-                selectChapter(nextchapter);
-                updateVerse(nextchapter);
+                // next verse
+                localStorage.setItem("quran_verse", nextverse);
+                selectVerse(nextverse);
             }
-            localStorage.setItem("quran_verse", DEFAULT_VERSE);
-            selectVerse(DEFAULT_VERSE);
-        } else {
-            // next verse
-            localStorage.setItem("quran_verse", nextverse);
-            selectVerse(nextverse);
-        }
 
-        updateAudio();
-        preloadAudio();
-        updateQuranContent();
-        updateTranslationContent();
+            updateAudio();
+            preloadAudio();
+            updateQuranContent();
+            updateTranslationContent();
+
+        } else {
+            localStorage.setItem("quran_quranrepeatcurrent", localStorage.getItem("quran_quranrepeatcurrent") - 1);
+            document.getElementById("audio").play();
+        }
     }
 
 
@@ -899,6 +940,8 @@
         localStorage.removeItem("quran_script");
         localStorage.removeItem("quran_quranfont");
         localStorage.removeItem("quran_quransize");
+        localStorage.removeItem("quran_quranspeed");
+        localStorage.removeItem("quran_quranrepeat");
         localStorage.removeItem("quran_translationsize");
         location.reload();
     }
@@ -930,6 +973,14 @@
 
     function selectQuranSize(quransize) {
         $('quransize').value = quransize;
+    }
+
+    function selectQuranSpeed(quranspeed) {
+        $('quranspeed').value = quranspeed;
+    }
+
+    function selectQuranRepeat(quranrepeat) {
+        $('quranrepeat').value = quranrepeat;
     }
 
     function selectTranslationSize(translationsize) {
@@ -976,6 +1027,16 @@
     function onchangeQuranSize() {
         localStorage.setItem("quran_quransize", $('quransize').value);
         updateQuranSize();
+    }
+
+    function onchangeQuranSpeed() {
+        localStorage.setItem("quran_quranspeed", $('quranspeed').value);
+        updateQuranSpeed();
+    }
+
+    function onchangeQuranRepeat() {
+        localStorage.setItem("quran_quranrepeat", $('quranrepeat').value);
+        updateQuranRepeat();
     }
 
     function onchangeTranslationSize() {
@@ -1073,6 +1134,16 @@
     }
     selectQuranSize(localStorage.getItem("quran_quransize"));
 
+    if (!localStorage.quran_quranspeed) {
+      localStorage.setItem("quran_quranspeed", DEFAULT_QURANSPEED);
+    }
+    selectQuranSpeed(localStorage.getItem("quran_quranspeed"));
+
+    if (!localStorage.quran_quranrepeat) {
+      localStorage.setItem("quran_quranrepeat", DEFAULT_QURANREPEAT);
+    }
+    selectQuranRepeat(localStorage.getItem("quran_quranrepeat"));
+
     if (!localStorage.quran_translationsize) {
       localStorage.setItem("quran_translationsize", DEFAULT_TRANSLATIONSIZE);
     }
@@ -1083,6 +1154,8 @@
     updateAudio();
     preloadAudio();
     updateQuranSize()
+    updateQuranSpeed()
+    updateQuranRepeat()
     updateQuranFont();
     updateQuranContent();
     updateTranslationSize();
