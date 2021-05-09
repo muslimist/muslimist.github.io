@@ -346,7 +346,7 @@
                   <div class="fields">
 
 
-                    <div class="field half">
+                    <div class="field third">
                       <label for="chapter">Chapter</label>
                       <select name="chapter" id="chapter" onchange="onchangeChapter()">
                         <option value="1">1: Al-Faatiha</option>
@@ -465,9 +465,14 @@
                         <option value="114">114: An-Naas</option>
                       </select>
                     </div>
-                    <div class="field half">
+                    <div class="field third">
                       <label for="verse">Verse</label>
                       <select name="verse" id="verse" onchange="onchangeVerse()">
+                      </select>
+                    </div>
+                    <div class="field third">
+                      <label for="verseloop" id="verselooplabel">Verse Loop</label>
+                      <select name="verseloop" id="verseloop" onchange="onchangeVerseLoop()">
                       </select>
                     </div>
                     <div class="field third">
@@ -564,7 +569,7 @@
                       </select>
                     </div>
                     <div class="field third">
-                      <label for="quranrepeat">Ayah Repeat</label>
+                      <label for="quranrepeat" id="quranrepeatlabel">Ayah Repeat</label>
                       <select name="quranrepeat" id="quranrepeat" onchange="onchangeQuranRepeat()">
                         <option value="1">1 Time</option>
                         <option value="2">2 Times</option>
@@ -786,6 +791,8 @@
     const DEFAULT_QURANSIZE = 2.0;
     const DEFAULT_QURANSPEED = 1;
     const DEFAULT_QURANREPEAT = 1;
+    const DEFAULT_VERSELOOPA = 0;
+    const DEFAULT_VERSELOOPB = 0;
     const DEFAULT_TRANSLATIONSIZE = 1.5;
 
 
@@ -808,6 +815,27 @@
             opt.value = i;
             opt.innerHTML = i;
             $('verse').appendChild(opt);
+        }
+    }
+
+    function updateVerseLoop() {
+        $('verseloop').options.length = 0;
+        var opt = document.createElement('option');
+        opt.value = 0;
+        opt.innerHTML = "Disabled";
+        $('verseloop').appendChild(opt);
+        for (var i = localStorage.getItem("quran_verse"); i<=NUMBER_OF_VERSES[parseInt(localStorage.getItem("quran_chapter"))-1]; i++) {
+            var opt = document.createElement('option');
+            opt.value = i;
+            opt.innerHTML = i;
+            $('verseloop').appendChild(opt);
+        }
+        selectVerseLoop(localStorage.getItem("quran_verseloopb"));
+
+        if (localStorage.getItem("quran_verseloopa") != 0) {
+            document.getElementById("verselooplabel").innerHTML = "Verse Loop (" + localStorage.getItem("quran_verseloopa") + "-" + localStorage.getItem("quran_verseloopb") + ")";
+        } else {
+            document.getElementById("verselooplabel").innerHTML = "Verse Loop";
         }
     }
 
@@ -849,6 +877,11 @@
 
     function updateQuranRepeat() {
         localStorage.setItem("quran_quranrepeatcurrent", localStorage.getItem("quran_quranrepeat"));
+        if (localStorage.getItem("quran_quranrepeat") != 1) {
+            document.getElementById("quranrepeatlabel").innerHTML = "Ayah Repeat (" + (localStorage.getItem("quran_quranrepeat")-localStorage.getItem("quran_quranrepeatcurrent")+1) + "/" + localStorage.getItem("quran_quranrepeat") + ")";
+        } else {
+            document.getElementById("quranrepeatlabel").innerHTML = "Ayah Repeat";
+        }
     }
 
     function updateTranslationSize() {
@@ -856,6 +889,10 @@
     }
 
     function updateAudio() {
+        if (localStorage.getItem("quran_quranrepeat") != 1) {
+            document.getElementById("quranrepeatlabel").innerHTML = "Ayah Repeat (" + (localStorage.getItem("quran_quranrepeat")-localStorage.getItem("quran_quranrepeatcurrent")+1) + "/" + localStorage.getItem("quran_quranrepeat") + ")";
+        }
+
         var audio = $('audio');
         var source = $('audioSource');
         source.src = "https://www.everyayah.com/data/" + localStorage.getItem("quran_reciter") + "/" + threeDigits(localStorage.getItem("quran_chapter")) + threeDigits(localStorage.getItem("quran_verse")) + ".mp3";
@@ -876,7 +913,11 @@
 
             localStorage.setItem("quran_quranrepeatcurrent", localStorage.getItem("quran_quranrepeat"));
 
-            nextverse = parseInt(localStorage.getItem("quran_verse")) + 1;
+            if (localStorage.getItem("quran_verseloopb") == localStorage.getItem("quran_verse")) {
+                nextverse = parseInt(localStorage.getItem("quran_verseloopa"));
+            } else {
+                nextverse = parseInt(localStorage.getItem("quran_verse")) + 1;
+            }
             thischapter = parseInt(localStorage.getItem("quran_chapter"));
 
             if (nextverse > NUMBER_OF_VERSES[thischapter-1]) {
@@ -909,6 +950,13 @@
             localStorage.setItem("quran_quranrepeatcurrent", localStorage.getItem("quran_quranrepeatcurrent") - 1);
             document.getElementById("audio").play();
         }
+
+        if (localStorage.getItem("quran_quranrepeat") != 1) {
+            document.getElementById("quranrepeatlabel").innerHTML = "Ayah Repeat (" + (localStorage.getItem("quran_quranrepeat")-localStorage.getItem("quran_quranrepeatcurrent")+1) + "/" + localStorage.getItem("quran_quranrepeat") + ")";
+        }
+
+        updateVerseLoop();
+
     }
 
 
@@ -942,6 +990,8 @@
         localStorage.removeItem("quran_quransize");
         localStorage.removeItem("quran_quranspeed");
         localStorage.removeItem("quran_quranrepeat");
+        localStorage.removeItem("quran_verseloopa");
+        localStorage.removeItem("quran_verseloopb");
         localStorage.removeItem("quran_translationsize");
         location.reload();
     }
@@ -949,6 +999,10 @@
 
     function selectVerse(verse) {
         $('verse').value = verse;
+    }
+
+    function selectVerseLoop(verseloop) {
+        $('verseloop').value = verseloop;
     }
 
     function selectChapter(chapter) {
@@ -995,6 +1049,10 @@
         updateAudio();
         updateQuranContent();
         updateTranslationContent();
+        localStorage.setItem("quran_verseloopa", DEFAULT_VERSELOOPA);
+        localStorage.setItem("quran_verseloopb", DEFAULT_VERSELOOPB);
+        selectVerseLoop(localStorage.getItem("quran_verseloopb"));
+        updateVerseLoop();
     }
 
     function onchangeVerse() {
@@ -1002,6 +1060,25 @@
         updateAudio();
         updateQuranContent();
         updateTranslationContent();
+        localStorage.setItem("quran_verseloopa", DEFAULT_VERSELOOPA);
+        localStorage.setItem("quran_verseloopb", DEFAULT_VERSELOOPB);
+        selectVerseLoop(localStorage.getItem("quran_verseloopb"));
+        updateVerseLoop();
+    }
+
+    function onchangeVerseLoop() {
+        localStorage.setItem("quran_verseloopa", $('verse').value);
+        localStorage.setItem("quran_verseloopb", $('verseloop').value);
+        if (localStorage.getItem("quran_verseloopb") == 0) {
+            localStorage.setItem("quran_verseloopa", 0);
+        }
+        updateAudio();
+
+        if (localStorage.getItem("quran_verseloopa") != 0) {
+            document.getElementById("verselooplabel").innerHTML = "Verse Loop (" + localStorage.getItem("quran_verseloopa") + "-" + localStorage.getItem("quran_verseloopb") + ")";
+        } else {
+            document.getElementById("verselooplabel").innerHTML = "Verse Loop";
+        }
     }
 
     function onchangeReciter() {
@@ -1144,6 +1221,14 @@
     }
     selectQuranRepeat(localStorage.getItem("quran_quranrepeat"));
 
+    if (!localStorage.quran_verseloopa) {
+      localStorage.setItem("quran_verseloopa", DEFAULT_VERSELOOPA);
+    }
+    if (!localStorage.quran_verseloopb) {
+      localStorage.setItem("quran_verseloopb", DEFAULT_VERSELOOPB);
+    }
+    selectVerseLoop(localStorage.getItem("quran_verseloopb"));
+
     if (!localStorage.quran_translationsize) {
       localStorage.setItem("quran_translationsize", DEFAULT_TRANSLATIONSIZE);
     }
@@ -1160,6 +1245,7 @@
     updateQuranContent();
     updateTranslationSize();
     updateTranslationContent();
+    updateVerseLoop();
 
 
 
