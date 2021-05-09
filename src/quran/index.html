@@ -832,7 +832,6 @@ url: https://muslimist.com/quran
     }
 
     function updateQuranRepeat() {
-        localStorage.setItem("quran_quranrepeatcurrent", localStorage.getItem("quran_quranrepeat"));
         if (localStorage.getItem("quran_quranrepeat") != 1) {
             document.getElementById("quranrepeatlabel").innerHTML = "Ayah Repeat (" + (localStorage.getItem("quran_quranrepeat")-localStorage.getItem("quran_quranrepeatcurrent")+1) + "/" + localStorage.getItem("quran_quranrepeat") + ")";
         } else {
@@ -1069,6 +1068,7 @@ url: https://muslimist.com/quran
 
     function onchangeQuranRepeat() {
         localStorage.setItem("quran_quranrepeat", $('quranrepeat').value);
+        localStorage.setItem("quran_quranrepeatcurrent", localStorage.getItem("quran_quranrepeat"));
         updateQuranRepeat();
     }
 
