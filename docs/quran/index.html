@@ -285,6 +285,34 @@
 .silent {
   color: rgb(180, 180, 180);
 }
+
+
+.numberCircle {
+color: #666;
+  border: 2px solid #666;
+  border-radius: 50%;
+  font-size: 1rem;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 2em; 
+  height: 2em;
+}
+
+
+.highlightme {
+  border-radius: 6px;
+  background-color: #e0e0e0;
+}
+
+
+
+#qurancontent {
+  max-height: 400px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 </style>
 
 
@@ -752,6 +780,24 @@
                         <option value="3">Huge</option>
                       </select>
                     </div>
+                    <div class="field half">
+                      <label for="quranwholechapter">Show Whole Chapter</label>
+                      <select name="quranwholechapter" id="quranwholechapter" onchange="onchangeQuranWholeChapter()">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                      </select>
+                    </div>
+                    <div class="field half">
+                      <label for="quranwholechapterautoscroll">Show Whole Chapter Auto Scroll</label>
+                      <select name="quranwholechapterautoscroll" id="quranwholechapterautoscroll" onchange="onchangeQuranWholeChapterAutoScroll()">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                      </select>
+                    </div>
+                    <div class="field">
+                        <input type="checkbox" id="wakelock" name="wakelock" />
+                        <label for="wakelock" id="wakelocklabel">Keep Screen Awake</label>
+                    </div>
                     <br><br><br>
                     <div class="field">
                         <label for="reset">Reset to default settings</label>
@@ -791,11 +837,116 @@
     const DEFAULT_QURANSIZE = 2.0;
     const DEFAULT_QURANSPEED = 1;
     const DEFAULT_QURANREPEAT = 1;
+    const DEFAULT_QURANWHOLECHAPTER = 0;
+    const DEFAULT_QURANWHOLECHAPTERAUTOSCROLL = 1;
     const DEFAULT_VERSELOOPA = 0;
     const DEFAULT_VERSELOOPB = 0;
     const DEFAULT_TRANSLATIONSIZE = 1.5;
 
 
+    function clickayah(ayahid) {
+        ayahid = ayahid.slice(4);
+        localStorage.setItem("quran_verse",ayahid);
+        selectVerse(ayahid);
+        updateAudio();
+        preloadAudio();
+        updateQuranContent();
+        updateTranslationContent();
+        localStorage.setItem("quran_verseloopa", DEFAULT_VERSELOOPA);
+        localStorage.setItem("quran_verseloopb", DEFAULT_VERSELOOPB);
+        selectVerseLoop(localStorage.getItem("quran_verseloopb"));
+        updateVerseLoop();
+        localStorage.setItem("quran_quranrepeatcurrent", localStorage.getItem("quran_quranrepeat"));
+        updateQuranRepeat()
+    }
+
+
+const statusDiv = document.querySelector('#wakelocklabel');
+const wakeLockCheckbox = document.querySelector('#wakelock');
+
+if ('WakeLock' in window && 'request' in window.WakeLock) {  
+  let wakeLock = null;
+  
+  const requestWakeLock = () => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+    window.WakeLock.request('screen', {signal})
+    .catch((e) => {      
+      if (e.name === 'AbortError') {
+        wakeLockCheckbox.checked = false;
+        statusDiv.textContent = 'Wake Lock was aborted';
+        console.log('Wake Lock was aborted');
+      } else {
+        statusDiv.textContent = `${e.name}, ${e.message}`;
+        console.error(`${e.name}, ${e.message}`);
+      }
+    });
+    wakeLockCheckbox.checked = true;
+    statusDiv.textContent = 'Wake Lock is active';
+    console.log('Wake Lock is active');
+    return controller;
+  };
+  
+  wakeLockCheckbox.addEventListener('change', () => {
+    if (wakeLockCheckbox.checked) {
+      wakeLock = requestWakeLock();
+    } else {
+      wakeLock.abort();
+      wakeLock = null;
+    }
+  });
+  
+  const handleVisibilityChange = () => {    
+    if (wakeLock !== null && document.visibilityState === 'visible') {
+      wakeLock = requestWakeLock();
+    }
+  };    
+  
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+
+} else if ('wakeLock' in navigator && 'request' in navigator.wakeLock) {  
+  let wakeLock = null;
+  
+  const requestWakeLock = async () => {
+    try {
+      wakeLock = await navigator.wakeLock.request('screen');
+      wakeLock.addEventListener('release', (e) => {
+        console.log(e);
+        wakeLockCheckbox.checked = false;
+        statusDiv.textContent = 'Wake Lock was released';
+        console.log('Wake Lock was released');                    
+      });
+      wakeLockCheckbox.checked = true;
+      statusDiv.textContent = 'Wake Lock is active';
+      console.log('Wake Lock is active');      
+    } catch (e) {      
+      wakeLockCheckbox.checked = false;
+      statusDiv.textContent = `${e.name}, ${e.message}`;
+      console.error(`${e.name}, ${e.message}`);
+    } 
+  };
+  
+  wakeLockCheckbox.addEventListener('change', () => {
+    if (wakeLockCheckbox.checked) {
+      requestWakeLock();
+    } else {
+      wakeLock.release();
+      wakeLock = null;
+    }
+  });
+  
+  const handleVisibilityChange = () => {    
+    if (wakeLock !== null && document.visibilityState === 'visible') {
+      requestWakeLock();
+    }
+  };    
+  
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+
+} else {  
+  statusDiv.textContent = 'Wake Lock API not supported.';
+  console.error('Wake Lock API not supported.');
+}
 
     // functions
 
@@ -840,14 +991,49 @@
     }
 
     function updateQuranContent() {
-        if (localStorage.getItem("quran_script") == "quran-uthmani-tajweed") {
-            fetch('/quran/data/quran-uthmani-tajweed-'+threeDigits(localStorage.getItem("quran_chapter"))+'.json')
-              .then(response => response.json())
-              .then(quran => tajweeds(quran[localStorage.getItem("quran_verse")-1].annotations));
+
+        if (localStorage.getItem("quran_quranwholechapter") == 1) {
+
+            if (localStorage.getItem("quran_script") == "quran-uthmani-tajweed") {
+                fetch('/quran/data/quran-uthmani-tajweed-'+threeDigits(localStorage.getItem("quran_chapter"))+'.json')
+                  .then(response => response.json())
+                  .then(quran => tajweeds(quran[localStorage.getItem("quran_verse")-1].annotations));
+            } else {
+                fetch('/quran/data/'+localStorage.getItem("quran_script")+'.json')
+                  .then(response => response.json())
+                  .then(quran => {
+                    var all = '';
+                    for (var i=0; i < quran[localStorage.getItem("quran_chapter")-1].aya.length; i++) {
+                        if (i == localStorage.getItem("quran_verse")-1) {
+                            all = all + "<span onClick=\"clickayah(this.id)\" id=\"ayah"+(i+1)+"\" class=\"highlightme\">" + quran[localStorage.getItem("quran_chapter")-1].aya[i].text + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"numberCircle\">" + (i+1) + "</span></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                        } else {
+                            all = all + "<span onClick=\"clickayah(this.id)\" id=\"ayah"+(i+1)+"\">" + quran[localStorage.getItem("quran_chapter")-1].aya[i].text + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"numberCircle\">" + (i+1) + "</span></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                        }
+                       
+                    }
+                    $("qurancontent").innerHTML = "<h2 style='line-height: 2; letter-spacing: 0; font-size: unset; direction: rtl;'>"+all+"</h2>";
+                    
+                    if (localStorage.getItem("quran_quranwholechapterautoscroll") == 1) {
+                        document.getElementById("ayah" + (localStorage.getItem("quran_verse")-1).toString()).scrollIntoView({behavior: "smooth",block: "start",inline: "start"});
+                    }
+
+                  });
+            }
+
+
+
         } else {
-            fetch('/quran/data/'+localStorage.getItem("quran_script")+'.json')
-              .then(response => response.json())
-              .then(quran => $("qurancontent").innerHTML = "<h2 style='line-height: 2; letter-spacing: 0; font-size: unset;'>"+quran[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1].text)+"</h2>";
+
+            if (localStorage.getItem("quran_script") == "quran-uthmani-tajweed") {
+                fetch('/quran/data/quran-uthmani-tajweed-'+threeDigits(localStorage.getItem("quran_chapter"))+'.json')
+                  .then(response => response.json())
+                  .then(quran => tajweeds(quran[localStorage.getItem("quran_verse")-1].annotations));
+            } else {
+                fetch('/quran/data/'+localStorage.getItem("quran_script")+'.json')
+                  .then(response => response.json())
+                  .then(quran => $("qurancontent").innerHTML = "<h2 style='line-height: 2; letter-spacing: 0; font-size: unset; direction: rtl;'>"+quran[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1].text+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"numberCircle\">"+(localStorage.getItem("quran_verse"))+"</span></sss>");
+            }
+
         }
     }
 
@@ -989,6 +1175,8 @@
         localStorage.removeItem("quran_quransize");
         localStorage.removeItem("quran_quranspeed");
         localStorage.removeItem("quran_quranrepeat");
+        localStorage.removeItem("quran_quranwholechapter");
+        localStorage.removeItem("quran_quranwholechapterautoscroll");
         localStorage.removeItem("quran_verseloopa");
         localStorage.removeItem("quran_verseloopb");
         localStorage.removeItem("quran_translationsize");
@@ -1034,6 +1222,14 @@
 
     function selectQuranRepeat(quranrepeat) {
         $('quranrepeat').value = quranrepeat;
+    }
+
+    function selectQuranWholeChapter(quranwholechapter) {
+        $('quranwholechapter').value = quranwholechapter;
+    }
+
+    function selectQuranWholeChapterAutoScroll(quranwholechapterautoscroll) {
+        $('quranwholechapterautoscroll').value = quranwholechapterautoscroll;
     }
 
     function selectTranslationSize(translationsize) {
@@ -1116,6 +1312,16 @@
         updateQuranRepeat();
     }
 
+    function onchangeQuranWholeChapter() {
+        localStorage.setItem("quran_quranwholechapter", $('quranwholechapter').value);
+        updateQuranContent();
+    }
+
+    function onchangeQuranWholeChapterAutoScroll() {
+        localStorage.setItem("quran_quranwholechapterautoscroll", $('quranwholechapterautoscroll').value);
+        updateQuranContent();
+    }
+
     function onchangeTranslationSize() {
         localStorage.setItem("quran_translationsize", $('translationsize').value);
         updateTranslationSize();
@@ -1166,7 +1372,7 @@
           
       }
 
-      $("qurancontent").innerHTML = "<h2 style='line-height: 2; letter-spacing: 0; font-size: unset;'>" + output + "</h2>";
+      $("qurancontent").innerHTML = "<h2 style='line-height: 2; letter-spacing: 0; font-size: unset; direction: rtl;'>" + output + "</h2>";
     }
 
     
@@ -1220,6 +1426,16 @@
       localStorage.setItem("quran_quranrepeat", DEFAULT_QURANREPEAT);
     }
     selectQuranRepeat(localStorage.getItem("quran_quranrepeat"));
+
+    if (!localStorage.quran_quranwholechapter) {
+      localStorage.setItem("quran_quranwholechapter", DEFAULT_QURANWHOLECHAPTER);
+    }
+    selectQuranWholeChapter(localStorage.getItem("quran_quranwholechapter"));
+
+    if (!localStorage.quran_quranwholechapterautoscroll) {
+      localStorage.setItem("quran_quranwholechapterautoscroll", DEFAULT_QURANWHOLECHAPTERAUTOSCROLL);
+    }
+    selectQuranWholeChapterAutoScroll(localStorage.getItem("quran_quranwholechapterautoscroll"));
 
     if (!localStorage.quran_verseloopa) {
       localStorage.setItem("quran_verseloopa", DEFAULT_VERSELOOPA);
