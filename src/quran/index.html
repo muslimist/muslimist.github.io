@@ -1050,7 +1050,7 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
 
     function nextAudio() {
 
-        if (localStorage.getItem("quran_quranrepeatcurrent") == 1) {
+        if (localStorage.getItem("quran_quranrepeatcurrent") <= 1) {
 
             localStorage.setItem("quran_quranrepeatcurrent", localStorage.getItem("quran_quranrepeat"));
 
