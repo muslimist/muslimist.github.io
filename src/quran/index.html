@@ -737,7 +737,7 @@ color: #666;
                       </select>
                     </div>
                     <div class="field half">
-                      <label for="quranwholechapter">Show Whole Chapter</label>
+                      <label for="quranwholechapter">Show Whole Chapter (Only for Uthmani script)</label>
                       <select name="quranwholechapter" id="quranwholechapter" onchange="onchangeQuranWholeChapter()">
                         <option value="0">No</option>
                         <option value="1">Yes</option>
@@ -751,8 +751,8 @@ color: #666;
                       </select>
                     </div>
                     <div class="field">
-                        <input type="checkbox" id="wakelock" name="wakelock" />
-                        <label for="wakelock" id="wakelocklabel">Keep Screen Awake</label>
+                        <input type="checkbox" id="wakelock" name="wakelock"/>
+                        <label id="wakelocklabel" for="wakelock">Screen will not stay awake</label>
                     </div>
                     <br><br><br>
                     <div class="field">
@@ -830,16 +830,15 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
     .catch((e) => {      
       if (e.name === 'AbortError') {
         wakeLockCheckbox.checked = false;
-        statusDiv.textContent = 'Wake Lock was aborted';
-        console.log('Wake Lock was aborted');
+        statusDiv.textContent = 'Screen will not stay awake';
       } else {
-        statusDiv.textContent = `${e.name}, ${e.message}`;
+        //statusDiv.textContent = `${e.name}, ${e.message}`;
+        statusDiv.textContent = "Sorry, I can't keep your screen awake";
         console.error(`${e.name}, ${e.message}`);
       }
     });
     wakeLockCheckbox.checked = true;
-    statusDiv.textContent = 'Wake Lock is active';
-    console.log('Wake Lock is active');
+    statusDiv.textContent = 'Screen will stay awake';
     return controller;
   };
   
@@ -869,15 +868,14 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
       wakeLock.addEventListener('release', (e) => {
         console.log(e);
         wakeLockCheckbox.checked = false;
-        statusDiv.textContent = 'Wake Lock was released';
-        console.log('Wake Lock was released');                    
+        statusDiv.textContent = 'Screen will not stay awake';
       });
       wakeLockCheckbox.checked = true;
-      statusDiv.textContent = 'Wake Lock is active';
-      console.log('Wake Lock is active');      
+      statusDiv.textContent = 'Screen will stay awake';
     } catch (e) {      
       wakeLockCheckbox.checked = false;
-      statusDiv.textContent = `${e.name}, ${e.message}`;
+      //statusDiv.textContent = `${e.name}, ${e.message}`;
+      statusDiv.textContent = "Sorry, I can't keep your screen awake";
       console.error(`${e.name}, ${e.message}`);
     } 
   };
@@ -900,8 +898,7 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
   document.addEventListener('visibilitychange', handleVisibilityChange);
 
 } else {  
-  statusDiv.textContent = 'Wake Lock API not supported.';
-  console.error('Wake Lock API not supported.');
+  statusDiv.textContent = "Sorry, I can't keep your screen awake";
 }
 
     // functions
@@ -970,7 +967,7 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
                     $("qurancontent").innerHTML = "<h2 style='line-height: 2; letter-spacing: 0; font-size: unset; direction: rtl;'>"+all+"</h2>";
                     
                     if (localStorage.getItem("quran_quranwholechapterautoscroll") == 1) {
-                        document.getElementById("ayah" + (localStorage.getItem("quran_verse")-1).toString()).scrollIntoView({behavior: "smooth",block: "start",inline: "start"});
+                        document.getElementById("ayah" + (localStorage.getItem("quran_verse")).toString()).scrollIntoView({behavior: "smooth",block: "center",inline: "center"});
                     }
 
                   });
