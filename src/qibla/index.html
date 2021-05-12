@@ -83,13 +83,31 @@ url: https://muslimist.com/qibla
                     <div class="compass-circle"></div>
                     <div class="my-point"></div>
                   </div>
-                  <br>
-                  <h3 id="text"></h3>
                   <br><br>
+                  <h3 id="text"></h3>
+                  <br>
                   <button class="start-btn">Start compass</button>
+                  <br><br>
                 </center>
               </div>
             </section>
+
+            <section>
+              <header>
+                <h3>help</h3>
+              </header>
+              <div class="content">
+                <form method="post" action="#">
+                  <div class="fields">
+                    <div class="field">
+                      <p>Give location permissions, lay phone flat and rotate until a green dot appears in the center of the compass. It will tell you the direction of the qibla in degrees once its calculated. You may have to click on the start compass button on iOS devices.<br><br>Future updates will allow manual location input and syncing between location saved on other parts of this website.</p>
+                    </div>
+                    
+                  </div>
+                </form>
+              </div>
+            </section>
+
           </div>
         </div>
       </section>
@@ -152,7 +170,7 @@ url: https://muslimist.com/qibla
           const { latitude, longitude } = position.coords;
           pointDegree = calcDegreeToPoint(latitude, longitude);
 
-          document.getElementById("text").innerHTML = "The qibla is " + pointDegree + "° from your position";
+          document.getElementById("text").innerHTML = "the qibla is " + pointDegree + "° from your position";
 
           if (pointDegree < 0) {
             pointDegree = pointDegree + 360;
