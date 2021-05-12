@@ -83,6 +83,8 @@ url: https://muslimist.com/qibla
                     <div class="compass-circle"></div>
                     <div class="my-point"></div>
                   </div>
+                  <br>
+                  <h3 id="text"></h3>
                   <br><br>
                   <button class="start-btn">Start compass</button>
                 </center>
@@ -134,7 +136,7 @@ url: https://muslimist.com/qibla
           // ±15 degree
           if (
             (pointDegree < Math.abs(compass) &&
-              pointDegree + 15 > Math.abs(compass)) ||
+            pointDegree + 15 > Math.abs(compass)) ||
             pointDegree > Math.abs(compass + 15) ||
             pointDegree < Math.abs(compass)
           ) {
@@ -149,6 +151,8 @@ url: https://muslimist.com/qibla
         function locationHandler(position) {
           const { latitude, longitude } = position.coords;
           pointDegree = calcDegreeToPoint(latitude, longitude);
+
+          document.getElementById("text").innerHTML = "The qibla is " + pointDegree + "° from your position";
 
           if (pointDegree < 0) {
             pointDegree = pointDegree + 360;
