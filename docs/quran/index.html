@@ -781,14 +781,14 @@ color: #666;
                       </select>
                     </div>
                     <div class="field half">
-                      <label for="quranwholechapter">Show Whole Chapter (does not work with tajweed script)</label>
+                      <label for="quranwholechapter">Show Whole Chapter</label>
                       <select name="quranwholechapter" id="quranwholechapter" onchange="onchangeQuranWholeChapter()">
                         <option value="0">No</option>
                         <option value="1">Yes</option>
                       </select>
                     </div>
                     <div class="field half">
-                      <label for="quranwholechapterautoscroll">Auto Scroll (only when showing whole chapter)</label>
+                      <label for="quranwholechapterautoscroll">Whole Chapter Auto Scroll</label>
                       <select name="quranwholechapterautoscroll" id="quranwholechapterautoscroll" onchange="onchangeQuranWholeChapterAutoScroll()">
                         <option value="0">No</option>
                         <option value="1">Yes</option>
@@ -995,7 +995,8 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
             if (localStorage.getItem("quran_script") == "quran-uthmani-tajweed") {
                 fetch('/quran/data/quran-uthmani-tajweed-'+threeDigits(localStorage.getItem("quran_chapter"))+'.json')
                   .then(response => response.json())
-                  .then(quran => tajweeds(quran[localStorage.getItem("quran_verse")-1].annotations));
+                  .then(quran => wholetajweeds(quran[localStorage.getItem("quran_verse")-1].annotations));
+
             } else {
                 fetch('/quran/data/'+localStorage.getItem("quran_script")+'.json')
                   .then(response => response.json())
@@ -1329,11 +1330,9 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
 
 
     function tajweeds(tajweeds) {
-
       fetch('/quran/data/quran-uthmani.json')
           .then(response => response.json())
           .then(quran => tajweeds2(tajweeds,quran[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1].text));
-
     }
 
     function tajweeds2(tajweeds,quran) {
@@ -1371,6 +1370,67 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
       }
 
       $("qurancontent").innerHTML = "<h2 style='line-height: 2; letter-spacing: 0; font-size: unset; direction: rtl;'>" + output + "</h2>";
+    }
+
+    function wholetajweeds(tajweeds) {
+      fetch('/quran/data/quran-uthmani.json')
+          .then(response => response.json())
+          .then(quran => wholetajweeds2(tajweeds,quran[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1].text));
+    }
+
+    function wholetajweeds2(tajweeds,quran) {
+
+      input = quran;
+      output = "";
+
+      start = [];
+      rule = [];
+      end = [];
+
+      currentrule = 0;
+
+      for (tajweed of tajweeds) 
+      {
+          start.push(tajweed.start);
+          rule.push(tajweed.rule);
+          end.push(tajweed.end);
+      }
+
+      for (var i = 0; i < input.length; i++) {
+          if (i == end[currentrule]) {
+              output += "</span>";
+              currentrule++;
+          }
+          if (i == start[currentrule]) {
+              output += "<span class='" + rule[currentrule] + "'>";
+          }
+          // DONT FOR NOW somewhat fix madd tatweel issue
+          if (input.charAt(i).charCodeAt(0) == "1648") {
+              //output += '\u0640';
+          }
+          output += input.charAt(i);
+          
+      }
+
+      fetch('/quran/data/quran-uthmani.json')
+        .then(response => response.json())
+        .then(quran => {
+          var all = '';
+          for (var i=0; i < quran[localStorage.getItem("quran_chapter")-1].aya.length; i++) {
+              if (i == localStorage.getItem("quran_verse")-1) {
+                  all = all + "<span onClick=\"clickayah(this.id)\" id=\"ayah"+(i+1)+"\" class=\"highlightme\">" + output + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"numberCircle\">" + (i+1) + "</span></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+              } else {
+                  all = all + "<span onClick=\"clickayah(this.id)\" id=\"ayah"+(i+1)+"\">" + quran[localStorage.getItem("quran_chapter")-1].aya[i].text + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"numberCircle\">" + (i+1) + "</span></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+              }
+             
+          }
+          $("qurancontent").innerHTML = "<h2 style='line-height: 2; letter-spacing: 0; font-size: unset; direction: rtl;'>"+all+"</h2>";
+          
+          if (localStorage.getItem("quran_quranwholechapterautoscroll") == 1) {
+              document.getElementById("ayah" + (localStorage.getItem("quran_verse")).toString()).scrollIntoView({behavior: "smooth",block: "center",inline: "center"});
+          }
+
+        });
     }
 
     
