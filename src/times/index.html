@@ -5,6 +5,22 @@ url: https://muslimist.com/times
 ---
 {% include header %}
 
+<style>
+table.roundedCorners { 
+  border: 1px solid DarkGrey;
+  border-radius: 13px; 
+  border-spacing: 0;
+  }
+table.roundedCorners td, 
+table.roundedCorners th { 
+  border-bottom: 1px solid DarkGrey;
+  padding: 10px; 
+  }
+table.roundedCorners tr:last-child > td {
+  border-bottom: none;
+}
+</style>
+
 
 			<section class="banner style1 orient-left content-align-left image-position-right fullscreen onload-image-fade-in onload-content-fade-right">
 				<div class="content">
@@ -322,11 +338,10 @@ url: https://muslimist.com/times
 					var times = prayTimes.getTimes(date, [latitude, longitude], timezone, daylightsavingtime, format, precision);
 					var list = JSON.parse(localStorage.getItem("times_list"));
 
-					var html = '<table>';
-					html += '<tbody>';
+					var html = '<table class="roundedCorners" style="text-align:center;border-collapse: unset;">';
+					html += '<tbody style="font-size: 1.1rem;">';
 					for(var i in list)	{
-						html += '<tr><td>'+ list[i]+ '</td>';
-						html += '<td>'+ times[list[i].toLowerCase()]+ '</td></tr>';
+						html += '<tr><td>'+ list[i]+ '</td><td>'+ times[list[i].toLowerCase()]+ '</td></tr>';
 					}
 					html += '<tbody></table>';
 					$('table-wrapper').innerHTML = html;
