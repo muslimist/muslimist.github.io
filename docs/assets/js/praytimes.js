@@ -312,7 +312,7 @@ function PrayTimes(method) {
 		var hours = Math.floor(time); 
 		var minutes = Math.floor((time - hours)* 60);
 		var seconds = Math.floor((((time - hours)* 60) - minutes) * 60);
-		console.log(time + " - " + hours + ":" + minutes + ":" + seconds);
+		//console.log(time + " - " + hours + ":" + minutes + ":" + seconds);
 
 
 		var suffix = (format == '12h') ? suffixes[hours < 12 ? 0 : 1] : '';
