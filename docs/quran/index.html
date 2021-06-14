@@ -861,6 +861,14 @@ color: #666;
         updateQuranRepeat()
     }
 
+    function clickletter(letterid) {
+        letterid = letterid.slice(6);
+        percentage = (letterid / localStorage.getItem("quran_quranverselettercount"));
+        var audio = $('audio');
+        duration = audio.duration;
+        audio.currentTime=(duration*percentage);
+    }
+
 
 const statusDiv = document.querySelector('#wakelocklabel');
 const wakeLockCheckbox = document.querySelector('#wakelock');
@@ -1030,7 +1038,18 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
             } else {
                 fetch('/quran/data/'+localStorage.getItem("quran_script")+'.json')
                   .then(response => response.json())
-                  .then(quran => $("qurancontent").innerHTML = "<h2 style='line-height: 2; letter-spacing: 0; font-size: unset; direction: rtl;'>"+quran[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1].text+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"numberCircle\">"+(localStorage.getItem("quran_verse"))+"</span></sss>");
+                  .then(quran => {
+                    localStorage.setItem("quran_quranverselettercount", quran[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1].text.length);
+
+                    allletters = "";
+
+                    for (var i = 0; i < quran[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1].text.length; i++) {
+                      allletters = allletters + "<span onClick=\"clickletter(this.id)\" id=\"letter"+(i+1)+"\">" + quran[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1].text.charAt(i) + "</span>";
+                    }
+                    
+
+                    $("qurancontent").innerHTML = "<h2 style='line-height: 2; letter-spacing: 0; font-size: unset; direction: rtl;'>"+allletters+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"numberCircle\">"+(localStorage.getItem("quran_verse"))+"</span></sss>";
+                });
             }
 
         }
@@ -1353,6 +1372,11 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
           end.push(tajweed.end);
       }
 
+      allletters = "";
+
+
+      localStorage.setItem("quran_quranverselettercount", quran.length);
+
       for (var i = 0; i < input.length; i++) {
           if (i == end[currentrule]) {
               output += "</span>";
@@ -1365,9 +1389,19 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
           if (input.charAt(i).charCodeAt(0) == "1648") {
               //output += '\u0640';
           }
-          output += input.charAt(i);
+          output += "<span onClick=\"clickletter(this.id)\" id=\"letter"+(i+1)+"\">" + input.charAt(i) + "</span>";
           
       }
+
+
+
+
+
+                    
+
+                    
+
+
 
       $("qurancontent").innerHTML = "<h2 style='line-height: 2; letter-spacing: 0; font-size: unset; direction: rtl;'>" + output + "</h2>";
     }
