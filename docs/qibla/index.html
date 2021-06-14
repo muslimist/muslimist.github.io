@@ -239,7 +239,7 @@
               Math.cos(phi) * Math.tan(phiK) -
                 Math.sin(phi) * Math.cos(lambdaK - lambda)
             );
-          return Math.round(psi);
+          return Math.round(psi * 10) / 10;
         }
 
         init();
