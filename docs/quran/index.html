@@ -307,7 +307,7 @@ color: #666;
 
 
 
-#qurancontent {
+.limitquran {
   max-height: 400px;
   overflow-x: hidden;
   overflow-y: auto;
@@ -1000,6 +1000,10 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
 
         if (localStorage.getItem("quran_quranwholechapter") == 1) {
 
+            if (!document.getElementById("qurancontent").classList.contains("limitquran")) {
+                document.getElementById("qurancontent").classList.add("limitquran");
+            }
+
             if (localStorage.getItem("quran_script") == "quran-uthmani-tajweed") {
                 fetch('/quran/data/quran-uthmani-tajweed-'+threeDigits(localStorage.getItem("quran_chapter"))+'.json')
                   .then(response => response.json())
@@ -1030,6 +1034,10 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
 
 
         } else {
+
+            if (document.getElementById("qurancontent").classList.contains("limitquran")) {
+                document.getElementById("qurancontent").classList.remove("limitquran");
+            }
 
             if (localStorage.getItem("quran_script") == "quran-uthmani-tajweed") {
                 fetch('/quran/data/quran-uthmani-tajweed-'+threeDigits(localStorage.getItem("quran_chapter"))+'.json')
@@ -1067,7 +1075,16 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
     }
 
     function updateQuranFont() {
-        $("qurancontent").className = 'arabic-' + localStorage.getItem("quran_quranfont");
+
+
+        if (document.getElementById("qurancontent").classList.contains("limitquran")) {
+            $("qurancontent").className = 'arabic-' + localStorage.getItem("quran_quranfont");
+            document.getElementById("qurancontent").classList.add("limitquran");
+        } else {
+            $("qurancontent").className = 'arabic-' + localStorage.getItem("quran_quranfont");
+        }
+
+        
     }
 
     function updateQuranSize() {
