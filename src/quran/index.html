@@ -756,6 +756,28 @@ color: #666;
                         <input type="checkbox" id="wakelock" name="wakelock"/>
                         <label id="wakelocklabel" for="wakelock">Screen will not stay awake</label>
                     </div>
+                    <div class="field">
+                        <label>Randomize Once</label>
+                        <ul class="actions" style="margin: 0 0 0 0;">
+                            <li><a name="reset" id="reset" class="button" onclick="randomChapterNow()">Random Chapter</a></li>
+                            <li><a name="reset" id="reset" class="button" onclick="randomReciterNow()">Random Reciter</a></li>
+                        </ul>
+                    </div>
+                    <div class="field half">
+                      <label for="randomreciterevery">Random Reciter</label>
+                      <select name="randomreciterevery" id="randomreciterevery" onchange="onchangeRandomReciterEvery()">
+                        <option value="0">Same reciter</option>
+                        <option value="1">Random reciter every ayah</option>
+                        <option value="2">Random reciter every chapter</option>
+                      </select>
+                    </div>
+                    <div class="field half">
+                      <label for="randomchapterevery">Random Chapter</label>
+                      <select name="randomchapterevery" id="randomchapterevery" onchange="onchangeRandomChapterEvery()">
+                        <option value="0">Next chapter on end</option>
+                        <option value="1">Random chapter on end</option>
+                      </select>
+                    </div>
                     <br><br><br>
                     <div class="field">
                         <label for="reset">Reset to default settings</label>
@@ -800,6 +822,8 @@ color: #666;
     const DEFAULT_VERSELOOPA = 0;
     const DEFAULT_VERSELOOPB = 0;
     const DEFAULT_TRANSLATIONSIZE = 1.5;
+    const DEFAULT_RANDOMRECITEREVERY = 0;
+    const DEFAULT_RANDOMCHAPTEREVERY = 0;
 
 
     function clickayah(ayahid) {
@@ -1132,7 +1156,24 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
             thischapter = parseInt(localStorage.getItem("quran_chapter"));
 
             if (nextverse > NUMBER_OF_VERSES[thischapter-1]) {
-                nextchapter = thischapter + 1;
+
+                if (localStorage.getItem("quran_randomchapterevery") == 0) {
+                    nextchapter = thischapter + 1;
+                } else {
+                    var selectRandomChapterNow  = document.getElementById('chapter');
+                    var optionsRandomChapterNow = selectRandomChapterNow.children;
+                    nextchapter  = Math.floor(Math.random() * optionsRandomChapterNow.length);
+                }
+
+                if (localStorage.getItem("quran_randomreciterevery") == 2) {
+                    var selectRandomReciterNow  = document.getElementById('reciter');
+                    var optionsRandomReciterNow = selectRandomReciterNow.children;  
+                    // length - 9 to remove disabled and non arabic reciters
+                    var randomRandomReciterNow  = Math.floor(Math.random() * (optionsRandomReciterNow.length - 9));
+                    selectRandomReciterNow.value = optionsRandomReciterNow[randomRandomReciterNow].value; 
+                    onchangeReciter();
+                }
+
                 if (nextchapter > NUMBER_OF_CHAPTERS) {
                     // chapter 1
                     localStorage.setItem("quran_chapter", DEFAULT_CHAPTER);
@@ -1147,6 +1188,16 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
                 localStorage.setItem("quran_verse", DEFAULT_VERSE);
                 selectVerse(DEFAULT_VERSE);
             } else {
+
+                if (localStorage.getItem("quran_randomreciterevery") == 1) {
+                    var selectRandomReciterNow  = document.getElementById('reciter');
+                    var optionsRandomReciterNow = selectRandomReciterNow.children;  
+                    // length - 9 to remove disabled and non arabic reciters
+                    var randomRandomReciterNow  = Math.floor(Math.random() * (optionsRandomReciterNow.length - 9));
+                    selectRandomReciterNow.value = optionsRandomReciterNow[randomRandomReciterNow].value; 
+                    onchangeReciter();
+                }
+
                 // next verse
                 localStorage.setItem("quran_verse", nextverse);
                 selectVerse(nextverse);
@@ -1206,7 +1257,26 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
         localStorage.removeItem("quran_verseloopa");
         localStorage.removeItem("quran_verseloopb");
         localStorage.removeItem("quran_translationsize");
+        localStorage.removeItem("quran_randomreciterevery");
+        localStorage.removeItem("quran_randomchapterevery");
         location.reload();
+    }
+
+    function randomReciterNow() {
+        var selectRandomReciterNow  = document.getElementById('reciter');
+        var optionsRandomReciterNow = selectRandomReciterNow.children;  
+        // length - 9 to remove disabled and non arabic reciters
+        var randomRandomReciterNow  = Math.floor(Math.random() * (optionsRandomReciterNow.length - 9));
+        selectRandomReciterNow.value = optionsRandomReciterNow[randomRandomReciterNow].value; 
+        onchangeReciter();
+    }
+
+    function randomChapterNow() {
+        var selectRandomChapterNow  = document.getElementById('chapter');
+        var optionsRandomChapterNow = selectRandomChapterNow.children;  
+        var randomRandomChapterNow  = Math.floor(Math.random() * optionsRandomChapterNow.length);
+        selectRandomChapterNow.value = optionsRandomChapterNow[randomRandomChapterNow].value; 
+        onchangeChapter();
     }
 
 
@@ -1260,6 +1330,14 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
 
     function selectTranslationSize(translationsize) {
         $('translationsize').value = translationsize;
+    }
+
+    function selectRandomChapterEvery(randomchapterevery) {
+        $('randomchapterevery').value = randomchapterevery;
+    }
+
+    function selectRandomReciterEvery(randomreciterevery) {
+        $('randomreciterevery').value = randomreciterevery;
     }
 
     function onchangeChapter() {
@@ -1351,6 +1429,14 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
     function onchangeTranslationSize() {
         localStorage.setItem("quran_translationsize", $('translationsize').value);
         updateTranslationSize();
+    }
+
+    function onchangeRandomChapterEvery() {
+        localStorage.setItem("quran_randomchapterevery", $('randomchapterevery').value);
+    }
+
+    function onchangeRandomReciterEvery() {
+        localStorage.setItem("quran_randomreciterevery", $('randomreciterevery').value);
     }
 
 
@@ -1549,6 +1635,16 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
       localStorage.setItem("quran_translationsize", DEFAULT_TRANSLATIONSIZE);
     }
     selectTranslationSize(localStorage.getItem("quran_translationsize"));
+
+    if (!localStorage.quran_randomreciterevery) {
+      localStorage.setItem("quran_randomreciterevery", DEFAULT_RANDOMRECITEREVERY);
+    }
+    selectRandomReciterEvery(localStorage.getItem("quran_randomreciterevery"));
+
+    if (!localStorage.quran_randomchapterevery) {
+      localStorage.setItem("quran_randomchapterevery", DEFAULT_RANDOMCHAPTEREVERY);
+    }
+    selectRandomChapterEvery(localStorage.getItem("quran_randomchapterevery"));
 
 
     // start first audio
