@@ -795,18 +795,6 @@ color: #666;
                         <option value="1">Yes</option>
                       </select>
                     </div>
-                    <div class="field">
-                        <label>Keep Screen Awake (only for chrome browsers)</label>
-                        <input type="checkbox" id="wakelock" name="wakelock"/>
-                        <label id="wakelocklabel" for="wakelock">Screen will not stay awake</label>
-                    </div>
-                    <div class="field">
-                        <label>Randomize Once</label>
-                        <ul class="actions" style="margin: 0 0 0 0;">
-                            <li><a name="reset" id="reset" class="button" onclick="randomChapterNow()">Random Chapter</a></li>
-                            <li><a name="reset" id="reset" class="button" onclick="randomReciterNow()">Random Reciter</a></li>
-                        </ul>
-                    </div>
                     <div class="field half">
                       <label for="randomreciterevery">Random Reciter</label>
                       <select name="randomreciterevery" id="randomreciterevery" onchange="onchangeRandomReciterEvery()">
@@ -821,6 +809,18 @@ color: #666;
                         <option value="0">Next chapter on end</option>
                         <option value="1">Random chapter on end</option>
                       </select>
+                    </div>
+                    <div class="field">
+                        <label>Randomize Once</label>
+                        <ul class="actions" style="margin: 0 0 0 0;">
+                            <li><a name="reset" id="reset" class="button" onclick="randomChapterNow()">Random Chapter</a></li>
+                            <li><a name="reset" id="reset" class="button" onclick="randomReciterNow()">Random Reciter</a></li>
+                        </ul>
+                    </div>
+                    <div class="field">
+                        <label>Keep Screen Awake (only for chrome browsers)</label>
+                        <input type="checkbox" id="wakelock" name="wakelock"/>
+                        <label id="wakelocklabel" for="wakelock">Screen will not stay awake</label>
                     </div>
                     <br><br><br>
                     <div class="field">
