@@ -10,7 +10,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/muslimist/muslimist.github.io">
-    <img src="https://raw.githubusercontent.com/muslimist/muslimist.github.io/master/docs/assets/images/header_home.webp" alt="Logo" width="80" height="80">
+    <img src="https://raw.githubusercontent.com/muslimist/muslimist.github.io/master/docs/assets/icons/apple-icon-180.png" alt="Logo" width="80" height="80">
   </a>
 
   <h1 align="center">muslimist</h1>
