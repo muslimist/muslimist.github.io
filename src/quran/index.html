@@ -553,7 +553,7 @@ color: #666;
                       </select>
                     </div>
                     <div class="field third">
-                      <label for="quranrepeat" id="quranrepeatlabel">Ayah Repeat</label>
+                      <label for="quranrepeat" id="quranrepeatlabel">Verse Repeat</label>
                       <select name="quranrepeat" id="quranrepeat" onchange="onchangeQuranRepeat()">
                         <option value="1">1 Time</option>
                         <option value="2">2 Times</option>
@@ -755,7 +755,7 @@ color: #666;
                       <label for="randomreciterevery">Random Reciter</label>
                       <select name="randomreciterevery" id="randomreciterevery" onchange="onchangeRandomReciterEvery()">
                         <option value="0">Same reciter</option>
-                        <option value="1">Random reciter every ayah</option>
+                        <option value="1">Random reciter every verse</option>
                         <option value="2">Random reciter every chapter</option>
                       </select>
                     </div>
@@ -1088,9 +1088,9 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
 
     function updateQuranRepeat() {
         if (localStorage.getItem("quran_quranrepeat") != 1) {
-            document.getElementById("quranrepeatlabel").innerHTML = "Ayah Repeat (" + (localStorage.getItem("quran_quranrepeat")-localStorage.getItem("quran_quranrepeatcurrent")+1) + "/" + localStorage.getItem("quran_quranrepeat") + ")";
+            document.getElementById("quranrepeatlabel").innerHTML = "Verse Repeat (" + (localStorage.getItem("quran_quranrepeat")-localStorage.getItem("quran_quranrepeatcurrent")+1) + "/" + localStorage.getItem("quran_quranrepeat") + ")";
         } else {
-            document.getElementById("quranrepeatlabel").innerHTML = "Ayah Repeat";
+            document.getElementById("quranrepeatlabel").innerHTML = "Verse Repeat";
         }
     }
 
@@ -1100,7 +1100,7 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
 
     function updateAudio() {
         if (localStorage.getItem("quran_quranrepeat") != 1) {
-            document.getElementById("quranrepeatlabel").innerHTML = "Ayah Repeat (" + (localStorage.getItem("quran_quranrepeat")-localStorage.getItem("quran_quranrepeatcurrent")+1) + "/" + localStorage.getItem("quran_quranrepeat") + ")";
+            document.getElementById("quranrepeatlabel").innerHTML = "Verse Repeat (" + (localStorage.getItem("quran_quranrepeat")-localStorage.getItem("quran_quranrepeatcurrent")+1) + "/" + localStorage.getItem("quran_quranrepeat") + ")";
         }
 
         var audio = $('audio');
@@ -1214,7 +1214,7 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
         }
 
         if (localStorage.getItem("quran_quranrepeat") != 1) {
-            document.getElementById("quranrepeatlabel").innerHTML = "Ayah Repeat (" + (localStorage.getItem("quran_quranrepeat")-localStorage.getItem("quran_quranrepeatcurrent")+1) + "/" + localStorage.getItem("quran_quranrepeat") + ")";
+            document.getElementById("quranrepeatlabel").innerHTML = "Verse Repeat (" + (localStorage.getItem("quran_quranrepeat")-localStorage.getItem("quran_quranrepeatcurrent")+1) + "/" + localStorage.getItem("quran_quranrepeat") + ")";
         }
 
         updateVerseLoop();
