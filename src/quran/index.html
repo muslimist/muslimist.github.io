@@ -694,7 +694,7 @@ color: #666;
                       <select name="script" id="script" onchange="onchangeScript()">
                         <option value="none">None</option>
                         <option value="quran-uthmani">Uthmani</option>
-                        <option value="quran-uthmani-tajweed">Uthmani Tajweed</option>
+                        <option value="quran-uthmani-tajweed">Uthmani Tajweed (no safari/ios)</option>
                         <option value="quran-uthmani-min">Uthmani Minimal</option>
                         <option value="quran-simple">Simple</option>
                         <option value="quran-simple-enhanced">Simple Enhanced</option>
@@ -1039,7 +1039,12 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
                         allletters = "";
 
                         for (var i = 0; i < quran[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1].text.length; i++) {
-                          allletters = allletters + "<span onClick=\"clickletter(this.id)\" id=\"letter"+(i+1)+"\">" + quran[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1].text.charAt(i) + "</span>";
+                            if (isSafari()) {
+                                allletters = allletters + quran[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1].text.charAt(i);
+                            } else {
+                                allletters = allletters + "<span onClick=\"clickletter(this.id)\" id=\"letter"+(i+1)+"\">" + quran[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1].text.charAt(i) + "</span>";
+                            }
+                          
                         }
                         
 
@@ -1473,18 +1478,26 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
 
       for (var i = 0; i < input.length; i++) {
           if (i == end[currentrule]) {
+            if (!isSafari()) {
               output += "</span>";
+            }
               currentrule++;
           }
           if (i == start[currentrule]) {
-              output += "<span class='" + rule[currentrule] + "'>";
+            if (!isSafari()) {
+                output += "<span class='" + rule[currentrule] + "'>";
+            }
           }
           // DONT FOR NOW somewhat fix madd tatweel issue
           if (input.charAt(i).charCodeAt(0) == "1648") {
               //output += '\u0640';
           }
-          output += "<span onClick=\"clickletter(this.id)\" id=\"letter"+(i+1)+"\">" + input.charAt(i) + "</span>";
-          
+
+          if (isSafari()) {
+            output += input.charAt(i);
+          } else {
+            output += "<span onClick=\"clickletter(this.id)\" id=\"letter"+(i+1)+"\">" + input.charAt(i) + "</span>";
+          }
       }
 
 
@@ -1526,11 +1539,15 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
 
       for (var i = 0; i < input.length; i++) {
           if (i == end[currentrule]) {
+            if (!isSafari()) {
               output += "</span>";
+            }
               currentrule++;
           }
           if (i == start[currentrule]) {
+            if (!isSafari()) {
               output += "<span class='" + rule[currentrule] + "'>";
+            }
           }
           // DONT FOR NOW somewhat fix madd tatweel issue
           if (input.charAt(i).charCodeAt(0) == "1648") {
@@ -1560,6 +1577,16 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
 
         });
     }
+
+
+    function isSafari() {
+        if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     
 
