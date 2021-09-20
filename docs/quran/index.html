@@ -826,8 +826,10 @@ color: #666;
                     <div class="field">
                         <label>Randomize Once</label>
                         <ul class="actions" style="margin: 0 0 0 0;">
-                            <li><a name="reset" id="reset" class="button" onclick="randomChapterNow()">Random Chapter</a></li>
-                            <li><a name="reset" id="reset" class="button" onclick="randomReciterNow()">Random Reciter</a></li>
+                            <li><a name="randomChapterNow" id="randomChapterNow" class="button" onclick="randomChapterNow()">Random Chapter</a></li>
+                            <li><a name="randomVerseNow" id="randomVerseNow" class="button" onclick="randomVerseNow()">Random Verse</a></li>
+                            <li><a name="randomChapterVerseNow" id="randomChapterVerseNow" class="button" onclick="randomChapterVerseNow()">Random Chapter + Verse</a></li>
+                            <li><a name="randomReciterNow" id="randomReciterNow" class="button" onclick="randomReciterNow()">Random Reciter</a></li>
                         </ul>
                     </div>
                     <div class="field" onclick="copyLink();">
@@ -1345,8 +1347,19 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
         var selectRandomChapterNow  = document.getElementById('chapter');
         var optionsRandomChapterNow = selectRandomChapterNow.children;  
         var randomRandomChapterNow  = Math.floor(Math.random() * optionsRandomChapterNow.length);
+        console.log("chapter = " + randomRandomChapterNow);
         selectRandomChapterNow.value = optionsRandomChapterNow[randomRandomChapterNow].value; 
         onchangeChapter();
+    }
+
+    function randomVerseNow() {
+        document.getElementById('verse').value = Math.floor((Math.random() * NUMBER_OF_VERSES[parseInt(localStorage.getItem("quran_chapter"))-1]) + 1);
+        onchangeVerse();
+    }
+
+    function randomChapterVerseNow() {
+        randomChapterNow();
+        randomVerseNow();
     }
 
 
