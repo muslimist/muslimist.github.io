@@ -49,6 +49,19 @@
 	<body class="is-preload">
 		<div id="wrapper" class="divided">
 
+<script>
+    function copyLink() {
+        var copyText = document.getElementById("copylink");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(copyText.value);
+        document.getElementById("copylinklabel").innerHTML = "Link copied!";
+        setTimeout(function(){
+            document.getElementById("copylinklabel").innerHTML = "Copy link to chapter & verse"
+        }, 3000);
+    }
+</script>
+
 <style>
 
 .arabic-Al-QuranAlKareem {
@@ -817,6 +830,10 @@ color: #666;
                             <li><a name="reset" id="reset" class="button" onclick="randomReciterNow()">Random Reciter</a></li>
                         </ul>
                     </div>
+                    <div class="field" onclick="copyLink();">
+                        <label id="copylinklabel">Copy link to chapter & verse</label>
+                        <input  type="text" id="copylink" name="copylink" value="ddddd" />
+                    </div>
                     <div class="field">
                         <label>Keep Screen Awake (only for chrome browsers)</label>
                         <input type="checkbox" id="wakelock" name="wakelock"/>
@@ -1164,6 +1181,8 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
                 console.log('autoplay error: ' + error);
             });
         }
+
+        document.getElementById("copylink").value = "https://muslimist.com/quran/" + localStorage.getItem("quran_chapter") + "/" + localStorage.getItem("quran_verse");
     }
 
     function retryAudio(why) {
@@ -1267,6 +1286,8 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
         }
 
         updateVerseLoop();
+
+        document.getElementById("copylink").value = "https://muslimist.com/quran/" + localStorage.getItem("quran_chapter") + "/" + localStorage.getItem("quran_verse");
 
     }
 
@@ -1631,8 +1652,6 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
         }
     }
 
-
-    
 
 
 
