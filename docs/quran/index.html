@@ -374,6 +374,9 @@ color: #666;
                   <audio onended="nextAudio()" onstalled="retryAudio('onstalled')" onerror="retryAudio('onerror')" id="audio" controls autoplay>
                     <source id="audioSource" src=""></source>
                   </audio>
+                  <audio id="preAudio">
+                    <source id="preAudioSource" src=""></source>
+                  </audio>
                 </center>
               </div>
             </section>
@@ -1317,7 +1320,19 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
             nextverse = DEFAULT_VERSE;
         }
 
-        url = 'https://www.everyayah.com/data/' + localStorage.getItem("quran_reciter") + '/' + threeDigits(nextchapter) + threeDigits(nextverse) + '.mp3';
+        switch (localStorage.getItem("quran_reciter")) {
+            case "maryam_amir_320":
+                url = "https://muslimist.com/homemade/" + localStorage.getItem("quran_reciter") + "/" + threeDigits(nextchapter) + threeDigits(nextverse) + ".mp3";
+                break;
+            default:
+                url = "https://www.everyayah.com/data/" + localStorage.getItem("quran_reciter") + "/" + threeDigits(nextchapter) + threeDigits(nextverse) + ".mp3";
+                break;
+        }
+
+        var preAudio = $('preAudio');
+        var preAudioSource = $('preAudioSource');
+        preAudioSource.src = url;
+        preAudio.load();
 
         //console.log('next media request (preload not working): ' + url);
 
