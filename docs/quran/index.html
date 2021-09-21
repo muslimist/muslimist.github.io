@@ -581,6 +581,7 @@ color: #666;
                         <option value="Yaser_Salamah_128kbps">Yaser Salamah - 128kbps</option>
                         <option value="Yasser_Ad-Dussary_128kbps">Yasser Ad-Dussary - 128kbps</option>
                         <option value="warsh/warsh_yassin_al_jazaery_64kbps">Yassin Al Jazaery (Warsh) - 64kbps</option>
+                        <option value="maryam_amir_320">Maryam Amir (Chapter 114 only) - 320kbps</option>
                         <option disabled> -- OTHER LANGUAGES --</option>
                         <option value="translations/azerbaijani/balayev">Azerbaijani - Azerbaijani Balayev</option>
                         <option value="translations/besim_korkut_ajet_po_ajet">Bosnian - Besim Korkut Ajet Po Ajet</option>
@@ -1173,7 +1174,16 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
 
         var audio = $('audio');
         var source = $('audioSource');
-        source.src = "https://www.everyayah.com/data/" + localStorage.getItem("quran_reciter") + "/" + threeDigits(localStorage.getItem("quran_chapter")) + threeDigits(localStorage.getItem("quran_verse")) + ".mp3";
+
+        switch (localStorage.getItem("quran_reciter")) {
+            case "maryam_amir_320":
+                source.src = "https://muslimist.com/homemade/" + localStorage.getItem("quran_reciter") + "/" + threeDigits(localStorage.getItem("quran_chapter")) + threeDigits(localStorage.getItem("quran_verse")) + ".mp3";
+                break;
+            default:
+                source.src = "https://www.everyayah.com/data/" + localStorage.getItem("quran_reciter") + "/" + threeDigits(localStorage.getItem("quran_chapter")) + threeDigits(localStorage.getItem("quran_verse")) + ".mp3";
+                break;
+        }
+
         audio.load();
 
         var promise = audio.play();
