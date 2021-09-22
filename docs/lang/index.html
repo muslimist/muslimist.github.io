@@ -14,15 +14,19 @@ switch (lang) {
 		break;
 }
 
-alert(document.referrer);
-alert(window.location);
-
-if (document.referrer == '') {
-	window.location.href = '/';
-} else {
-	window.location.href = document.referrer;
+switch (localStorage.getItem("lastpage")) {
+	case "quran":
+		window.location.href = '/quran';
+		break;
+	case "qibla":
+		window.location.href = '/qibla';
+		break;
+	case "times":
+		window.location.href = '/times';
+		break;
+	default:
+		window.location.href = '/';
+		break;
 }
-
-//window.history.back();
 
 </script>
