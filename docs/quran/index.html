@@ -1286,9 +1286,19 @@ switch (localStorage.lang) {
     function clickletter(letterid) {
         letterid = letterid.slice(6);
         percentage = (letterid / localStorage.getItem("quran_quranverselettercount"));
+
         var audio = $('audio');
         duration = audio.duration;
-        audio.currentTime=(duration*percentage);
+
+        if (duration > 10 && percentage > .90) {
+            audio.currentTime = duration - 1;
+        } else if (percentage > .90) {
+            audio.currentTime = duration - 2;
+        } else {
+            audio.currentTime = (duration*percentage);
+        }
+
+        
     }
 
 
