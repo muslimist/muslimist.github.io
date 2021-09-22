@@ -69,10 +69,144 @@ table.roundedCorners tr:last-child > td {
 localStorage.setItem("lastpage", "times");
 </script>
 
+<script>
+switch (localStorage.lang) {
+    case "arabic":
+        lang = {
+            times: "أوقات الصلاة",
+            calculatetheprayertimesinyourarea: "احسب مواقيت الصلاة لمنطقتك",
+            options: "خيارات",
+            gpslocation: "GPS الاحداثيات",
+            getcoordinatesfromgpslocation: "احصل على إحداثيات من موقع GPS",
+            latitude: "خط العرض",
+            longitude: "خط العرض",
+            timezone: "خط الطول",
+            daylightsavingtime: "التوقيت الصيفي",
+            method: "الطريقة",
+            timeformat: "تنسيق الوقت",
+            timeprecision: "دقة الوقت",
+            viewtimes: "أنواع الوقت",
+            resettodefaultsettings: "إعادة التعيين إلى الإعدادات الافتراضية",
+            reset: "إعادة تعيين",
+            auto: "تلقائي",
+            enabled: "تمكين",
+            disabled: "تعطيل",
+            showseconds: "مشاهدة ثواني",
+            hideseconds: "إخفاء الثواني",
+            twelvehour: "12-ساعة",
+            twelvehournosuffix: "(لا لاحقة) ساعة-12",
+            twentyfourhour: "24-ساعة",
+            tahajjud: "تهجد",
+            imsak: "إمساك",
+            fajr: "الفجر",
+            sunrise: "شروق الشمس",
+            dhuhr: "الظهر",
+            asr: "العصر",
+            sunset: "غروب الشمس",
+            maghrib: "المغرب",
+            isha: "العشاء",
+            midnight: "منتصف الليل",
+            gettinglocation: "الحصول على الموقع",
+            geolocationisnotsupportedbythisbrowser: "لا يدعم هذا المتصفح تحديد الموقع الجغرافي",
+            userdeniedgeolocationrequest: "رفض المستخدم طلب تحديد الموقع الجغرافي",
+            locationinformationunavailable: "معلومات الموقع غير متوفرة",
+            therequesttimedout: "الطلب انتهى",
+            anunknownerroroccurred: "حدث خطأ غير معروف",
+            success: "النجاح",
+            mwl: "رابطة العالم الإسلامي (MWL)",
+            isna: "الجمعية الإسلامية لأمريكا الشمالية (ISNA)",
+            egypt: "الهيئة المصرية العامة للمساحة",
+            makkah: "جامعة أم القرى بمكة المكرمة",
+            karachi: "جامعة العلوم الإسلامية بكراتشي",
+            jafari: "الشيعة اثنا عشرية (جعفري)",
+            tehran: "معهد الجيوفيزياء بجامعة طهران",
+            algeria: "وزير الشؤون الدينية والأوقاف الجزائري",
+            diyanet: "رئاسة الشؤون الدينية",
+            egyptbis: "الهيئة المصرية العامة (BIS)",
+            fixedisha: "فترة زاوية ثابتة للعشاء",
+            franceuoif: "فرنسا UOIF - الزاوية 12 درجة",
+            france15: "فرنسا - زاوية 15 درجة",
+            france18: "فرنسا - زاوية 18 درجة",
+            jakim: "JAKIM (وزارة التنمية الإسلامية ماليزيا)",
+            muis: "MUIS (المجلس الديني الإسلامي في سنغافورة)",
+            kemenag: "SIHAT / KEMENAG (وزارة الدين RI)",
+            tunisia: "وزارة الشؤون الدينية التونسية",
+            awqaduae: "الهيئة العامة للشؤون الإسلامية والأوقاف بدولة الإمارات العربية المتحدة",
+            londonuipt: "جدول مواعيد الصلاة الإسلامية في لندن",
+        };
+        break;
+    default:
+        lang = {
+            times: "times",
+            calculatetheprayertimesinyourarea: "calculate the prayer times for your area",
+            options: "options",
+            gpslocation: "GPS Location",
+            getcoordinatesfromgpslocation: "Get coordinates from gps location",
+            latitude: "Latitude",
+            longitude: "Longitude",
+            timezone: "Timezone",
+            daylightsavingtime: "Daylight Saving Time",
+            method: "Method",
+            timeformat: "Time Format",
+            timeprecision: "Time Precision",
+            viewtimes: "View Times",
+            resettodefaultsettings: "Reset to default settings",
+            reset: "reset",
+            auto: "Auto",
+            enabled: "Enabled",
+            disabled: "Disabled",
+            showseconds: "Show Seconds",
+            hideseconds: "Hide Seconds",
+            twelvehour: "12-hour",
+            twelvehournosuffix: "12-hour (no suffix)",
+            twentyfourhour: "24-hour",
+            tahajjud: "Tahajjud",
+            imsak: "Imsak",
+            fajr: "Fajr",
+            sunrise: "Sunrise",
+            dhuhr: "Dhuhr",
+            asr: "Asr",
+            sunset: "Sunset",
+            maghrib: "Maghrib",
+            isha: "Isha",
+            midnight: "Midnight",
+            gettinglocation: "getting location",
+            geolocationisnotsupportedbythisbrowser: "Geolocation is not supported by this browser",
+            userdeniedgeolocationrequest: "User denied geolocation request",
+            locationinformationunavailable: "Location information unavailable",
+            therequesttimedout: "The request timed out",
+            anunknownerroroccurred: "An unknown error occurred",
+            success: "success",
+            mwl: "Muslim World League (MWL)",
+            isna: "Islamic Society of North America (ISNA)",
+            egypt: "Egyptian General Authority of Survey",
+            makkah: "Umm al-Qura University, Makkah",
+            karachi: "University of Islamic Sciences, Karachi",
+            jafari: "Shia Ithna-Ashari (Jafari)",
+            tehran: "Institute of Geophysics, University of Tehran",
+            algeria: "Algerian Minister of Religious Affairs and Wakfs",
+            diyanet: "Diyanet İşleri Başkanlığı",
+            egyptbis: "Egyptian General Authority (Bis)",
+            fixedisha: "Fixed Isha Angle Interval",
+            franceuoif: "France UOIF - Angle 12°",
+            france15: "France - Angle 15°",
+            france18: "France - Angle 18°",
+            jakim: "JAKIM (Jabatan Kemajuan Islam Malaysia)",
+            muis: "MUIS (Majlis Ugama Islam Singapura)",
+            kemenag: "SIHAT/KEMENAG (Kementerian Agama RI)",
+            tunisia: "Tunisian Ministry of Religious Affairs",
+            awqaduae: "UAE General Authority of Islamic Affairs And Endowments",
+            londonuipt: "London Unified Islamic Prayer Timetable",
+        };
+        break;
+}
+
+</script>
+
 			<section class="banner style1 orient-left content-align-left image-position-right fullscreen onload-image-fade-in onload-content-fade-right">
 				<div class="content">
-					<h1>times</h1>
-					<p class="major">calculate the prayer times for your area</p>
+					<h1><script>document.write(lang.times);</script></h1>
+					<p class="major"><script>document.write(lang.calculatetheprayertimesinyourarea);</script></p>
 				</div>
 				<div class="image">
 					<img src="/assets/images/header_times.webp" alt="" />
@@ -85,7 +219,7 @@ localStorage.setItem("lastpage", "times");
 					<div class="index align-left">
 						<section>
 							<header>
-								<h3>times</h3>
+								<h3><script>document.write(lang.times);</script></h3>
 							</header>
 							<div class="content">
 								<div class="table-wrapper" id="table-wrapper"></div>
@@ -93,28 +227,28 @@ localStorage.setItem("lastpage", "times");
 						</section>
 						<section>
 							<header>
-								<h3>options</h3>
+								<h3><script>document.write(lang.options);</script></h3>
 							</header>
 							<div class="content">
 								<form method="post" action="#">
 									<div class="fields">
 										<div class="field">
-											<label for="getlocation">GPS Location</label>
+											<label for="getlocation"><script>document.write(lang.gpslocation);</script></label>
 											<ul class="actions" style="margin: 0 0 0 0;">
-												<li><a name="getlocation" id="getlocation" class="button" onclick="getLocation()">Get coordinates from gps location</a></li>
+												<li><a name="getlocation" id="getlocation" class="button" onclick="getLocation()"><script>document.write(lang.getcoordinatesfromgpslocation);</script></a></li>
 											</ul>
 										</div>
 										<div class="field half">
-											<label for="latitude">Latitude</label>
+											<label for="latitude"><script>document.write(lang.latitude);</script></label>
 											<input type="text" name="latitude" id="latitude" value="43" onchange="update()" />
 										</div>
 										<div class="field half">
-											<label for="longitude">Longitude</label>
+											<label for="longitude"><script>document.write(lang.longitude);</script></label>
 											<input type="email" name="longitude" id="longitude" value="-80" onchange="update()" />
 										</div>
 										
 										<div class="field half">
-											<label for="timezone">Timezone</label>
+											<label for="timezone"><script>document.write(lang.timezone);</script></label>
 											<select name="timezone" id="timezone" onchange="update()">
 												<option value="-12">-12:00</option>
 												<option value="-11">-11:00</option>
@@ -157,101 +291,101 @@ localStorage.setItem("lastpage", "times");
 											</select>
 										</div>
 										<div class="field half">
-											<label for="daylightsavingtime">Daylight Saving Time</label>
+											<label for="daylightsavingtime"><script>document.write(lang.daylightsavingtime);</script></label>
 											<select name="daylightsavingtime" id="daylightsavingtime" onchange="update()">
-												<option value="auto" selected="selected">Auto</option>
-												<option value="0">Disabled</option>
-												<option value="1">Enabled</option>
+												<option value="auto" selected="selected"><script>document.write(lang.auto);</script></option>
+												<option value="0"><script>document.write(lang.disabled);</script></option>
+												<option value="1"><script>document.write(lang.enabled);</script></option>
 											</select>
 										</div>
 										<div class="field">
-											<label for="method">Method</label>
+											<label for="method"><script>document.write(lang.method);</script></label>
 											<select name="method" id="method" onchange="update()">
-												<option value="MWL">Muslim World League (MWL)</option>
-												<option value="ISNA" selected="selected">Islamic Society of North America (ISNA)</option>
-												<option value="Egypt">Egyptian General Authority of Survey</option>
-												<option value="Makkah">Umm al-Qura University, Makkah</option>
-												<option value="Karachi">University of Islamic Sciences, Karachi</option>
-												<option value="Jafari">Shia Ithna-Ashari (Jafari)</option>
-												<option value="Tehran">Institute of Geophysics, University of Tehran</option>
-												<option value="Algeria">Algerian Minister of Religious Affairs and Wakfs</option>
-												<option value="Diyanet">Diyanet İşleri Başkanlığı</option>
-												<option value="EgyptBis">Egyptian General Authority (Bis)</option>
-												<option value="FixedIsha">Fixed Isha Angle Interval</option>
-												<option value="FranceUOIF">France UOIF - Angle 12°</option>
-												<option value="France15">France - Angle 15°</option>
-												<option value="France18">France - Angle 18°</option>
-												<option value="JAKIM">JAKIM (Jabatan Kemajuan Islam Malaysia)</option>
-												<option value="MUIS">MUIS (Majlis Ugama Islam Singapura)</option>
-												<option value="Kemenag">SIHAT/KEMENAG (Kementerian Agama RI)</option>
-												<option value="Tunisia">Tunisian Ministry of Religious Affairs</option>
-												<option value="AwqafUAE">UAE General Authority of Islamic Affairs And Endowments</option>
-												<option value="LondonUIPT">London Unified Islamic Prayer Timetable</option>
+												<option value="MWL"><script>document.write(lang.mwl);</script></option>
+												<option value="ISNA" selected="selected"><script>document.write(lang.isna);</script></option>
+												<option value="Egypt"><script>document.write(lang.egypt);</script></option>
+												<option value="Makkah"><script>document.write(lang.makkah);</script></option>
+												<option value="Karachi"><script>document.write(lang.karachi);</script></option>
+												<option value="Jafari"><script>document.write(lang.jafari);</script></option>
+												<option value="Tehran"><script>document.write(lang.tehran);</script></option>
+												<option value="Algeria"><script>document.write(lang.algeria);</script></option>
+												<option value="Diyanet"><script>document.write(lang.diyanet);</script></option>
+												<option value="EgyptBis"><script>document.write(lang.egyptbis);</script></option>
+												<option value="FixedIsha"><script>document.write(lang.fixedisha);</script></option>
+												<option value="FranceUOIF"><script>document.write(lang.franceuoif);</script></option>
+												<option value="France15"><script>document.write(lang.france15);</script></option>
+												<option value="France18"><script>document.write(lang.france18);</script></option>
+												<option value="JAKIM"><script>document.write(lang.jakim);</script></option>
+												<option value="MUIS"><script>document.write(lang.muis);</script></option>
+												<option value="Kemenag"><script>document.write(lang.kemenag);</script></option>
+												<option value="Tunisia"><script>document.write(lang.tunisia);</script></option>
+												<option value="AwqafUAE"><script>document.write(lang.awqaduae);</script></option>
+												<option value="LondonUIPT"><script>document.write(lang.londonuipt);</script></option>
 											</select>
 										</div>
 										<div class="field half">
-											<label for="format">Time Format</label>
+											<label for="format"><script>document.write(lang.timeformat);</script></label>
 											<select name="format" id="format" onchange="update()">
-												<option value="12h" selected="selected">12-hour</option>
-												<option value="12hNS">12-hour (no suffix)</option>
-												<option value="24h">24-hour</option>
+												<option value="12h" selected="selected"><script>document.write(lang.twelvehour);</script></option>
+												<option value="12hNS"><script>document.write(lang.twelvehournosuffix);</script></option>
+												<option value="24h"><script>document.write(lang.twentyfourhour);</script></option>
 											</select>
 										</div>
 										<div class="field half">
-											<label for="precision">Time Precision</label>
+											<label for="precision"><script>document.write(lang.timeprecision);</script></label>
 											<select name="precision" id="precision" onchange="update()">
-												<option value="show" selected="selected">Show Seconds</option>
-												<option value="hide">Hide Seconds</option>
+												<option value="show" selected="selected"><script>document.write(lang.showseconds);</script></option>
+												<option value="hide"><script>document.write(lang.hideseconds);</script></option>
 											</select>
 										</div>
 										<div class="field">
-											<label style="margin: 0 0 0 0;">View Times</label>
+											<label style="margin: 0 0 0 0;"><script>document.write(lang.viewtimes);</script></label>
 										</div>
 										<div class="field third">
 											<input type="checkbox" id="tahajjud" name="tahajjud" onchange="update()" />
-											<label for="tahajjud">Tahajjud</label>
+											<label for="tahajjud"><script>document.write(lang.tahajjud);</script></label>
 										</div>
 										<div class="field third">
 											<input type="checkbox" id="imsak" name="imsak" onchange="update()" />
-											<label for="imsak">Imsak</label>
+											<label for="imsak"><script>document.write(lang.imsak);</script></label>
 										</div>
 										<div class="field third">
 											<input type="checkbox" id="fajr" name="fajr" onchange="update()" />
-											<label for="fajr">Fajr</label>
+											<label for="fajr"><script>document.write(lang.fajr);</script></label>
 										</div>
 										<div class="field third">
 											<input type="checkbox" id="sunrise" name="sunrise" onchange="update()" />
-											<label for="sunrise">Sunrise</label>
+											<label for="sunrise"><script>document.write(lang.sunrise);</script></label>
 										</div>
 										<div class="field third">
 											<input type="checkbox" id="dhuhr" name="dhuhr" onchange="update()" />
-											<label for="dhuhr">Dhuhr</label>
+											<label for="dhuhr"><script>document.write(lang.dhuhr);</script></label>
 										</div>
 										<div class="field third">
 											<input type="checkbox" id="asr" name="asr" onchange="update()" />
-											<label for="asr">Asr</label>
+											<label for="asr"><script>document.write(lang.asr);</script></label>
 										</div>
 										<div class="field third">
 											<input type="checkbox" id="sunset" name="sunset" onchange="update()" />
-											<label for="sunset">Sunset</label>
+											<label for="sunset"><script>document.write(lang.sunset);</script></label>
 										</div>
 										<div class="field third">
 											<input type="checkbox" id="maghrib" name="maghrib" onchange="update()" />
-											<label for="maghrib">Maghrib</label>
+											<label for="maghrib"><script>document.write(lang.maghrib);</script></label>
 										</div>
 										<div class="field third">
 											<input type="checkbox" id="isha" name="isha" onchange="update()" />
-											<label for="isha">Isha</label>
+											<label for="isha"><script>document.write(lang.isha);</script></label>
 										</div>
 										<div class="field third">
 											<input type="checkbox" id="midnight" name="midnight" onchange="update()" />
-											<label for="midnight">Midnight</label>
+											<label for="midnight"><script>document.write(lang.midnight);</script></label>
 										</div>
 										<br><br><br>
 										<div class="field">
-											<label for="reset">Reset to default settings</label>
+											<label for="reset"><script>document.write(lang.resettodefaultsettings);</script></label>
 											<ul class="actions" style="margin: 0 0 0 0;">
-												<li><a name="reset" id="reset" class="button" onclick="reset()">Reset</a></li>
+												<li><a name="reset" id="reset" class="button" onclick="reset()"><script>document.write(lang.reset);</script></a></li>
 											</ul>
 										</div>
 									</div>
@@ -403,9 +537,9 @@ localStorage.setItem("lastpage", "times");
 				function getLocation() {
 				  if (navigator.geolocation) {
 				    navigator.geolocation.getCurrentPosition(showPosition, showError);
-				    $("getlocation").innerHTML="getting location";
+				    $("getlocation").innerHTML=lang.gettinglocation;
 				  } else { 
-				    alert("Geolocation is not supported by this browser.");
+				    alert(lang.geolocationisnotsupportedbythisbrowser);
 				  }
 				}
 
@@ -413,27 +547,27 @@ localStorage.setItem("lastpage", "times");
 					$('latitude').value = position.coords.latitude;
 					$('longitude').value = position.coords.longitude;
 					update();
-					$("getlocation").innerHTML="success";
-					setTimeout(function(){ $("getlocation").innerHTML="GET COORDINATES FROM GPS LOCATION"; }, 3000);
+					$("getlocation").innerHTML=lang.success;
+					setTimeout(function(){ $("getlocation").innerHTML=lang.getcoordinatesfromgpslocation; }, 3000);
 
 				}
 
 				function showError(error) {
 				  switch(error.code) {
 				    case error.PERMISSION_DENIED:
-				      $("getlocation").innerHTML="User denied geolocation request.";
+				      $("getlocation").innerHTML=lang.userdeniedgeolocationrequest;
 				      break;
 				    case error.POSITION_UNAVAILABLE:
-				      $("getlocation").innerHTML="Location information unavailable.";
+				      $("getlocation").innerHTML=lang.locationinformationunavailable;
 				      break;
 				    case error.TIMEOUT:
-				      $("getlocation").innerHTML="The request timed out.";
+				      $("getlocation").innerHTML=lang.therequesttimedout;
 				      break;
 				    case error.UNKNOWN_ERROR:
-				      $("getlocation").innerHTML="An unknown error occurred.";
+				      $("getlocation").innerHTML=lang.anunknownerroroccurred;
 				      break;
 				  }
-				  setTimeout(function(){ $("getlocation").innerHTML="GET COORDINATES FROM GPS LOCATION"; }, 3000);
+				  setTimeout(function(){ $("getlocation").innerHTML=lang.getcoordinatesfromgpslocation; }, 3000);
 				}
 
 				function reset() {
