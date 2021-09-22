@@ -14,7 +14,15 @@ switch (lang) {
 		break;
 }
 
-//window.location.href = document.referrer;
-window.history.back();
+alert(document.referrer);
+alert(window.location);
+
+if (document.referrer == '') {
+	window.location.href = '/';
+} else {
+	window.location.href = document.referrer;
+}
+
+//window.history.back();
 
 </script>
