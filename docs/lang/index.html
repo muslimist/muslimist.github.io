@@ -1,0 +1,20 @@
+<script type="text/javascript">
+
+var decoded = window.location.search.substring(1);
+var decoded2 = decoded.split("?");
+var lang = decoded2[0];
+
+
+switch (lang) {
+	case "arabic":
+		localStorage.setItem("lang", "arabic");
+		break;
+	default:
+		localStorage.setItem("lang", "english");
+		break;
+}
+
+//window.location.href = document.referrer;
+window.history.back();
+
+</script>

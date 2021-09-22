@@ -284,11 +284,381 @@ color: #666;
 
 </style>
 
+<script>
+switch (localStorage.lang) {
+    case "arabic":
+        lang = {
+            quran: "القرآن الكريم",
+            readandlistentillyourheartiscontent: "اقرأ واستمع حتى يرضى قلبك",
+            translation: "ترجمة",
+            audio: "صوت",
+            options: "خيارات",
+            chapter: "سورة",
+            verse: "آية",
+            reciter: "القارئ",
+            playbackspeed: "سرعة قراءة",
+            slowest: "بطيء جدا جدا",
+            slower: "بطيء جدا",
+            slow: "بطيء",
+            normal: "طبيعي",
+            fast: "سريع",
+            faster: "سريع جدا",
+            fastest: "سريع جدا جدا",
+            verseloop: "تكرير حتى الآية",
+            disabled: "غير مستعمل",
+            verserepeat: "تكرير نفس الآية",
+            onetime: "مره واحده",
+            twotimes: "مرتين",
+            threetimes: "ثلاث مرات",
+            none: "لا شيء",
+            translationsize: "حجم الترجمة",
+            tiny: "صغير جدا",
+            small: "صغير",
+            medium: "واسطة",
+            large: "كبير",
+            huge: "كبير جدا",
+            quranscript: "كتابة القرآن",
+            quranfont: "خط القرآن",
+            quransize: "حجم القرآن",
+            quranview: "عرض القرآن",
+            showcurrentverse: "عرض الآية الحالية",
+            showentirechapter: "عرض السورة كاملة",
+            entirechapterautoscroll: "لفافة آلية السورة بأكملها",
+            dontscrolltocurrentverse: "لا تنتقل إلى الآية الحالية",
+            automaticallyscrolltocurrentverse: "انتقل تلقائيا إلى الآية الحالية",
+            randomreciter: "قارئ عشوائي",
+            samereciter: "نفس القارئ",
+            randomrecitereveryverse: "قارئ العشوائي لكل آية",
+            randomrecitereverychapter: "قارئ العشوائي لكل سورة",
+            randomchapter: "سورة عشوائية",
+            nextchapteronend: "السورة التالية في نهايتها",
+            randomchapteronend: "سورة عشوائية على نهاية",
+            randomizeonce: "عشوائي مرة واحدة",
+            randomchapter: "سورة عشوائية",
+            randomverse: "آية عشوائية",
+            randomchapterandverse: "سورة وآية عشوائية",
+            randomreciter: "قارئ عشوائي",
+            copylinktochapterandverse: "انسخ الرابط إلى السورة والآية",
+            keepscreenawake: "إبقاء الشاشة في وضع التنبيه (فقط لمتصفحات الكروم)",
+            resettodefaultsettings: "إعادة التعيين إلى الإعدادات الافتراضية",
+            reset: "إعادة تعيين",
+            chapter1: "1: ٱلْفَاتِحَة",
+            chapter2: "2: ٱلْبَقَرَة",
+            chapter3: "3: آلِ عِمْرَان",
+            chapter4: "4: ٱلنِّسَاء",
+            chapter5: "5: ٱلْمَائِدَة",
+            chapter6: "6: ٱلْأَنْعَام",
+            chapter7: "7: ٱلْأَعْرَاف",
+            chapter8: "8: ٱلْأَنْفَال",
+            chapter9: "9: ٱلتَّوْبَة",
+            chapter10: "10: يُونُس",
+            chapter11: "11: هُود",
+            chapter12: "12: يُوسُف",
+            chapter13: "13: ٱلرَّعْد",
+            chapter14: "14: إِبْرَاهِيم",
+            chapter15: "15: ٱلْحِجْر",
+            chapter16: "16: ٱلنَّحْل",
+            chapter17: "17: ٱلْإِسْرَاء",
+            chapter18: "18: ٱلْكَهْف",
+            chapter19: "19: مَرْيَم",
+            chapter20: "20: طه",
+            chapter21: "21: ٱلْأَنْبِيَاء",
+            chapter22: "22: ٱلْحَجّ",
+            chapter23: "23: ٱلْمُؤْمِنُون",
+            chapter24: "24: ٱلنُّور",
+            chapter25: "25: ٱلْفُرْقَان",
+            chapter26: "26: ٱلشُّعَرَاء",
+            chapter27: "27: ٱلنَّمْل",
+            chapter28: "28: ٱلْقَصَص",
+            chapter29: "29: ٱلْعَنْكَبُوت",
+            chapter30: "30: ٱلرُّوم",
+            chapter31: "31: لُقْمَان",
+            chapter32: "32: ٱلسَّجْدَة",
+            chapter33: "33: ٱلْأَحْزَاب",
+            chapter34: "34: سَبَأ",
+            chapter35: "35: فَاطِر",
+            chapter36: "36: يس",
+            chapter37: "37: ٱلصَّافَّات",
+            chapter38: "38: ص",
+            chapter39: "39: ٱلزُّمَر",
+            chapter40: "40: غَافِر",
+            chapter41: "41: فُصِّلَت",
+            chapter42: "42: ٱلشُّورىٰ",
+            chapter43: "43: ٱلْزُّخْرُف",
+            chapter44: "44: ٱلدُّخَان",
+            chapter45: "45: ٱلْجَاثِيَة",
+            chapter46: "46: ٱلْأَحْقَاف",
+            chapter47: "47: مُحَمَّد",
+            chapter48: "48: ٱلْفَتْح",
+            chapter49: "49: ٱلْحُجُرَات",
+            chapter50: "50: ق",
+            chapter51: "51: ٱلذَّارِيَات",
+            chapter52: "52: ٱلطُّور",
+            chapter53: "53: ٱلنَّجْم",
+            chapter54: "54: ٱلْقَمَر",
+            chapter55: "55: ٱلرَّحْمَٰن",
+            chapter56: "56: ٱلْوَاقِعَة",
+            chapter57: "57: ٱلْحَدِيد",
+            chapter58: "58: ٱلْمُجَادِلَة",
+            chapter59: "59: ٱلْحَشْر",
+            chapter60: "60: ٱلْمُمْتَحَنَة",
+            chapter61: "61: ٱلصَّفّ",
+            chapter62: "62: ٱلْجُمُعَة",
+            chapter63: "63: ٱلْمُنَافِقُون",
+            chapter64: "64: ٱلتَّغَابُن",
+            chapter65: "65: ٱلطَّلَاق",
+            chapter66: "66: ٱلتَّحْرِيم",
+            chapter67: "67: ٱلْمُلْك",
+            chapter68: "68: ٱلْقَلَم",
+            chapter69: "69: ٱلْحَاقَّة",
+            chapter70: "70: ٱلْمَعَارِج",
+            chapter71: "71: نُوح",
+            chapter72: "72: ٱلْجِنّ",
+            chapter73: "73: ٱلْمُزَّمِّل",
+            chapter74: "74: ٱلْمُدَّثِّر",
+            chapter75: "75: ٱلْقِيَامَة",
+            chapter76: "76: ٱلْإِنْسَان",
+            chapter77: "77: ٱلْمُرْسَلَات",
+            chapter78: "78: ٱلنَّبَأ",
+            chapter79: "79: ٱلنَّازِعَات",
+            chapter80: "80: عَبَسَ",
+            chapter81: "81: ٱلتَّكْوِير",
+            chapter82: "82: ٱلْإِنْفِطَار",
+            chapter83: "83: ٱلْمُطَفِّفِين",
+            chapter84: "84: ٱلْإِنْشِقَاق",
+            chapter85: "85: ٱلْبُرُوج",
+            chapter86: "86: ٱلطَّارِق",
+            chapter87: "87: ٱلْأَعْلَىٰ",
+            chapter88: "88: ٱلْغَاشِيَة",
+            chapter89: "89: ٱلْفَجْر",
+            chapter90: "90: ٱلْبَلَد",
+            chapter91: "91: ٱلشَّمْس",
+            chapter92: "92: ٱللَّيْل",
+            chapter93: "93: ٱلضُّحَىٰ",
+            chapter94: "94: ٱلشَّرْح",
+            chapter95: "95: ٱلتِّين",
+            chapter96: "96: ٱلْعَلَق",
+            chapter97: "97: ٱلْقَدْر",
+            chapter98: "98: ٱلْبَيِّنَة",
+            chapter99: "99: ٱلزَّلْزَلَة",
+            chapter100: "100: ٱلْعَادِيَات",
+            chapter101: "101: ٱلْقَارِعَة",
+            chapter102: "102: ٱلتَّكَاثُر",
+            chapter103: "103: ٱلْعَصْر",
+            chapter104: "104: ٱلْهُمَزَة",
+            chapter105: "105: ٱلْفِيل",
+            chapter106: "106: قُرَيْش",
+            chapter107: "107: ٱلْمَاعُون",
+            chapter108: "108: ٱلْكَوْثَر",
+            chapter109: "109: ٱلْكَافِرُون",
+            chapter110: "110: ٱلنَّصْر",
+            chapter111: "111: ٱلْمَسَد",
+            chapter112: "112: ٱلْإِخْلَاص",
+            chapter113: "113: ٱلْفَلَق",
+            chapter114: "114: ٱلنَّاس",
+            screenwillstayawake: "ستبقى الشاشة مستيقظة",
+            sorryicantkeepyourscreenawake: "عذرًا ، لا يمكنني إبقاء شاشتك مستيقظة",
+            screenwillnotstayawake: "لن تبقى الشاشة مستيقظة",
+            uthmani: "العثماني",
+            uthmanitajweed: "التجويد العثماني (بدون سفاري / آيفون)",
+            uthmaniminimal: "العثماني الحد الأدنى",
+            simple: "بسيط",
+            simpleenhanced: "بسيط محسن",
+            simpleminimal: "بسيط الحد الأدنى",
+            simpleclean: "بسيط النظيفة",
+        };
+        break;
+    default:
+        lang = {
+            quran: "quran",
+            readandlistentillyourheartiscontent: "read and listen till your heart is content",
+            translation: "translation",
+            audio: "audio",
+            options: "options",
+            chapter: "Chapter",
+            verse: "Verse",
+            reciter: "Reciter",
+            playbackspeed: "Playback Speed",
+            slowest: "Slowest",
+            slower: "Slower",
+            slow: "Slow",
+            normal: "Normal",
+            fast: "Fast",
+            faster: "Faster",
+            fastest: "Fastest",
+            verseloop: "Verse Loop",
+            disabled: "Disabled",
+            verserepeat: "Verse Repeat",
+            onetime: "1 Time",
+            twotimes: "2 Times",
+            threetimes: "3 Times",
+            none: "None",
+            translationsize: "Translation Size",
+            tiny: "Tiny",
+            small: "Small",
+            medium: "Medium",
+            large: "Large",
+            huge: "Huge",
+            quranscript: "Quran Script",
+            quranfont: "Quran Font",
+            quransize: "Quran Size",
+            quranview: "Quran View",
+            showcurrentverse: "Show current verse",
+            showentirechapter: "Show entire chapter",
+            entirechapterautoscroll: "Entire Chapter Auto Scroll",
+            dontscrolltocurrentverse: "Don't scroll to current verse",
+            automaticallyscrolltocurrentverse: "Automatically scroll to current verse",
+            randomreciter: "Random Reciter",
+            samereciter: "Same Reciter",
+            randomrecitereveryverse: "Random reciter every verse",
+            randomrecitereverychapter: "Random reciter every chapter",
+            randomchapter: "Random Chapter",
+            nextchapteronend: "Next chapter on end",
+            randomchapteronend: "Random chapter on end",
+            randomizeonce: "Randomize Once",
+            randomchapter: "Random Chapter",
+            randomverse: "Random Verse",
+            randomchapterandverse: "Random Chapter + Verse",
+            randomreciter: "Random Reciter",
+            copylinktochapterandverse: "Copy link to chapter and verse",
+            keepscreenawake: "Keep Screen Awake (only for chrome browsers)",
+            resettodefaultsettings: "Reset to default settings",
+            reset: "reset",
+            chapter1: "1: Al-Faatiha",
+            chapter2: "2: Al-Baqara",
+            chapter3: "3: Aal-i-Imraan",
+            chapter4: "4: An-Nisaa",
+            chapter5: "5: Al-Maaida",
+            chapter6: "6: Al-An'aam",
+            chapter7: "7: Al-A'raaf",
+            chapter8: "8: Al-Anfaal",
+            chapter9: "9: At-Tawba",
+            chapter10: "10: Yunus",
+            chapter11: "11: Hud",
+            chapter12: "12: Yusuf",
+            chapter13: "13: Ar-Ra'd",
+            chapter14: "14: Ibrahim",
+            chapter15: "15: Al-Hijr",
+            chapter16: "16: An-Nahl",
+            chapter17: "17: Al-Israa",
+            chapter18: "18: Al-Kahf",
+            chapter19: "19: Maryam",
+            chapter20: "20: Taa-Haa",
+            chapter21: "21: Al-Anbiyaa",
+            chapter22: "22: Al-Hajj",
+            chapter23: "23: Al-Muminoon",
+            chapter24: "24: An-Noor",
+            chapter25: "25: Al-Furqaan",
+            chapter26: "26: Ash-Shu'araa",
+            chapter27: "27: An-Naml",
+            chapter28: "28: Al-Qasas",
+            chapter29: "29: Al-Ankaboot",
+            chapter30: "30: Ar-Room",
+            chapter31: "31: Luqman",
+            chapter32: "32: As-Sajda",
+            chapter33: "33: Al-Ahzaab",
+            chapter34: "34: Saba",
+            chapter35: "35: Faatir",
+            chapter36: "36: Yaseen",
+            chapter37: "37: As-Saaffaat",
+            chapter38: "38: Saad",
+            chapter39: "39: Az-Zumar",
+            chapter40: "40: Al-Ghaafir",
+            chapter41: "41: Fussilat",
+            chapter42: "42: Ash-Shura",
+            chapter43: "43: Az-Zukhruf",
+            chapter44: "44: Ad-Dukhaan",
+            chapter45: "45: Al-Jaathiya",
+            chapter46: "46: Al-Ahqaf",
+            chapter47: "47: Muhammad",
+            chapter48: "48: Al-Fath",
+            chapter49: "49: Al-Hujuraat",
+            chapter50: "50: Qaaf",
+            chapter51: "51: Adh-Dhaariyat",
+            chapter52: "52: At-Tur",
+            chapter53: "53: An-Najm",
+            chapter54: "54: Al-Qamar",
+            chapter55: "55: Ar-Rahmaan",
+            chapter56: "56: Al-Waaqia",
+            chapter57: "57: Al-Hadid",
+            chapter58: "58: Al-Mujaadila",
+            chapter59: "59: Al-Hashr",
+            chapter60: "60: Al-Mumtahana",
+            chapter61: "61: As-Saff",
+            chapter62: "62: Al-Jumu'a",
+            chapter63: "63: Al-Munaafiqoon",
+            chapter64: "64: At-Taghaabun",
+            chapter65: "65: At-Talaaq",
+            chapter66: "66: At-Tahrim",
+            chapter67: "67: Al-Mulk",
+            chapter68: "68: Al-Qalam",
+            chapter69: "69: Al-Haaqqa",
+            chapter70: "70: Al-Ma'aarij",
+            chapter71: "71: Nooh",
+            chapter72: "72: Al-Jinn",
+            chapter73: "73: Al-Muzzammil",
+            chapter74: "74: Al-Muddaththir",
+            chapter75: "75: Al-Qiyaama",
+            chapter76: "76: Al-Insaan",
+            chapter77: "77: Al-Mursalaat",
+            chapter78: "78: An-Naba",
+            chapter79: "79: An-Naazi'aat",
+            chapter80: "80: Abasa",
+            chapter81: "81: At-Takwir",
+            chapter82: "82: Al-Infitaar",
+            chapter83: "83: Al-Mutaffifin",
+            chapter84: "84: Al-Inshiqaaq",
+            chapter85: "85: Al-Burooj",
+            chapter86: "86: At-Taariq",
+            chapter87: "87: Al-A'laa",
+            chapter88: "88: Al-Ghaashiya",
+            chapter89: "89: Al-Fajr",
+            chapter90: "90: Al-Balad",
+            chapter91: "91: Ash-Shams",
+            chapter92: "92: Al-Lail",
+            chapter93: "93: Ad-Dhuhaa",
+            chapter94: "94: Ash-Sharh",
+            chapter95: "95: At-Tin",
+            chapter96: "96: Al-Alaq",
+            chapter97: "97: Al-Qadr",
+            chapter98: "98: Al-Bayyina",
+            chapter99: "99: Az-Zalzala",
+            chapter100: "100: Al-Aadiyaat",
+            chapter101: "101: Al Qaariah",
+            chapter102: "102: At-Takaathur",
+            chapter103: "103: Al-Asr",
+            chapter104: "104: Al-Humaza",
+            chapter105: "105: Al-Fil",
+            chapter106: "106: Quraish",
+            chapter107: "107: Al-Maa'un",
+            chapter108: "108: Al-Kawthar",
+            chapter109: "109: Al-Kaafiroon",
+            chapter110: "110: An-Nasr",
+            chapter111: "111: Al-Masad",
+            chapter112: "112: Al-Ikhlaas",
+            chapter113: "113: Al-Falaq",
+            chapter114: "114: An-Naas",
+            screenwillstayawake: "Screen will stay awake",
+            sorryicantkeepyourscreenawake: "Sorry, I can't keep your screen awake",
+            screenwillnotstayawake: "Screen will not stay awake",
+            uthmani: "Uthmani",
+            uthmanitajweed: "Uthmani Tajweed (no safari/ios)",
+            uthmaniminimal: "Uthmani Minimal",
+            simple: "Simple",
+            simpleenhanced: "Simple Enhanced",
+            simpleminimal: "Simple Minimal",
+            simpleclean: "Simple Clean",
+        };
+        break;
+}
+
+</script>
+
 
       <section class="banner style1 orient-left content-align-left image-position-right fullscreen onload-image-fade-in onload-content-fade-right">
         <div class="content">
-          <h1>quran</h1>
-          <p class="major">read and listen till your heart is content</p>
+          <h1><script>document.write(lang.quran);</script></h1>
+          <p class="major"><script>document.write(lang.readandlistentillyourheartiscontent);</script></p>
         </div>
         <div class="image">
           <img src="/assets/images/header_quran.webp" alt="" />
@@ -303,7 +673,7 @@ color: #666;
 
             <section style="padding: 1rem;" id="quransection">
               <header>
-                <h3>quran</h3>
+                <h3><script>document.write(lang.quran);</script></h3>
               </header>
               <center>
                 <div id="qurancontent" class=""></div>
@@ -313,7 +683,7 @@ color: #666;
 
             <section style="padding: 1rem;" id="translationsection">
               <header>
-                <h3>translation</h3>
+                <h3><script>document.write(lang.translation);</script></h3>
               </header>
               <center>
                 <div id="translationcontent" class="content"></div>
@@ -323,7 +693,7 @@ color: #666;
 
             <section style="padding: 1rem;">
               <header>
-                <h3>audio</h3>
+                <h3><script>document.write(lang.audio);</script></h3>
               </header>
               <div class="content">
                 <center>
@@ -339,7 +709,7 @@ color: #666;
 
             <section style="padding: 1rem;">
               <header>
-                <h3>options</h3>
+                <h3><script>document.write(lang.options);</script></h3>
               </header>
               <div class="content">
                 <form method="post" action="#">
@@ -347,131 +717,131 @@ color: #666;
 
 
                     <div class="field half">
-                      <label for="chapter">Chapter</label>
+                      <label for="chapter"><script>document.write(lang.chapter);</script></label>
                       <select name="chapter" id="chapter" onchange="onchangeChapter()">
-                        <option value="1">1: Al-Faatiha</option>
-                        <option value="2">2: Al-Baqara</option>
-                        <option value="3">3: Aal-i-Imraan</option>
-                        <option value="4">4: An-Nisaa</option>
-                        <option value="5">5: Al-Maaida</option>
-                        <option value="6">6: Al-An'aam</option>
-                        <option value="7">7: Al-A'raaf</option>
-                        <option value="8">8: Al-Anfaal</option>
-                        <option value="9">9: At-Tawba</option>
-                        <option value="10">10: Yunus</option>
-                        <option value="11">11: Hud</option>
-                        <option value="12">12: Yusuf</option>
-                        <option value="13">13: Ar-Ra'd</option>
-                        <option value="14">14: Ibrahim</option>
-                        <option value="15">15: Al-Hijr</option>
-                        <option value="16">16: An-Nahl</option>
-                        <option value="17">17: Al-Israa</option>
-                        <option value="18">18: Al-Kahf</option>
-                        <option value="19">19: Maryam</option>
-                        <option value="20">20: Taa-Haa</option>
-                        <option value="21">21: Al-Anbiyaa</option>
-                        <option value="22">22: Al-Hajj</option>
-                        <option value="23">23: Al-Muminoon</option>
-                        <option value="24">24: An-Noor</option>
-                        <option value="25">25: Al-Furqaan</option>
-                        <option value="26">26: Ash-Shu'araa</option>
-                        <option value="27">27: An-Naml</option>
-                        <option value="28">28: Al-Qasas</option>
-                        <option value="29">29: Al-Ankaboot</option>
-                        <option value="30">30: Ar-Room</option>
-                        <option value="31">31: Luqman</option>
-                        <option value="32">32: As-Sajda</option>
-                        <option value="33">33: Al-Ahzaab</option>
-                        <option value="34">34: Saba</option>
-                        <option value="35">35: Faatir</option>
-                        <option value="36">36: Yaseen</option>
-                        <option value="37">37: As-Saaffaat</option>
-                        <option value="38">38: Saad</option>
-                        <option value="39">39: Az-Zumar</option>
-                        <option value="40">40: Al-Ghaafir</option>
-                        <option value="41">41: Fussilat</option>
-                        <option value="42">42: Ash-Shura</option>
-                        <option value="43">43: Az-Zukhruf</option>
-                        <option value="44">44: Ad-Dukhaan</option>
-                        <option value="45">45: Al-Jaathiya</option>
-                        <option value="46">46: Al-Ahqaf</option>
-                        <option value="47">47: Muhammad</option>
-                        <option value="48">48: Al-Fath</option>
-                        <option value="49">49: Al-Hujuraat</option>
-                        <option value="50">50: Qaaf</option>
-                        <option value="51">51: Adh-Dhaariyat</option>
-                        <option value="52">52: At-Tur</option>
-                        <option value="53">53: An-Najm</option>
-                        <option value="54">54: Al-Qamar</option>
-                        <option value="55">55: Ar-Rahmaan</option>
-                        <option value="56">56: Al-Waaqia</option>
-                        <option value="57">57: Al-Hadid</option>
-                        <option value="58">58: Al-Mujaadila</option>
-                        <option value="59">59: Al-Hashr</option>
-                        <option value="60">60: Al-Mumtahana</option>
-                        <option value="61">61: As-Saff</option>
-                        <option value="62">62: Al-Jumu'a</option>
-                        <option value="63">63: Al-Munaafiqoon</option>
-                        <option value="64">64: At-Taghaabun</option>
-                        <option value="65">65: At-Talaaq</option>
-                        <option value="66">66: At-Tahrim</option>
-                        <option value="67">67: Al-Mulk</option>
-                        <option value="68">68: Al-Qalam</option>
-                        <option value="69">69: Al-Haaqqa</option>
-                        <option value="70">70: Al-Ma'aarij</option>
-                        <option value="71">71: Nooh</option>
-                        <option value="72">72: Al-Jinn</option>
-                        <option value="73">73: Al-Muzzammil</option>
-                        <option value="74">74: Al-Muddaththir</option>
-                        <option value="75">75: Al-Qiyaama</option>
-                        <option value="76">76: Al-Insaan</option>
-                        <option value="77">77: Al-Mursalaat</option>
-                        <option value="78">78: An-Naba</option>
-                        <option value="79">79: An-Naazi'aat</option>
-                        <option value="80">80: Abasa</option>
-                        <option value="81">81: At-Takwir</option>
-                        <option value="82">82: Al-Infitaar</option>
-                        <option value="83">83: Al-Mutaffifin</option>
-                        <option value="84">84: Al-Inshiqaaq</option>
-                        <option value="85">85: Al-Burooj</option>
-                        <option value="86">86: At-Taariq</option>
-                        <option value="87">87: Al-A'laa</option>
-                        <option value="88">88: Al-Ghaashiya</option>
-                        <option value="89">89: Al-Fajr</option>
-                        <option value="90">90: Al-Balad</option>
-                        <option value="91">91: Ash-Shams</option>
-                        <option value="92">92: Al-Lail</option>
-                        <option value="93">93: Ad-Dhuhaa</option>
-                        <option value="94">94: Ash-Sharh</option>
-                        <option value="95">95: At-Tin</option>
-                        <option value="96">96: Al-Alaq</option>
-                        <option value="97">97: Al-Qadr</option>
-                        <option value="98">98: Al-Bayyina</option>
-                        <option value="99">99: Az-Zalzala</option>
-                        <option value="100">100: Al-Aadiyaat</option>
-                        <option value="101">101: Al Qaariah</option>
-                        <option value="102">102: At-Takaathur</option>
-                        <option value="103">103: Al-Asr</option>
-                        <option value="104">104: Al-Humaza</option>
-                        <option value="105">105: Al-Fil</option>
-                        <option value="106">106: Quraish</option>
-                        <option value="107">107: Al-Maa'un</option>
-                        <option value="108">108: Al-Kawthar</option>
-                        <option value="109">109: Al-Kaafiroon</option>
-                        <option value="110">110: An-Nasr</option>
-                        <option value="111">111: Al-Masad</option>
-                        <option value="112">112: Al-Ikhlaas</option>
-                        <option value="113">113: Al-Falaq</option>
-                        <option value="114">114: An-Naas</option>
+                        <option value="1"><script>document.write(lang.chapter1);</script></option>
+                        <option value="2"><script>document.write(lang.chapter2);</script></option>
+                        <option value="3"><script>document.write(lang.chapter3);</script></option>
+                        <option value="4"><script>document.write(lang.chapter4);</script></option>
+                        <option value="5"><script>document.write(lang.chapter5);</script></option>
+                        <option value="6"><script>document.write(lang.chapter6);</script></option>
+                        <option value="7"><script>document.write(lang.chapter7);</script></option>
+                        <option value="8"><script>document.write(lang.chapter8);</script></option>
+                        <option value="9"><script>document.write(lang.chapter9);</script></option>
+                        <option value="10"><script>document.write(lang.chapter10);</script></option>
+                        <option value="11"><script>document.write(lang.chapter11);</script></option>
+                        <option value="12"><script>document.write(lang.chapter12);</script></option>
+                        <option value="13"><script>document.write(lang.chapter13);</script></option>
+                        <option value="14"><script>document.write(lang.chapter14);</script></option>
+                        <option value="15"><script>document.write(lang.chapter15);</script></option>
+                        <option value="16"><script>document.write(lang.chapter16);</script></option>
+                        <option value="17"><script>document.write(lang.chapter17);</script></option>
+                        <option value="18"><script>document.write(lang.chapter18);</script></option>
+                        <option value="19"><script>document.write(lang.chapter19);</script></option>
+                        <option value="20"><script>document.write(lang.chapter20);</script></option>
+                        <option value="21"><script>document.write(lang.chapter21);</script></option>
+                        <option value="22"><script>document.write(lang.chapter22);</script></option>
+                        <option value="23"><script>document.write(lang.chapter23);</script></option>
+                        <option value="24"><script>document.write(lang.chapter24);</script></option>
+                        <option value="25"><script>document.write(lang.chapter25);</script></option>
+                        <option value="26"><script>document.write(lang.chapter26);</script></option>
+                        <option value="27"><script>document.write(lang.chapter27);</script></option>
+                        <option value="28"><script>document.write(lang.chapter28);</script></option>
+                        <option value="29"><script>document.write(lang.chapter29);</script></option>
+                        <option value="30"><script>document.write(lang.chapter30);</script></option>
+                        <option value="31"><script>document.write(lang.chapter31);</script></option>
+                        <option value="32"><script>document.write(lang.chapter32);</script></option>
+                        <option value="33"><script>document.write(lang.chapter33);</script></option>
+                        <option value="34"><script>document.write(lang.chapter34);</script></option>
+                        <option value="35"><script>document.write(lang.chapter35);</script></option>
+                        <option value="36"><script>document.write(lang.chapter36);</script></option>
+                        <option value="37"><script>document.write(lang.chapter37);</script></option>
+                        <option value="38"><script>document.write(lang.chapter38);</script></option>
+                        <option value="39"><script>document.write(lang.chapter39);</script></option>
+                        <option value="40"><script>document.write(lang.chapter40);</script></option>
+                        <option value="41"><script>document.write(lang.chapter41);</script></option>
+                        <option value="42"><script>document.write(lang.chapter42);</script></option>
+                        <option value="43"><script>document.write(lang.chapter43);</script></option>
+                        <option value="44"><script>document.write(lang.chapter44);</script></option>
+                        <option value="45"><script>document.write(lang.chapter45);</script></option>
+                        <option value="46"><script>document.write(lang.chapter46);</script></option>
+                        <option value="47"><script>document.write(lang.chapter47);</script></option>
+                        <option value="48"><script>document.write(lang.chapter48);</script></option>
+                        <option value="49"><script>document.write(lang.chapter49);</script></option>
+                        <option value="50"><script>document.write(lang.chapter50);</script></option>
+                        <option value="51"><script>document.write(lang.chapter51);</script></option>
+                        <option value="52"><script>document.write(lang.chapter52);</script></option>
+                        <option value="53"><script>document.write(lang.chapter53);</script></option>
+                        <option value="54"><script>document.write(lang.chapter54);</script></option>
+                        <option value="55"><script>document.write(lang.chapter55);</script></option>
+                        <option value="56"><script>document.write(lang.chapter56);</script></option>
+                        <option value="57"><script>document.write(lang.chapter57);</script></option>
+                        <option value="58"><script>document.write(lang.chapter58);</script></option>
+                        <option value="59"><script>document.write(lang.chapter59);</script></option>
+                        <option value="60"><script>document.write(lang.chapter60);</script></option>
+                        <option value="61"><script>document.write(lang.chapter61);</script></option>
+                        <option value="62"><script>document.write(lang.chapter62);</script></option>
+                        <option value="63"><script>document.write(lang.chapter63);</script></option>
+                        <option value="64"><script>document.write(lang.chapter64);</script></option>
+                        <option value="65"><script>document.write(lang.chapter65);</script></option>
+                        <option value="66"><script>document.write(lang.chapter66);</script></option>
+                        <option value="67"><script>document.write(lang.chapter67);</script></option>
+                        <option value="68"><script>document.write(lang.chapter68);</script></option>
+                        <option value="69"><script>document.write(lang.chapter69);</script></option>
+                        <option value="70"><script>document.write(lang.chapter70);</script></option>
+                        <option value="71"><script>document.write(lang.chapter71);</script></option>
+                        <option value="72"><script>document.write(lang.chapter72);</script></option>
+                        <option value="73"><script>document.write(lang.chapter73);</script></option>
+                        <option value="74"><script>document.write(lang.chapter74);</script></option>
+                        <option value="75"><script>document.write(lang.chapter75);</script></option>
+                        <option value="76"><script>document.write(lang.chapter76);</script></option>
+                        <option value="77"><script>document.write(lang.chapter77);</script></option>
+                        <option value="78"><script>document.write(lang.chapter78);</script></option>
+                        <option value="79"><script>document.write(lang.chapter79);</script></option>
+                        <option value="80"><script>document.write(lang.chapter80);</script></option>
+                        <option value="81"><script>document.write(lang.chapter81);</script></option>
+                        <option value="82"><script>document.write(lang.chapter82);</script></option>
+                        <option value="83"><script>document.write(lang.chapter83);</script></option>
+                        <option value="84"><script>document.write(lang.chapter84);</script></option>
+                        <option value="85"><script>document.write(lang.chapter85);</script></option>
+                        <option value="86"><script>document.write(lang.chapter86);</script></option>
+                        <option value="87"><script>document.write(lang.chapter87);</script></option>
+                        <option value="88"><script>document.write(lang.chapter88);</script></option>
+                        <option value="89"><script>document.write(lang.chapter89);</script></option>
+                        <option value="90"><script>document.write(lang.chapter90);</script></option>
+                        <option value="91"><script>document.write(lang.chapter91);</script></option>
+                        <option value="92"><script>document.write(lang.chapter92);</script></option>
+                        <option value="93"><script>document.write(lang.chapter93);</script></option>
+                        <option value="94"><script>document.write(lang.chapter94);</script></option>
+                        <option value="95"><script>document.write(lang.chapter95);</script></option>
+                        <option value="96"><script>document.write(lang.chapter96);</script></option>
+                        <option value="97"><script>document.write(lang.chapter97);</script></option>
+                        <option value="98"><script>document.write(lang.chapter98);</script></option>
+                        <option value="99"><script>document.write(lang.chapter99);</script></option>
+                        <option value="100"><script>document.write(lang.chapter100);</script></option>
+                        <option value="101"><script>document.write(lang.chapter101);</script></option>
+                        <option value="102"><script>document.write(lang.chapter102);</script></option>
+                        <option value="103"><script>document.write(lang.chapter103);</script></option>
+                        <option value="104"><script>document.write(lang.chapter104);</script></option>
+                        <option value="105"><script>document.write(lang.chapter105);</script></option>
+                        <option value="106"><script>document.write(lang.chapter106);</script></option>
+                        <option value="107"><script>document.write(lang.chapter107);</script></option>
+                        <option value="108"><script>document.write(lang.chapter108);</script></option>
+                        <option value="109"><script>document.write(lang.chapter109);</script></option>
+                        <option value="110"><script>document.write(lang.chapter110);</script></option>
+                        <option value="111"><script>document.write(lang.chapter111);</script></option>
+                        <option value="112"><script>document.write(lang.chapter112);</script></option>
+                        <option value="113"><script>document.write(lang.chapter113);</script></option>
+                        <option value="114"><script>document.write(lang.chapter114);</script></option>
                       </select>
                     </div>
                     <div class="field half">
-                      <label for="verse">Verse</label>
+                      <label for="verse"><script>document.write(lang.verse);</script></label>
                       <select name="verse" id="verse" onchange="onchangeVerse()">
                       </select>
                     </div>
                     <div class="field half">
-                      <label for="reciter">Reciter</label>
+                      <label for="reciter"><script>document.write(lang.reciter);</script></label>
                       <select name="reciter" id="reciter" onchange="onchangeReciter()">
                         <option value="Abdul_Basit_Murattal_192kbps">Abdul Basit (Murattal) - 192kbps</option>
                         <option value="Abdul_Basit_Murattal_64kbps">Abdul Basit (Murattal) - 64kbps</option>
@@ -553,34 +923,34 @@ color: #666;
                       </select>
                     </div>
                     <div class="field half">
-                      <label for="quranspeed">Playback Speed</label>
+                      <label for="quranspeed"><script>document.write(lang.playbackspeed);</script></label>
                       <select name="quranspeed" id="quranspeed" onchange="onchangeQuranSpeed()">
-                        <option value="0.4">Slowest</option>
-                        <option value="0.6">Slower</option>
-                        <option value="0.8">Slow</option>
-                        <option value="1">Normal</option>
-                        <option value="1.2">Fast</option>
-                        <option value="1.4">Faster</option>
-                        <option value="1.6">Fastest</option>
+                        <option value="0.4"><script>document.write(lang.slowest);</script></option>
+                        <option value="0.6"><script>document.write(lang.slower);</script></option>
+                        <option value="0.8"><script>document.write(lang.slow);</script></option>
+                        <option value="1"><script>document.write(lang.normal);</script></option>
+                        <option value="1.2"><script>document.write(lang.fast);</script></option>
+                        <option value="1.4"><script>document.write(lang.faster);</script></option>
+                        <option value="1.6"><script>document.write(lang.fastest);</script></option>
                       </select>
                     </div>
                     <div class="field half">
-                      <label for="verseloop" id="verselooplabel">Verse Loop</label>
+                      <label for="verseloop" id="verselooplabel"><script>document.write(lang.verseloop);</script></label>
                       <select name="verseloop" id="verseloop" onchange="onchangeVerseLoop()">
                       </select>
                     </div>
                     <div class="field half">
-                      <label for="quranrepeat" id="quranrepeatlabel">Verse Repeat</label>
+                      <label for="quranrepeat" id="quranrepeatlabel"><script>document.write(lang.verserepeat);</script></label>
                       <select name="quranrepeat" id="quranrepeat" onchange="onchangeQuranRepeat()">
-                        <option value="1">1 Time</option>
-                        <option value="2">2 Times</option>
-                        <option value="3">3 Times</option>
+                        <option value="1"><script>document.write(lang.onetime);</script></option>
+                        <option value="2"><script>document.write(lang.twotimes);</script></option>
+                        <option value="3"><script>document.write(lang.threetimes);</script></option>
                       </select>
                     </div>
                     <div class="field half">
-                      <label for="translation">Translation</label>
+                      <label for="translation"><script>document.write(lang.translation);</script></label>
                       <select name="translation" id="translation" onchange="onchangeTranslation()">
-                        <option value="none">None</option>
+                        <option value="none"><script>document.write(lang.none);</script></option>
                         <option value="sq.nahi">Albanian - Hasan Efendi Nahi</option>
                         <option value="sq.mehdiu">Albanian - Feti Mehdiu</option>
                         <option value="sq.ahmeti">Albanian - Sherif Ahmeti</option>
@@ -697,30 +1067,30 @@ color: #666;
                       </select>
                     </div>
                     <div class="field half">
-                      <label for="translationsize">Translation Size</label>
+                      <label for="translationsize"><script>document.write(lang.translationsize);</script></label>
                       <select name="translationsize" id="translationsize" onchange="onchangeTranslationSize()">
-                        <option value="1">Tiny</option>
-                        <option value="1.5">Small</option>
-                        <option value="2">Medium</option>
-                        <option value="2.5">Large</option>
-                        <option value="3">Huge</option>
+                        <option value="1"><script>document.write(lang.tiny);</script></option>
+                        <option value="1.5"><script>document.write(lang.small);</script></option>
+                        <option value="2"><script>document.write(lang.medium);</script></option>
+                        <option value="2.5"><script>document.write(lang.large);</script></option>
+                        <option value="3"><script>document.write(lang.huge);</script></option>
                       </select>
                     </div>
                     <div class="field third">
-                      <label for="script">Quran Script</label>
+                      <label for="script"><script>document.write(lang.quranscript);</script></label>
                       <select name="script" id="script" onchange="onchangeScript()">
-                        <option value="none">None</option>
-                        <option value="quran-uthmani">Uthmani</option>
-                        <option value="quran-uthmani-tajweed">Uthmani Tajweed (no safari/ios)</option>
-                        <option value="quran-uthmani-min">Uthmani Minimal</option>
-                        <option value="quran-simple">Simple</option>
-                        <option value="quran-simple-enhanced">Simple Enhanced</option>
-                        <option value="quran-simple-min">Simple Minimal</option>
-                        <option value="quran-simple-clean">Simple Clean</option>
+                        <option value="none"><script>document.write(lang.none);</script></option>
+                        <option value="quran-uthmani"><script>document.write(lang.uthmani);</script></option>
+                        <option value="quran-uthmani-tajweed"><script>document.write(lang.uthmanitajweed);</script></option>
+                        <option value="quran-uthmani-min"><script>document.write(lang.uthmaniminimal);</script></option>
+                        <option value="quran-simple"><script>document.write(lang.simple);</script></option>
+                        <option value="quran-simple-enhanced"><script>document.write(lang.simpleenhanced);</script></option>
+                        <option value="quran-simple-min"><script>document.write(lang.simpleminimal);</script></option>
+                        <option value="quran-simple-clean"><script>document.write(lang.simpleclean);</script></option>
                       </select>
                     </div>
                     <div class="field third">
-                      <label for="quranfont">Quran Font</label>
+                      <label for="quranfont"><script>document.write(lang.quranfont);</script></label>
                       <select name="quranfont" id="quranfont" onchange="onchangeQuranFont()">
                         <option value="browserdefault">Browser Default</option>
                         <option value="Al-QuranAlKareem">Al-QuranAlKareem</option>
@@ -745,67 +1115,67 @@ color: #666;
                       </select>
                     </div>
                     <div class="field third">
-                      <label for="quransize">Quran Size</label>
+                      <label for="quransize"><script>document.write(lang.quransize);</script></label>
                       <select name="quransize" id="quransize" onchange="onchangeQuranSize()">
-                        <option value="1">Tiny</option>
-                        <option value="1.5">Small</option>
-                        <option value="2">Medium</option>
-                        <option value="2.5">Large</option>
-                        <option value="3">Huge</option>
+                        <option value="1"><script>document.write(lang.tiny);</script></option>
+                        <option value="1.5"><script>document.write(lang.small);</script></option>
+                        <option value="2"><script>document.write(lang.medium);</script></option>
+                        <option value="2.5"><script>document.write(lang.large);</script></option>
+                        <option value="3"><script>document.write(lang.huge);</script></option>
                       </select>
                     </div>
                     <div class="field half">
-                      <label for="quranwholechapter">Quran View</label>
+                      <label for="quranwholechapter"><script>document.write(lang.quranview);</script></label>
                       <select name="quranwholechapter" id="quranwholechapter" onchange="onchangeQuranWholeChapter()">
-                        <option value="0">Show current verse</option>
-                        <option value="1">Show entire chapter</option>
+                        <option value="0"><script>document.write(lang.showcurrentverse);</script></option>
+                        <option value="1"><script>document.write(lang.showentirechapter);</script></option>
                       </select>
                     </div>
                     <div class="field half">
-                      <label for="quranwholechapterautoscroll">Entire Chapter Auto Scroll</label>
+                      <label for="quranwholechapterautoscroll"><script>document.write(lang.entirechapterautoscroll);</script></label>
                       <select name="quranwholechapterautoscroll" id="quranwholechapterautoscroll" onchange="onchangeQuranWholeChapterAutoScroll()">
-                        <option value="0">Don't scroll to current verse</option>
-                        <option value="1">Automatically scroll to current verse</option>
+                        <option value="0"><script>document.write(lang.dontscrolltocurrentverse);</script></option>
+                        <option value="1"><script>document.write(lang.automaticallyscrolltocurrentverse);</script></option>
                       </select>
                     </div>
                     <div class="field half">
-                      <label for="randomreciterevery">Random Reciter</label>
+                      <label for="randomreciterevery"><script>document.write(lang.randomreciter);</script></label>
                       <select name="randomreciterevery" id="randomreciterevery" onchange="onchangeRandomReciterEvery()">
-                        <option value="0">Same reciter</option>
-                        <option value="1">Random reciter every verse</option>
-                        <option value="2">Random reciter every chapter</option>
+                        <option value="0"><script>document.write(lang.samereciter);</script></option>
+                        <option value="1"><script>document.write(lang.randomrecitereveryverse);</script></option>
+                        <option value="2"><script>document.write(lang.randomrecitereverychapter);</script></option>
                       </select>
                     </div>
                     <div class="field half">
-                      <label for="randomchapterevery">Random Chapter</label>
+                      <label for="randomchapterevery"><script>document.write(lang.randomchapter);</script></label>
                       <select name="randomchapterevery" id="randomchapterevery" onchange="onchangeRandomChapterEvery()">
-                        <option value="0">Next chapter on end</option>
-                        <option value="1">Random chapter on end</option>
+                        <option value="0"><script>document.write(lang.nextchapteronend);</script></option>
+                        <option value="1"><script>document.write(lang.randomchapteronend);</script></option>
                       </select>
                     </div>
                     <div class="field">
-                        <label>Randomize Once</label>
+                        <label><script>document.write(lang.randomizeonce);</script></label>
                         <ul class="actions" style="margin: 0 0 0 0;">
-                            <li><a name="randomChapterNow" id="randomChapterNow" class="button" onclick="randomChapterNow()">Random Chapter</a></li>
-                            <li><a name="randomVerseNow" id="randomVerseNow" class="button" onclick="randomVerseNow()">Random Verse</a></li>
-                            <li><a name="randomChapterVerseNow" id="randomChapterVerseNow" class="button" onclick="randomChapterVerseNow()">Random Chapter + Verse</a></li>
-                            <li><a name="randomReciterNow" id="randomReciterNow" class="button" onclick="randomReciterNow()">Random Reciter</a></li>
+                            <li><a name="randomChapterNow" id="randomChapterNow" class="button" onclick="randomChapterNow()"><script>document.write(lang.randomchapter);</script></a></li>
+                            <li><a name="randomVerseNow" id="randomVerseNow" class="button" onclick="randomVerseNow()"><script>document.write(lang.randomverse);</script></a></li>
+                            <li><a name="randomChapterVerseNow" id="randomChapterVerseNow" class="button" onclick="randomChapterVerseNow()"><script>document.write(lang.randomchapterandverse);</script></a></li>
+                            <li><a name="randomReciterNow" id="randomReciterNow" class="button" onclick="randomReciterNow()"><script>document.write(lang.randomreciter);</script></a></li>
                         </ul>
                     </div>
                     <div class="field" onclick="copyLink();">
-                        <label id="copylinklabel">Copy link to chapter & verse</label>
+                        <label id="copylinklabel"><script>document.write(lang.copylinktochapterandverse);</script></label>
                         <input  type="text" id="copylink" name="copylink" value="ddddd" />
                     </div>
                     <div class="field">
-                        <label>Keep Screen Awake (only for chrome browsers)</label>
+                        <label><script>document.write(lang.keepscreenawake);</script></label>
                         <input type="checkbox" id="wakelock" name="wakelock"/>
-                        <label id="wakelocklabel" for="wakelock">Screen will not stay awake</label>
+                        <label id="wakelocklabel" for="wakelock"><script>document.write(lang.screenwillnotstayawake);</script></label>
                     </div>
                     <br><br><br>
                     <div class="field">
-                        <label for="reset">Reset to default settings</label>
+                        <label for="reset"><script>document.write(lang.resettodefaultsettings);</script></label>
                         <ul class="actions" style="margin: 0 0 0 0;">
-                            <li><a name="reset" id="reset" class="button" onclick="reset()">Reset</a></li>
+                            <li><a name="reset" id="reset" class="button" onclick="reset()"><script>document.write(lang.reset);</script></a></li>
                         </ul>
                     </div>
                     
@@ -887,15 +1257,15 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
     .catch((e) => {      
       if (e.name === 'AbortError') {
         wakeLockCheckbox.checked = false;
-        statusDiv.textContent = 'Screen will not stay awake';
+        statusDiv.textContent = lang.screenwillnotstayawake;
       } else {
         //statusDiv.textContent = `${e.name}, ${e.message}`;
-        statusDiv.textContent = "Sorry, I can't keep your screen awake";
+        statusDiv.textContent = lang.sorryicantkeepyourscreenawake;
         console.error(`${e.name}, ${e.message}`);
       }
     });
     wakeLockCheckbox.checked = true;
-    statusDiv.textContent = 'Screen will stay awake';
+    statusDiv.textContent = lang.screenwillstayawake;
     return controller;
   };
   
@@ -925,14 +1295,14 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
       wakeLock.addEventListener('release', (e) => {
         console.log(e);
         wakeLockCheckbox.checked = false;
-        statusDiv.textContent = 'Screen will not stay awake';
+        statusDiv.textContent = lang.screenwillnotstayawake;
       });
       wakeLockCheckbox.checked = true;
-      statusDiv.textContent = 'Screen will stay awake';
+      statusDiv.textContent = lang.screenwillstayawake;
     } catch (e) {      
       wakeLockCheckbox.checked = false;
       //statusDiv.textContent = `${e.name}, ${e.message}`;
-      statusDiv.textContent = "Sorry, I can't keep your screen awake";
+      statusDiv.textContent = lang.sorryicantkeepyourscreenawake;
       console.error(`${e.name}, ${e.message}`);
     } 
   };
@@ -955,7 +1325,7 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
   document.addEventListener('visibilitychange', handleVisibilityChange);
 
 } else {  
-  statusDiv.textContent = "Sorry, I can't keep your screen awake";
+  statusDiv.textContent = lang.sorryicantkeepyourscreenawake;
 }
 
     // functions
@@ -983,7 +1353,7 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
         $('verseloop').options.length = 0;
         var opt = document.createElement('option');
         opt.value = 0;
-        opt.innerHTML = "Disabled";
+        opt.innerHTML = lang.disabled;
         $('verseloop').appendChild(opt);
         for (var i = localStorage.getItem("quran_verse"); i<=NUMBER_OF_VERSES[parseInt(localStorage.getItem("quran_chapter"))-1]; i++) {
             var opt = document.createElement('option');
@@ -994,9 +1364,9 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
         selectVerseLoop(localStorage.getItem("quran_verseloopb"));
 
         if (localStorage.getItem("quran_verseloopa") != 0) {
-            document.getElementById("verselooplabel").innerHTML = "Verse Loop (" + localStorage.getItem("quran_verseloopa") + "-" + localStorage.getItem("quran_verseloopb") + ")";
+            document.getElementById("verselooplabel").innerHTML = lang.verseloop + " (" + localStorage.getItem("quran_verseloopa") + "-" + localStorage.getItem("quran_verseloopb") + ")";
         } else {
-            document.getElementById("verselooplabel").innerHTML = "Verse Loop";
+            document.getElementById("verselooplabel").innerHTML = lang.verseloop;
         }
     }
 
@@ -1116,9 +1486,9 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
 
     function updateQuranRepeat() {
         if (localStorage.getItem("quran_quranrepeat") != 1) {
-            document.getElementById("quranrepeatlabel").innerHTML = "Verse Repeat (" + (localStorage.getItem("quran_quranrepeat")-localStorage.getItem("quran_quranrepeatcurrent")+1) + "/" + localStorage.getItem("quran_quranrepeat") + ")";
+            document.getElementById("quranrepeatlabel").innerHTML = lang.verserepeat + " (" + (localStorage.getItem("quran_quranrepeat")-localStorage.getItem("quran_quranrepeatcurrent")+1) + "/" + localStorage.getItem("quran_quranrepeat") + ")";
         } else {
-            document.getElementById("quranrepeatlabel").innerHTML = "Verse Repeat";
+            document.getElementById("quranrepeatlabel").innerHTML = lang.verserepeat;
         }
     }
 
@@ -1128,7 +1498,7 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
 
     function updateAudio() {
         if (localStorage.getItem("quran_quranrepeat") != 1) {
-            document.getElementById("quranrepeatlabel").innerHTML = "Verse Repeat (" + (localStorage.getItem("quran_quranrepeat")-localStorage.getItem("quran_quranrepeatcurrent")+1) + "/" + localStorage.getItem("quran_quranrepeat") + ")";
+            document.getElementById("quranrepeatlabel").innerHTML = lang.verserepeat + " (" + (localStorage.getItem("quran_quranrepeat")-localStorage.getItem("quran_quranrepeatcurrent")+1) + "/" + localStorage.getItem("quran_quranrepeat") + ")";
         }
 
         var audio = $('audio');
@@ -1253,7 +1623,7 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
         }
 
         if (localStorage.getItem("quran_quranrepeat") != 1) {
-            document.getElementById("quranrepeatlabel").innerHTML = "Verse Repeat (" + (localStorage.getItem("quran_quranrepeat")-localStorage.getItem("quran_quranrepeatcurrent")+1) + "/" + localStorage.getItem("quran_quranrepeat") + ")";
+            document.getElementById("quranrepeatlabel").innerHTML = lang.verserepeat + " (" + (localStorage.getItem("quran_quranrepeat")-localStorage.getItem("quran_quranrepeatcurrent")+1) + "/" + localStorage.getItem("quran_quranrepeat") + ")";
         }
 
         updateVerseLoop();
@@ -1438,9 +1808,9 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
         updateAudio();
 
         if (localStorage.getItem("quran_verseloopa") != 0) {
-            document.getElementById("verselooplabel").innerHTML = "Verse Loop (" + localStorage.getItem("quran_verseloopa") + "-" + localStorage.getItem("quran_verseloopb") + ")";
+            document.getElementById("verselooplabel").innerHTML = lang.verseloop + " (" + localStorage.getItem("quran_verseloopa") + "-" + localStorage.getItem("quran_verseloopb") + ")";
         } else {
-            document.getElementById("verselooplabel").innerHTML = "Verse Loop";
+            document.getElementById("verselooplabel").innerHTML = lang.verseloop;
         }
     }
 

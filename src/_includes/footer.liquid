@@ -15,7 +15,17 @@
 						
 						<a target="_blank" href="https://github.com/muslimist">github</a> - 
 						<a onclick="alert('we don\'t track anything, see for yourself =\)')">privacy</a> - 
-						<a onclick="toggledarkmode()">dark mode</a>
+						<a onclick="toggledarkmode()">dark mode</a> - 
+						<script>
+							if (!localStorage.lang) {
+						      localStorage.setItem("lang", "english");
+						    }
+						    if (localStorage.getItem("lang") == "english") {
+						    	document.write('<a href="/lang/?arabic">عربي</a>');
+						    } else {
+						    	document.write('<a href="/lang/?english">english</a>');
+						    }
+						</script>
 					</p>
 				</div>
 			</footer>
