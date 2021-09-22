@@ -55,9 +55,9 @@
         copyText.select();
         copyText.setSelectionRange(0, 99999);
         navigator.clipboard.writeText(copyText.value);
-        document.getElementById("copylinklabel").innerHTML = "Link copied!";
+        document.getElementById("copylinklabel").innerHTML = lang.linkcopied;
         setTimeout(function(){
-            document.getElementById("copylinklabel").innerHTML = "Copy link to chapter & verse"
+            document.getElementById("copylinklabel").innerHTML = lang.copylinktochapterandverse
         }, 3000);
     }
 
@@ -385,6 +385,7 @@ switch (localStorage.lang) {
             randomchapterandverse: "سورة وآية عشوائية",
             randomreciter: "قارئ عشوائي",
             copylinktochapterandverse: "انسخ الرابط إلى السورة والآية",
+            linkcopied: "!تم نسخ الرابط",
             keepscreenawake: "إبقاء الشاشة في وضع التنبيه (فقط لمتصفحات الكروم)",
             resettodefaultsettings: "إعادة التعيين إلى الإعدادات الافتراضية",
             reset: "إعادة تعيين",
@@ -567,6 +568,7 @@ switch (localStorage.lang) {
             randomchapterandverse: "Random Chapter + Verse",
             randomreciter: "Random Reciter",
             copylinktochapterandverse: "Copy link to chapter and verse",
+            linkcopied: "Link copied!",
             keepscreenawake: "Keep Screen Awake (only for chrome browsers)",
             resettodefaultsettings: "Reset to default settings",
             reset: "reset",
