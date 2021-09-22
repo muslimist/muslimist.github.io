@@ -140,28 +140,34 @@
 			<footer class="wrapper style1 align-center">
 				<div class="inner">
 					<p>
-						<a href="/">home</a> - 
-						<a href="/quran">quran</a> - 
-						<a href="/times">times</a> - 
-						<a href="/qibla">qibla</a>
-						
-						<br>
-						<br>
-						made with <span style="color: #e25555;"><i class="fas fa-heart"></i></span> by muslims for muslims
-						<br>
-						
-						<a target="_blank" href="https://github.com/muslimist">github</a> - 
-						<a onclick="alert('we don\'t track anything, see for yourself =\)')">privacy</a> - 
-						<a onclick="toggledarkmode()">dark mode</a> - 
 						<script>
-							if (!localStorage.lang) {
-						      localStorage.setItem("lang", "english");
-						    }
-						    if (localStorage.getItem("lang") == "english") {
-						    	document.write('<a href="/lang/?arabic">عربي</a>');
-						    } else {
-						    	document.write('<a href="/lang/?english">english</a>');
-						    }
+						if (!localStorage.lang) {
+					      localStorage.setItem("lang", "english");
+					    }
+
+					    if (localStorage.getItem("lang") == "english") {
+					    	document.write('<a href="/">home</a> - ');
+					    	document.write('<a href="/quran">quran</a> - ');
+					    	document.write('<a href="/times">times</a> - ');
+					    	document.write('<a href="/qibla">qibla</a>');
+					    	document.write('<br><br>made with <span style="color: #e25555;"><i class="fas fa-heart"></i></span> by muslims for muslims<br>');
+					    	document.write('<a target="_blank" href="https://github.com/muslimist">github</a> - ');
+					    	var privacy = "we don\'t track anything, see for yourself =)";
+					    	document.write('<a onclick="alert(privacy)">privacy</a> - ');
+					    	document.write('<a onclick="toggledarkmode()">dark mode</a> - ');
+					    	document.write('<a href="/lang/?arabic">عربي</a>');
+					    } else {
+					    	document.write('<a href="/">الصفحة الرئيسية</a> - ');
+					    	document.write('<a href="/quran">القرآن</a> - ');
+					    	document.write('<a href="/times">أوقات</a> - ');
+					    	document.write('<a href="/qibla">القبلة</a>');
+					    	document.write('<br><br>مصنوع من <span style="color: #e25555;"><i class="fas fa-heart"></i></span> مع قبل المسلمين للمسلمين<br>');
+					    	document.write('<a target="_blank" href="https://github.com/muslimist">المبرمجين</a> - ');
+					    	var privacy = "نحن لا نتتبع أي شيء ، انظر بنفسك =)";
+					    	document.write('<a onclick="alert(privacy)">الخصوصية</a> - ');
+					    	document.write('<a onclick="toggledarkmode()">وضع الظلام</a> - ');
+					    	document.write('<a href="/lang/?english">english</a>');
+					    }
 						</script>
 					</p>
 				</div>
