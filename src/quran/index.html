@@ -709,7 +709,7 @@ switch (localStorage.lang) {
               </header>
               <div class="content">
                 <center>
-                  <audio onended="nextAudio()" onstalled="retryAudio('onstalled')" onerror="retryAudio('onerror')" id="audio" controls autoplay>
+                  <audio onseeked="updateAudioGapless();" ontimeupdate="checkGapless(this)" onended="nextAudio()" onstalled="retryAudio('onstalled')" onerror="retryAudio('onerror')" id="audio" controls autoplay>
                     <source id="audioSource" src=""></source>
                   </audio>
                   <audio id="preAudio">
@@ -921,6 +921,7 @@ switch (localStorage.lang) {
                         <option value="Yaser_Salamah_128kbps">Yaser Salamah - 128kbps</option>
                         <option value="Yasser_Ad-Dussary_128kbps">Yasser Ad-Dussary - 128kbps</option>
                         <option value="warsh/warsh_yassin_al_jazaery_64kbps">Yassin Al Jazaery (Warsh) - 64kbps</option>
+                        <option value="gapless_ahmed_al3ajamy">gapless_ahmed_al3ajamy</option>
                         <option value="maryam_amir_320">Maryam Amir (Chapters 78-114) - 320kbps</option>
                         <option disabled> -- OTHER LANGUAGES --</option>
                         <option value="translations/azerbaijani/balayev">Azerbaijani - Azerbaijani Balayev</option>
@@ -1518,34 +1519,170 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
         $("translationcontent").style.fontSize = localStorage.getItem("quran_translationsize") + "em";
     }
 
+    function checkGapless(event) {
+        //console.log("checkGapless!");
+
+        fetch('/quran/data/'+localStorage.getItem("quran_reciter")+'.json')
+        .then(response => response.json())
+        .then(timings => {
+
+            var offset1 = 0;
+            for (var i = 1; i < localStorage.getItem("quran_chapter"); i++) {
+                offset1 = offset1 + NUMBER_OF_VERSES[i-1];
+            }
+            //console.log("offset1 = " + offset1);
+
+            timingtouse = (timings[parseInt(offset1) + parseInt(localStorage.getItem("quran_verse"))].time)/1000;
+            //console.log(Math.round(event.currentTime) + '/' + Math.round(timingtouse));
+
+            //
+
+            if (event.currentTime > timingtouse) {
+
+                if (localStorage.getItem("quran_verse") < NUMBER_OF_VERSES[localStorage.getItem("quran_chapter")-1]) {
+                    localStorage.setItem("quran_verse", (parseInt(1) + parseInt(localStorage.getItem("quran_verse"))));
+                    selectVerse(localStorage.getItem("quran_verse"));
+                    updateQuranContent();
+                    updateTranslationContent();
+                    console.log('yes!');
+                }
+                
+            }
+        });
+    }
+
+
+
+
+    function updateAudioGapless() {
+
+        console.log("updateAudioGapless!");
+
+        var audio = $('audio');
+
+        fetch('/quran/data/'+localStorage.getItem("quran_reciter")+'.json')
+            .then(response => response.json())
+            .then(timings => {
+                var offset2 = 0;
+                for (var i = 1; i < localStorage.getItem("quran_chapter"); i++) {
+                    offset2 = offset2 + NUMBER_OF_VERSES[i-1];
+                }
+                //console.log("offset2 = " + offset2);
+
+                for (var i = offset2; i < (offset2 + NUMBER_OF_VERSES[localStorage.getItem("quran_chapter")-1]); i++) {
+                    //console.log(i-offset2 + " : " + audio.currentTime + " / " + timings[i].time/1000);
+
+                    if (timings[i].time/1000 > audio.currentTime) {
+                        var gotothisverse = parseInt(i-offset2);
+                        //console.log("updateAudioGapless: " + gotothisverse);
+                        selectVerse(gotothisverse);
+                        localStorage.setItem("quran_verse", gotothisverse);
+                        updateQuranContent();
+                        updateTranslationContent();
+                        break;
+                    }
+                }
+                
+            });
+
+    }
+
+
+
+
     function updateAudio() {
+
+        console.log("updateAudio!");
+
         if (localStorage.getItem("quran_quranrepeat") != 1) {
             document.getElementById("quranrepeatlabel").innerHTML = lang.verserepeat + " (" + (localStorage.getItem("quran_quranrepeat")-localStorage.getItem("quran_quranrepeatcurrent")+1) + "/" + localStorage.getItem("quran_quranrepeat") + ")";
         }
 
         var audio = $('audio');
         var source = $('audioSource');
+        var tempsource;
 
-        switch (localStorage.getItem("quran_reciter")) {
-            case "maryam_amir_320":
-                source.src = "https://muslimist.com/homemade/" + localStorage.getItem("quran_reciter") + "/" + threeDigits(localStorage.getItem("quran_chapter")) + threeDigits(localStorage.getItem("quran_verse")) + ".mp3";
-                break;
-            default:
-                source.src = "https://www.everyayah.com/data/" + localStorage.getItem("quran_reciter") + "/" + threeDigits(localStorage.getItem("quran_chapter")) + threeDigits(localStorage.getItem("quran_verse")) + ".mp3";
-                break;
-        }
 
-        audio.load();
 
-        var promise = audio.play();
+        // GAPLESS
 
-        if (promise !== undefined) {
-            promise.catch(error => {
-                console.log('autoplay error: ' + error);
+        if (localStorage.getItem("quran_reciter").substring(0, 7) == "gapless") {
+            
+            switch (localStorage.getItem("quran_reciter")) {
+                case "gapless_ahmed_al3ajamy":
+                    tempsource = "https://download.quranicaudio.com/quran/ahmed_ibn_3ali_al-3ajamy/" + threeDigits(localStorage.getItem("quran_chapter")) + ".mp3";
+                    break;
+            }
+
+            if (source.src != tempsource) {
+                source.src = tempsource;
+                audio.load();
+            }
+
+            document.getElementById("copylink").value = "https://muslimist.com/quran/" + localStorage.getItem("quran_chapter") + "/" + localStorage.getItem("quran_verse");
+
+            fetch('/quran/data/'+localStorage.getItem("quran_reciter")+'.json')
+            .then(response => response.json())
+            .then(timings => {
+
+                var offset = 0;
+                for (var i = 1; i < localStorage.getItem("quran_chapter"); i++) {
+                    offset = offset + NUMBER_OF_VERSES[i-1];
+                }
+
+                if (localStorage.getItem("quran_verse") == 1) {
+                    timingtouse2 = 0;
+                } else {
+                    timingtouse2 = (timings[parseInt(offset) - 1 + parseInt(localStorage.getItem("quran_verse"))].time/1000)+0.03;
+                }
+
+                audio.currentTime = timingtouse2;
+                console.log('fired updateAudio()' + timingtouse2);
+                
             });
-        }
 
-        document.getElementById("copylink").value = "https://muslimist.com/quran/" + localStorage.getItem("quran_chapter") + "/" + localStorage.getItem("quran_verse");
+            if (source.src != tempsource) {
+                var promise = audio.play();
+
+                if (promise !== undefined) {
+                    promise.catch(error => {
+                        console.log('autoplay error: ' + error);
+                    });
+                }
+            }
+
+
+
+
+
+
+        // NON-GAPLESS
+
+        } else {
+
+            switch (localStorage.getItem("quran_reciter")) {
+                case "maryam_amir_320":
+                    source.src = "https://muslimist.com/homemade/" + localStorage.getItem("quran_reciter") + "/" + threeDigits(localStorage.getItem("quran_chapter")) + threeDigits(localStorage.getItem("quran_verse")) + ".mp3";
+                    break;
+                default:
+                    source.src = "https://www.everyayah.com/data/" + localStorage.getItem("quran_reciter") + "/" + threeDigits(localStorage.getItem("quran_chapter")) + threeDigits(localStorage.getItem("quran_verse")) + ".mp3";
+                    break;
+            }
+        
+
+            audio.load();
+
+            var promise = audio.play();
+
+            if (promise !== undefined) {
+                promise.catch(error => {
+                    console.log('autoplay error: ' + error);
+                });
+            }
+
+            document.getElementById("copylink").value = "https://muslimist.com/quran/" + localStorage.getItem("quran_chapter") + "/" + localStorage.getItem("quran_verse");
+
+        }
     }
 
     function retryAudio(why) {
