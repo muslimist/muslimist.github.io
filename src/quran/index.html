@@ -1624,7 +1624,7 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
                     var selectRandomReciterNow  = document.getElementById('reciter');
                     var optionsRandomReciterNow = selectRandomReciterNow.children;  
                     // length - 10 to remove disabled and non arabic reciters and incomplete
-                    var randomRandomReciterNow  = Math.floor(Math.random() * (optionsRandomReciterNow.length - 10));
+                    var randomRandomReciterNow  = Math.floor(Math.random() * (optionsRandomReciterNow.length - 16));
                     selectRandomReciterNow.value = optionsRandomReciterNow[randomRandomReciterNow].value; 
                     onchangeReciter();
                 }
@@ -1648,7 +1648,7 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
                     var selectRandomReciterNow  = document.getElementById('reciter');
                     var optionsRandomReciterNow = selectRandomReciterNow.children;  
                     // length - 10 to remove disabled and non arabic reciters and incomplete
-                    var randomRandomReciterNow  = Math.floor(Math.random() * (optionsRandomReciterNow.length - 10));
+                    var randomRandomReciterNow  = Math.floor(Math.random() * (optionsRandomReciterNow.length - 16));
                     selectRandomReciterNow.value = optionsRandomReciterNow[randomRandomReciterNow].value; 
                     onchangeReciter();
                 }
