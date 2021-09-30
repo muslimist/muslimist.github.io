@@ -921,6 +921,12 @@ switch (localStorage.lang) {
                         <option value="Yaser_Salamah_128kbps">Yaser Salamah - 128kbps</option>
                         <option value="Yasser_Ad-Dussary_128kbps">Yasser Ad-Dussary - 128kbps</option>
                         <option value="warsh/warsh_yassin_al_jazaery_64kbps">Yassin Al Jazaery (Warsh) - 64kbps</option>
+                        <option value="abdul_muhsin_alqasim">abdul_muhsin_alqasim</option>
+                        <option value="abdulaziz_bin_saleh_alzahrani">abdulaziz_bin_saleh_alzahrani</option>
+                        <option value="abdulrahman_al_shahat">abdulrahman_al_shahat</option>
+                        <option value="abdurrashid_sufi">abdurrashid_sufi</option>
+                        <option value="bandar_baleela">bandar_baleela</option>
+                        <option value="mostafa_ismaeel">mostafa_ismaeel</option>
                         <option value="maryam_amir_320">Maryam Amir (Chapters 78-114) - 320kbps</option>
                         <option disabled> -- OTHER LANGUAGES --</option>
                         <option value="translations/azerbaijani/balayev">Azerbaijani - Azerbaijani Balayev</option>
@@ -1527,6 +1533,24 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
         var source = $('audioSource');
 
         switch (localStorage.getItem("quran_reciter")) {
+            case "abdul_muhsin_alqasim":
+                source.src = "https://muslimist.com/homemade/abdul_muhsin_alqasim/" + threeDigits(localStorage.getItem("quran_chapter")) + threeDigits(localStorage.getItem("quran_verse")) + ".mp3";
+                break;
+            case "abdulaziz_bin_saleh_alzahrani":
+                source.src = "https://muslimist.com/homemade/abdulaziz_bin_saleh_alzahrani/" + threeDigits(localStorage.getItem("quran_chapter")) + threeDigits(localStorage.getItem("quran_verse")) + ".mp3";
+                break;
+            case "abdulrahman_al_shahat":
+                source.src = "https://muslimist.com/homemade/abdulrahman_al_shahat/" + threeDigits(localStorage.getItem("quran_chapter")) + threeDigits(localStorage.getItem("quran_verse")) + ".mp3";
+                break;
+            case "abdurrashid_sufi":
+                source.src = "https://muslimist.com/homemade/abdurrashid_sufi/" + threeDigits(localStorage.getItem("quran_chapter")) + threeDigits(localStorage.getItem("quran_verse")) + ".mp3";
+                break;
+            case "bandar_baleela":
+                source.src = "https://muslimist.com/homemade/bandar_baleela/" + threeDigits(localStorage.getItem("quran_chapter")) + threeDigits(localStorage.getItem("quran_verse")) + ".mp3";
+                break;
+            case "mostafa_ismaeel":
+                source.src = "https://muslimist.com/homemade/mostafa_ismaeel/" + threeDigits(localStorage.getItem("quran_chapter")) + threeDigits(localStorage.getItem("quran_verse")) + ".mp3";
+                break;
             case "maryam_amir_320":
                 source.src = "https://muslimist.com/homemade/" + localStorage.getItem("quran_reciter") + "/" + threeDigits(localStorage.getItem("quran_chapter")) + threeDigits(localStorage.getItem("quran_verse")) + ".mp3";
                 break;
@@ -1669,6 +1693,24 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
         }
 
         switch (localStorage.getItem("quran_reciter")) {
+            case "abdul_muhsin_alqasim":
+                source.src = "https://muslimist.com/homemade/abdul_muhsin_alqasim/" + threeDigits(localStorage.getItem("quran_chapter")) + threeDigits(localStorage.getItem("quran_verse")) + ".mp3";
+                break;
+            case "abdulaziz_bin_saleh_alzahrani":
+                source.src = "https://muslimist.com/homemade/abdulaziz_bin_saleh_alzahrani/" + threeDigits(localStorage.getItem("quran_chapter")) + threeDigits(localStorage.getItem("quran_verse")) + ".mp3";
+                break;
+            case "abdulrahman_al_shahat":
+                source.src = "https://muslimist.com/homemade/abdulrahman_al_shahat/" + threeDigits(localStorage.getItem("quran_chapter")) + threeDigits(localStorage.getItem("quran_verse")) + ".mp3";
+                break;
+            case "abdurrashid_sufi":
+                source.src = "https://muslimist.com/homemade/abdurrashid_sufi/" + threeDigits(localStorage.getItem("quran_chapter")) + threeDigits(localStorage.getItem("quran_verse")) + ".mp3";
+                break;
+            case "bandar_baleela":
+                source.src = "https://muslimist.com/homemade/bandar_baleela/" + threeDigits(localStorage.getItem("quran_chapter")) + threeDigits(localStorage.getItem("quran_verse")) + ".mp3";
+                break;
+            case "mostafa_ismaeel":
+                source.src = "https://muslimist.com/homemade/mostafa_ismaeel/" + threeDigits(localStorage.getItem("quran_chapter")) + threeDigits(localStorage.getItem("quran_verse")) + ".mp3";
+                break;
             case "maryam_amir_320":
                 url = "https://muslimist.com/homemade/" + localStorage.getItem("quran_reciter") + "/" + threeDigits(nextchapter) + threeDigits(nextverse) + ".mp3";
                 break;
