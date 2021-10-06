@@ -965,12 +965,14 @@ switch (localStorage.lang) {
                         <option value="Yaser_Salamah_128kbps">Yaser Salamah - 128kbps</option>
                         <option value="Yasser_Ad-Dussary_128kbps">Yasser Ad-Dussary - 128kbps</option>
                         <option value="warsh/warsh_yassin_al_jazaery_64kbps">Yassin Al Jazaery (Warsh) - 64kbps</option>
+                        <!--
                         <option value="abdul_muhsin_alqasim">abdul_muhsin_alqasim</option>
                         <option value="abdulaziz_bin_saleh_alzahrani">abdulaziz_bin_saleh_alzahrani</option>
                         <option value="abdulrahman_al_shahat">abdulrahman_al_shahat</option>
                         <option value="abdurrashid_sufi">abdurrashid_sufi</option>
                         <option value="bandar_baleela">bandar_baleela</option>
-                        <option value="mostafa_ismaeel">mostafa_ismaeel</option>
+                        <option value="mostafa_ismaeel">mostafa_ismaeel</option
+                        -->
                         <option value="maryam_amir_320">Maryam Amir (Chapters 78-114) - 320kbps</option>
                         <option disabled> -- OTHER LANGUAGES --</option>
                         <option value="translations/azerbaijani/balayev">Azerbaijani - Azerbaijani Balayev</option>
@@ -1675,9 +1677,9 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
 
                 if (nextchapter > NUMBER_OF_CHAPTERS) {
                     // chapter 1
-                    localStorage.setItem("quran_chapter", DEFAULT_CHAPTER);
-                    selectChapter(DEFAULT_CHAPTER);
-                    updateVerse(DEFAULT_CHAPTER);
+                    localStorage.setItem("quran_chapter", 1);
+                    selectChapter(1);
+                    updateVerse(1);
                 } else {
                     // next chapter
                     localStorage.setItem("quran_chapter", nextchapter);
@@ -1731,7 +1733,7 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
         if (nextverse > NUMBER_OF_VERSES[thischapter-1]) {
             nextchapter = thischapter + 1;
             if (nextchapter > NUMBER_OF_CHAPTERS) {
-                nextchapter = DEFAULT_CHAPTER;
+                nextchapter = 1;
             }
             nextverse = DEFAULT_VERSE;
         }
