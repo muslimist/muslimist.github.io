@@ -504,6 +504,7 @@ switch (localStorage.lang) {
             twotimes: "2 Times",
             threetimes: "3 Times",
             none: "None",
+            translation2: "Translation",
             translationsize: "Translation Size",
             tiny: "Tiny",
             small: "Small",
@@ -660,6 +661,9 @@ switch (localStorage.lang) {
             simpleenhanced: "Simple Enhanced",
             simpleminimal: "Simple Minimal",
             simpleclean: "Simple Clean",
+            translationview: "Translation View",
+            translationshowcurrentverse: "Show current verse translation",
+            translationshowentirechapter: "Show entire chapter translation",
         };
         break;
 }
@@ -966,8 +970,8 @@ switch (localStorage.lang) {
                         <option value="3"><script>document.write(lang.threetimes);</script></option>
                       </select>
                     </div>
-                    <div class="field half">
-                      <label for="translation"><script>document.write(lang.translation);</script></label>
+                    <div class="field third">
+                      <label for="translation"><script>document.write(lang.translation2);</script></label>
                       <select name="translation" id="translation" onchange="onchangeTranslation()">
                         <option value="none"><script>document.write(lang.none);</script></option>
                         <option value="sq.nahi">Albanian - Hasan Efendi Nahi</option>
@@ -1085,7 +1089,7 @@ switch (localStorage.lang) {
                         <option value="uz.sodik">Uzbek - Muhammad Sodik Muhammad Yusuf</option>
                       </select>
                     </div>
-                    <div class="field half">
+                    <div class="field third">
                       <label for="translationsize"><script>document.write(lang.translationsize);</script></label>
                       <select name="translationsize" id="translationsize" onchange="onchangeTranslationSize()">
                         <option value="1"><script>document.write(lang.tiny);</script></option>
@@ -1093,6 +1097,13 @@ switch (localStorage.lang) {
                         <option value="2"><script>document.write(lang.medium);</script></option>
                         <option value="2.5"><script>document.write(lang.large);</script></option>
                         <option value="3"><script>document.write(lang.huge);</script></option>
+                      </select>
+                    </div>
+                    <div class="field third">
+                      <label for="translationwholechapter"><script>document.write(lang.translationview);</script></label>
+                      <select name="translationwholechapter" id="translationwholechapter" onchange="onchangeTranslationWholeChapter()">
+                        <option value="0"><script>document.write(lang.translationshowcurrentverse);</script></option>
+                        <option value="1"><script>document.write(lang.translationshowentirechapter);</script></option>
                       </select>
                     </div>
                     <div class="field third">
@@ -1232,6 +1243,7 @@ switch (localStorage.lang) {
     const DEFAULT_QURANREPEAT = 1;
     const DEFAULT_QURANWHOLECHAPTER = 0;
     const DEFAULT_QURANWHOLECHAPTERAUTOSCROLL = 0;
+    const DEFAULT_TRANSLATIONWHOLECHAPTER = 0;
     const DEFAULT_VERSELOOPA = 0;
     const DEFAULT_VERSELOOPB = 0;
     const DEFAULT_TRANSLATIONSIZE = 1.5;
@@ -1436,6 +1448,9 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
                         
                         if (localStorage.getItem("quran_quranwholechapterautoscroll") == 1) {
                             document.getElementById("ayah" + (localStorage.getItem("quran_verse")).toString()).scrollIntoView({behavior: "smooth",block: "center",inline: "center"});
+                            if (localStorage.getItem("quran_translationwholechapter") == 1) {
+                                document.getElementById("trans" + (localStorage.getItem("quran_verse")).toString()).scrollIntoView({behavior: "smooth",block: "center",inline: "center"});
+                            }
                         }
 
                       });
@@ -1485,10 +1500,43 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
         if (localStorage.getItem("quran_translation") == "none") {
             $("translationsection").style.display = "none";
         } else {
-            fetch('/quran/data/'+localStorage.getItem("quran_translation")+'.json')
-              .then(response => response.json())
-              .then(translation => $("translationcontent").innerHTML = translation.quran.sura[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1]._text);
-            $("translationsection").style.display = "flex";
+            if (localStorage.getItem("quran_translationwholechapter") == 0) {
+
+
+                if (document.getElementById("translationcontent").classList.contains("limitquran")) {
+                    document.getElementById("translationcontent").classList.remove("limitquran");
+                }
+
+                fetch('/quran/data/'+localStorage.getItem("quran_translation")+'.json')
+                  .then(response => response.json())
+                  .then(translation => $("translationcontent").innerHTML = translation.quran.sura[localStorage.getItem("quran_chapter")-1].aya[localStorage.getItem("quran_verse")-1]._text);
+                $("translationsection").style.display = "flex";
+            } else {
+
+                if (!document.getElementById("translationcontent").classList.contains("limitquran")) {
+                    document.getElementById("translationcontent").classList.add("limitquran");
+                }
+
+                var temptra = "";
+
+                fetch('/quran/data/'+localStorage.getItem("quran_translation")+'.json')
+                  .then(response => response.json())
+                  .then(translation => {
+                    for(var i = 0; i < translation.quran.sura[localStorage.getItem("quran_chapter")-1].aya.length; i++) {
+                        if (i == localStorage.getItem("quran_verse")-1) {
+                            temptra = temptra + "<span onClick=\"clickayah('ayah"+(i+1)+"')\" class=\"highlightme\" id=\"trans"+(i+1)+"\">" + translation.quran.sura[localStorage.getItem("quran_chapter")-1].aya[i]._text + "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"numberCircle\">" + (i+1) + "</span></span>&nbsp;&nbsp;&nbsp;&nbsp;";
+                        } else {
+                            temptra = temptra + "<span onClick=\"clickayah('ayah"+(i+1)+"')\" id=\"trans"+(i+1)+"\">" + translation.quran.sura[localStorage.getItem("quran_chapter")-1].aya[i]._text + "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"numberCircle\">" + (i+1) + "</span></span>&nbsp;&nbsp;&nbsp;&nbsp;";
+                        }
+                    }
+                    $("translationcontent").innerHTML = temptra;
+                    $("translationsection").style.display = "flex";
+                });
+
+
+
+
+            }
         }
     }
 
@@ -1743,6 +1791,7 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
         localStorage.removeItem("quran_quranrepeat");
         localStorage.removeItem("quran_quranwholechapter");
         localStorage.removeItem("quran_quranwholechapterautoscroll");
+        localStorage.removeItem("quran_translationwholechapter");
         localStorage.removeItem("quran_verseloopa");
         localStorage.removeItem("quran_verseloopb");
         localStorage.removeItem("quran_translationsize");
@@ -1826,6 +1875,10 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
 
     function selectQuranWholeChapterAutoScroll(quranwholechapterautoscroll) {
         $('quranwholechapterautoscroll').value = quranwholechapterautoscroll;
+    }
+
+    function selectTranslationWholeChapter(translationwholechapter) {
+        $('translationwholechapter').value = translationwholechapter;
     }
 
     function selectTranslationSize(translationsize) {
@@ -1924,6 +1977,11 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
     function onchangeQuranWholeChapterAutoScroll() {
         localStorage.setItem("quran_quranwholechapterautoscroll", $('quranwholechapterautoscroll').value);
         updateQuranContent();
+    }
+
+    function onchangeTranslationWholeChapter() {
+        localStorage.setItem("quran_translationwholechapter", $('translationwholechapter').value);
+        updateTranslationContent();
     }
 
     function onchangeTranslationSize() {
@@ -2068,6 +2126,9 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
           
           if (localStorage.getItem("quran_quranwholechapterautoscroll") == 1) {
               document.getElementById("ayah" + (localStorage.getItem("quran_verse")).toString()).scrollIntoView({behavior: "smooth",block: "center",inline: "center"});
+              if (localStorage.getItem("quran_translationwholechapter") == 1) {
+                document.getElementById("trans" + (localStorage.getItem("quran_verse")).toString()).scrollIntoView({behavior: "smooth",block: "center",inline: "center"});
+            }
           }
 
         });
@@ -2142,6 +2203,11 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
       localStorage.setItem("quran_quranwholechapterautoscroll", DEFAULT_QURANWHOLECHAPTERAUTOSCROLL);
     }
     selectQuranWholeChapterAutoScroll(localStorage.getItem("quran_quranwholechapterautoscroll"));
+
+    if (!localStorage.quran_translationwholechapter) {
+      localStorage.setItem("quran_translationwholechapter", DEFAULT_TRANSLATIONWHOLECHAPTER);
+    }
+    selectTranslationWholeChapter(localStorage.getItem("quran_translationwholechapter"));
 
     if (!localStorage.quran_verseloopa) {
       localStorage.setItem("quran_verseloopa", DEFAULT_VERSELOOPA);
