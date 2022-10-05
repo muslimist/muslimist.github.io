@@ -164,6 +164,7 @@ switch (localStorage.lang) {
             imsak: "Imsak",
             fajr: "Fajr",
             sunrise: "Sunrise",
+            duha: "Duha"
             dhuhr: "Dhuhr",
             asr: "Asr",
             sunset: "Sunset",
@@ -358,6 +359,10 @@ switch (localStorage.lang) {
 											<label for="sunrise"><script>document.write(lang.sunrise);</script></label>
 										</div>
 										<div class="field third">
+											<input type="checkbox" id="duha" name="duha" onchange="update()" />
+											<label for="duha"><script>document.write(lang.duha);</script></label>
+										</div>
+										<div class="field third">
 											<input type="checkbox" id="dhuhr" name="dhuhr" onchange="update()" />
 											<label for="dhuhr"><script>document.write(lang.dhuhr);</script></label>
 										</div>
@@ -454,6 +459,7 @@ switch (localStorage.lang) {
 					$("imsak").checked = false;
 					$("fajr").checked = true;
 					$("sunrise").checked = false;
+					$("duha").checked = false;
 					$("dhuhr").checked = true;
 					$("asr").checked = true;
 					$("sunset").checked = false;
@@ -506,6 +512,7 @@ switch (localStorage.lang) {
 					if ($('imsak').checked == true) { list.push("Imsak"); }
 					if ($('fajr').checked == true) { list.push("Fajr"); }
 					if ($('sunrise').checked == true) { list.push("Sunrise"); }
+					if ($('duha').checked == true) { list.push("Duha"); }
 					if ($('dhuhr').checked == true) { list.push("Dhuhr"); }
 					if ($('asr').checked == true) { list.push("Asr"); }
 					if ($('sunset').checked == true) { list.push("Sunset"); }

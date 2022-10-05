@@ -72,6 +72,7 @@ function PrayTimes(method) {
 		imsak    : 'Imsak',
 		fajr     : 'Fajr',
 		sunrise  : 'Sunrise',
+		duha     : 'Duha',
 		dhuhr    : 'Dhuhr',
 		asr      : 'Asr',
 		sunset   : 'Sunset',
@@ -434,6 +435,9 @@ function PrayTimes(method) {
 
 		// add tahajjud time
 		times.tahajjud = times.sunset+ (this.timeDiff(times.sunset, times.sunrise)/ 3) * 2;
+
+		// add duha time
+		times.duha = times.sunrise+ 15;
 
 		times = this.tuneTimes(times);
 		return this.modifyFormats(times);
