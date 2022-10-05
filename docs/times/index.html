@@ -538,7 +538,7 @@ switch (localStorage.lang) {
 					var html = '<table class="roundedCorners" style="text-align:center;border-collapse: unset;">';
 					html += '<tbody style="font-size: 1.1rem;">';
 					for(var i in list)	{
-						html += '<tr><td>'+ list[i]+ '</td><td>'+ times[list[i].toLowerCase()]+ '</td></tr>';
+						html += '<tr><td>'+ lang[list[i].toLowerCase()]+ '</td><td>'+ times[list[i].toLowerCase()]+ '</td></tr>';
 					}
 					html += '<tbody></table>';
 					$('table-wrapper').innerHTML = html;
