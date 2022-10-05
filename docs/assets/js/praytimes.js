@@ -437,7 +437,7 @@ function PrayTimes(method) {
 		times.tahajjud = times.sunset+ (this.timeDiff(times.sunset, times.sunrise)/ 3) * 2;
 
 		// add duha time
-		times.duha = times.sunrise+ 15;
+		times.duha = times.sunrise+ this.eval('15 min')/ 60
 
 		times = this.tuneTimes(times);
 		return this.modifyFormats(times);
