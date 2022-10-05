@@ -73,6 +73,7 @@ function PrayTimes(method) {
 		fajr     : 'Fajr',
 		sunrise  : 'Sunrise',
 		duha     : 'Duha',
+		awabeen  : 'Awabeen',
 		dhuhr    : 'Dhuhr',
 		asr      : 'Asr',
 		sunset   : 'Sunset',
@@ -438,6 +439,9 @@ function PrayTimes(method) {
 
 		// add duha time
 		times.duha = times.sunrise+ this.eval('15 min')/ 60
+
+		// add awabeen time
+		times.awabeen = times.dhuhr- this.eval('30 min')/ 60
 
 		times = this.tuneTimes(times);
 		return this.modifyFormats(times);
