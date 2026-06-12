@@ -912,9 +912,14 @@ switch (localStorage.lang) {
                         <option value="114"><script>document.write(lang.chapter114);</script></option>
                       </select>
                     </div>
-                    <div class="field half">
+                    <div class="field quarter">
                       <label for="verse"><script>document.write(lang.verse);</script></label>
                       <select name="verse" id="verse" onchange="onchangeVerse()">
+                      </select>
+                    </div>
+                    <div class="field quarter">
+                      <label for="verseloop" id="verselooplabel"><script>document.write(lang.verseloop);</script></label>
+                      <select name="verseloop" id="verseloop" onchange="onchangeVerseLoop()">
                       </select>
                     </div>
                     <div class="field half">
@@ -1006,7 +1011,7 @@ switch (localStorage.lang) {
                         <option value="translations/urdu_shamshad_ali_khan_46kbps">Urdu - Shamshad Ali Khan 46kbps</option>
                       </select>
                     </div>
-                    <div class="field half">
+                    <div class="field quarter">
                       <label for="quranspeed"><script>document.write(lang.playbackspeed);</script></label>
                       <select name="quranspeed" id="quranspeed" onchange="onchangeQuranSpeed()">
                         <option value="0.4"><script>document.write(lang.slowest);</script></option>
@@ -1018,12 +1023,7 @@ switch (localStorage.lang) {
                         <option value="1.6"><script>document.write(lang.fastest);</script></option>
                       </select>
                     </div>
-                    <div class="field half">
-                      <label for="verseloop" id="verselooplabel"><script>document.write(lang.verseloop);</script></label>
-                      <select name="verseloop" id="verseloop" onchange="onchangeVerseLoop()">
-                      </select>
-                    </div>
-                    <div class="field half">
+                    <div class="field quarter">
                       <label for="quranrepeat" id="quranrepeatlabel"><script>document.write(lang.verserepeat);</script></label>
                       <select name="quranrepeat" id="quranrepeat" onchange="onchangeQuranRepeat()">
                         <option value="1"><script>document.write(lang.onetime);</script></option>
