@@ -234,6 +234,13 @@ localStorage.setItem("lastpage", "quran");
     src: url('/quran/fonts/ruhi.ttf');
 }
 
+.arabic-kufi {
+    font-family: "arabic-kufi", serif;
+}
+@font-face {
+    font-family: "arabic-kufi";
+    src: url('/quran/fonts/SquareKufic-Regular.woff2');
+}
 
 
 .idghaam_shafawi {
@@ -1187,6 +1194,7 @@ switch (localStorage.lang) {
                         <option value="noorehidayat">noorehidayat</option>
                         <option value="noorehira">noorehira</option>
                         <option value="ruhi">ruhi</option>
+                        <option value="kufi">kufi</option>
                       </select>
                     </div>
                     <div class="field third">
