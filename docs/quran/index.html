@@ -1496,7 +1496,7 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
                             }
                            
                         }
-                        $("qurancontent").innerHTML = "<h2 style='line-height: 2; letter-spacing: 0; font-size: unset; direction: rtl;'>"+all+"</h2>";
+                        $("qurancontent").innerHTML = "<h2 style='line-height: 1.5; letter-spacing: 0; font-size: unset; direction: rtl;'>"+all+"</h2>";
                         
                         if (localStorage.getItem("quran_quranwholechapterautoscroll") == 1) {
                             document.getElementById("ayah" + (localStorage.getItem("quran_verse")).toString()).scrollIntoView({behavior: "smooth",block: "center",inline: "center"});
@@ -1538,7 +1538,7 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
                         }
                         
 
-                        $("qurancontent").innerHTML = "<h2 style='line-height: 2; letter-spacing: 0; font-size: unset; direction: rtl;'>"+allletters+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"numberCircle\">"+(localStorage.getItem("quran_verse"))+"</span></sss>";
+                        $("qurancontent").innerHTML = "<h2 style='line-height: 1.5; letter-spacing: 0; font-size: unset; direction: rtl;'>"+allletters+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"numberCircle\">"+(localStorage.getItem("quran_verse"))+"</span></sss>";
                     });
                 }
 
@@ -2115,7 +2115,7 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
 
 
 
-      $("qurancontent").innerHTML = "<h2 style='line-height: 2; letter-spacing: 0; font-size: unset; direction: rtl;'>" + output + "</h2>";
+      $("qurancontent").innerHTML = "<h2 style='line-height: 1.5; letter-spacing: 0; font-size: unset; direction: rtl;'>" + output + "</h2>";
     }
 
     function wholetajweeds(tajweeds) {
@@ -2174,7 +2174,7 @@ if ('WakeLock' in window && 'request' in window.WakeLock) {
               }
              
           }
-          $("qurancontent").innerHTML = "<h2 style='line-height: 2; letter-spacing: 0; font-size: unset; direction: rtl;'>"+all+"</h2>";
+          $("qurancontent").innerHTML = "<h2 style='line-height: 1.5; letter-spacing: 0; font-size: unset; direction: rtl;'>"+all+"</h2>";
           
           if (localStorage.getItem("quran_quranwholechapterautoscroll") == 1) {
               document.getElementById("ayah" + (localStorage.getItem("quran_verse")).toString()).scrollIntoView({behavior: "smooth",block: "center",inline: "center"});
