@@ -20,3 +20,10 @@
   </p>
 </p>
 
+
+
+Local preview (supports seeking in audio recordings):
+
+```sh
+npx --yes http-server docs -a 127.0.0.1 -p 8081 -c-1
+```

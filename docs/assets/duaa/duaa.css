@@ -1,0 +1,50 @@
+@font-face{font-family:duaa-arabic;src:url('/assets/duaa/me_quran.ttf') format('truetype');font-display:swap}
+.duaa-library{max-width:64rem}.duaa-tools{display:grid;grid-template-columns:2fr 1fr;gap:1.5rem}.duaa-tools label{font-weight:400}.dua{border-top:1px solid rgba(128,128,128,.3)}.dua:last-child{border-bottom:1px solid rgba(128,128,128,.3)}.dua summary{cursor:pointer;padding:1.4rem .5rem;font-size:1.15rem;list-style-position:outside;margin-left:1rem}.dua-category{display:block;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;opacity:.65;margin-bottom:.3rem}.dua-body{padding:0 1.5rem 2rem}.dua-body audio{width:100%;max-width:30rem;margin:0 0 1.5rem}.dua-arabic{font-family:duaa-arabic,serif;font-size:1.8rem;line-height:2.4;text-align:right;margin:1rem 0 1.5rem}.dua-transliteration{font-style:italic;opacity:.8}.dua-reference{font-size:.85rem;opacity:.7}.dua[hidden]{display:none}.dua:target{outline:1px solid #888}#duaa-count{margin:1rem 0}#library{scroll-margin-top:1rem}@media(max-width:600px){.duaa-tools{grid-template-columns:1fr;gap:.75rem}.dua-body{padding:0 .5rem 1.5rem}.dua-arabic{font-size:1.5rem}.dua summary{font-size:1rem}}
+
+/* A restrained list, with a narrower reading column inside each entry. */
+.duaa-library{max-width:56rem;padding-top:4rem!important;padding-bottom:4rem!important}
+.duaa-library>h2{margin-bottom:.3rem}.duaa-intro{opacity:.65;margin-bottom:2rem}
+.duaa-options{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin:1.5rem 0}
+.duaa-options #duaa-count{margin:0;font-size:.85rem;opacity:.65}
+.duaa-options label{margin:0;font-size:.85rem;font-weight:300;cursor:pointer}
+.duaa-options input[type=checkbox]{appearance:auto;opacity:1;float:none;display:inline-block;width:auto;margin:0 .5rem 0 0}
+.dua summary{list-style:none;margin:0;padding:1.35rem 2rem 1.35rem 0;position:relative;font-size:1rem;line-height:1.6}
+.dua summary::-webkit-details-marker{display:none}.dua summary::after{content:'+';position:absolute;right:.25rem;top:1.35rem;opacity:.5}
+.dua[open] summary::after{content:'−'}.dua-category{display:none}
+.dua-body{max-width:42rem;margin:auto;padding:1rem 0 2.5rem}.dua-body audio{max-width:100%;margin:0 0 2rem}
+.dua-body p{line-height:1.9;margin-bottom:1.5rem}.dua-body .dua-arabic{line-height:2.5;margin:1rem 0 2rem;font-size:1.8rem}
+.dua-transliteration{display:none}.show-transliteration .dua-transliteration{display:block}
+.dua-reference{padding-top:.75rem;border-top:1px solid rgba(128,128,128,.15)}
+.dua-body>a{font-size:.8rem;opacity:.6}.dua:target{outline:none}
+.duaa-more{text-align:center;margin-top:2rem}.duaa-more button[hidden]{display:none}
+@media(max-width:600px){.duaa-library{padding:2.5rem 1.5rem!important}.duaa-options{align-items:flex-start;flex-direction:column;gap:.6rem}.dua-body .dua-arabic{font-size:1.45rem}.dua-body{padding-bottom:2rem}}
+
+.dua-version+ .dua-version{border-top:1px solid rgba(128,128,128,.2);margin-top:2.5rem;padding-top:2.5rem}.dua-version h3{font-size:1rem;margin-bottom:1.5rem}.dua-version{scroll-margin-top:2rem}
+
+.dua-translation{display:none}.show-translation .dua-translation{display:block}.duaa-display-options{display:flex;flex-wrap:wrap;gap:.75rem 1.5rem}
+
+.duaa-library{padding-top:2rem!important;padding-bottom:2rem!important}
+.duaa-intro{margin-bottom:1rem}.duaa-options{margin:1rem 0}
+.dua summary{padding-top:.8rem;padding-bottom:.8rem}.dua summary::after{top:.8rem}
+.dua-body{padding:.5rem 0 1.25rem}.dua-body audio{display:block;width:18rem;max-width:100%;height:54px;margin:0 0 1rem}
+.dua-body p{margin-bottom:.8rem}.dua-body .dua-arabic{margin:.5rem 0 1rem;line-height:2.1}
+.dua-version+ .dua-version{margin-top:1.25rem;padding-top:1.25rem}
+.dua-play-recording{height:auto;line-height:1.5;padding:.3rem 0;border:0!important;box-shadow:none!important;border-radius:0;font-size:.7rem;letter-spacing:.06em;margin:0 0 .5rem}
+.dua-play-recording[aria-pressed=true]{text-decoration:underline}
+.dua-playback-status:empty{display:none}.dua-playback-status{font-size:.8rem}
+@media(max-width:600px){.duaa-library{padding:1.5rem!important}.dua-body{padding-bottom:1rem}}
+
+main[dir=rtl] .dua summary{padding-right:0;padding-left:2rem}main[dir=rtl] .dua summary::after{right:auto;left:.25rem}.dua-translation,.dua-transliteration{direction:ltr;text-align:left}
+
+.dua-audio-count{font-size:.85em;opacity:.55;white-space:nowrap;display:inline-block;margin-inline-start:.3em}
+
+.dua-body audio{margin:.5rem auto 1rem}
+
+.dua-actions{display:flex;justify-content:flex-end;gap:.25rem;margin-top:.5rem}
+.dua-actions .dua-icon{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;padding:7px;border:0;box-shadow:none;border-radius:4px;line-height:1;color:inherit;opacity:.55;background:transparent;cursor:pointer}
+.dua-actions .dua-icon:hover,.dua-actions .dua-icon:focus-visible{opacity:1;background:rgba(128,128,128,.1)}
+.dua-icon svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.dua-sources{font-size:.8rem;opacity:.75;border-inline-start:2px solid #ddd;padding-inline-start:.75rem;margin-top:.5rem;overflow-wrap:anywhere}
+.dua-sources[hidden]{display:none}.dua-sources p:last-child{margin-bottom:0}
+
+.dua-copy-status{font-size:.75rem;align-self:center}.dua-copy-status input{min-width:15rem;font-size:.8rem}

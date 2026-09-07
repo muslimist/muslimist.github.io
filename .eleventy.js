@@ -1,4 +1,5 @@
 module.exports = function(eleventyConfig) {
+  eleventyConfig.setLiquidOptions({ dynamicPartials: false });
   // not working, copied manually
   //eleventyConfig.addPassthroughCopy({ "src/.wellknown": ".wellknown" });
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });

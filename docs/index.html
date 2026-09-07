@@ -50,6 +50,7 @@
 		<div id="wrapper" class="divided">
 
 
+
 			<section class="banner style3 orient-left content-align-left image-position-right fullscreen onload-image-fade-in onload-content-fade-right">
 				<div class="content">
 					<h1>muslimist</h1>
@@ -61,13 +62,27 @@
 			</section>
 
 
-			<section onclick="location.href='/quran'" class="spotlight style5 orient-right content-align-left image-position-center onscroll-image-fade-in" style="cursor:pointer">
+			<section onclick="location.href='/quran'" class="spotlight style5 orient-left content-align-left image-position-center onscroll-image-fade-in" style="cursor:pointer">
 				<div class="content" style="width: 30rem;">
 					<h2>quran</h2>
 					<p>read and listen till your heart is content</p>
 				</div>
 				<div class="image">
 					<img src="/assets/images/section_quran.webp" alt="" />
+				</div>
+			</section>
+
+
+			<br>
+			<br>
+
+			<section onclick="location.href='/duaa/'" class="spotlight style5 orient-right content-align-left image-position-center onscroll-image-fade-in" style="cursor:pointer">
+				<div class="content" style="width: 30rem;">
+					<h2>duaa</h2>
+					<p>find the words for every moment</p>
+				</div>
+				<div class="image">
+					<img src="/assets/images/header_duaa.png" alt="" />
 				</div>
 			</section>
 
@@ -101,7 +116,6 @@
 				</div>
 			</section>
 
-
 			<script src="/assets/js/app.min.js"></script>
 
 			<!-- Start Single Page Apps for GitHub Pages -->
@@ -118,7 +132,7 @@
 		      // the single page app to route accordingly.
 		      (function(l) {
 		        if (l.search[1] === '/' ) {
-		          var decoded = l.search.slice(1).split('&').map(function(s) { 
+		          var decoded = l.search.slice(1).split('&').map(function(s) {
 		            return s.replace(/~and~/g, '&')
 		          }).join('?');
 		          window.history.replaceState(null, null,
@@ -148,6 +162,7 @@
 					    if (localStorage.getItem("lang") == "english") {
 					    	document.write('<a href="/">home</a> - ');
 					    	document.write('<a href="/quran">quran</a> - ');
+						document.write('<a href="/duaa/">duaa</a> - ');
 					    	document.write('<a href="/times">times</a> - ');
 					    	document.write('<a href="/qibla">qibla</a>');
 					    	document.write('<br><br>made with <span style="color: #e25555;"><i class="fas fa-heart"></i></span> by muslims for muslims<br>');
@@ -159,6 +174,7 @@
 					    } else {
 					    	document.write('<a href="/">الصفحة الرئيسية</a> - ');
 					    	document.write('<a href="/quran">القرآن</a> - ');
+						document.write('<a href="/duaa/">أدعية</a> - ');
 					    	document.write('<a href="/times">أوقات</a> - ');
 					    	document.write('<a href="/qibla">القبلة</a>');
 					    	document.write('<br><br>مصنوع من <span style="color: #e25555;"><i class="fas fa-heart"></i></span> مع قبل المسلمين للمسلمين<br>');
