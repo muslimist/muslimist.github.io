@@ -1,0 +1,254 @@
+/* muslimist: dark glass over a blurred page photo (--bg-img set on <body>) */
+
+/* dark is the base; html[data-scheme] is resolved from the saved mode or the system in each page's head; data-glass="solid" drops the photo + frost */
+:root {
+  --fg: #fff; --mute: rgba(255,255,255,.68); --card: rgba(255,255,255,.07); --field: rgba(255,255,255,.08);
+  --line: rgba(255,255,255,.14); --accent: #fff; --on-accent: #111; --radius: 24px;
+  --tint: #161618; --base-a: 45%; --k: 1; --blur: 22px;
+  --page: #111; --solid: #1c1c1e; --sheet: rgba(28,28,30,.92); --hilite: rgba(255,255,255,.16);
+  --veil: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.75)); --tone: brightness(.7);
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --arabic: "me_quran", "Geeza Pro", "Noto Naskh Arabic", serif;
+  color-scheme: dark;
+}
+/* light: full-screen photo, lightly darkened (white header/footer text on it), with warm cream cards */
+[data-scheme="light"] {
+  --fg: #1f1b16; --mute: rgba(31,27,22,.66); --card: rgba(60,40,20,.06); --field: #ece6db;
+  --line: rgba(60,40,20,.12); --accent: #1f1b16; --on-accent: #f6f1e7;
+  --tint: #f8f4ec; --base-a: 72%;
+  --page: #e6dfd2; --solid: #f6f1e7; --sheet: rgba(246,241,231,.97); --hilite: rgba(60,40,20,.08);
+  --veil: linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.35)); --tone: none;
+  color-scheme: light;
+}
+[data-scheme="light"]:not([data-glass="solid"]) :is(.top, .hero, .foot) { --fg: #fff; --mute: rgba(255,255,255,.85); --card: rgba(255,255,255,.18); color: var(--fg) }
+[data-scheme="light"]:not([data-glass="solid"]) .hero { text-shadow: 0 1px 24px rgba(0,0,0,.45) }
+[data-scheme="light"] .links:popover-open { --fg: #1f1b16; --mute: rgba(31,27,22,.66); --card: rgba(60,40,20,.08); color: var(--fg) }
+[data-scheme="light"] .glass { box-shadow: 0 1px 2px rgba(60,40,20,.06), 0 10px 30px rgba(60,40,20,.1) }
+
+@font-face { font-family: me_quran; src: url(/quran/fonts/me_quran.ttf); font-display: swap }
+
+* { box-sizing: border-box; margin: 0 }
+html { background: var(--page) }
+body { color: var(--fg); font: 16px/1.5 var(--font); min-height: 100vh; min-height: 100dvh; -webkit-text-size-adjust: 100%; display: flex; flex-direction: column }
+/* page photo, sharp; a veil keeps text readable */
+body::before, body::after { content: ""; position: fixed; inset: 0; z-index: -1; background: var(--veil), var(--bg-img) center/cover; filter: var(--tone); animation: drift 40s ease-in-out infinite alternate; pointer-events: none }
+/* the next photo waits on ::after and fades in over the current one (site.js swaps them) */
+body::after { background: var(--veil), var(--bg-next, none) center/cover; opacity: 0 }
+/* the page photo fades in once it has loaded (site.js adds .bg-ready) */
+body::before { transition: opacity .9s ease }
+html:not(.bg-ready) body::before { opacity: 0 }
+.swap body::after { opacity: 1; transition: opacity 2.5s ease }
+@keyframes drift { from { transform: scale(1.06) translate(1%, .5%) } to { transform: scale(1.16) translate(-1.5%, -1%) } }
+a { color: inherit; text-decoration: none }
+button, input, select { font: inherit; color: inherit }
+button { cursor: pointer; border: 0; background: none }
+img { display: block; max-width: 100% }
+[hidden] { display: none !important }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+.mute { color: var(--mute) }
+.center { text-align: center }
+.glass { background: color-mix(in srgb, var(--tint) min(calc(var(--base-a) * var(--k)), 94%), transparent); border: 1px solid var(--line); backdrop-filter: blur(var(--blur)) saturate(1.4); -webkit-backdrop-filter: blur(var(--blur)) saturate(1.4) }
+[data-glass="clear"] { --k: .35; --blur: 3px }
+[data-glass="frosted"] { --k: 1.7; --blur: 50px }
+
+/* header */
+.top, .hero, .layout, .foot { width: 100%; max-width: 1040px; margin-inline: auto; padding-inline: 16px }
+.foot { margin-top: auto } /* short pages: footer sits at the bottom of the screen */
+.top { display: flex; align-items: center; gap: 12px; height: 64px }
+.brand { font-weight: 700; font-size: 18px; letter-spacing: -.02em; margin-inline-end: auto }
+.top .menu { margin-inline-start: auto }
+.links { display: flex; gap: 4px }
+.links a, .pill { padding: 6px 12px; border-radius: 99px; font-size: 14px; color: var(--mute); white-space: nowrap }
+.links a[aria-current], .links a:hover, .pill { color: var(--fg); background: var(--card) }
+
+/* nav: inline on desktop; on phones it collapses behind the menu button (native popover) */
+.menu { display: none; place-items: center; padding: 7px 10px }
+.links[popover] { position: static; inset: auto; margin: 0; border: 0; padding: 0; background: none; overflow: visible; width: auto; height: auto; color: inherit; display: flex }
+@media (max-width: 640px) {
+  .menu { display: grid }
+  .links[popover]:not(:popover-open) { display: none }
+  .links[popover]:popover-open { position: fixed; top: 60px; inset-inline: auto 16px; flex-direction: column; min-width: 180px; padding: 6px; border-radius: 18px; background: var(--sheet); border: 1px solid var(--line); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px) }
+  .links a { padding: 10px 14px; font-size: 16px }
+}
+/* small popover (privacy note) */
+.pop { margin: auto auto 24px; max-width: min(92vw, 420px); padding: 14px 18px; border-radius: 16px; border: 1px solid var(--line); background: var(--sheet); color: var(--fg); font-size: 14px; backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px) }
+.pop a { text-decoration: underline }
+.foot { align-items: baseline }
+.foot button, .foot select { font: inherit; color: inherit; text-transform: inherit; line-height: inherit; margin: 0; padding: 0; border: 0; background: none; cursor: pointer }
+.foot select { appearance: none; -webkit-appearance: none; field-sizing: content; padding-inline-end: 14px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='gray' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right center / 8px 5px }
+[dir="rtl"] .foot select { padding-inline: 14px 0; background-position: left center }
+.foot button:hover { color: var(--fg) }
+
+/* page title */
+.hero { padding-block: 8vh 5vh }
+.home .hero { padding-block: 16vh 8vh }
+.hero { text-shadow: 0 1px 24px color-mix(in srgb, var(--page) 70%, transparent) }
+.hero h1 { font-size: clamp(44px, 8vw, 88px); letter-spacing: -.035em; line-height: 1.05 }
+.hero p { color: var(--mute); margin-top: 6px; font-size: 18px }
+
+/* cards */
+.layout { display: grid; gap: 16px; margin-block: 0 16px }
+.card { border-radius: var(--radius); padding: 24px; min-width: 0 }
+.card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 12px }
+.title { font-weight: 600; font-size: 17px; margin-inline-end: auto; text-align: start }
+.icon { display: grid; place-items: center; flex: none; width: 40px; height: 40px; border-radius: 99px; color: var(--mute) }
+.icon:hover { background: var(--field); color: var(--fg) }
+.icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round }
+
+/* buttons */
+.btn { padding: 10px 16px; border-radius: 12px; background: var(--field); border: 1px solid var(--line); font-size: 14px }
+.btn.primary { background: var(--accent); color: var(--on-accent); border-color: var(--accent) }
+.btns { display: flex; flex-wrap: wrap; gap: 8px }
+.wide { width: 100% }
+
+/* home */
+.next { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px }
+.next .label { flex-basis: 100%; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--mute) }
+.next b, .next .big { font-size: 28px; letter-spacing: -.02em }
+.next .big { font-weight: 400; margin-inline-end: auto }
+.tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; max-width: 760px }
+@media (max-width: 640px) { .tiles { grid-template-columns: 1fr } }
+/* compact card: title + description; the card itself is .glass so the glass level applies */
+.tile { display: block; padding: 16px 20px; border-radius: 20px; transition: transform .2s }
+.tile:hover { transform: translateY(-2px) }
+.tile h2 { font-size: 18px; letter-spacing: -.01em }
+.tile p { text-transform: lowercase; color: var(--mute); font-size: 13px; line-height: 1.35 }
+
+/* quran */
+.ayah { font: 2.2em/2.1 var(--qfont, var(--arabic)); text-align: center; direction: rtl; padding: 12px 0; overflow-wrap: anywhere }
+.trans { text-align: center; font-size: 1.1em }
+.whole { font: inherit; text-align: start; direction: ltr; padding: 0 }
+.whole [data-v] { cursor: pointer; padding: 12px 10px; border-top: 1px solid var(--line); border-radius: 12px }
+.whole [data-v].on { background: var(--hilite) }
+.whole .ar { font: var(--asize, 2.2em)/2.1 var(--qfont, var(--arabic)); direction: rtl; text-align: right }
+.whole .tr { font-size: var(--tsize, 1.1em) }
+.num { font: .5em var(--font); color: var(--mute); border: 1px solid var(--line); border-radius: 99px; padding: 0 .5em; margin: 0 .3em; vertical-align: middle }
+.player { display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 24px }
+.whole ~ .player { position: sticky; bottom: 16px }
+.player .icon { background: var(--sheet) }
+.play { display: grid; place-items: center; width: 56px; height: 56px; border-radius: 99px; background: var(--accent); color: var(--on-accent) }
+.play svg { width: 22px; height: 22px; fill: currentColor }
+.status { text-align: center; font-size: 13px; color: var(--mute); min-height: 20px; margin-top: 8px }
+/* tajweed colours: mid tones that read on light and dark */
+.idghaam_shafawi, .idghaam_mutajaanisain, .idghaam_mutaqaaribain, .idghaam_ghunnah { color: #e04848 }
+.idghaam_no_ghunnah { color: #c47070 } .ghunnah { color: #2fb34f } .qalqalah { color: #3d8fe8 } .iqlab { color: #b55ce0 }
+.ikhfa, .ikhfa_shafawi, .madd_2 { color: #1fb3a0 } .madd_6, .madd_muttasil { color: #e53935 } .madd_246 { color: #ee9a1e }
+.madd_munfasil { color: #19b383 } .hamzat_wasl { color: #84b82c } .lam_shamsiyyah { color: #c050e8 } .silent { color: #999 }
+
+/* quran full screen: the reader card fills the window, everything else hides */
+.reader { view-transition-name: reader }
+.reader .card-head { view-transition-name: qhead }
+#text { view-transition-name: qtext }
+#trans { view-transition-name: qtrans }
+.reader .player { view-transition-name: qplayer }
+/* each piece glides to its new place; text swaps with a quick fade instead of stretching */
+:root.vt-focus::view-transition-group(*) { animation-duration: .5s; animation-timing-function: cubic-bezier(.2, .8, .2, 1) }
+:root.vt-focus::view-transition-old(qtext), :root.vt-focus::view-transition-old(qtrans) { animation: .18s ease-out both vt-fade-out }
+:root.vt-focus::view-transition-new(qtext), :root.vt-focus::view-transition-new(qtrans) { animation: .3s .22s ease-in both vt-fade-in; height: 100%; object-fit: none; object-position: top }
+:root.vt-focus::view-transition-old(root) { animation: .25s ease-out both vt-fade-out }
+:root.vt-focus::view-transition-new(root) { animation: .25s ease-in both vt-fade-in }
+@keyframes vt-fade-out { to { opacity: 0 } }
+@keyframes vt-fade-in { from { opacity: 0 } }
+.focus .top, .focus .hero, .focus .foot { display: none }
+.focus .reader { position: fixed; inset: 0; z-index: 5; margin: 0; border-radius: 0; border: 0; overflow-y: auto;
+  display: flex; flex-direction: column; padding: 16px clamp(16px, 8vw, 120px) 0; font-size: 1.35em }
+.focus .reader .card-head { font-size: 16px; opacity: .7 }
+.focus .reader .card-head:hover { opacity: 1 }
+.focus #text:not(.whole) { margin-top: auto }
+.focus #trans { margin-bottom: auto; max-width: 60ch; align-self: center; color: var(--mute) }
+.focus .whole { flex: 1 }
+.focus .player { position: sticky; bottom: 0; margin: 0 calc(-1 * clamp(16px, 8vw, 120px)); padding: 40px 0 28px; font-size: 16px;
+  background: linear-gradient(transparent, color-mix(in srgb, var(--page) 88%, transparent) 55%) }
+.focus .status { position: fixed; inset: auto 0 6px; margin: 0; min-height: 0; font-size: 12px; z-index: 6 }
+.focus .status:empty { display: none }
+
+/* times */
+.prayers b, .next .big, #where .mute, #where-coords { direction: ltr; unicode-bidi: isolate }
+.prayers { list-style: none; padding: 0 }
+.prayers li { display: flex; justify-content: space-between; align-items: baseline; padding: 14px 4px; border-top: 1px solid var(--line); font-size: 18px; color: var(--mute) }
+.prayers li:first-child { border: 0 }
+.prayers b { font-variant-numeric: tabular-nums; font-weight: 500 }
+.prayers .now { color: var(--fg); font-weight: 700; background: var(--hilite); border-radius: 12px; border-color: transparent; padding-inline: 12px }
+.prayers .now + li { border-color: transparent }
+.prayers .past { opacity: .45 }
+/* times: next prayer up top */
+.next-up { text-align: center; padding: 6px 0 20px }
+.next-up .label { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--mute) }
+.next-time { font-size: clamp(40px, 7vw, 56px); font-weight: 600; letter-spacing: -.03em; line-height: 1.1; margin: 4px 0; direction: ltr; unicode-bidi: isolate }
+.next-up .bar { height: 4px; max-width: 280px; margin: 14px auto 0; border-radius: 99px; background: var(--line); overflow: hidden }
+.next-up .bar i { display: block; height: 100%; background: var(--fg); border-radius: 99px; transition: width .6s ease }
+.prayers .now b { font-weight: 700 }
+.prayers small { font-size: 13px; color: var(--mute); font-weight: 400; margin-inline-start: 8px }
+
+/* qibla */
+.compass { width: min(300px, 76vw); margin: 4px auto 8px; display: block; overflow: visible }
+.compass .ring { fill: var(--field); stroke: var(--line); stroke-width: 1.5 }
+.compass .ticks { stroke: var(--mute); stroke-width: 1.2; stroke-linecap: round }
+.compass text { fill: var(--mute); font: 600 13px var(--font); text-anchor: middle }
+.compass .north { fill: var(--fg) }
+.compass .kaaba { font-size: 22px }
+.compass .needle { fill: var(--fg); transition: fill .3s }
+.compass.facing .needle { fill: #2fb34f }
+.compass.facing .ring { stroke: #2fb34f; stroke-width: 3 }
+.compass .hub { fill: var(--fg) }
+.qibla-deg { font-size: 15px }
+.qibla-deg b { font-size: 44px; font-weight: 600; letter-spacing: -.03em; font-variant-numeric: tabular-nums }
+.qibla-msg { color: var(--mute); font-size: 14px; min-height: 21px; margin: 6px 0 14px }
+.compass.facing ~ .qibla-msg { color: #2fb34f; font-weight: 600 }
+#dial { transition: transform .15s ease-out; transform-origin: 100px 100px }
+
+/* duaa */
+.search { flex: 1; min-width: 0; background: var(--field); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px }
+.chips { display: flex; gap: 6px; overflow-x: auto; margin-bottom: 4px; scrollbar-width: none }
+.chips button { padding: 6px 12px; border-radius: 99px; border: 1px solid var(--line); font-size: 14px; white-space: nowrap; color: var(--mute) }
+.chips button[aria-pressed="true"] { background: var(--fg); color: var(--page); border-color: var(--fg) }
+
+/* settings sheet */
+.sheet { margin: auto auto 0; width: 100%; max-width: 560px; max-height: 88vh; padding: 0; background: var(--sheet); color: var(--fg); border-radius: var(--radius) var(--radius) 0 0; overscroll-behavior: contain }
+@media (min-width: 640px) { .sheet { margin: auto; border-radius: var(--radius) } }
+.sheet::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(4px) }
+.sheet form { display: grid; gap: 14px; padding: 20px 24px 28px }
+.sheet-head { display: flex; align-items: center; justify-content: space-between }
+.sheet h2 { font-size: 18px }
+.sheet label { display: grid; gap: 4px; font-size: 12px; color: var(--mute) }
+.sheet select, .sheet input:not([type=checkbox]) { width: 100%; font-size: 15px; color: var(--fg); background: var(--field); border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px }
+select option { background: var(--page) }
+.sheet .check { display: flex; gap: 10px; align-items: center; font-size: 15px; color: var(--fg) }
+.checks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px }
+.note { color: var(--mute); font-size: 13px }
+
+/* solid: no photo, no frost, plain cards */
+[data-glass="solid"] body::before, [data-glass="solid"] body::after { display: none }
+[data-glass="solid"] .glass, [data-glass="solid"] .sheet { background: var(--solid); backdrop-filter: none; -webkit-backdrop-filter: none }
+[data-glass="solid"] { --field: var(--page) }
+
+/* footer */
+.foot { text-transform: lowercase; display: flex; gap: 8px 18px; flex-wrap: wrap; color: var(--mute); font-size: 14px; padding-block: 32px 48px }
+.foot a:hover { color: var(--fg) }
+.heart { color: #e25555 }
+
+@media (max-width: 640px) {
+  .card { padding: 18px }
+  .ayah { font-size: 1.8em }
+  .checks { grid-template-columns: 1fr 1fr }
+}
+.search::placeholder { color: var(--mute) }
+
+/* pages fill in by script after load: title and content stay hidden until html.ready, then fade up in order */
+html:not(.ready) :is(.hero, main, .foot) { opacity: 0 }
+.ready :is(.hero, main > *) { animation: rise .5s cubic-bezier(.2, .8, .2, 1) both }
+.ready main > :nth-child(2) { animation-delay: .06s }
+.ready main > :nth-child(3) { animation-delay: .12s }
+.ready main > :nth-child(4) { animation-delay: .18s }
+.ready .foot { animation: rise .5s .2s cubic-bezier(.2, .8, .2, 1) both }
+@keyframes rise { from { opacity: 0; transform: translateY(10px) } }
+
+/* animated page changes (browsers without support just navigate normally) */
+@view-transition { navigation: auto }
+.top { view-transition-name: top }
+::view-transition-old(root) { animation: .18s ease-in both page-out }
+::view-transition-new(root) { animation: .28s ease-out both page-in }
+@keyframes page-out { to { opacity: 0; transform: translateY(-8px) } }
+@keyframes page-in { from { opacity: 0; transform: translateY(12px) } }
+@media (prefers-reduced-motion: reduce) { @view-transition { navigation: none } body::before, body::after, .ready :is(.hero, main > *, .foot) { animation: none } }

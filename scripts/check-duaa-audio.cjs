@@ -3,10 +3,11 @@ const vm = require('node:vm');
 const fs = require('node:fs');
 const path = require('node:path');
 const handlers = {};
-const control = {value:'',addEventListener(){}};
-vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../src/assets/duaa/duaa.js'),'utf8'), {
- document:{querySelector:()=>control,querySelectorAll:()=>[],getElementById:()=>null,addEventListener:(n,f)=>{handlers[n]=f;}},
- window:{addEventListener(){}},location:{hash:''},duaaText:{topic:'topic',topics:'topics'},console:{warn(){}},
+const control = {value:'',addEventListener(){},classList:{toggle(){}}};
+vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../docs/assets/duaa/duaa.js'),'utf8'), {
+ document:{querySelector:()=>control,querySelectorAll:()=>[],getElementById:()=>null,addEventListener:(n,f)=>{handlers[n]=f;},body:{classList:{toggle(){}}}},
+ addEventListener(){},location:{hash:'',pathname:'/duaa/'},history:{replaceState(){},pushState(){}},console:{warn(){}},
+ $:()=>control,$$:()=>[],i18n(){},t:k=>k,AR:false,load:(k,d)=>d,save(){},arabicDuaTitles:{},
 });
 (async()=>{
  const section={hidden:false,querySelectorAll:()=>recordings};

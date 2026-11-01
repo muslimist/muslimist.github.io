@@ -1,300 +1,143 @@
-<!DOCTYPE HTML>
+<!doctype html>
 <html lang="en">
-	<head>
-		<title>muslimist | qibla</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<meta name="description" content="an ad-free, open source, non-spying collection of tools for muslims">
-		<meta name="theme-color" content="#000000"/>
-		<meta name="mobile-web-app-capable" content="yes">
-		<meta property="og:title" content="muslimist | qibla" />
-		<meta property="og:description" content="an ad-free, open source, non-spying collection of tools for muslims" />
-		<meta property="og:url" content="https://muslimist.com/qibla" />
-		<meta property="og:image" content="/assets/icons/apple-splash-1136-640.jpg" />
-		<link rel="preload" href="/assets/fonts/6xKydSBYKcSV-LCoeQqfX1RYOo3ik4zwlxdu3cOWxw.woff2" as="font" crossorigin="anonymous">
-		<link rel="preload" href="/assets/fonts/fa-solid-900.woff2" as="font" crossorigin="anonymous">
-		<link rel="preload" href="/assets/fonts/6xK3dSBYKcSV-LCoeQqfX1RYOo3qOK7lujVj9w.woff2" as="font" crossorigin="anonymous">
-		<link rel="stylesheet" href="/assets/css/app.min.css" />
-		<link rel="manifest" href="/manifest.webmanifest">
-		<link rel="icon" type="image/png" sizes="196x196" href="/assets/icons/favicon-196.png">
-		<link rel="apple-touch-icon" href="/assets/icons/apple-icon-180.png">
-		<link rel="apple-touch-startup-image" href="/assets/icons/apple-splash-2048-2732.jpg" media="(width: 1024px) and (height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-		<link rel="apple-touch-startup-image" href="/assets/icons/apple-splash-2732-2048.jpg" media="(width: 1024px) and (height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-		<link rel="apple-touch-startup-image" href="/assets/icons/apple-splash-1668-2388.jpg" media="(width: 834px) and (height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-		<link rel="apple-touch-startup-image" href="/assets/icons/apple-splash-2388-1668.jpg" media="(width: 834px) and (height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-		<link rel="apple-touch-startup-image" href="/assets/icons/apple-splash-1536-2048.jpg" media="(width: 768px) and (height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-		<link rel="apple-touch-startup-image" href="/assets/icons/apple-splash-2048-1536.jpg" media="(width: 768px) and (height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-		<link rel="apple-touch-startup-image" href="/assets/icons/apple-splash-1668-2224.jpg" media="(width: 834px) and (height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-		<link rel="apple-touch-startup-image" href="/assets/icons/apple-splash-2224-1668.jpg" media="(width: 834px) and (height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-		<link rel="apple-touch-startup-image" href="/assets/icons/apple-splash-1620-2160.jpg" media="(width: 810px) and (height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-		<link rel="apple-touch-startup-image" href="/assets/icons/apple-splash-2160-1620.jpg" media="(width: 810px) and (height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-		<link rel="apple-touch-startup-image" href="/assets/icons/apple-splash-1284-2778.jpg" media="(width: 428px) and (height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-		<link rel="apple-touch-startup-image" href="/assets/icons/apple-splash-2778-1284.jpg" media="(width: 428px) and (height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
-		<link rel="apple-touch-startup-image" href="/assets/icons/apple-splash-1170-2532.jpg" media="(width: 390px) and (height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-		<link rel="apple-touch-startup-image" href="/assets/icons/apple-splash-2532-1170.jpg" media="(width: 390px) and (height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
-		<link rel="apple-touch-startup-image" href="/assets/icons/apple-splash-1125-2436.jpg" media="(width: 375px) and (height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-		<link rel="apple-touch-startup-image" href="/assets/icons/apple-splash-2436-1125.jpg" media="(width: 375px) and (height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
-		<link rel="apple-touch-startup-image" href="/assets/icons/apple-splash-1242-2688.jpg" media="(width: 414px) and (height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-		<link rel="apple-touch-startup-image" href="/assets/icons/apple-splash-2688-1242.jpg" media="(width: 414px) and (height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
-		<link rel="apple-touch-startup-image" href="/assets/icons/apple-splash-828-1792.jpg" media="(width: 414px) and (height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-		<link rel="apple-touch-startup-image" href="/assets/icons/apple-splash-1792-828.jpg" media="(width: 414px) and (height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-		<link rel="apple-touch-startup-image" href="/assets/icons/apple-splash-1242-2208.jpg" media="(width: 414px) and (height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-		<link rel="apple-touch-startup-image" href="/assets/icons/apple-splash-2208-1242.jpg" media="(width: 414px) and (height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
-		<link rel="apple-touch-startup-image" href="/assets/icons/apple-splash-750-1334.jpg" media="(width: 375px) and (height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-		<link rel="apple-touch-startup-image" href="/assets/icons/apple-splash-1334-750.jpg" media="(width: 375px) and (height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-		<link rel="apple-touch-startup-image" href="/assets/icons/apple-splash-640-1136.jpg" media="(width: 320px) and (height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-		<link rel="apple-touch-startup-image" href="/assets/icons/apple-splash-1136-640.jpg" media="(width: 320px) and (height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-	</head>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>muslimist · qibla</title>
+<meta name="description" content="Find the qibla from where you stand.">
+<meta name="theme-color" content="#111111">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/assets/icons/favicon-196.png">
+<link rel="apple-touch-icon" href="/assets/icons/apple-icon-180.png">
+<script>{const s = localStorage, d = document.documentElement; d.dataset.scheme = s.mode || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'); if (s.glass) d.dataset.glass = s.glass; d.style.setProperty('--bg-img', `url(/assets/img/bg-qibla-${Math.random() * 6 | 0}.webp)`); if (s.lang == 'arabic') { d.lang = 'ar'; d.dir = 'rtl' }}</script>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="/">muslimist</a>
+  <nav class="links" id="menu" popover><a href="/quran/" data-t="quran">Quran</a><a href="/duaa/" data-t="duaa">Duaa</a><a href="/times/" data-t="times">Times</a><a href="/qibla/" aria-current="page" data-t="qibla">Qibla</a><a href="/dashboard/" data-t="dash">Dash</a></nav>
+  <button class="pill menu" popovertarget="menu" aria-label="Menu"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</header>
 
-	<body class="is-preload">
-		<div id="wrapper" class="divided">
+<section class="hero">
+  <h1 data-t="qibla">Qibla</h1>
+  <p data-t="sub">Direction from where you stand</p>
+</section>
 
+<main class="layout">
+  <section class="card glass center">
+    <div class="card-head">
+      <span class="title" id="where"></span>
+      <button class="icon" data-open="settings" data-t-label="settings" aria-label="Settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg></button>
+    </div>
+    <svg class="compass" id="compass" viewBox="0 0 200 200" aria-hidden="true">
+      <circle cx="100" cy="100" r="94" class="ring"/>
+      <g id="dial">
+        <g class="ticks"><line x1="100" y1="10" x2="100" y2="20" transform="rotate(0 100 100)"/><line x1="100" y1="12" x2="100" y2="17" transform="rotate(15 100 100)"/><line x1="100" y1="12" x2="100" y2="17" transform="rotate(30 100 100)"/><line x1="100" y1="12" x2="100" y2="17" transform="rotate(45 100 100)"/><line x1="100" y1="12" x2="100" y2="17" transform="rotate(60 100 100)"/><line x1="100" y1="12" x2="100" y2="17" transform="rotate(75 100 100)"/><line x1="100" y1="10" x2="100" y2="20" transform="rotate(90 100 100)"/><line x1="100" y1="12" x2="100" y2="17" transform="rotate(105 100 100)"/><line x1="100" y1="12" x2="100" y2="17" transform="rotate(120 100 100)"/><line x1="100" y1="12" x2="100" y2="17" transform="rotate(135 100 100)"/><line x1="100" y1="12" x2="100" y2="17" transform="rotate(150 100 100)"/><line x1="100" y1="12" x2="100" y2="17" transform="rotate(165 100 100)"/><line x1="100" y1="10" x2="100" y2="20" transform="rotate(180 100 100)"/><line x1="100" y1="12" x2="100" y2="17" transform="rotate(195 100 100)"/><line x1="100" y1="12" x2="100" y2="17" transform="rotate(210 100 100)"/><line x1="100" y1="12" x2="100" y2="17" transform="rotate(225 100 100)"/><line x1="100" y1="12" x2="100" y2="17" transform="rotate(240 100 100)"/><line x1="100" y1="12" x2="100" y2="17" transform="rotate(255 100 100)"/><line x1="100" y1="10" x2="100" y2="20" transform="rotate(270 100 100)"/><line x1="100" y1="12" x2="100" y2="17" transform="rotate(285 100 100)"/><line x1="100" y1="12" x2="100" y2="17" transform="rotate(300 100 100)"/><line x1="100" y1="12" x2="100" y2="17" transform="rotate(315 100 100)"/><line x1="100" y1="12" x2="100" y2="17" transform="rotate(330 100 100)"/><line x1="100" y1="12" x2="100" y2="17" transform="rotate(345 100 100)"/></g>
+        <text x="100" y="38" class="north">N</text><text x="166" y="105">E</text><text x="100" y="172">S</text><text x="34" y="105">W</text>
+        <g id="needle"><path class="needle" d="M100 46 L106 100 L100 95 L94 100Z"/><text x="100" y="40" class="kaaba">🕋</text></g>
+      </g>
+      <circle cx="100" cy="100" r="4" class="hub"/>
+    </svg>
+    <p class="qibla-deg"><b id="deg"></b> <span class="mute" data-t="fromnorth">from north</span></p>
+    <p class="qibla-msg" id="msg"></p>
+    <button class="btn primary" id="start" data-t="start" hidden>Start compass</button>
+  </section>
+</main>
+
+<dialog class="sheet" id="settings">
+  <form method="dialog">
+    <div class="sheet-head"><h2 data-t="settings">Settings</h2><button class="icon" data-t-label="close" aria-label="Close">✕</button></div>
+    <button type="button" class="btn wide" id="locate" data-t="locate">Use my location</button>
+    <div class="row2">
+      <label><span data-t="lat">Latitude</span><input id="lat" inputmode="decimal"></label>
+      <label><span data-t="lng">Longitude</span><input id="lng" inputmode="decimal"></label>
+    </div>
+    <p class="note" data-t="shared">This location is shared with the times page.</p>
+  </form>
+</dialog>
+
+<footer class="foot"><span><span data-t="madewith">made with</span> <span class="heart" aria-label="love">♥</span> <span data-t="bymuslims">by muslims for muslims</span></span><a href="https://github.com/muslimist/muslimist.github.io">github</a><button popovertarget="privacy" data-t="privacy">privacy</button></footer>
+<div class="pop" id="privacy" popover><span data-t="privacynote">we don't track anything, see for yourself =)</span> <a href="https://github.com/muslimist/muslimist.github.io">github</a></div>
+
+<script src="/assets/site.js"></script>
+<script src="/assets/times.js"></script>
 <script>
-localStorage.setItem("lastpage", "qibla");
+i18n({
+  sub: ['Direction from where you stand', 'اتجاه القبلة من مكانك'],
+  start: ['Start compass', 'تشغيل البوصلة'], fromnorth: ['from north', 'من الشمال'],
+  looking: ['Looking for your compass…', 'جارٍ البحث عن البوصلة…'], turn: ['Hold your phone flat and turn until 🕋 is at the top.', 'أمسك هاتفك بشكل مسطح وأدره حتى تصبح 🕋 في الأعلى.'],
+  facing: ["You're facing the qibla", 'أنت تواجه القبلة'], tapstart: ['Tap to use your compass.', 'اضغط لاستخدام البوصلة.'],
+  nosensor: ['No compass on this device. Face the angle above using a phone or a real compass.', 'لا توجد بوصلة في هذا الجهاز. استخدم الزاوية أعلاه مع هاتف أو بوصلة حقيقية.'],
+  'denied-motion': ['Compass access was not allowed. You can allow it in your browser settings.', 'لم يُسمح بالوصول إلى البوصلة. يمكنك السماح بذلك من إعدادات المتصفح.'],
+  locate: ['Use my location', 'استخدم موقعي'], locating: ['Getting location…', 'جارٍ تحديد الموقع…'], denied: ['Location unavailable', 'تعذر تحديد الموقع'],
+  lat: ['Latitude', 'خط العرض'], lng: ['Longitude', 'خط الطول'],
+  shared: ['This location is shared with the times page.', 'هذا الموقع مشترك مع صفحة الأوقات.'],
+});
+
+// great-circle bearing from a point to the Kaaba, 0-360 degrees clockwise from north
+function qiblaBearing(lat, lng) {
+  const r = Math.PI / 180, k = { lat: 21.422487 * r, lng: 39.826206 * r };
+  const deg = Math.atan2(Math.sin(k.lng - lng * r), Math.cos(lat * r) * Math.tan(k.lat) - Math.sin(lat * r) * Math.cos(k.lng - lng * r)) / r;
+  return (deg + 360) % 360;
+}
+
+let bearing;
+function render() {
+  bearing = qiblaBearing(timesSet.lat, timesSet.lng);
+  $('#deg').textContent = `${Math.round(bearing)}°`;
+  $('#where').innerHTML = `<bdi dir="ltr">${(+timesSet.lat).toFixed(2)}, ${(+timesSet.lng).toFixed(2)}</bdi>`;
+  $('#needle').setAttribute('transform', `rotate(${bearing} 100 100)`);
+  $('#lat').value = timesSet.lat; $('#lng').value = timesSet.lng;
+}
+
+// compass: start by itself where the browser allows it; only iPhone/iPad needs a tap to grant access
+let gotHeading = false;
+function onHeading(e) {
+  const heading = e.webkitCompassHeading ?? (e.absolute || e.type === 'deviceorientationabsolute' ? 360 - e.alpha : null);
+  if (heading == null || isNaN(heading)) return;
+  gotHeading = true;
+  $('#dial').style.transform = `rotate(${-heading}deg)`;
+  const facing = Math.abs(((bearing - heading + 540) % 360) - 180) < 8;
+  $('#compass').classList.toggle('facing', facing);
+  $('#msg').textContent = t(facing ? 'facing' : 'turn');
+}
+function listen() {
+  addEventListener('ondeviceorientationabsolute' in window ? 'deviceorientationabsolute' : 'deviceorientation', onHeading);
+  $('#msg').textContent = t('looking');
+  // laptops and desktops either never send an event or send empty ones
+  setTimeout(() => { if (!gotHeading) $('#msg').textContent = t('nosensor') }, 2000);
+}
+// no touchscreen = laptop/desktop: no compass to ask for
+if (!('DeviceOrientationEvent' in window) || !navigator.maxTouchPoints) $('#msg').textContent = t('nosensor');
+else if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+  $('#start').hidden = false;
+  $('#msg').textContent = t('tapstart');
+  $('#start').onclick = async () => {
+    try {
+      if (await DeviceOrientationEvent.requestPermission() !== 'granted') throw 0;
+      $('#start').hidden = true;
+      listen();
+    } catch { $('#msg').textContent = t('denied-motion') }
+  };
+} else listen();
+
+$('#settings').addEventListener('change', () => {
+  const lat = parseFloat($('#lat').value), lng = parseFloat($('#lng').value);
+  if (Math.abs(lat) <= 90) timesSet.lat = lat;
+  if (Math.abs(lng) <= 180) timesSet.lng = lng;
+  save('times', timesSet); render();
+});
+
+$('#locate').onclick = () => {
+  $('#locate').textContent = t('locating');
+  navigator.geolocation.getCurrentPosition(pos => {
+    timesSet.lat = +pos.coords.latitude.toFixed(4); timesSet.lng = +pos.coords.longitude.toFixed(4);
+    save('times', timesSet); render(); $('#locate').textContent = t('locate');
+  }, () => { $('#locate').textContent = t('denied'); setTimeout(() => $('#locate').textContent = t('locate'), 3000) });
+};
+
+render();
 </script>
-
-
-      <style>
-      .compass {
-        position: relative;
-        width: 220px;
-        height: 220px;
-        border-radius: 50%;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-        margin: auto;
-      }
-
-      .compass > .arrow {
-        position: absolute;
-        width: 0;
-        height: 0;
-        top: -20px;
-        left: 50%;
-        transform: translateX(-50%);
-        border-style: solid;
-        border-width: 30px 20px 0 20px;
-        border-color: red transparent transparent transparent;
-        z-index: 1;
-      }
-
-      .compass > .compass-circle,
-      .compass > .my-point {
-        position: absolute;
-        width: 90%;
-        height: 90%;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        transition: transform 0.1s ease-out;
-        background: url(https://purepng.com/public/uploads/large/purepng.com-compasscompassinstrumentnavigationcardinal-directionspointsdiagram-1701527842316onq7x.png)
-          center no-repeat;
-        background-size: contain;
-      }
-
-      .compass > .my-point {
-        opacity: 0;
-        width: 20%;
-        height: 20%;
-        background: rgb(8, 223, 69);
-        border-radius: 50%;
-        transition: opacity 0.5s ease-out;
-      }
-
-      .start-btn {
-        margin-bottom: auto;
-      }
-    </style>
-
-
-      <section class="banner style1 orient-left content-align-left image-position-right fullscreen onload-image-fade-in onload-content-fade-right">
-        <div class="content">
-          <h1>qibla</h1>
-          <p class="major">find the qibla for your current position</p>
-        </div>
-        <div class="image">
-          <img src="/assets/images/header_qibla.webp" alt="" />
-        </div>
-      </section>
-
-
-      <section class="wrapper style1 align-center">
-        <div class="inner" style="padding: 2rem 4rem 2rem 4rem;">
-          <div class="index align-left">
-            <section>
-              <header>
-                <h3>qibla</h3>
-              </header>
-              <div class="content">
-                <center>
-                  <div class="compass">
-                    <div class="arrow"></div>
-                    <div class="compass-circle"></div>
-                    <div class="my-point"></div>
-                  </div>
-                  <br><br>
-                  <h3 id="text"></h3>
-                  <br>
-                  <button class="start-btn">Start compass</button>
-                  <br><br>
-                </center>
-              </div>
-            </section>
-
-            <section>
-              <header>
-                <h3>help</h3>
-              </header>
-              <div class="content">
-                <form method="post" action="#">
-                  <div class="fields">
-                    <div class="field">
-                      <p>Give location permissions, lay phone flat and rotate until a green dot appears in the center of the compass. It will tell you the direction of the qibla in degrees once its calculated. You may have to click on the start compass button on iOS devices.<br><br>Future updates will allow manual location input and syncing between location saved on other parts of this website.</p>
-                    </div>
-                    
-                  </div>
-                </form>
-              </div>
-            </section>
-
-          </div>
-        </div>
-      </section>
-
-
-      <script src="/assets/js/app.min.js"></script>
-      <script type="text/javascript" src="/assets/js/praytimes.js"></script>
-      <script type="text/javascript">
-
-        const compassCircle = document.querySelector(".compass-circle");
-        const myPoint = document.querySelector(".my-point");
-        const startBtn = document.querySelector(".start-btn");
-        const isIOS =
-          navigator.userAgent.match(/(iPod|iPhone|iPad)/) &&
-          navigator.userAgent.match(/AppleWebKit/);
-
-        function init() {
-          startBtn.addEventListener("click", startCompass);
-          navigator.geolocation.getCurrentPosition(locationHandler);
-
-          if (!isIOS) {
-            window.addEventListener("deviceorientationabsolute", handler, true);
-          }
-        }
-
-        function startCompass() {
-          if (isIOS) {
-            DeviceOrientationEvent.requestPermission()
-              .then((response) => {
-                if (response === "granted") {
-                  window.addEventListener("deviceorientation", handler, true);
-                } else {
-                  alert("has to be allowed!");
-                }
-              })
-              .catch(() => alert("not supported"));
-          }
-        }
-
-        function handler(e) {
-          compass = e.webkitCompassHeading || Math.abs(e.alpha - 360);
-          compassCircle.style.transform = `translate(-50%, -50%) rotate(${-compass}deg)`;
-
-          // ±15 degree
-          if (
-            (pointDegree < Math.abs(compass) &&
-            pointDegree + 15 > Math.abs(compass)) ||
-            pointDegree > Math.abs(compass + 15) ||
-            pointDegree < Math.abs(compass)
-          ) {
-            myPoint.style.opacity = 0;
-          } else if (pointDegree) {
-            myPoint.style.opacity = 1;
-          }
-        }
-
-        let pointDegree;
-
-        function locationHandler(position) {
-          const { latitude, longitude } = position.coords;
-          pointDegree = calcDegreeToPoint(latitude, longitude);
-
-          document.getElementById("text").innerHTML = "the qibla is " + pointDegree + "° from your position";
-
-          if (pointDegree < 0) {
-            pointDegree = pointDegree + 360;
-          }
-        }
-
-        function calcDegreeToPoint(latitude, longitude) {
-          // Qibla geolocation
-          const point = {
-            lat: 21.422487,
-            lng: 39.826206
-          };
-
-          const phiK = (point.lat * Math.PI) / 180.0;
-          const lambdaK = (point.lng * Math.PI) / 180.0;
-          const phi = (latitude * Math.PI) / 180.0;
-          const lambda = (longitude * Math.PI) / 180.0;
-          const psi =
-            (180.0 / Math.PI) *
-            Math.atan2(
-              Math.sin(lambdaK - lambda),
-              Math.cos(phi) * Math.tan(phiK) -
-                Math.sin(phi) * Math.cos(lambdaK - lambda)
-            );
-          return Math.round(psi * 10) / 10;
-        }
-
-        init();
-
-      </script>
-
-      
-
-
-
-			<footer class="wrapper style1 align-center">
-				<div class="inner">
-					<p>
-						<script>
-						if (!localStorage.lang) {
-					      localStorage.setItem("lang", "english");
-					    }
-
-					    if (localStorage.getItem("lang") == "english") {
-					    	document.write('<a href="/">home</a> - ');
-					    	document.write('<a href="/quran">quran</a> - ');
-						document.write('<a href="/duaa/">duaa</a> - ');
-					    	document.write('<a href="/times">times</a> - ');
-					    	document.write('<a href="/qibla">qibla</a>');
-					    	document.write('<br><br>made with <span style="color: #e25555;"><i class="fas fa-heart"></i></span> by muslims for muslims<br>');
-					    	document.write('<a target="_blank" href="https://github.com/muslimist">github</a> - ');
-					    	var privacy = "we don\'t track anything, see for yourself =)";
-					    	document.write('<a onclick="alert(privacy)">privacy</a> - ');
-					    	document.write('<a onclick="toggledarkmode()">dark mode</a> - ');
-					    	document.write('<a href="/lang/?arabic">عربي</a>');
-					    } else {
-					    	document.write('<a href="/">الصفحة الرئيسية</a> - ');
-					    	document.write('<a href="/quran">القرآن</a> - ');
-						document.write('<a href="/duaa/">أدعية</a> - ');
-					    	document.write('<a href="/times">أوقات</a> - ');
-					    	document.write('<a href="/qibla">القبلة</a>');
-					    	document.write('<br><br>مصنوع من <span style="color: #e25555;"><i class="fas fa-heart"></i></span> مع قبل المسلمين للمسلمين<br>');
-					    	document.write('<a target="_blank" href="https://github.com/muslimist">المبرمجين</a> - ');
-					    	var privacy = "نحن لا نتتبع أي شيء ، انظر بنفسك =)";
-					    	document.write('<a onclick="alert(privacy)">الخصوصية</a> - ');
-					    	document.write('<a onclick="toggledarkmode()">وضع الظلام</a> - ');
-					    	document.write('<a href="/lang/?english">english</a>');
-					    }
-						</script>
-					</p>
-				</div>
-			</footer>
-
-
-		</div>
-
-
-	</body>
+</body>
 </html>

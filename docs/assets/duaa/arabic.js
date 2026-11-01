@@ -1,3 +1,4 @@
+// Arabic titles for each dua topic, used when the site language is Arabic
 const arabicDuaTitles = {
   "1": "فضل الذكر",
   "2": "عند الاستيقاظ من النوم",
@@ -212,32 +213,3 @@ const arabicDuaTitles = {
   "325": "سورة نوح 71:26",
   "326": "سورة نوح 71:28"
 };
-const duaaIsArabic = localStorage.getItem('lang') === 'arabic';
-localStorage.setItem('lastpage', 'duaa');
-const duaaText = duaaIsArabic ? {
- topic: 'موضوع', topics: 'مواضيع', play: 'تشغيل هذا الدعاء',
- paused: 'توقف التشغيل. اضغط على زر التشغيل للمتابعة.'
-} : {topic: 'topic', topics: 'topics', play: 'play this recording', paused: 'Playback paused. Press play to continue.'};
-if (duaaIsArabic) {
- document.documentElement.lang = 'ar';
- document.querySelector('main').dir = 'rtl';
- document.title = 'مسلمست | أدعية';
- const labels = {
- 'main h1': 'أدعية', 'main .major': 'دعاء لكل لحظة',
- '.duaa-library > h2': 'ابحث عن دعاء', '.duaa-intro': 'لحظة سكينة وكلمات من القلب.',
- 'label[for="duaa-search"]': 'البحث', 'label[for="duaa-category"]': 'التصنيف',
- '#duaa-empty': 'لا توجد نتائج. جرّب كلمة أو تصنيفًا آخر.'
- };
- Object.entries(labels).forEach(([selector, text]) => document.querySelector(selector).textContent = text);
- document.querySelector('#duaa-search').placeholder = 'جرّب السفر أو المغفرة أو الصباح…';
- const categories = ['جميع التصنيفات','الحياة اليومية','الذكر','الناس','الحج والصيام','أدعية قرآنية','الصلاة','المشاعر','الإيمان','المرض'];
- document.querySelectorAll('#duaa-category option').forEach(option => option.textContent = categories[Number(option.value)]);
- for (const [id, title] of Object.entries(arabicDuaTitles)) {
-  const section = document.getElementById('dua-' + id);
-  section.querySelector('summary > span:last-child').textContent = title;
-  section.dataset.search += ' ' + title;
-  section.querySelectorAll('audio').forEach(audio => audio.setAttribute('aria-label', 'استمع إلى ' + title));
- }
- document.querySelector('#duaa-translation').nextSibling.textContent = ' الترجمة الإنجليزية';
- document.querySelector('#duaa-transliteration').nextSibling.textContent = ' النطق بالحروف اللاتينية';
-}
