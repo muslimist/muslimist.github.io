@@ -117,7 +117,7 @@ img { display: block; max-width: 100% }
 .tile { display: block; padding: 16px 20px; border-radius: 20px; transition: transform .2s }
 .tile:hover { transform: translateY(-2px) }
 .tile h2 { font-size: 18px; letter-spacing: -.01em }
-.tile p { text-transform: lowercase; color: var(--mute); font-size: 13px; line-height: 1.35 }
+.tile p { color: var(--mute); font-size: 13px; line-height: 1.35 }
 
 /* quran */
 .ayah { font: 2.2em/2.1 var(--qfont, var(--arabic)); text-align: center; direction: rtl; padding: 12px 0; overflow-wrap: anywhere }

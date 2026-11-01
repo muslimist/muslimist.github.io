@@ -15,6 +15,27 @@
 <link rel="icon" href="/assets/icons/favicon-196.png?v=4">
 <link rel="apple-touch-icon" href="/assets/icons/apple-icon-180.png?v=4">
 <script>{const s = localStorage, d = document.documentElement; d.dataset.scheme = s.mode || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'); if (s.glass) d.dataset.glass = s.glass; d.dataset.bg = `url(/assets/img/bg-home-${Math.random() * 7 | 0}.webp)`; d.style.setProperty('--bg-img', sessionStorage.bg || d.dataset.bg); if (sessionStorage.bg) d.classList.add('bg-ready'); if (s.lang == 'arabic') { d.lang = 'ar'; d.dir = 'rtl' }}</script>
+<style>
+  /* home: live shortcuts under the title, then the tools in three groups */
+  .hijri { font-size: 14px !important; margin-top: 2px !important }
+  .now a { white-space: nowrap }
+  .now { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; text-shadow: none }
+  .now a { display: flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 99px; font-size: 14px; color: var(--fg); background: color-mix(in srgb, var(--tint) 55%, transparent); border: 1px solid var(--line); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px) }
+  .now a:hover { background: color-mix(in srgb, var(--tint) 75%, transparent) }
+  .now b { font-weight: 600 }
+  .now .dim { color: var(--mute) }
+  [data-scheme="light"]:not([data-glass="solid"]) .now a { --fg: #1f1b16; --mute: rgba(31,27,22,.66); background: rgba(255,255,255,.72) }
+  .home-main { gap: 22px }
+  .landing .hero { padding-block: 14vh 6vh }
+  .group-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--mute); margin: 0 4px 10px }
+  [data-scheme="light"]:not([data-glass="solid"]) .group-title { color: rgba(255,255,255,.85); text-shadow: 0 1px 12px rgba(0,0,0,.4) }
+  .home-main .tiles { grid-template-columns: repeat(4, 1fr); max-width: none; gap: 10px }
+  .home-main .tile { display: flex; flex-direction: column; gap: 10px; padding: 16px; min-height: 118px }
+  .home-main .tile svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; opacity: .85 }
+  .home-main .tile div { margin-top: auto }
+  @media (max-width: 760px) { .home-main .tiles { grid-template-columns: 1fr 1fr } .home-main .tile { min-height: 104px; padding: 14px } }
+  .home-main .tile:last-child:nth-child(odd) { grid-column: auto }
+</style>
 </head>
 <body class="home landing">
 <header class="top">
@@ -26,21 +47,36 @@
 <section class="hero">
   <h1>muslimist</h1>
   <p data-t="tagline">An ad-free, open source, non-spying collection of tools for Muslims.</p>
+  <p class="hijri" id="hijri"></p>
+  <div class="now" id="now"></div>
 </section>
 
-<main class="layout">
-  <section class="tiles">
-    <a class="tile glass" href="/quran/"><div><h2 data-t="quran">Quran</h2><p data-t="quran-sub">Read and listen till your heart is content</p></div></a>
-    <a class="tile glass" href="/duaa/"><div><h2 data-t="duaa">Duaa</h2><p data-t="duaa-sub">Find the words for every moment</p></div></a>
-    <a class="tile glass" href="/hadith/"><div><h2 data-t="hadith">Hadith</h2><p data-t="hadith-sub">The forty hadith of an-Nawawi</p></div></a>
-    <a class="tile glass" href="/names/"><div><h2 data-t="names">Names</h2><p data-t="names-sub">The 99 names of Allah</p></div></a>
-    <a class="tile glass" href="/salah/"><div><h2 data-t="salah">Salah</h2><p data-t="salah-sub">How to make wudu and pray</p></div></a>
-    <a class="tile glass" href="/calendar/"><div><h2 data-t="calendar">Calendar</h2><p data-t="calendar-sub">Hijri months, special days and history</p></div></a>
-    <a class="tile glass" href="/ramadan/"><div><h2 data-t="ramadan">Ramadan</h2><p data-t="ramadan-sub">Suhoor, iftar and the last ten nights</p></div></a>
-    <a class="tile glass" href="/zakat/"><div><h2 data-t="zakat">Zakat</h2><p data-t="zakat-sub">Work out what you owe, step by step</p></div></a>
-    <a class="tile glass" href="/times/"><div><h2 data-t="times">Times</h2><p data-t="times-sub">Prayer times for your area</p></div></a>
-    <a class="tile glass" href="/qibla/"><div><h2 data-t="qibla">Qibla</h2><p data-t="qibla-sub">Direction from where you stand</p></div></a>
-    <a class="tile glass" href="/dashboard/"><div><h2 data-t="dash">Dash</h2><p data-t="dash-sub">Your day at a glance</p></div></a>
+<main class="layout home-main">
+  <section class="group">
+    <h3 class="group-title" data-t="g-daily">Daily</h3>
+    <div class="tiles">
+      <a class="tile glass" href="/dashboard/"><svg viewBox="0 0 24 24"><path d="M4 4h7v7H4zM13 4h7v4h-7zM13 10h7v10h-7zM4 13h7v7H4z"/></svg><div><h2 data-t="dash">Dash</h2><p data-t="dash-sub">Your day at a glance</p></div></a>
+      <a class="tile glass" href="/times/"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2"/></svg><div><h2 data-t="times">Times</h2><p data-t="times-sub">Prayer times for your area</p></div></a>
+      <a class="tile glass" href="/qibla/"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM15.5 8.5l-2 5-5 2 2-5z"/></svg><div><h2 data-t="qibla">Qibla</h2><p data-t="qibla-sub">Direction from where you stand</p></div></a>
+      <a class="tile glass" href="/salah/"><svg viewBox="0 0 24 24"><path d="M4 21V11a8 8 0 0 1 16 0v10M9 21v-5a3 3 0 0 1 6 0v5M3 21h18"/></svg><div><h2 data-t="salah">Salah</h2><p data-t="salah-sub">How to make wudu and pray</p></div></a>
+    </div>
+  </section>
+  <section class="group">
+    <h3 class="group-title" data-t="g-read">Read & learn</h3>
+    <div class="tiles">
+      <a class="tile glass" href="/quran/"><svg viewBox="0 0 24 24"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v15H6.5A2.5 2.5 0 0 0 4 20.5 2.5 2.5 0 0 0 6.5 23H19v-5M8 7h7"/></svg><div><h2 data-t="quran">Quran</h2><p data-t="quran-sub">Read and listen till your heart is content</p></div></a>
+      <a class="tile glass" href="/duaa/"><svg viewBox="0 0 24 24"><path d="M12 20.5s-7-4.4-7-10A4 4 0 0 1 12 8a4 4 0 0 1 7 2.5c0 5.6-7 10-7 10z"/></svg><div><h2 data-t="duaa">Duaa</h2><p data-t="duaa-sub">Find the words for every moment</p></div></a>
+      <a class="tile glass" href="/hadith/"><svg viewBox="0 0 24 24"><path d="M5 4h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-8l-5 4v-4H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM8 9h8M8 12.5h5"/></svg><div><h2 data-t="hadith">Hadith</h2><p data-t="hadith-sub">The forty hadith of an-Nawawi</p></div></a>
+      <a class="tile glass" href="/names/"><svg viewBox="0 0 24 24"><path d="M12 2.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 15.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg><div><h2 data-t="names">Names</h2><p data-t="names-sub">The 99 names of Allah</p></div></a>
+    </div>
+  </section>
+  <section class="group">
+    <h3 class="group-title" data-t="g-plan">Plan</h3>
+    <div class="tiles">
+      <a class="tile glass" href="/calendar/"><svg viewBox="0 0 24 24"><path d="M4 6h16v15H4zM4 10.5h16M8 3v4M16 3v4"/></svg><div><h2 data-t="calendar">Calendar</h2><p data-t="calendar-sub">Hijri months, special days and history</p></div></a>
+      <a class="tile glass" href="/ramadan/"><svg viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><div><h2 data-t="ramadan">Ramadan</h2><p data-t="ramadan-sub">Suhoor, iftar and the last ten nights</p></div></a>
+      <a class="tile glass" href="/zakat/"><svg viewBox="0 0 24 24"><path d="M9 4a5 5 0 1 0 0 10 5 5 0 0 0 0-10zM14.6 9.6A5 5 0 1 1 9.6 15.4"/></svg><div><h2 data-t="zakat">Zakat</h2><p data-t="zakat-sub">Work out what you owe, step by step</p></div></a>
+    </div>
   </section>
 </main>
 
@@ -48,6 +84,8 @@
 <div class="pop" id="privacy" popover><span data-t="privacynote">we don't track anything, see for yourself =)</span> <a href="https://github.com/muslimist/muslimist.github.io">github</a></div>
 
 <script src="/assets/site.js"></script>
+<script src="/assets/praytimes.js"></script>
+<script src="/assets/times.js"></script>
 <script>
 i18n({
   tagline: ['An ad-free, open source, non-spying collection of tools for Muslims.', 'مجموعة أدوات للمسلمين، بلا إعلانات ولا تتبع، ومفتوحة المصدر.'],
@@ -62,7 +100,22 @@ i18n({
   'salah-sub': ['How to make wudu and pray', 'كيف تتوضأ وتصلي'],
   'ramadan-sub': ['Suhoor, iftar and the last ten nights', 'السحور والإفطار والعشر الأواخر'],
   'dash-sub': ['Your day at a glance', 'يومك في لمحة'],
+  'g-daily': ['Daily', 'يوميًّا'], 'g-read': ['Read & learn', 'اقرأ وتعلّم'], 'g-plan': ['Plan', 'خطّط'],
 });
+
+// live shortcuts: the next prayer (with today's Hijri date) and where you left off in the Quran
+function now() {
+  const { next } = prayerTimes();
+  const hijri = new Intl.DateTimeFormat((AR ? 'ar' : 'en') + '-u-ca-islamic-umalqura', { day: 'numeric', month: 'long' }).format();
+  $('#hijri').textContent = hijri;
+  let html = next ? `<a href="/times/"><span class="dim">${L('Next', 'التالية')}</span> <b>${t(next.key)}</b> ${next.time} <span class="dim">· ${until(next.at)}</span></a>` : '';
+  try {
+    const last = JSON.parse(localStorage['quran-last']);
+    if (last?.c) html += `<a href="/quran/${last.c}/${last.v}"><span class="dim">${L('Continue', 'تابع')}</span> <b>${last.name[AR ? 1 : 0]}</b> ${last.c}:${last.v}</a>`;
+  } catch {}
+  $('#now').innerHTML = html;
+}
+now(); setInterval(now, 30e3);
 </script>
 </body>
 </html>
