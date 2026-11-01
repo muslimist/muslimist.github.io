@@ -94,22 +94,26 @@ i18n({
 const num = n => AR ? n.toLocaleString('ar-EG') : n;
 const st = load('names', { view: 'list', i: 0, shuffle: false });
 
-// ---------- audio: the device's own Arabic voice (nothing is downloaded); hidden when there is none ----------
-let voice = null;
-function pickVoice() {
-  voice = speechSynthesis.getVoices().find(v => /^ar/i.test(v.lang)) || null;
-  $('#fc-say').hidden = $('#say-all').hidden = !voice;
-}
+// ---------- audio: recordings in /assets/names/audio/01.mp3 … 99.mp3 when the site has them;
+// otherwise the device's own Arabic voice (nothing is downloaded); hidden when there is neither ----------
+let voice = null, recorded = false;
+const player = new Audio();
+const audioFile = i => `/assets/names/audio/${String(i + 1).padStart(2, '0')}.mp3`;
+const showAudio = () => $('#fc-say').hidden = $('#say-all').hidden = !(recorded || voice);
+fetch(audioFile(0), { method: 'HEAD' }).then(r => { recorded = r.ok && !/text\/html/.test(r.headers.get('content-type') || ''); showAudio() }).catch(() => {});
+function pickVoice() { voice = speechSynthesis.getVoices().find(v => /^ar/i.test(v.lang)) || null; showAudio() }
 if ('speechSynthesis' in window) { pickVoice(); speechSynthesis.addEventListener('voiceschanged', pickVoice) }
 function say(i, then) {
-  if (!voice) return;
-  speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(NAMES[i][0]);
-  u.voice = voice; u.lang = voice.lang; u.rate = .8;
+  if (!recorded && !voice) return;
   $$('.nt.speaking').forEach(e => e.classList.remove('speaking'));
   const tile = $(`.nt[data-i="${i}"]`);
   tile?.classList.add('speaking');
-  u.onend = u.onerror = () => { tile?.classList.remove('speaking'); then?.() };
+  const done = () => { tile?.classList.remove('speaking'); then?.() };
+  if (recorded) { player.src = audioFile(i); player.onended = player.onerror = done; player.play().catch(done); return }
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(NAMES[i][0]);
+  u.voice = voice; u.lang = voice.lang; u.rate = .8;
+  u.onend = u.onerror = done;
   speechSynthesis.speak(u);
 }
 
@@ -126,7 +130,7 @@ $('#q').oninput = () => {
 // listen to all, one after another; press again to stop
 let playingAll = false;
 $('#say-all').onclick = () => {
-  if (playingAll) { playingAll = false; speechSynthesis.cancel(); $('#say-all').setAttribute('aria-pressed', 'false'); return }
+  if (playingAll) { playingAll = false; player.pause(); if (window.speechSynthesis) speechSynthesis.cancel(); $('#say-all').setAttribute('aria-pressed', 'false'); return }
   playingAll = true; $('#say-all').setAttribute('aria-pressed', 'true');
   const step = i => playingAll && i < NAMES.length ? say(i, () => setTimeout(() => step(i + 1), 350)) : ($('#say-all').setAttribute('aria-pressed', 'false'), playingAll = false);
   step(st.view === 'cards' ? order[st.i] : 0);
