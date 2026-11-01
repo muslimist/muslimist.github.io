@@ -25,6 +25,8 @@
   .nt.speaking { outline: 2px solid var(--fg) }
   @media (max-width: 640px) { .ng { grid-template-columns: 1fr 1fr; gap: 8px } .nt .ar { font-size: 1.6em } }
   .fc { display: grid; place-items: center; text-align: center; min-height: min(52vh, 420px); margin-top: 14px; padding: 28px 16px; border-radius: 20px; background: var(--card); border: 1px solid var(--line); cursor: pointer; user-select: none; gap: 6px; align-content: center }
+  .fc { position: relative }
+  .fc-n { position: absolute; top: 14px; inset-inline-start: 18px; font-size: 13px; color: var(--mute); font-variant-numeric: tabular-nums }
   .fc .ar { font: clamp(56px, 12vw, 96px)/1.6 var(--arabic); direction: rtl }
   .fc .ans { display: grid; gap: 4px; transition: opacity .25s, transform .25s }
   .fc:not(.open) .ans { opacity: 0; transform: translateY(6px) }
@@ -62,6 +64,7 @@
     </div>
     <div id="card-view" hidden>
       <div class="fc" id="fc" role="button" tabindex="0">
+        <p class="fc-n" id="fc-n"></p>
         <p class="ar" id="fc-ar" lang="ar"></p>
         <div class="ans"><b id="fc-tl"></b><small id="fc-en"></small></div>
         <p class="hint" data-t="tap">tap to reveal</p>
@@ -143,8 +146,9 @@ if (st.shuffle) shuffle();
 function card() {
   const [ar, tl, en] = NAMES[order[st.i]];
   $('#fc').classList.remove('open');
+  $('#fc-n').textContent = `#${num(order[st.i] + 1)}`;
   $('#fc-ar').textContent = ar; $('#fc-tl').textContent = tl; $('#fc-en').textContent = en;
-  $('#fc-count').textContent = `${num(st.i + 1)} / ${num(NAMES.length)}`;
+  $('#fc-count').textContent = st.shuffle ? `${num(st.i + 1)} / ${num(NAMES.length)} · shuffled` : `${num(st.i + 1)} / ${num(NAMES.length)}`;
   $('#fc-shuffle').setAttribute('aria-pressed', st.shuffle);
   save('names', st);
 }
