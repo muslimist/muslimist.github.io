@@ -29,45 +29,43 @@ function load(key, defaults) {
 const save = (key, obj) => localStorage[key] = JSON.stringify(obj);
 
 
-// appearance pickers in the footer: mode (auto/light/dark) and glass level (clear/glass/frosted/solid)
-function picker(key, options) {
-  const sel = document.createElement('select');
-  sel.setAttribute('aria-label', t(key));
-  sel.innerHTML = options.map(([v, k]) => `<option value="${v}">${t(k).toLowerCase()}</option>`).join('');
-  sel.value = localStorage[key] || '';
-  sel.onchange = () => {
-    if (sel.value) localStorage[key] = sel.value; else localStorage.removeItem(key);
-    if (key === 'mode') scheme(); else if (sel.value) document.documentElement.dataset[key] = sel.value; else delete document.documentElement.dataset[key];
-  };
-  $('.foot').append(sel);
-}
 // light/dark: saved choice, or follow the system (and keep following it while the page is open)
 const systemLight = matchMedia('(prefers-color-scheme: light)');
 const scheme = () => document.documentElement.dataset.scheme = localStorage.mode || (systemLight.matches ? 'light' : 'dark');
 systemLight.addEventListener('change', scheme);
+
+// site settings: appearance, language and your data, in one popup (opened from the menu and the footer)
 Object.assign(DICT, {
+  settingsbtn: ['settings', 'الإعدادات'],
   mode: ['Mode', 'الوضع'], auto: ['Auto', 'تلقائي'], light: ['Light', 'فاتح'], dark: ['Dark', 'داكن'],
   glass: ['Style', 'النمط'], clear: ['Clear', 'شفاف'], glassy: ['Glass', 'زجاجي'], frosted: ['Frosted', 'ضبابي'], solid: ['Solid', 'بسيط'],
-});
-picker('mode', [['', 'auto'], ['light', 'light'], ['dark', 'dark']]);
-picker('glass', [['clear', 'clear'], ['', 'glassy'], ['frosted', 'frosted'], ['solid', 'solid']]);
-
-// backup: everything this site saves lives in this browser; download it as a file, or restore it on another device
-Object.assign(DICT, {
-  backup: ['backup', 'نسخة احتياطية'], backuptitle: ['Your data', 'بياناتك'], download: ['Download backup', 'تنزيل نسخة احتياطية'], restore: ['Restore from a file', 'استعادة من ملف'],
+  language: ['Language', 'اللغة'], yourdata: ['Your data', 'بياناتك'],
+  download: ['Download backup', 'تنزيل نسخة احتياطية'], restore: ['Restore from a file', 'استعادة من ملف'],
   backupnote: ['Your settings and progress (Quran, fasts, make-ups, zakat, adhkar…) are saved only in this browser. Download a backup to keep them safe or move them to another phone.', 'إعداداتك وتقدّمك محفوظة في هذا المتصفح فقط. نزّل نسخة احتياطية لحفظها أو نقلها إلى جهاز آخر.'],
   restored: ['Restored. Reloading…', 'تمت الاستعادة. جارٍ إعادة التحميل…'], badfile: ["That file isn't a muslimist backup.", 'هذا الملف ليس نسخة احتياطية من muslimist.'],
   restoreask: ['Replace what is saved here with this backup?', 'استبدال البيانات المحفوظة هنا بهذه النسخة؟'],
 });
 {
   const SKIP = /^(alerts-last|alerts-sim)$/;
+  const seg = (key, opts) => `<div class="seg2" data-key="${key}">${opts.map(([v, label]) => `<button type="button" data-v="${v}" aria-pressed="${(localStorage[key] || '') === v}">${label}</button>`).join('')}</div>`;
   const dlg = document.createElement('dialog');
-  dlg.className = 'sheet'; dlg.id = 'backup';
-  dlg.innerHTML = `<form method="dialog"><div class="sheet-head"><h2 tabindex="-1" autofocus>${t('backuptitle')}</h2><button class="close" aria-label="${t('close')}"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
-    <p class="note">${t('backupnote')}</p><button type="button" class="btn primary" id="bk-down">${t('download')}</button>
-    <label class="btn center" style="cursor:pointer">${t('restore')}<input type="file" accept=".json,application/json" id="bk-file" hidden></label><p class="note" id="bk-msg"></p></form>`;
+  dlg.className = 'sheet'; dlg.id = 'site-settings';
+  dlg.innerHTML = `<form method="dialog"><div class="sheet-head"><h2 tabindex="-1" autofocus>${t('settings')}</h2><button class="close" aria-label="${t('close')}"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="field"><span>${t('mode')}</span>${seg('mode', [['', t('auto')], ['light', t('light')], ['dark', t('dark')]])}</div>
+    <div class="field"><span>${t('glass')}</span>${seg('glass', [['clear', t('clear')], ['', t('glassy')], ['frosted', t('frosted')], ['solid', t('solid')]])}</div>
+    <div class="field"><span>${t('language')}</span><div class="seg2" data-key="lang"><button type="button" data-v="english" aria-pressed="${!AR}">English</button><button type="button" data-v="arabic" aria-pressed="${AR}">عربي</button></div></div>
+    <h3 class="sheet-sub">${t('yourdata')}</h3><p class="note">${t('backupnote')}</p>
+    <div class="row2"><button type="button" class="btn" id="bk-down">${t('download')}</button><label class="btn center" style="cursor:pointer;display:block;font-size:14px;color:var(--fg)">${t('restore')}<input type="file" accept=".json,application/json" id="bk-file" hidden></label></div>
+    <p class="note" id="bk-msg"></p></form>`;
   document.body.append(dlg);
   dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close() });
+  dlg.querySelectorAll('.seg2').forEach(g => g.querySelectorAll('button').forEach(b => b.onclick = () => {
+    const key = g.dataset.key, v = b.dataset.v;
+    g.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b));
+    if (key === 'lang') { if ((v === 'arabic') !== AR) { localStorage.lang = v; location.reload() } return }
+    if (v) localStorage[key] = v; else localStorage.removeItem(key);
+    if (key === 'mode') scheme(); else if (v) document.documentElement.dataset[key] = v; else delete document.documentElement.dataset[key];
+  }));
   $('#bk-down').onclick = () => {
     const data = Object.fromEntries(Object.keys(localStorage).filter(k => !SKIP.test(k)).map(k => [k, localStorage[k]]));
     const a = document.createElement('a');
@@ -84,16 +82,17 @@ Object.assign(DICT, {
       $('#bk-msg').textContent = t('restored'); setTimeout(() => location.reload(), 600);
     } catch { $('#bk-msg').textContent = t('badfile') }
   };
-  const btn = document.createElement('button');
-  btn.textContent = t('backup'); btn.onclick = () => dlg.showModal();
-  $('.foot').append(btn);
+  const open = () => { $('#menu')?.hidePopover?.(); dlg.showModal() };
+  // in the menu popup, under the pages
+  const mb = document.createElement('button');
+  mb.className = 'menu-settings'; mb.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>${t('settings')}`;
+  mb.onclick = open;
+  $('#menu')?.append(mb);
+  // and in the footer
+  const fb = document.createElement('button');
+  fb.textContent = t('settingsbtn'); fb.onclick = open;
+  $('.foot').append(fb);
 }
-
-// language toggle, last in the footer
-const langBtn = document.createElement('button');
-langBtn.textContent = AR ? 'english' : 'عربي';
-langBtn.onclick = () => { localStorage.lang = AR ? 'english' : 'arabic'; location.reload() };
-$('.foot').append(langBtn);
 
 // page photo. Each page picks its own (html[data-bg]); to avoid a blank flash while it loads, the head script
 // first shows the photo from the previous page (already cached), and it crossfades to the new one here.
