@@ -173,7 +173,7 @@ function alertsUI() {
   };
   $('#al-sound').onchange = store;
   $$('#al-prayers input').forEach(c => c.onchange = store);
-  $('#al-test').onclick = async () => { await Alerts.permission(); const { next } = prayerTimes(); Alerts.fire(next?.key || 'asr', next?.time) };
+  $('#al-test').onclick = async () => { await Alerts.permission(); const n = await Alerts.next(); Alerts.fire(n.key, n.time) };
   $('#al-sim').onclick = async () => {
     await Alerts.permission(); Alerts.simulate(10);
     $('#al-sim').textContent = t('al-wait'); setTimeout(() => $('#al-sim').textContent = t('al-sim'), 10e3);

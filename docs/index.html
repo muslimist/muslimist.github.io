@@ -106,7 +106,8 @@ i18n({
 // live shortcuts: the next prayer (with today's Hijri date) and where you left off in the Quran
 function now() {
   const { next } = prayerTimes();
-  const hijri = new Intl.DateTimeFormat((AR ? 'ar' : 'en') + '-u-ca-islamic-umalqura', { day: 'numeric', month: 'long' }).format();
+  const hd = new Date(); hd.setDate(hd.getDate() + (+load('calendar', { offset: 0 }).offset || 0)); // the Calendar page's moon-sighting adjustment
+  const hijri = new Intl.DateTimeFormat((AR ? 'ar' : 'en') + '-u-ca-islamic-umalqura', { day: 'numeric', month: 'long' }).format(hd);
   $('#hijri').textContent = hijri;
   let html = next ? `<a href="/times/"><span class="dim">${L('Next', 'التالية')}</span> <b>${t(next.key)}</b> ${next.time} <span class="dim">· ${until(next.at)}</span></a>` : '';
   try {

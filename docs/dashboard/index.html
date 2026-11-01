@@ -165,8 +165,9 @@ i18n({ comingup: ['Coming up', 'قادم'], nameday: ['Name of the day', 'اسم
 
 // date, Gregorian and Hijri (the browser knows the Umm al-Qura calendar, nothing is fetched)
 const loc = AR ? 'ar' : 'en';
+{ const h = new Date(); h.setDate(h.getDate() + (+load('calendar', { offset: 0 }).offset || 0)); // the Calendar page's moon-sighting adjustment
 $('#date').textContent = new Intl.DateTimeFormat(loc, { weekday: 'long', day: 'numeric', month: 'long' }).format() + ' · '
-  + new Intl.DateTimeFormat(loc + '-u-ca-islamic-umalqura', { day: 'numeric', month: 'long', year: 'numeric' }).format();
+  + new Intl.DateTimeFormat(loc + '-u-ca-islamic-umalqura', { day: 'numeric', month: 'long', year: 'numeric' }).format(h); }
 
 // prayers
 function prayers() { showPrayers($('#prayers-card')) }

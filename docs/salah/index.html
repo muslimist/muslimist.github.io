@@ -111,7 +111,7 @@ $('#v-wudu').innerHTML = `<h2>${L('Wudu (ablution)', 'الوضوء')}</h2><p>${L
   <p>${L('If none of these has happened, your wudu is still valid and you can pray again without renewing it.', 'إن لم يحدث شيء من ذلك فوضوؤك باقٍ، ويمكنك الصلاة به مرة أخرى.')}</p>`;
 
 // ---------- prayer ----------
-const PRAYERS = [['fajr', 2, 'aloud'], ['dhuhr', 4, 'quietly'], ['asr', 4, 'quietly'], ['maghrib', 3, 'aloud'], ['isha', 4, 'aloud']];
+const SALAH_PRAYERS = [['fajr', 2, 'aloud'], ['dhuhr', 4, 'quietly'], ['asr', 4, 'quietly'], ['maghrib', 3, 'aloud'], ['isha', 4, 'aloud']];
 const LOUD = { aloud: L('aloud', 'جهرًا'), quietly: L('quietly', 'سرًّا') };
 const STEPS = [
   [L('Stand facing the qiblah', 'قف مستقبلًا القبلة'), L('Stand straight, facing the direction of Makkah. Make the intention in your heart for the prayer you are about to pray (for example, "the two rak\'ahs of Fajr").', 'قف مستقيمًا متّجهًا إلى مكة، وانوِ بقلبك الصلاة التي تصليها (مثلًا: «ركعتي الفجر»).'), ''],
@@ -131,7 +131,7 @@ const STEPS = [
   [L('End with salam', 'التسليم'), L('Turn your head to the right, then to the left. The prayer is complete.', 'التفت يمينًا ثم يسارًا، وقد تمّت صلاتك.'), 'salam'],
 ];
 $('#v-prayer').innerHTML = `<h2>${L('The five daily prayers', 'الصلوات الخمس')}</h2><p>${L("Each prayer is made of units called <b>rak'ahs</b>. Every rak'ah is the same set of movements.", 'تتكوّن كل صلاة من <b>ركعات</b>، وكل ركعة لها الحركات نفسها.')}</p>
-  <table class="table"><tr><th>${L('Prayer', 'الصلاة')}</th><th>${L("Rak'ahs", 'الركعات')}</th><th>${L('Recite', 'القراءة')}</th></tr>${PRAYERS.map(([n, r, a]) => `<tr><td>${t(n)}</td><td>${num(r)}</td><td class="mute">${LOUD[a]}</td></tr>`).join('')}</table>
+  <table class="table"><tr><th>${L('Prayer', 'الصلاة')}</th><th>${L("Rak'ahs", 'الركعات')}</th><th>${L('Recite', 'القراءة')}</th></tr>${SALAH_PRAYERS.map(([n, r, a]) => `<tr><td>${t(n)}</td><td>${num(r)}</td><td class="mute">${LOUD[a]}</td></tr>`).join('')}</table>
   <p>${L("\"Aloud\" applies to al-Fatihah and the surah in the first two rak'ahs; everything else is said quietly. Find today's times on the", 'الجهر يكون في الفاتحة والسورة في الركعتين الأوليين، وما سوى ذلك سرًّا. أوقات اليوم في صفحة')} <a href="/times/" style="text-decoration:underline">${L('Times', 'الأوقات')}</a>${L(' page.', '.')}</p>
   <h2>${L('Before you pray', 'قبل الصلاة')}</h2><ul class="checklist"><li>${L('You have wudu', 'أنت على وضوء')}</li><li>${L('Your body, clothes and place of prayer are clean', 'بدنك وثوبك ومكان صلاتك طاهرة')}</li><li>${L("You're covered: men from navel to knee at least; women everything except face and hands", 'العورة مستورة: الرجل من السرّة إلى الركبة على الأقل، والمرأة كلها إلا الوجه والكفّين')}</li><li>${L("You're facing the qiblah (see", 'أنت مستقبل القبلة (انظر')} <a href="/qibla/">${L('Qibla', 'القبلة')}</a>)</li><li>${L("The prayer's time has started", 'دخل وقت الصلاة')}</li></ul>
   <h2>${L('How to pray', 'كيف تصلي')}</h2><ol class="steps">${STEPS.map(([tt, d, k]) => `<li><b>${tt}</b><p>${d}</p>${k ? say(k) : ''}</li>`).join('')}</ol>
@@ -160,8 +160,8 @@ let G = null;
 function guide() {
   if (!G) {
     $('#v-guide').innerHTML = `<h2>${L('Pray along', 'صلِّ معنا')}</h2><p>${L('Pick a prayer and follow it one step at a time. Keep your phone in front of you and tap Next as you go.', 'اختر صلاة واتبعها خطوة بخطوة. ضع هاتفك أمامك واضغط «التالي» كلما انتقلت.')}</p>
-      <div class="pick">${PRAYERS.map(([n, r, a], i) => `<button data-i="${i}">${t(n)}<small>${L(`${r} rak'ahs`, `${num(r)} ركعات`)}</small></button>`).join('')}</div>`;
-    $$('#v-guide .pick button').forEach(b => b.onclick = () => { const [n, r, a] = PRAYERS[+b.dataset.i]; G = { name: t(n), seq: sequence(r, a), i: 0 }; guide() });
+      <div class="pick">${SALAH_PRAYERS.map(([n, r, a], i) => `<button data-i="${i}">${t(n)}<small>${L(`${r} rak'ahs`, `${num(r)} ركعات`)}</small></button>`).join('')}</div>`;
+    $$('#v-guide .pick button').forEach(b => b.onclick = () => { const [n, r, a] = SALAH_PRAYERS[+b.dataset.i]; G = { name: t(n), seq: sequence(r, a), i: 0 }; guide() });
     return;
   }
   const [tag, pose, title, doIt, k] = G.seq[G.i], last = G.i === G.seq.length - 1;

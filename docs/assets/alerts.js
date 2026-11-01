@@ -65,11 +65,18 @@
     toast(key, `<b>${title}</b>${timeText ? ` · ${timeText}` : ''}`, blocked);
   }
 
+  // the next of the five daily prayers (never sunrise or the like), for the test buttons and the simulation
+  function nextPrayer() {
+    prayTimes.setMethod(timesSet.method);
+    const now = new Date(), coords = [timesSet.lat, timesSet.lng], h = prayTimes.getTimes(now, coords, 'auto', 'auto', 'Float'), txt = prayTimes.getTimes(now, coords, 'auto', 'auto', timesSet.format);
+    const k = ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'].find(p => atClock(now, h[p]) > now) || 'fajr';
+    return { key: k, time: txt[k] };
+  }
   // check every 10s whether a chosen prayer has just begun; one alert per prayer per day across all open tabs
   async function check() {
     const s = get();
     const sim = +localStorage['alerts-sim'] || 0;
-    if (sim && Date.now() >= sim) { localStorage.removeItem('alerts-sim'); await ensureTimes(); const { next } = prayerTimes(); return fire(next?.key || 'asr', '(simulated)') }
+    if (sim && Date.now() >= sim) { localStorage.removeItem('alerts-sim'); await ensureTimes(); return fire(nextPrayer().key, '(simulated)') }
     if (!s.on) return;
     await ensureTimes();
     prayTimes.setMethod(timesSet.method);
@@ -82,7 +89,7 @@
   setInterval(check, 5e3); setTimeout(check, 1500);
 
   window.Alerts = {
-    get, set: v => save('alerts', v), fire, stopSound,
+    get, set: v => save('alerts', v), fire, stopSound, next: async () => (await ensureTimes(), nextPrayer()),
     permission: async () => 'Notification' in window ? (Notification.permission === 'default' ? Notification.requestPermission() : Notification.permission) : 'unsupported',
     simulate: secs => { localStorage['alerts-sim'] = Date.now() + secs * 1e3 },
   };
