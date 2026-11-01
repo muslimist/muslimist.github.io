@@ -7,7 +7,7 @@ const AR = localStorage.lang === 'arabic';
 // strings are [english, arabic]; pages add their own with i18n({...})
 const DICT = {
   quran: ['Quran', 'القرآن'], duaa: ['Duaa', 'أدعية'], times: ['Times', 'أوقات'], qibla: ['Qibla', 'القبلة'], dash: ['Dash', 'لوحتي'],
-  hadith: ['Hadith', 'الحديث'], names: ['Names', 'الأسماء'], calendar: ['Calendar', 'التقويم'], zakat: ['Zakat', 'الزكاة'], salah: ['Salah', 'الصلاة'], ramadan: ['Ramadan', 'رمضان'],
+  hadith: ['Hadith', 'الحديث'], names: ['Names', 'الأسماء'], calendar: ['Calendar', 'التقويم'], zakat: ['Zakat', 'الزكاة'], salah: ['Salah', 'الصلاة'], ramadan: ['Ramadan', 'رمضان'], qada: ['Make-up', 'القضاء'],
   madewith: ['made with', 'صُنع بـ'], bymuslims: ['by muslims for muslims', 'من المسلمين للمسلمين'], privacy: ['privacy', 'الخصوصية'], privacynote: ["we don't track anything, see for yourself =)", 'نحن لا نتتبع أي شيء، تحقق بنفسك =)'],
   settings: ['Settings', 'الإعدادات'], close: ['Close', 'إغلاق'], reset: ['Reset', 'إعادة تعيين'],
 };
@@ -49,6 +49,43 @@ Object.assign(DICT, {
 });
 picker('mode', [['', 'auto'], ['light', 'light'], ['dark', 'dark']]);
 picker('glass', [['clear', 'clear'], ['', 'glassy'], ['frosted', 'frosted'], ['solid', 'solid']]);
+
+// backup: everything this site saves lives in this browser; download it as a file, or restore it on another device
+Object.assign(DICT, {
+  backup: ['backup', 'نسخة احتياطية'], backuptitle: ['Your data', 'بياناتك'], download: ['Download backup', 'تنزيل نسخة احتياطية'], restore: ['Restore from a file', 'استعادة من ملف'],
+  backupnote: ['Your settings and progress (Quran, fasts, make-ups, zakat, adhkar…) are saved only in this browser. Download a backup to keep them safe or move them to another phone.', 'إعداداتك وتقدّمك محفوظة في هذا المتصفح فقط. نزّل نسخة احتياطية لحفظها أو نقلها إلى جهاز آخر.'],
+  restored: ['Restored. Reloading…', 'تمت الاستعادة. جارٍ إعادة التحميل…'], badfile: ["That file isn't a muslimist backup.", 'هذا الملف ليس نسخة احتياطية من muslimist.'],
+  restoreask: ['Replace what is saved here with this backup?', 'استبدال البيانات المحفوظة هنا بهذه النسخة؟'],
+});
+{
+  const SKIP = /^(alerts-last|alerts-sim)$/;
+  const dlg = document.createElement('dialog');
+  dlg.className = 'sheet'; dlg.id = 'backup';
+  dlg.innerHTML = `<form method="dialog"><div class="sheet-head"><h2 tabindex="-1" autofocus>${t('backuptitle')}</h2><button class="close" aria-label="${t('close')}"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <p class="note">${t('backupnote')}</p><button type="button" class="btn primary" id="bk-down">${t('download')}</button>
+    <label class="btn center" style="cursor:pointer">${t('restore')}<input type="file" accept=".json,application/json" id="bk-file" hidden></label><p class="note" id="bk-msg"></p></form>`;
+  document.body.append(dlg);
+  dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close() });
+  $('#bk-down').onclick = () => {
+    const data = Object.fromEntries(Object.keys(localStorage).filter(k => !SKIP.test(k)).map(k => [k, localStorage[k]]));
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([JSON.stringify({ muslimist: 1, saved: new Date().toISOString(), data }, null, 1)], { type: 'application/json' }));
+    a.download = `muslimist-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  };
+  $('#bk-file').onchange = async e => {
+    try {
+      const b = JSON.parse(await e.target.files[0].text());
+      if (!b.muslimist || typeof b.data !== 'object') throw 0;
+      if (!confirm(t('restoreask'))) return;
+      localStorage.clear(); Object.entries(b.data).forEach(([k, v]) => localStorage[k] = v);
+      $('#bk-msg').textContent = t('restored'); setTimeout(() => location.reload(), 600);
+    } catch { $('#bk-msg').textContent = t('badfile') }
+  };
+  const btn = document.createElement('button');
+  btn.textContent = t('backup'); btn.onclick = () => dlg.showModal();
+  $('.foot').append(btn);
+}
 
 // language toggle, last in the footer
 const langBtn = document.createElement('button');
