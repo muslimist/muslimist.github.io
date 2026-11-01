@@ -58,6 +58,8 @@
   .kh { display: flex; align-items: center; gap: 10px; margin-top: 14px; font-size: 13px; color: var(--mute) }
   .kh .bar { flex: 1; height: 5px; margin: 0; max-width: none }
   .alert-state { font-size: 12.5px; color: var(--mute); margin-top: 10px; text-align: center }
+  .nudge { margin-top: 10px !important; font-size: 15px !important; color: var(--fg) !important; opacity: .9 }
+  .nudge a { text-decoration: underline; text-underline-offset: 3px }
   .hd-title { font-size: 19px; letter-spacing: -.01em; margin-bottom: 8px }
   .hd-ar, .hd-en { display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden }
   .hd-ar { font: 1.35em/2 var(--arabic); direction: rtl; -webkit-line-clamp: 3; margin-bottom: 10px }
@@ -77,6 +79,7 @@
 <section class="hero">
   <h1 id="greeting">Peace be upon you</h1>
   <p id="date"></p>
+  <p class="nudge" id="nudge"></p>
 </section>
 
 <main class="layout dash">
@@ -213,48 +216,86 @@ function momentNow(now = new Date()) {
   return 'evening';
 }
 
-// greeting: special days first (Umm al-Qura calendar), then the time of day
-function greeting(now = new Date()) {
-  const parts = Object.fromEntries(new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', { day: 'numeric', month: 'numeric' }).formatToParts(now).map(p => [p.type, +p.value]));
-  const m = parts.month, d = parts.day;
-  if (m === 9) return 'ramadan';
-  if ((m === 10 && d <= 3) || (m === 12 && d >= 10 && d <= 13)) return 'eid';
-  if (m === 12 && d <= 9) return 'dhulhijjah';
-  if (m === 1 && d === 10) return 'ashura';
-  if (m === 1 && d === 1) return 'newyear';
-  if (now.getDay() === 5) return 'jumuah';
+// ---------- greeting: the moment of the day (from today's prayer times) and the day itself ----------
+const HF = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura-nu-latn', { day: 'numeric', month: 'numeric' });
+const hijriNow = (d = new Date()) => { const x = new Date(d); x.setDate(x.getDate() + (+load('calendar', { offset: 0 }).offset || 0)); return Object.fromEntries(HF.formatToParts(x).map(p => [p.type, +p.value])) };
+function moments(now = new Date()) {
   prayTimes.setMethod(timesSet.method);
   const h = prayTimes.getTimes(now, [timesSet.lat, timesSet.lng], 'auto', 'auto', 'Float'), x = now.getHours() + now.getMinutes() / 60;
-  if (x >= h.fajr && x < h.dhuhr) return 'morning';
-  if (x >= h.dhuhr && x < h.asr) return 'midday';
-  if (x >= h.asr && x < h.isha) return 'evening';
-  return 'night';
+  // the last third of the night: between isha's night and fajr (night = maghrib → fajr)
+  const night = (h.fajr + 24 - h.maghrib) % 24, lastThird = (h.fajr - night / 3 + 24) % 24;
+  const inLastThird = (x - lastThird + 24) % 24 < night / 3; // from the start of the last third until fajr, across midnight
+  let part;
+  if (x < h.fajr) part = inLastThird ? 'lastthird' : 'night';
+  else if (x < h.sunrise) part = 'fajr';
+  else if (x < h.sunrise + 1.5) part = 'sunrise';
+  else if (x < h.dhuhr) part = 'duha';
+  else if (x < h.asr) part = 'dhuhr';
+  else if (x < h.maghrib - .5) part = 'asr';
+  else if (x < h.maghrib + .4) part = 'maghrib';
+  else if (x < h.isha + 1.5) part = 'isha';
+  else part = inLastThird ? 'lastthird' : 'night';
+  const H = hijriNow(now), wd = now.getDay(), days = [];
+  if (H.month === 9) days.push(H.day >= 21 ? 'lastten' : 'ramadan');
+  if ((H.month === 10 && H.day <= 3) || (H.month === 12 && H.day >= 10 && H.day <= 13)) days.push('eid');
+  if (H.month === 12 && H.day === 9) days.push('arafah');
+  else if (H.month === 12 && H.day <= 8) days.push('dhulhijjah');
+  if (H.month === 1 && (H.day === 9 || H.day === 10)) days.push('ashura');
+  if (H.month === 1 && H.day === 1) days.push('newyear');
+  if (H.month === 8 && H.day >= 15) days.push('shaban');
+  if ([1, 7, 11, 12].includes(H.month) && !days.length) days.push('sacred');
+  if (wd === 5) days.push('jumuah');
+  if (H.day >= 13 && H.day <= 15 && H.month !== 9) days.push('white');
+  if ((wd === 1 || wd === 4) && H.month !== 9) days.push(wd === 1 ? 'monday' : 'thursday');
+  return { part, days, h, x };
 }
-// many ways to say each one, so it reads differently every visit: [english[], arabic[]]
+// many ways to say each one, so it reads differently each visit: [english[], arabic[]]
 const GREET = {
-  ramadan: [['A blessed Ramadan to you', 'May your fast be accepted', 'The blessed month is here', 'May this Ramadan bring you peace', 'Make the most of these nights', 'May Allah accept your fasting and prayers', 'A month of mercy has arrived'],
-            ['رمضان كريم', 'رمضان مبارك', 'تقبّل الله صيامكم', 'شهر الرحمة', 'تقبّل الله منا ومنكم']],
-  eid: [['A blessed Eid to you', 'Happy Eid', 'May Allah accept from us and from you', 'Wishing you a joyful Eid', 'May your Eid be full of blessings', 'Eid joy to you and your family'],
+  lastthird: [['The last third of the night', 'Allah descends to the lowest heaven now', 'Who is calling, that I may answer?', 'A quiet hour for tahajjud', 'Ask, He is near', 'The best time for duaa', 'Stand while others sleep'],
+              ['الثلث الأخير من الليل', 'ينزل ربنا إلى السماء الدنيا', 'من يدعوني فأستجيب له؟', 'ساعة هادئة للتهجّد', 'سل، فإنه قريب', 'أرجى أوقات الدعاء']],
+  night: [['Peace be upon you', 'Rest well tonight', 'Sleep with remembrance on your tongue', 'Recite the last two verses of al-Baqarah', 'Make wudu before you sleep', 'May your night be peaceful', 'Still up? Make duaa', 'Read al-Mulk before you sleep'],
+          ['السلام عليكم', 'تصبح على خير', 'نم على ذكر الله', 'اقرأ خواتيم البقرة', 'توضّأ قبل النوم', 'ليلة هادئة', 'اقرأ سورة الملك قبل النوم']],
+  fajr: [['Good morning', 'The two rak\'ahs of Fajr are better than the world', 'A blessed dawn', 'Start your day with remembrance', 'Rise and remember Allah', 'Fajr: the light of the day', 'Prayer is better than sleep'],
+         ['صباح الخير', 'ركعتا الفجر خير من الدنيا', 'فجر مبارك', 'ابدأ يومك بذكر الله', 'الصلاة خير من النوم']],
+  sunrise: [['Good morning', 'A fresh start, in the name of Allah', 'May your morning be blessed', 'Read your morning adhkar', 'A new day, a new chance', 'Begin with gratitude', 'Bismillah, let\'s begin'],
+            ['صباح النور', 'يوم جديد وفرصة جديدة', 'صباحك مبارك', 'لا تنس أذكار الصباح', 'ابدأ بالحمد', 'بسم الله نبدأ']],
+  duha: [['Good morning', 'Time for duha prayer', 'Two rak\'ahs of duha, charity for every joint', 'May your work be blessed', 'Keep your tongue moist with dhikr', 'A little Quran goes a long way', 'Work with ihsan today'],
+         ['صباح الخير', 'وقت صلاة الضحى', 'ركعتا الضحى صدقة عن كل مفصل', 'بارك الله في عملك', 'ليكن لسانك رطبًا بذكر الله', 'أحسن في عملك اليوم']],
+  dhuhr: [['Peace be upon you', 'Good afternoon', 'Pause for Dhuhr', 'Take a moment to remember Allah', 'Hope your day is going well', 'Pause, breathe, remember', 'A little dhikr goes a long way'],
+          ['السلام عليكم', 'طاب يومك', 'توقّف لصلاة الظهر', 'لحظة لذكر الله', 'بارك الله في يومك']],
+  asr: [['Good afternoon', 'Guard the middle prayer', 'Don\'t let Asr slip by', 'By time, mankind is in loss', 'The day is turning, remember Allah', 'Time for the evening adhkar soon', 'Make the most of the afternoon'],
+        ['مساء الخير', 'حافظوا على الصلاة الوسطى', 'لا تفوّتك صلاة العصر', 'والعصر إن الإنسان لفي خسر', 'اقترب وقت أذكار المساء']],
+  maghrib: [['Good evening', 'The sun has set, time for Maghrib', 'May your evening be peaceful', 'Read your evening adhkar', 'A calm evening to you', 'Wind down with remembrance'],
+            ['مساء الخير', 'غربت الشمس، حان المغرب', 'مساؤك مبارك', 'اقرأ أذكار المساء', 'مساء هادئ']],
+  isha: [['Good evening', 'Peace be upon you this evening', 'Pray Isha, then rest', 'May Allah bless your evening', 'A good time to read a little Quran', 'End your day with gratitude', 'Witr before you sleep'],
+         ['مساء النور', 'صلِّ العشاء ثم استرح', 'بارك الله في مسائك', 'وقت طيّب لقراءة القرآن', 'اختم يومك بالحمد', 'أوتر قبل أن تنام']],
+  ramadan: [['Ramadan Mubarak', 'May your fast be accepted', 'A month of mercy', 'Make the most of every day', 'May Allah accept your fasting and prayers', 'The month of the Quran'],
+            ['رمضان مبارك', 'تقبّل الله صيامكم', 'شهر الرحمة', 'شهر القرآن', 'تقبّل الله منا ومنكم']],
+  lastten: [['The last ten nights', 'Seek Laylat al-Qadr', 'Better than a thousand months', 'Allahumma innaka \'afuwwun, fa\'fu \'anni', 'Give these nights your all'],
+            ['العشر الأواخر', 'تحرّوا ليلة القدر', 'خير من ألف شهر', 'اللهم إنك عفو تحب العفو فاعف عني']],
+  eid: [['Eid Mubarak', 'A blessed Eid to you', 'May Allah accept from us and from you', 'Wishing you a joyful Eid', 'Eid joy to you and your family'],
         ['عيد مبارك', 'كل عام وأنتم بخير', 'تقبّل الله منا ومنكم', 'عيدكم سعيد']],
-  dhulhijjah: [['The best days of the year', 'Ten blessed days', 'Make these days count', 'Days of remembrance and reward', 'Fill these days with good deeds', 'Remember Allah much in these days'],
-               ['أفضل أيام الدنيا', 'أيام العشر المباركة', 'أكثروا من الذكر في هذه الأيام']],
-  ashura: [['A blessed day of Ashura', 'Fast today, if you can', 'A day of gratitude', 'Remember the day Musa was saved'],
-           ['يوم عاشوراء', 'صيام يوم عاشوراء', 'يوم شكر لله']],
-  newyear: [['A blessed new Hijri year', 'A new year begins, renew your intention', 'May this year bring you closer to Allah', 'A fresh year, a fresh start'],
-            ['عام هجري مبارك', 'كل عام وأنتم بخير', 'عام جديد ونية جديدة']],
-  jumuah: [['A blessed Friday', 'The best day of the week', "Don't forget Surah al-Kahf today", 'Send peace upon the Prophet ﷺ today', 'Make the most of this Friday', 'The best day the sun rises on', 'Make duaa in the last hour of Friday'],
-           ['جمعة مباركة', 'لا تنسوا سورة الكهف', 'أكثروا من الصلاة على النبي ﷺ', 'خير يوم طلعت فيه الشمس']],
-  morning: [['Good morning', 'Peace be upon you this morning', 'A fresh start, in the name of Allah', 'Start your day with remembrance', 'May your morning be blessed', 'A new day, a new chance', 'Begin with gratitude', 'Rise and remember Allah'],
-            ['صباح الخير', 'صباح النور', 'صباحك مبارك', 'ابدأ يومك بذكر الله', 'يوم جديد وفرصة جديدة']],
-  midday: [['Peace be upon you', 'Good afternoon', 'Take a moment to remember Allah', 'Hope your day is going well', 'Pause, breathe, remember', 'A little dhikr goes a long way', 'May your day be blessed'],
-           ['السلام عليكم', 'طاب يومك', 'لحظة لذكر الله', 'بارك الله في يومك']],
-  evening: [['Good evening', 'Peace be upon you this evening', 'May your evening be peaceful', 'Wind down with remembrance', 'A calm evening to you', 'Time for the evening remembrance', 'May Allah bless your evening'],
-            ['مساء الخير', 'مساء النور', 'مساؤك مبارك', 'حان وقت أذكار المساء']],
-  night: [['Peace be upon you', 'A quiet hour for the night prayer', 'Still up? Make duaa', 'Rest well tonight', 'Sleep with remembrance on your tongue', 'May your night be peaceful', 'The last third of the night is near'],
-          ['السلام عليكم', 'تصبح على خير', 'ليلة هادئة', 'وقت قيام الليل', 'نم على ذكر الله']],
+  arafah: [['The Day of Arafah', 'The best day for duaa', 'Fast today if you can', 'The best duaa is on the Day of Arafah'],
+           ['يوم عرفة', 'خير الدعاء دعاء يوم عرفة', 'صُم اليوم إن استطعت']],
+  dhulhijjah: [['The best days of the year', 'Ten blessed days', 'Fill these days with good deeds', 'Say takbir, tahlil and tahmid'],
+               ['أفضل أيام الدنيا', 'أيام العشر المباركة', 'أكثروا من التكبير والتهليل والتحميد']],
+  ashura: [['A blessed day of Ashura', 'Fast today, if you can', 'The day Musa was saved'], ['يوم عاشوراء', 'صُم اليوم إن استطعت', 'يوم نجّى الله موسى']],
+  newyear: [['A blessed new Hijri year', 'A new year, a new intention', 'May this year bring you closer to Allah'], ['عام هجري مبارك', 'عام جديد ونية جديدة']],
+  shaban: [['Ramadan is near', 'Prepare your heart for Ramadan', 'Fast some of Sha\'ban'], ['رمضان قريب', 'هيّئ قلبك لرمضان', 'صُم من شعبان']],
+  sacred: [['A sacred month', 'Good deeds weigh more this month'], ['من الأشهر الحُرُم', 'تعظم الحسنات في هذا الشهر']],
+  jumuah: [['Jumu\'ah Mubarak', 'The best day of the week', 'Don\'t forget Surah al-Kahf', 'Send peace upon the Prophet ﷺ today', 'Make duaa in the last hour of Friday'],
+           ['جمعة مباركة', 'خير يوم طلعت فيه الشمس', 'لا تنسوا سورة الكهف', 'أكثروا من الصلاة على النبي ﷺ']],
+  white: [['A white day, fast if you can', 'Fast the 13th, 14th and 15th'], ['من الأيام البيض، صُم إن استطعت']],
+  monday: [['A Monday fast is sunnah', 'The day the Prophet ﷺ was born'], ['صيام الاثنين سنة']],
+  thursday: [['A Thursday fast is sunnah', 'Deeds are raised on Thursdays'], ['صيام الخميس سنة', 'تُعرض الأعمال يوم الخميس']],
 };
 const pickFrom = list => list[Math.floor(Math.random() * list.length)];
-$('#greeting').textContent = pickFrom(GREET[greeting()][AR ? 1 : 0]);
+{
+  const m = moments();
+  // a special day usually wins, but not always, so the time of day still shows through
+  const pool = m.days.length && Math.random() < .65 ? pickFrom(m.days) : m.part;
+  $('#greeting').textContent = pickFrom(GREET[pool][AR ? 1 : 0]);
+}
 
 const moment = momentNow(), dua = DUAS[moment];
 $('#dua-label').textContent = `${t('forthis')} · ${t(moment)}`;
@@ -391,6 +432,37 @@ function today() {
   const a = load('alerts', { on: false });
   $('#alert-state').textContent = a.on ? L('🔔 Prayer alerts on', '🔔 تنبيهات الصلاة مفعّلة') : L('Prayer alerts off · turn on in Times', 'تنبيهات الصلاة متوقفة · فعّلها من الأوقات');
 }
+
+// ---------- a line about your day, from the other pages ----------
+function nudge() {
+  const now = new Date(), m = moments(now), out = [];
+  const num = n => AR ? n.toLocaleString('ar-EG') : n;
+  // reading
+  const days = new Set(load('quran-days', { list: [] }).list);
+  let streak = 0; for (let i = 0; i < 400; i++) { const d = new Date(now); d.setDate(d.getDate() - i); if (days.has(QM.dayKey(d))) streak++; else if (i) break }
+  const readToday = days.has(QM.dayKey(now));
+  if (streak >= 2) out.push([L(`${streak} days of Quran in a row. Keep it going`, `${num(streak)} أيام متتالية مع القرآن، واصل`), '/quran/']);
+  else if (!readToday && m.x > 12) out.push([L("You haven't opened the Quran today. Even one page", 'لم تفتح المصحف اليوم، ولو صفحة'), '/quran/']);
+  const k = load('khatm', {});
+  if (k.active) { const pct = Math.floor(((k.at || 0) - k.from) / (QM.TOTAL - k.from) * 100); out.push([L(`You're ${pct}% through your khatm`, `أتممت ${num(pct)}٪ من ختمتك`), '/quran/progress/']) }
+  // adhkar
+  const ad = load('adhkar', {}), which = m.part === 'duha' || m.part === 'sunrise' || m.part === 'fajr' ? 'morning' : m.part === 'asr' || m.part === 'maghrib' || m.part === 'isha' ? 'evening' : null;
+  if (which && ad[which] !== now.toDateString()) out.push([which === 'morning' ? L('Your morning adhkar are waiting', 'أذكار الصباح بانتظارك') : L('Your evening adhkar are waiting', 'أذكار المساء بانتظارك'), `/duaa/#adhkar-${which}`]);
+  if (which && ad[which] === now.toDateString()) out.push([L('Adhkar done today. May Allah accept', 'أتممت الأذكار اليوم، تقبّل الله'), '/duaa/']);
+  // next prayer
+  const { next } = prayerTimes(now);
+  if (next) { const min = Math.round((next.at - now) / 6e4); if (min <= 30) out.push([L(`${t(next.key)} in ${min} minutes`, `${t(next.key)} بعد ${num(min)} دقيقة`), '/times/']) }
+  // fasting tomorrow / Ramadan countdown
+  const tm = new Date(now); tm.setDate(tm.getDate() + 1); const f = fastOn(tm);
+  if (f) out.push([L(`Tomorrow is ${f}, a good day to fast`, `غدًا ${f}، يوم يُستحب صيامه`), '/calendar/']);
+  const H = hijriNow(now); if (H.month === 8) out.push([L('Ramadan is only weeks away', 'رمضان بعد أسابيع'), '/ramadan/']);
+  // hadith and name of the day
+  out.push([L('A new hadith of the day is below', 'حديث اليوم في الأسفل'), '#hadith-card'], [L('Learn a name of Allah today', 'تعلّم اسمًا من أسماء الله اليوم'), '/names/']);
+  // prefer the more personal lines (earlier in the list)
+  const pick = out[Math.random() < .7 ? Math.floor(Math.random() * Math.min(2, out.length)) : Math.floor(Math.random() * out.length)];
+  $('#nudge').innerHTML = pick ? `<a href="${pick[1]}">${pick[0]}</a>` : '';
+}
+nudge();
 
 prayers(); today();
 setInterval(() => { prayers(); today() }, 30e3);
