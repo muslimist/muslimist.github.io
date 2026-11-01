@@ -10,12 +10,12 @@
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" href="/assets/icons/favicon-196.png">
 <link rel="apple-touch-icon" href="/assets/icons/apple-icon-180.png">
-<script>{const s = localStorage, d = document.documentElement; d.dataset.scheme = s.mode || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'); if (s.glass) d.dataset.glass = s.glass; d.style.setProperty('--bg-img', `url(/assets/img/bg-quran-${Math.random() * 6 | 0}.webp)`); if (s.lang == 'arabic') { d.lang = 'ar'; d.dir = 'rtl' }}</script>
+<script>{const s = localStorage, d = document.documentElement; d.dataset.scheme = s.mode || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'); if (s.glass) d.dataset.glass = s.glass; d.dataset.bg = `url(/assets/img/bg-quran-${Math.random() * 6 | 0}.webp)`; d.style.setProperty('--bg-img', sessionStorage.bg || d.dataset.bg); if (sessionStorage.bg) d.classList.add('bg-ready'); if (s.lang == 'arabic') { d.lang = 'ar'; d.dir = 'rtl' }}</script>
 </head>
 <body>
 <header class="top">
   <a class="brand" href="/">muslimist</a>
-  <nav class="links" id="menu" popover><a href="/quran/" aria-current="page" data-t="quran">Quran</a><a href="/duaa/" data-t="duaa">Duaa</a><a href="/times/" data-t="times">Times</a><a href="/qibla/" data-t="qibla">Qibla</a><a href="/dashboard/" data-t="dash">Dash</a></nav>
+  <nav class="links" id="menu" popover><a href="/quran/" aria-current="page" data-t="quran">Quran</a><a href="/duaa/" data-t="duaa">Duaa</a><a href="/hadith/" data-t="hadith">Hadith</a><a href="/names/" data-t="names">Names</a><a href="/calendar/" data-t="calendar">Calendar</a><a href="/zakat/" data-t="zakat">Zakat</a><a href="/times/" data-t="times">Times</a><a href="/qibla/" data-t="qibla">Qibla</a><a href="/dashboard/" data-t="dash">Dash</a></nav>
   <button class="pill menu" popovertarget="menu" aria-label="Menu"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </header>
 
@@ -45,7 +45,7 @@
 
 <dialog class="sheet" id="settings">
   <form method="dialog">
-    <div class="sheet-head"><h2 data-t="settings">Settings</h2><button class="icon" data-t-label="close" aria-label="Close">✕</button></div>
+    <div class="sheet-head"><h2 data-t="settings" tabindex="-1" autofocus>Settings</h2><button class="close" data-t-label="close" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <label><span data-t="chapter">Chapter</span><select id="chapter"></select></label>
     <div class="row2">
       <label><span data-t="verse">Verse</span><select id="verse"></select></label>
@@ -527,12 +527,19 @@ function setFocus(on) {
   vt.finished.finally(() => root.classList.remove('vt-focus'));
 }
 $('#focus').onclick = () => setFocus(!document.documentElement.classList.contains('focus'));
+// keys: left/right change verse, up/down change chapter (except in whole-chapter view, where they scroll);
+// in full screen, space plays and Escape exits
 document.addEventListener('keydown', e => {
-  if (!document.documentElement.classList.contains('focus') || e.target.closest?.('input, select, dialog')) return;
-  if (e.key === 'Escape') setFocus(false);
-  else if (e.key === ' ') { e.preventDefault(); $('#play').click() }
+  if (e.altKey || e.ctrlKey || e.metaKey || e.target.closest?.('input, select, dialog')) return;
+  const focus = document.documentElement.classList.contains('focus');
+  if (e.key === 'Escape' && focus) setFocus(false);
+  else if (e.key === ' ' && focus && !e.target.closest?.('button, a')) { e.preventDefault(); $('#play').click() }
   else if (e.key === 'ArrowRight') $(AR ? '#prev' : '#next').click();
   else if (e.key === 'ArrowLeft') $(AR ? '#next' : '#prev').click();
+  else if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && Q.whole !== '1') {
+    e.preventDefault();
+    go(e.key === 'ArrowDown' ? Q.chapter % 114 + 1 : (Q.chapter + 112) % 114 + 1, 1, false);
+  }
 });
 
 // keep screen awake while reading or listening

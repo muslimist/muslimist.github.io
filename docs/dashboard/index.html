@@ -10,36 +10,41 @@
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" href="/assets/icons/favicon-196.png">
 <link rel="apple-touch-icon" href="/assets/icons/apple-icon-180.png">
-<script>{const s = localStorage, d = document.documentElement; d.dataset.scheme = s.mode || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'); if (s.glass) d.dataset.glass = s.glass; d.style.setProperty('--bg-img', `url(/assets/img/bg-home-${Math.random() * 7 | 0}.webp)`); if (s.lang == 'arabic') { d.lang = 'ar'; d.dir = 'rtl' }}</script>
+<script>{const s = localStorage, d = document.documentElement; d.dataset.scheme = s.mode || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'); if (s.glass) d.dataset.glass = s.glass; d.dataset.bg = `url(/assets/img/bg-home-${Math.random() * 7 | 0}.webp)`; d.style.setProperty('--bg-img', sessionStorage.bg || d.dataset.bg); if (sessionStorage.bg) d.classList.add('bg-ready'); if (s.lang == 'arabic') { d.lang = 'ar'; d.dir = 'rtl' }}</script>
 <style>
   /* dashboard layout, only used here */
-  .dash { grid-template-columns: 2fr 1fr }
+  /* next prayer and qibla share a row and a height; widths follow their content */
+  .dash { grid-template-columns: 1.4fr 1fr }
   .dash .wide { grid-column: 1 / -1 }
+  .dash .pair { display: flex; flex-direction: column }
+  .dash .pair > .card-head + * { margin-top: auto }
+  .dash .pair > :last-child { margin-bottom: auto }
   .label { margin-inline-end: auto; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--mute) }
   .card-link { font-size: 14px; color: var(--mute) }
   .card-link:hover { color: var(--fg) }
-  .dash .prayers li { padding: 8px 4px; font-size: 15px }
-  .dash .prayers .now { padding-inline: 10px }
-  .dash .next-up { padding: 0 0 14px }
-  .dash .next-time { font-size: 40px }
-  .dash .compass { width: min(190px, 60vw); margin: 4px auto 4px }
-  .dash .qibla-deg b { font-size: 34px }
+  .dash .next-up { padding: 0 }
+  .dash .next-time { font-size: clamp(30px, 8vw, 48px) }
+  .dash .compass { width: min(150px, 100%); margin: 0 auto 4px }
+  .dash .qibla-deg { font-size: 13px }
+  .dash .qibla-deg b { font-size: clamp(24px, 6vw, 34px) }
   .dash .ayah { font-size: 1.8em }
   .dash .trans { font-size: 1em; color: var(--mute) }
-  .dua-card { overflow: hidden }
-  .dua-strip { height: 90px; margin: -24px -24px 16px; background: center/cover; -webkit-mask-image: linear-gradient(#000 40%, transparent); mask-image: linear-gradient(#000 40%, transparent) }
-  @media (max-width: 640px) { .dua-strip { margin: -18px -18px 14px } }
+  /* the moment's photo sits faintly behind the duaa */
+  .dua-card { position: relative; overflow: hidden; isolation: isolate }
+  .dua-card::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--dua-img) center/cover; opacity: .16; filter: saturate(.8) }
+  [data-glass="solid"] .dua-card::before { opacity: .1 }
   .dua-ar { font: 1.8em/2.1 var(--arabic); direction: rtl; text-align: center; margin: 4px 0 10px }
-  .dua-tr { text-align: center; font-size: 17px; max-width: 62ch; margin: 0 auto }
+  .dua-tr, .dua-tl { text-align: center; font-size: 17px }
+  .dua-tl { font-style: italic; color: var(--mute); font-size: 15px; margin-bottom: 8px; direction: ltr }
   .row-play { display: flex; justify-content: center; margin-top: 16px }
   .row-play .play { width: 44px; height: 44px }
-  @media (max-width: 760px) { .dash { grid-template-columns: 1fr } }
+  @media (max-width: 640px) { .dash { grid-template-columns: 1.2fr 1fr; gap: 12px } .dash .pair { padding: 16px 14px } .dash .pair .card-link { display: none } }
 </style>
 </head>
 <body class="home">
 <header class="top">
   <a class="brand" href="/">muslimist</a>
-  <nav class="links" id="menu" popover><a href="/quran/" data-t="quran">Quran</a><a href="/duaa/" data-t="duaa">Duaa</a><a href="/times/" data-t="times">Times</a><a href="/qibla/" data-t="qibla">Qibla</a><a href="/dashboard/" aria-current="page" data-t="dash">Dash</a></nav>
+  <nav class="links" id="menu" popover><a href="/quran/" data-t="quran">Quran</a><a href="/duaa/" data-t="duaa">Duaa</a><a href="/hadith/" data-t="hadith">Hadith</a><a href="/names/" data-t="names">Names</a><a href="/calendar/" data-t="calendar">Calendar</a><a href="/zakat/" data-t="zakat">Zakat</a><a href="/times/" data-t="times">Times</a><a href="/qibla/" data-t="qibla">Qibla</a><a href="/dashboard/" aria-current="page" data-t="dash">Dash</a></nav>
   <button class="pill menu" popovertarget="menu" aria-label="Menu"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </header>
 
@@ -49,18 +54,17 @@
 </section>
 
 <main class="layout dash">
-  <section class="card glass" id="prayers-card">
-    <div class="card-head"><span class="label" data-t="today">Today's prayers</span><a class="card-link" href="/times/" data-t="more">More →</a></div>
+  <a class="card glass pair" id="prayers-card" href="/times/">
+    <div class="card-head"><span class="label" data-t="times">Times</span><span class="card-link" data-t="more">More →</span></div>
     <div class="next-up">
       <p class="label"></p>
       <p class="next-time"></p>
       <p class="mute next-in"></p>
       <div class="bar"><i></i></div>
     </div>
-    <ul class="prayers" id="prayers"></ul>
-  </section>
+  </a>
 
-  <a class="card glass center" href="/qibla/">
+  <a class="card glass center pair" href="/qibla/">
     <div class="card-head"><span class="label" data-t="qibla">Qibla</span></div>
     <svg class="compass" viewBox="0 0 200 200" aria-hidden="true">
       <circle cx="100" cy="100" r="94" class="ring"/>
@@ -79,9 +83,9 @@
   </section>
 
   <section class="card glass wide dua-card">
-    <div class="dua-strip" id="dua-strip"></div>
     <div class="card-head"><span class="label" id="dua-label"></span><a class="card-link" id="dua-link" href="/duaa/" data-t="more">More →</a></div>
     <p class="dua-ar" id="dua-ar" lang="ar"></p>
+    <p class="dua-tl" id="dua-tl" hidden></p>
     <p class="dua-tr" id="dua-tr"></p>
     <div class="row-play"><button class="play" id="dua-play" data-t-label="play" aria-label="Play"><svg viewBox="0 0 24 24"><path id="dua-icon" d="M8 5v14l11-7z"/></svg></button></div>
     <audio id="dua-audio" preload="none"></audio>
@@ -95,7 +99,7 @@
 <script src="/assets/praytimes.js"></script>
 <script src="/assets/times.js"></script>
 <script>
-i18n({ today: ["Today's prayers", 'صلوات اليوم'], more: ['More →', 'المزيد ←'],
+i18n({ more: ['More →', 'المزيد ←'],
   continue: ['Continue →', 'تابع ←'], lastread: ['Continue reading', 'تابع القراءة'], startread: ['Start reading', 'ابدأ القراءة'],
   fromnorth: ['from north', 'من الشمال'], forthis: ['For this moment', 'لهذه اللحظة'], play: ['Play', 'تشغيل'],
   waking: ['After waking', 'عند الاستيقاظ'], morning: ['Morning remembrance', 'أذكار الصباح'], afterprayer: ['After prayer', 'بعد الصلاة'],
@@ -124,19 +128,23 @@ function prayers() { showPrayers($('#prayers-card')) }
   try { last = JSON.parse(localStorage['quran-last']) } catch {}
   last ||= { c: 1, v: 1, name: ['Al-Faatiha', 'ٱلْفَاتِحَة'], ar: 'بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ', tr: 'In the name of Allah, the Entirely Merciful, the Especially Merciful.', fresh: true };
   $('#ayah-label').textContent = `${t(last.fresh ? 'startread' : 'lastread')} · ${last.name[AR ? 1 : 0]} ${last.c}:${last.v}`;
+  // only what is switched on in the Quran page's settings
+  const q = load('quran', { translation: 'en.pickthall', script: 'quran-uthmani-tajweed' });
   $('#ayah').innerHTML = last.ar;
   $('#ayah-tr').innerHTML = last.tr;
+  $('#ayah').hidden = q.script === 'none' || !last.ar;
+  $('#ayah-tr').hidden = q.translation === 'none' || !last.tr;
   $('#ayah-link').href = `/quran/${last.c}/${last.v}`;
 }
 
 // a dua for this time of day, picked from today's prayer times
 const DUAS = {
-  waking: { img: 1, id: 'dua-2', audio: 'n1', ar: 'الْحَمْدُ لِلَّهِ الَّذِيْ أَحْيَانَا بَعْدَ مَا أَمَاتَنَا، وَإِلَيْهِ النُّشُوْرُ', tr: 'All praise is for Allaah who gave us life after having taken it from us and unto Him is the resurrection.' },
-  morning: { img: 1, id: 'dua-75', audio: 'n74', ar: 'أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لاَ إِلَهَ إلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ', tr: 'We have reached the morning and at this very time unto Allaah belongs all sovereignty, and all praise is for Allaah. None has the right to be worshipped except Allaah, alone, without any partner, to Him belong all sovereignty and praise and He is over all things omnipotent.' },
-  evening: { img: 7, id: 'dua-75', audio: 'n74', ar: 'أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لاَ إِلَهَ إلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ', tr: 'We have reached the evening and at this very time unto Allaah belongs all sovereignty, and all praise is for Allaah. None has the right to be worshipped except Allaah, alone, without any partner, to Him belong all sovereignty and praise and He is over all things omnipotent.' },
-  afterprayer: { img: 6, id: 'dua-63', audio: 'n62', ar: 'أَسْتَغْفِرُ اللَّهَ (ثَلَاثًا) اللَّهُمَّ أَنْتَ السَّلاَمُ، وَمِنْكَ السَّلاَمُ، تَبَارَكْتَ يَا ذَا الْجَلاَلِ وَالْإِكْرَامِ', tr: 'I ask Allaah for forgiveness (three times). O Allah, You are Peace and from You is peace. Blessed are You, O Owner of majesty and honour.' },
-  leaving: { img: 3, id: 'dua-17', audio: 'n16', ar: 'بِسْمِ اللَّهِ، تَوَكَّلْتُ عَلَى اللَّهِ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلاَّ بِاللَّهِ', tr: 'In the Name of Allah, I have placed my trust in Allah, there is no might and no power except by Allah.' },
-  sleep: { img: 8, id: 'dua-99', audio: 'n98', ar: 'بِاسْمِكَ رَبِّي وَضَعْتُ جَنْبِي، وَبِكَ أَرْفَعُهُ، فَإِن أَمْسَكْتَ نَفْسِي فارْحَمْهَا، وَإِنْ أَرْسَلْتَهَا فَاحْفَظْهَا، بِمَا تَحْفَظُ بِهِ عِبَادَكَ الصَّالِحِينَ', tr: 'In Your name my Lord, I lie down and in Your name I rise, so if You should take my soul then have mercy upon it, and if You should return my soul then protect it in the manner You do so with Your righteous servants.' },
+  waking: { img: 1, id: 'dua-2', audio: 'n1', ar: 'الْحَمْدُ لِلَّهِ الَّذِيْ أَحْيَانَا بَعْدَ مَا أَمَاتَنَا، وَإِلَيْهِ النُّشُوْرُ', tl: "Alhamdu lillaahil-lathee 'ahyaanaa ba'da maa 'amaatanaa wa'ilayhin-nushoor", tr: 'All praise is for Allaah who gave us life after having taken it from us and unto Him is the resurrection.' },
+  morning: { img: 1, id: 'dua-75', audio: 'n74', ar: 'أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لاَ إِلَهَ إلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ', tl: "Asbahnaa wa 'asbahal-mulku lillaahi walhamdu lillaahi, laa 'ilaaha 'illallaahu wahdahu laa shareeka lahu, lahul-mulku wa lahul-hamdu wa Huwa 'alaa kulli shay'in Qadeer.", tr: 'We have reached the morning and at this very time unto Allaah belongs all sovereignty, and all praise is for Allaah. None has the right to be worshipped except Allaah, alone, without any partner, to Him belong all sovereignty and praise and He is over all things omnipotent.' },
+  evening: { img: 7, id: 'dua-75', audio: 'n74', ar: 'أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لاَ إِلَهَ إلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ', tl: "Amsaynaa wa 'amsal-mulku lillaahi walhamdu lillaahi, laa 'ilaaha 'illallaahu wahdahu laa shareeka lahu, lahul-mulku wa lahul-hamdu wa Huwa 'alaa kulli shay'in Qadeer.", tr: 'We have reached the evening and at this very time unto Allaah belongs all sovereignty, and all praise is for Allaah. None has the right to be worshipped except Allaah, alone, without any partner, to Him belong all sovereignty and praise and He is over all things omnipotent.' },
+  afterprayer: { img: 6, id: 'dua-63', audio: 'n62', ar: 'أَسْتَغْفِرُ اللَّهَ (ثَلَاثًا) اللَّهُمَّ أَنْتَ السَّلاَمُ، وَمِنْكَ السَّلاَمُ، تَبَارَكْتَ يَا ذَا الْجَلاَلِ وَالْإِكْرَامِ', tl: "'Astaghfirullaaha (three times). Allaahumma 'Antas-Salaamu wa minkas-salaamu, tabaarakta yaa Thal-Jalaali wal-'Ikraam.", tr: 'I ask Allaah for forgiveness (three times). O Allah, You are Peace and from You is peace. Blessed are You, O Owner of majesty and honour.' },
+  leaving: { img: 3, id: 'dua-17', audio: 'n16', ar: 'بِسْمِ اللَّهِ، تَوَكَّلْتُ عَلَى اللَّهِ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلاَّ بِاللَّهِ', tl: "Bismillaahi, tawakkaltu 'alallaahi, wa laa hawla wa laa quwwata illaa billaah.", tr: 'In the Name of Allah, I have placed my trust in Allah, there is no might and no power except by Allah.' },
+  sleep: { img: 8, id: 'dua-99', audio: 'n98', ar: 'بِاسْمِكَ رَبِّي وَضَعْتُ جَنْبِي، وَبِكَ أَرْفَعُهُ، فَإِن أَمْسَكْتَ نَفْسِي فارْحَمْهَا، وَإِنْ أَرْسَلْتَهَا فَاحْفَظْهَا، بِمَا تَحْفَظُ بِهِ عِبَادَكَ الصَّالِحِينَ', tl: "Bismika Rabbee wadha'tu janbee, wa bika 'arfa'uhu, fa'in 'amsakta nafsee farhamhaa, wa 'in 'arsaltahaa fahfadhhaa, bimaa tahfadhu bihi 'ibaadakas-saaliheen.", tr: 'In Your name my Lord, I lie down and in Your name I rise, so if You should take my soul then have mercy upon it, and if You should return my soul then protect it in the manner You do so with Your righteous servants.' },
 };
 
 function momentNow(now = new Date()) {
@@ -198,8 +206,13 @@ const moment = momentNow(), dua = DUAS[moment];
 $('#dua-label').textContent = `${t('forthis')} · ${t(moment)}`;
 $('#dua-ar').textContent = dua.ar;
 $('#dua-tr').textContent = dua.tr;
+$('#dua-tl').textContent = dua.tl;
+// translation and transliteration follow the Duaa page's settings
+const duaOpts = load('duaa', { translation: true, transliteration: false });
+$('#dua-tr').hidden = !duaOpts.translation;
+$('#dua-tl').hidden = !duaOpts.transliteration;
 $('#dua-link').href = `/duaa/#${dua.id}`;
-$('#dua-strip').style.backgroundImage = `url(/assets/img/cat-${dua.img}.webp)`;
+$('.dua-card').style.setProperty('--dua-img', `url(/assets/img/cat-${dua.img}.webp)`);
 const audio = $('#dua-audio');
 $('#dua-play').onclick = () => {
   if (!audio.src) audio.src = `/assets/duaa/audio/${dua.audio}.mp3`;

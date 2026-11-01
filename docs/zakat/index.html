@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>muslimist · zakat</title>
+<meta name="description" content="A simple zakat calculator: answer a few questions, worked out on your device.">
+<meta name="theme-color" content="#111111">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/assets/icons/favicon-196.png">
+<link rel="apple-touch-icon" href="/assets/icons/apple-icon-180.png">
+<script>{const s = localStorage, d = document.documentElement; d.dataset.scheme = s.mode || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'); if (s.glass) d.dataset.glass = s.glass; d.dataset.bg = `url(/assets/img/bg-home-${Math.random() * 7 | 0}.webp)`; d.style.setProperty('--bg-img', sessionStorage.bg || d.dataset.bg); if (sessionStorage.bg) d.classList.add('bg-ready'); if (s.lang == 'arabic') { d.lang = 'ar'; d.dir = 'rtl' }}</script>
+<style>
+  .zq { min-height: 320px; display: flex; flex-direction: column }
+  .zprog { height: 4px; border-radius: 99px; background: var(--line); overflow: hidden; margin-bottom: 22px }
+  .zprog i { display: block; height: 100%; background: var(--fg); transition: width .3s }
+  .zstep { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--mute) }
+  .zq h2 { font-size: clamp(21px, 3vw, 26px); letter-spacing: -.02em; margin: 6px 0 8px; line-height: 1.25 }
+  .zhelp { color: var(--mute); font-size: 14.5px; line-height: 1.6; margin-bottom: 16px }
+  .zhelp b { color: var(--fg); font-weight: 600 }
+  .zopts { display: grid; gap: 8px; margin-bottom: 16px }
+  .zopt { text-align: start; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--line); background: var(--field); font-size: 15.5px }
+  .zopt small { display: block; color: var(--mute); font-size: 13px; margin-top: 2px }
+  .zopt[aria-pressed="true"] { border-color: var(--fg); box-shadow: inset 0 0 0 1px var(--fg) }
+  .zfields { display: grid; gap: 12px; margin-bottom: 16px }
+  .zfield { display: grid; gap: 5px; font-size: 14px }
+  .zfield span { color: var(--mute); font-size: 13px }
+  .zfield .in { display: flex; align-items: center; background: var(--field); border: 1px solid var(--line); border-radius: 12px; padding: 0 12px }
+  .zfield input, .zfield select { flex: 1; min-width: 0; border: 0; background: none; padding: 11px 0; font-size: 16px; color: var(--fg); outline: none }
+  .zfield .in:focus-within { border-color: var(--fg) }
+  .zfield .unit { color: var(--mute); font-size: 14px; padding-inline-start: 8px }
+  .znav { display: flex; gap: 10px; margin-top: auto; padding-top: 10px }
+  .znav .primary { margin-inline-start: auto; min-width: 120px }
+  .zbig { font-size: clamp(40px, 8vw, 60px); font-weight: 650; letter-spacing: -.03em; line-height: 1.1; margin: 8px 0 4px; font-variant-numeric: tabular-nums }
+  .zrows { width: 100%; border-collapse: collapse; margin: 12px 0 18px; font-size: 14.5px }
+  .zrows td { padding: 9px 2px; border-top: 1px solid var(--line) }
+  .zrows td:last-child { text-align: end; font-variant-numeric: tabular-nums; white-space: nowrap }
+  .zrows tr.tot td { font-weight: 600 }
+  .zrows .minus td:last-child::before { content: "− " }
+  .zpaid { display: flex; gap: 10px; align-items: end; flex-wrap: wrap; margin: 6px 0 14px }
+  .zpaid .zfield { flex: 1; min-width: 180px; margin: 0 }
+  .zleft { font-size: 15px; margin-bottom: 12px }
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="/">muslimist</a>
+  <nav class="links" id="menu" popover><a href="/quran/" data-t="quran">Quran</a><a href="/duaa/" data-t="duaa">Duaa</a><a href="/hadith/" data-t="hadith">Hadith</a><a href="/names/" data-t="names">Names</a><a href="/calendar/" data-t="calendar">Calendar</a><a href="/zakat/" data-t="zakat">Zakat</a><a href="/times/" data-t="times">Times</a><a href="/qibla/" data-t="qibla">Qibla</a><a href="/dashboard/" data-t="dash">Dash</a></nav>
+  <button class="pill menu" popovertarget="menu" aria-label="Menu"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</header>
+
+<section class="hero">
+  <h1 data-t="zakat">Zakat</h1>
+  <p data-t="sub">Answer a few questions; it is worked out on your device</p>
+</section>
+
+<main class="layout">
+  <section class="card glass zq" id="z"></section>
+</main>
+
+<footer class="foot"><span><span data-t="madewith">made with</span> <span class="heart" aria-label="love">♥</span> <span data-t="bymuslims">by muslims for muslims</span></span><a href="https://github.com/muslimist/muslimist.github.io">github</a><button popovertarget="privacy" data-t="privacy">privacy</button></footer>
+<div class="pop" id="privacy" popover><span data-t="privacynote">we don't track anything, see for yourself =)</span> <a href="https://github.com/muslimist/muslimist.github.io">github</a></div>
+
+<script src="/assets/site.js"></script>
+<script>
+i18n({ sub: ['Answer a few questions; it is worked out on your device', 'أجب عن أسئلة قليلة، والحساب يتم على جهازك'] });
+
+// sources followed: National Zakat Foundation UK (nisab, shares) and NZF Canada (calculator guidance)
+const NISAB_G = { gold: 87.48, silver: 612.36 };
+const RATE = .025, LONG_TERM = .3; // long-term shares: zakat on ~30% of market value (NZF Canada; NZF UK uses 25%)
+const KARAT = [24, 22, 21, 18, 14, 9];
+
+const blank = { step: 0, a: {}, result: null, paid: 0 };
+let Z = load('zakat', blank);
+const A = Z.a;
+const persist = () => save('zakat', Z);
+
+const CURRENCIES = ['USD', 'CAD', 'GBP', 'EUR', 'AUD', 'NZD', 'ZAR', 'SAR', 'AED', 'QAR', 'KWD', 'EGP', 'TRY', 'PKR', 'INR', 'BDT', 'MYR', 'IDR', 'NGN', 'KES', 'MAD', 'SGD', 'CHF', 'SEK', 'NOK', 'DKK'];
+const guessCur = () => ({ US: 'USD', CA: 'CAD', GB: 'GBP', AU: 'AUD', NZ: 'NZD', ZA: 'ZAR', SA: 'SAR', AE: 'AED', QA: 'QAR', KW: 'KWD', EG: 'EGP', TR: 'TRY', PK: 'PKR', IN: 'INR', BD: 'BDT', MY: 'MYR', ID: 'IDR', NG: 'NGN', KE: 'KES', MA: 'MAD', SG: 'SGD', CH: 'CHF', SE: 'SEK', NO: 'NOK', DK: 'DKK' })[(navigator.language.split('-')[1] || '').toUpperCase()] || 'USD';
+A.currency ||= guessCur();
+const money = n => { try { return new Intl.NumberFormat(AR ? 'ar' : 'en', { style: 'currency', currency: A.currency, maximumFractionDigits: 2 }).format(n) } catch { return n.toFixed(2) + ' ' + A.currency } };
+const val = k => Math.max(0, +A[k] || 0);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+
+// ---------- the questions ----------
+// kinds: info, choice (one answer), yesno (then amount fields), fields (amounts only)
+const f = (key, label, unit = 'cur', extra = '') => ({ key, label, unit, extra });
+const STEPS = [
+  { id: 'intro', kind: 'info', title: 'Work out your zakat', help: 'A few simple questions, one at a time. Count what you own <b>on your zakat date</b>: one day each lunar year (many people use 1 Ramadan). Nothing you type leaves this device.' },
+  { id: 'currency', kind: 'fields', title: 'Which currency are you counting in?', help: 'Convert any savings in other currencies into this one.', fields: [{ key: 'currency', label: 'Currency', unit: 'select' }] },
+  { id: 'hawl', kind: 'choice', key: 'hawl', title: 'Have you had savings above the nisab for a full lunar year?', help: 'The <b>nisab</b> is the minimum amount of wealth before zakat is due: the value of 612g of silver, roughly what a month or two of basic living costs. Zakat is due once your wealth has stayed above it for one lunar year (354 days).',
+    options: [['yes', 'Yes', 'or I paid zakat last year and still have savings'], ['unsure', "I'm not sure", "we'll check against the nisab at the end"], ['notyet', 'Not yet', 'I only reached it in the last year']] },
+  { id: 'prices', kind: 'fields', title: 'Today\'s gold and silver price', help: 'Per gram, in your currency. Search "gold price per gram" and "silver price per gram", or ask your mosque for today\'s nisab. These set the nisab and value any gold or silver you own.',
+    fields: [f('goldPrice', 'Gold (24 carat), price per gram'), f('silverPrice', 'Silver, price per gram')] },
+  { id: 'standard', kind: 'choice', key: 'standard', title: 'Which nisab do you follow?', help: 'Scholars differ. Using silver is safer and gives more to those in need (National Zakat Foundation). If gold is the only thing you own, the gold nisab is used either way.',
+    options: [['silver', 'Silver (recommended)', '612.36g of silver'], ['gold', 'Gold', '87.48g of gold']] },
+  { id: 'cash', kind: 'yesno', key: 'hasCash', title: 'Do you have cash or money in bank accounts?', help: 'Include current and savings accounts, cash at home or in your wallet, and money held in other currencies. <b>Leave out interest</b>: it should be given away to charity, not counted.',
+    fields: [f('cash', 'Total cash and bank balances')] },
+  { id: 'gold', kind: 'yesno', key: 'hasGold', title: 'Do you own any gold?', help: 'Jewellery, coins or bars. Weigh only the gold, not stones. A tola is 11.66g.',
+    fields: [f('goldGrams', 'Weight of gold', 'g'), { key: 'goldKarat', label: 'Purity', unit: 'karat' }, f('goldWorn', 'Of that, jewellery you wear regularly', 'g', 'optional')] },
+  { id: 'jewel', kind: 'choice', key: 'jewel', when: () => A.hasGold === 'yes' && val('goldWorn') > 0 || A.hasSilver === 'yes' && val('silverWorn') > 0,
+    title: 'Pay zakat on jewellery you wear?', help: 'Scholars differ. The Hanafi school says yes. The Maliki, Shafi\'i and Hanbali schools say jewellery worn in a normal way is exempt. Paying on all of it is the safer choice (NZF Canada).',
+    options: [['yes', 'Yes, include it', 'safer; Hanafi view'], ['no', 'No, leave it out', 'majority view']] },
+  { id: 'silver', kind: 'yesno', key: 'hasSilver', title: 'Do you own any silver?', help: 'Jewellery, coins or bars. Other metals and gemstones have no zakat unless you trade in them.',
+    fields: [f('silverGrams', 'Weight of silver', 'g'), f('silverWorn', 'Of that, jewellery you wear regularly', 'g', 'optional')] },
+  { id: 'owed', kind: 'yesno', key: 'hasOwed', title: 'Does anyone owe you money you expect to get back?', help: 'Loans to friends or family you are confident will be repaid. Leave out money you don\'t expect back, unpaid wages, dowry, or inheritance not yet received.',
+    fields: [f('owed', 'Money owed to you')] },
+  { id: 'shares', kind: 'yesno', key: 'hasShares', title: 'Do you have shares, funds or ETFs?', help: 'Including ones held in investment and savings accounts, like an ISA, TFSA or brokerage account. Count cash in those accounts under bank accounts, not here.',
+    fields: [f('sharesShort', 'Bought to sell soon or trade (full value counts)', 'cur', 'optional'), f('sharesLong', 'Held long-term for dividends or growth (30% of value counts)', 'cur', 'optional')] },
+  { id: 'pension', kind: 'yesno', key: 'hasPension', title: 'Do you have a pension or retirement account you can take money out of now?', help: 'Like a 401(k), RRSP, IRA or a pension you can access. Enter what you would receive <b>after</b> the tax and penalty for withdrawing today. If you cannot touch it until retirement, answer no.',
+    fields: [f('pension', 'Amount you could withdraw, after tax')] },
+  { id: 'crypto', kind: 'yesno', key: 'hasCrypto', title: 'Do you own any cryptocurrency?', help: 'Coins and tokens at today\'s market value. Leave out NFTs kept only as collectibles.',
+    fields: [f('crypto', 'Market value')] },
+  { id: 'business', kind: 'yesno', key: 'hasBusiness', title: 'Do you own a business, or stock you sell?', help: 'Business cash, money customers owe you, and goods held for sale (at what you could sell them for in bulk today). Equipment, buildings and vehicles the business uses have no zakat.',
+    fields: [f('business', 'Business cash, receivables and stock')] },
+  { id: 'property', kind: 'yesno', key: 'hasProperty', title: 'Do you own property or land you bought to sell?', help: 'Only property bought in order to resell. Your home, and property you rent out, have no zakat (any rent you\'ve saved is already in your bank balance).',
+    fields: [f('property', 'Current market value')] },
+  { id: 'debts', kind: 'yesno', key: 'hasDebts', title: 'Do you have debts or bills due in the next 12 months?', help: 'Credit cards, overdue bills and loans you have to pay within the next year. For a mortgage, car or student loan, count <b>only the next 12 months\' payments, without interest</b>, not the whole loan. Business debts too, if you included your business.',
+    fields: [f('debts', 'Total due within the next year')] },
+];
+const active = () => STEPS.filter(s => !s.when || s.when());
+
+// ---------- the sums ----------
+function calc() {
+  const gp = val('goldPrice'), sp = val('silverPrice');
+  const pureGold = A.hasGold === 'yes' ? val('goldGrams') * (+A.goldKarat || 24) / 24 : 0;
+  const wornShare = A.hasGold === 'yes' && val('goldGrams') ? Math.min(1, val('goldWorn') / val('goldGrams')) : 0;
+  const goldCounted = A.jewel === 'no' ? pureGold * (1 - wornShare) : pureGold;
+  const silverCounted = A.hasSilver === 'yes' ? Math.max(0, val('silverGrams') - (A.jewel === 'no' ? val('silverWorn') : 0)) : 0;
+  const yes = k => A['has' + k] === 'yes';
+  const rows = [
+    ['Cash and bank', yes('Cash') ? val('cash') : 0],
+    ['Gold', goldCounted * gp],
+    ['Silver', silverCounted * sp],
+    ['Money owed to you', yes('Owed') ? val('owed') : 0],
+    ['Shares (trading)', yes('Shares') ? val('sharesShort') : 0],
+    ['Shares (long-term, 30%)', yes('Shares') ? val('sharesLong') * LONG_TERM : 0],
+    ['Pension you can access', yes('Pension') ? val('pension') : 0],
+    ['Cryptocurrency', yes('Crypto') ? val('crypto') : 0],
+    ['Business', yes('Business') ? val('business') : 0],
+    ['Property to sell', yes('Property') ? val('property') : 0],
+  ].filter(r => r[1] > 0);
+  const assets = rows.reduce((s, r) => s + r[1], 0), debts = yes('Debts') ? val('debts') : 0, net = Math.max(0, assets - debts);
+  const onlyGold = rows.length === 1 && rows[0][0] === 'Gold';
+  const std = onlyGold ? 'gold' : A.standard || 'silver';
+  const nisab = NISAB_G[std] * (std === 'gold' ? gp : sp);
+  const due = A.hawl !== 'notyet' && net >= nisab && nisab > 0;
+  return { rows, assets, debts, net, std, nisab, due, zakat: due ? net * RATE : 0, onlyGold };
+}
+
+// ---------- screens ----------
+const hijriYear = () => new Intl.DateTimeFormat('en-u-ca-islamic-umalqura-nu-latn', { year: 'numeric' }).format(new Date()).replace(/\D/g, '');
+function renderStep() {
+  const steps = active();
+  Z.step = Math.min(Z.step, steps.length - 1);
+  const s = steps[Z.step];
+  let inner = '';
+  if (s.kind === 'choice') inner = `<div class="zopts">${s.options.map(([v, l, d]) => `<button class="zopt" data-v="${v}" aria-pressed="${A[s.key] === v}">${l}<small>${d}</small></button>`).join('')}</div>`;
+  if (s.kind === 'yesno') inner = `<div class="zopts" style="grid-template-columns:1fr 1fr">${[['yes', 'Yes'], ['no', 'No']].map(([v, l]) => `<button class="zopt" data-v="${v}" aria-pressed="${A[s.key] === v}">${l}</button>`).join('')}</div>`;
+  if (s.fields && (s.kind !== 'yesno' || A[s.key] === 'yes')) inner += `<div class="zfields">${s.fields.map(fieldHTML).join('')}</div>`;
+  $('#z').innerHTML = `<div class="zprog"><i style="width:${(Z.step / steps.length) * 100}%"></i></div>
+    <p class="zstep">${Z.step ? `Question ${Z.step} of ${steps.length - 1}` : 'Zakat'}</p><h2>${s.title}</h2><p class="zhelp">${s.help}</p>${inner}
+    <div class="znav">${Z.step ? '<button class="btn" id="zback">Back</button>' : ''}<button class="btn primary" id="znext">${Z.step === steps.length - 1 ? 'See my zakat' : Z.step ? 'Next' : 'Start'}</button></div>`;
+  $$('#z .zopt').forEach(b => b.onclick = () => {
+    A[s.key] = b.dataset.v; persist();
+    if (s.kind === 'choice') next(); else { renderStep(); $('#z input')?.focus() }
+  });
+  $$('#z [data-k]').forEach(i => i.oninput = i.onchange = () => { A[i.dataset.k] = i.value; persist() });
+  $('#zback') && ($('#zback').onclick = () => { Z.step--; persist(); renderStep() });
+  $('#znext').onclick = next;
+  $('#z').onkeydown = e => { if (e.key === 'Enter' && e.target.tagName === 'INPUT') next() };
+}
+function fieldHTML(fd) {
+  const v = esc(A[fd.key] ?? '');
+  let input;
+  if (fd.unit === 'select') input = `<select data-k="${fd.key}">${CURRENCIES.map(c => `<option${c === A.currency ? ' selected' : ''}>${c}</option>`).join('')}</select>`;
+  else if (fd.unit === 'karat') input = `<select data-k="${fd.key}">${KARAT.map(k => `<option value="${k}"${+(A.goldKarat || 22) === k ? ' selected' : ''}>${k} carat${k === 24 ? ' (pure)' : ''}</option>`).join('')}</select>`;
+  else input = `<input data-k="${fd.key}" type="number" inputmode="decimal" min="0" step="any" value="${v}" placeholder="0">`;
+  if (fd.unit === 'karat' && !A.goldKarat) A.goldKarat = '22';
+  const unit = fd.unit === 'cur' ? A.currency : fd.unit === 'g' ? 'grams' : '';
+  return `<label class="zfield"><span>${fd.label}${fd.extra ? ` <i>(${fd.extra})</i>` : ''}</span><div class="in">${input}${unit ? `<span class="unit">${unit}</span>` : ''}</div></label>`;
+}
+function next() {
+  const steps = active(), s = steps[Z.step];
+  // a question must be answered before moving on
+  if ((s.kind === 'choice' || s.kind === 'yesno') && !A[s.key]) return shake();
+  if (s.id === 'prices' && (!val('goldPrice') || !val('silverPrice'))) return shake();
+  if (Z.step < steps.length - 1) { Z.step++; persist(); renderStep(); scrollTo({ top: $('.layout').offsetTop - 16, behavior: 'smooth' }); return }
+  const r = calc();
+  Z.result = { ...r, date: new Date().toISOString(), hy: hijriYear() }; Z.paid ||= 0; persist(); renderResult();
+}
+const shake = () => $('#znext').animate([{ transform: 'translateX(0)' }, { transform: 'translateX(-6px)' }, { transform: 'translateX(6px)' }, { transform: 'translateX(0)' }], { duration: 250 });
+
+function renderResult() {
+  const r = Z.result, d = new Date(r.date);
+  const dateStr = new Intl.DateTimeFormat(AR ? 'ar' : 'en', { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
+  let headline, note;
+  if (A.hawl === 'notyet') { headline = 'Not due yet'; note = 'Zakat becomes due one lunar year (354 days) after your savings first reached the nisab, if they are still above it then. Come back on that date and run this again.' }
+  else if (!r.due) { headline = 'No zakat due'; note = `What you own after debts (${money(r.net)}) is below the nisab (${money(r.nisab)}). You can still give sadaqah.` }
+  else { headline = money(r.zakat); note = `2.5% of ${money(r.net)}, which is above the ${r.std} nisab of ${money(r.nisab)}${r.onlyGold ? ' (gold is all you own, so the gold nisab applies)' : ''}.` }
+  const left = Math.max(0, r.zakat - (+Z.paid || 0));
+  $('#z').innerHTML = `<p class="zstep">Your zakat for ${r.hy} AH · worked out ${dateStr}</p>
+    <p class="zbig">${headline}</p><p class="zhelp">${note}</p>
+    ${r.due ? `<div class="zpaid"><label class="zfield"><span>Paid so far</span><div class="in"><input id="zpaid" type="number" inputmode="decimal" min="0" step="any" value="${esc(Z.paid || '')}" placeholder="0"><span class="unit">${A.currency}</span></div></label></div>
+    <p class="zleft" id="zleft">${left > 0 ? `<b>${money(left)}</b> left to pay` : '✓ Paid in full. May Allah accept it.'}</p>` : ''}
+    <table class="zrows">${r.rows.map(([k, v]) => `<tr><td>${k}</td><td>${money(v)}</td></tr>`).join('')}
+      ${r.debts ? `<tr class="minus"><td>Debts due this year</td><td>${money(r.debts)}</td></tr>` : ''}
+      <tr class="tot"><td>Total counted</td><td>${money(r.net)}</td></tr>
+      <tr><td>Nisab (${r.std})</td><td>${money(r.nisab)}</td></tr></table>
+    <p class="note">This is a guide. For farm produce, livestock, complex businesses or anything unusual, ask a scholar you trust.</p>
+    <div class="znav"><button class="btn" id="zrestart">Start over</button><button class="btn primary" id="zedit">Change answers</button></div>`;
+  $('#zpaid') && ($('#zpaid').oninput = () => {
+    Z.paid = Math.max(0, +$('#zpaid').value || 0); persist();
+    const l = Math.max(0, r.zakat - Z.paid);
+    $('#zleft').innerHTML = l > 0 ? `<b>${money(l)}</b> left to pay` : '✓ Paid in full. May Allah accept it.';
+  });
+  $('#zedit').onclick = () => { Z.result = null; Z.step = 1; persist(); renderStep() };
+  $('#zrestart').onclick = () => { if (!confirm('Clear all your answers and start again?')) return; const keep = { currency: A.currency, goldPrice: A.goldPrice, silverPrice: A.silverPrice }; Z = { ...blank, a: keep }; Object.keys(A).forEach(k => delete A[k]); Object.assign(A, keep); Z.a = A; persist(); renderStep() };
+}
+
+Z.result ? renderResult() : renderStep();
+</script>
+</body>
+</html>

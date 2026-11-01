@@ -6,7 +6,7 @@
   --line: rgba(255,255,255,.14); --accent: #fff; --on-accent: #111; --radius: 24px;
   --tint: #161618; --base-a: 45%; --k: 1; --blur: 22px;
   --page: #111; --solid: #1c1c1e; --sheet: rgba(28,28,30,.92); --hilite: rgba(255,255,255,.16);
-  --veil: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.75)); --tone: brightness(.7);
+  --veil: linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.8)); --tone: brightness(.7) saturate(.7) blur(2px);
   --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --arabic: "me_quran", "Geeza Pro", "Noto Naskh Arabic", serif;
   color-scheme: dark;
@@ -15,9 +15,9 @@
 [data-scheme="light"] {
   --fg: #1f1b16; --mute: rgba(31,27,22,.66); --card: rgba(60,40,20,.06); --field: #ece6db;
   --line: rgba(60,40,20,.12); --accent: #1f1b16; --on-accent: #f6f1e7;
-  --tint: #f8f4ec; --base-a: 72%;
+  --tint: #fdfcf9; --base-a: 70%; --lift: 1.7;
   --page: #e6dfd2; --solid: #f6f1e7; --sheet: rgba(246,241,231,.97); --hilite: rgba(60,40,20,.08);
-  --veil: linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.35)); --tone: none;
+  --veil: linear-gradient(rgba(0,0,0,.52), rgba(0,0,0,.3) 70%); --tone: saturate(.65) blur(2px);
   color-scheme: light;
 }
 [data-scheme="light"]:not([data-glass="solid"]) :is(.top, .hero, .foot) { --fg: #fff; --mute: rgba(255,255,255,.85); --card: rgba(255,255,255,.18); color: var(--fg) }
@@ -47,9 +47,13 @@ img { display: block; max-width: 100% }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
 .mute { color: var(--mute) }
 .center { text-align: center }
-.glass { background: color-mix(in srgb, var(--tint) min(calc(var(--base-a) * var(--k)), 94%), transparent); border: 1px solid var(--line); backdrop-filter: blur(var(--blur)) saturate(1.4); -webkit-backdrop-filter: blur(var(--blur)) saturate(1.4) }
+.glass { background: color-mix(in srgb, var(--tint) min(calc(var(--base-a) * var(--k)), 94%), transparent); border: 1px solid var(--line); backdrop-filter: blur(var(--blur)) saturate(1.4) brightness(var(--lift, 1)); -webkit-backdrop-filter: blur(var(--blur)) saturate(1.4) brightness(var(--lift, 1)) }
 [data-glass="clear"] { --k: .35; --blur: 3px }
 [data-glass="frosted"] { --k: 1.7; --blur: 50px }
+/* light glass brightens what is behind it (dark text needs a light backing), so clear stays readable too */
+[data-scheme="light"][data-glass="clear"] { --k: .55; --blur: 8px; --lift: 1.9 }
+[data-scheme="light"][data-glass="frosted"] { --k: 1.4; --lift: 1.7 }
+[data-scheme="light"] .glass { border-color: rgba(255,255,255,.55) }
 
 /* header */
 .top, .hero, .layout, .foot { width: 100%; max-width: 1040px; margin-inline: auto; padding-inline: 16px }
@@ -82,6 +86,8 @@ img { display: block; max-width: 100% }
 /* page title */
 .hero { padding-block: 8vh 5vh }
 .home .hero { padding-block: 16vh 8vh }
+.landing .top { display: none }
+.landing .hero { padding-block: 20vh 8vh }
 .hero { text-shadow: 0 1px 24px color-mix(in srgb, var(--page) 70%, transparent) }
 .hero h1 { font-size: clamp(44px, 8vw, 88px); letter-spacing: -.035em; line-height: 1.05 }
 .hero p { color: var(--mute); margin-top: 6px; font-size: 18px }
@@ -107,6 +113,7 @@ img { display: block; max-width: 100% }
 .next b, .next .big { font-size: 28px; letter-spacing: -.02em }
 .next .big { font-weight: 400; margin-inline-end: auto }
 .tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; max-width: 760px }
+.tiles .tile:last-child:nth-child(odd) { grid-column: 1 / -1 }
 @media (max-width: 640px) { .tiles { grid-template-columns: 1fr } }
 /* compact card: title + description; the card itself is .glass so the glass level applies */
 .tile { display: block; padding: 16px 20px; border-radius: 20px; transition: transform .2s }
@@ -150,14 +157,14 @@ img { display: block; max-width: 100% }
 @keyframes vt-fade-out { to { opacity: 0 } }
 @keyframes vt-fade-in { from { opacity: 0 } }
 .focus .top, .focus .hero, .focus .foot { display: none }
-.focus .reader { position: fixed; inset: 0; z-index: 5; margin: 0; border-radius: 0; border: 0; overflow-y: auto;
-  display: flex; flex-direction: column; padding: 16px clamp(16px, 8vw, 120px) 0; font-size: 1.35em }
-.focus .reader .card-head { font-size: 16px; opacity: .7 }
-.focus .reader .card-head:hover { opacity: 1 }
-.focus #text:not(.whole) { margin-top: auto }
-.focus #trans { margin-bottom: auto; max-width: 60ch; align-self: center; color: var(--mute) }
-.focus .whole { flex: 1 }
-.focus .player { position: sticky; bottom: 0; margin: 0 calc(-1 * clamp(16px, 8vw, 120px)); padding: 40px 0 28px; font-size: 16px;
+.focus .reader { --side: clamp(16px, 8vw, 120px); position: fixed; inset: 0; z-index: 5; margin: 0; border-radius: 0; border: 0; overflow-y: auto;
+  display: flex; flex-direction: column; justify-content: safe center; padding: calc(132px + env(safe-area-inset-top)) var(--side) calc(132px + env(safe-area-inset-bottom)); font-size: 1.35em }
+.focus .reader .card-head { position: fixed; top: 0; inset-inline: 0; z-index: 6; margin: 0; font-size: 16px; padding: calc(12px + env(safe-area-inset-top)) var(--side) 24px;
+  background: linear-gradient(color-mix(in srgb, var(--page) 70%, transparent), transparent) }
+.focus .reader .card-head > * { opacity: .7 }
+.focus .reader .card-head > :hover { opacity: 1 }
+.focus #trans { max-width: 60ch; align-self: center; color: var(--mute) }
+.focus .player { position: fixed; bottom: 0; inset-inline: 0; z-index: 6; margin: 0; padding: 40px 0 calc(28px + env(safe-area-inset-bottom)); font-size: 16px;
   background: linear-gradient(transparent, color-mix(in srgb, var(--page) 88%, transparent) 55%) }
 .focus .status { position: fixed; inset: auto 0 6px; margin: 0; min-height: 0; font-size: 12px; z-index: 6 }
 .focus .status:empty { display: none }
@@ -207,9 +214,17 @@ img { display: block; max-width: 100% }
 .sheet { margin: auto auto 0; width: 100%; max-width: 560px; max-height: 88vh; padding: 0; background: var(--sheet); color: var(--fg); border-radius: var(--radius) var(--radius) 0 0; overscroll-behavior: contain }
 @media (min-width: 640px) { .sheet { margin: auto; border-radius: var(--radius) } }
 .sheet::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(4px) }
-.sheet form { display: grid; gap: 14px; padding: 20px 24px 28px }
-.sheet-head { display: flex; align-items: center; justify-content: space-between }
-.sheet h2 { font-size: 18px }
+.sheet form { display: grid; gap: 14px; padding: 0 24px calc(28px + env(safe-area-inset-bottom)) }
+/* header stays put while the sheet scrolls, so the close button is always in reach */
+.sheet-head { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; justify-content: space-between; margin: 0 -24px; padding: 18px 16px 12px 24px; background: var(--sheet); border-bottom: 1px solid var(--line) }
+[dir="rtl"] .sheet-head { padding: 18px 24px 12px 16px }
+.sheet-head::before { content: ""; position: absolute; top: 7px; left: 50%; width: 36px; height: 4px; margin-left: -18px; border-radius: 99px; background: var(--line) }
+@media (min-width: 640px) { .sheet-head::before { display: none } }
+.sheet h2 { font-size: 18px; outline: none }
+.close { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 99px; background: var(--field); border: 1px solid var(--line); color: var(--fg) }
+.close:hover { background: var(--hilite) }
+.close svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round }
+[data-glass="solid"] .sheet-head { background: var(--solid) }
 .sheet label { display: grid; gap: 4px; font-size: 12px; color: var(--mute) }
 .sheet select, .sheet input:not([type=checkbox]) { width: 100%; font-size: 15px; color: var(--fg); background: var(--field); border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px }
 select option { background: var(--page) }
@@ -224,7 +239,8 @@ select option { background: var(--page) }
 [data-glass="solid"] { --field: var(--page) }
 
 /* footer */
-.foot { text-transform: lowercase; display: flex; gap: 8px 18px; flex-wrap: wrap; color: var(--mute); font-size: 14px; padding-block: 32px 48px }
+.foot { text-transform: lowercase; display: flex; justify-content: center; gap: 6px 14px; flex-wrap: wrap; color: var(--mute); font-size: 12px; padding-block: 24px 28px; opacity: .55; transition: opacity .2s }
+.foot:hover, .foot:focus-within { opacity: 1 }
 .foot a:hover { color: var(--fg) }
 .heart { color: #e25555 }
 

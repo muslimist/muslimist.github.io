@@ -13,12 +13,12 @@
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" href="/assets/icons/favicon-196.png">
 <link rel="apple-touch-icon" href="/assets/icons/apple-icon-180.png">
-<script>{const s = localStorage, d = document.documentElement; d.dataset.scheme = s.mode || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'); if (s.glass) d.dataset.glass = s.glass; d.style.setProperty('--bg-img', `url(/assets/img/bg-home-${Math.random() * 7 | 0}.webp)`); if (s.lang == 'arabic') { d.lang = 'ar'; d.dir = 'rtl' }}</script>
+<script>{const s = localStorage, d = document.documentElement; d.dataset.scheme = s.mode || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'); if (s.glass) d.dataset.glass = s.glass; d.dataset.bg = `url(/assets/img/bg-home-${Math.random() * 7 | 0}.webp)`; d.style.setProperty('--bg-img', sessionStorage.bg || d.dataset.bg); if (sessionStorage.bg) d.classList.add('bg-ready'); if (s.lang == 'arabic') { d.lang = 'ar'; d.dir = 'rtl' }}</script>
 </head>
-<body class="home">
+<body class="home landing">
 <header class="top">
   <a class="brand" href="/">muslimist</a>
-  <nav class="links" id="menu" popover><a href="/quran/" data-t="quran">Quran</a><a href="/duaa/" data-t="duaa">Duaa</a><a href="/times/" data-t="times">Times</a><a href="/qibla/" data-t="qibla">Qibla</a><a href="/dashboard/" data-t="dash">Dash</a></nav>
+  <nav class="links" id="menu" popover><a href="/quran/" data-t="quran">Quran</a><a href="/duaa/" data-t="duaa">Duaa</a><a href="/hadith/" data-t="hadith">Hadith</a><a href="/names/" data-t="names">Names</a><a href="/calendar/" data-t="calendar">Calendar</a><a href="/zakat/" data-t="zakat">Zakat</a><a href="/times/" data-t="times">Times</a><a href="/qibla/" data-t="qibla">Qibla</a><a href="/dashboard/" data-t="dash">Dash</a></nav>
   <button class="pill menu" popovertarget="menu" aria-label="Menu"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </header>
 
@@ -31,8 +31,13 @@
   <section class="tiles">
     <a class="tile glass" href="/quran/"><div><h2 data-t="quran">Quran</h2><p data-t="quran-sub">Read and listen till your heart is content</p></div></a>
     <a class="tile glass" href="/duaa/"><div><h2 data-t="duaa">Duaa</h2><p data-t="duaa-sub">Find the words for every moment</p></div></a>
+    <a class="tile glass" href="/hadith/"><div><h2 data-t="hadith">Hadith</h2><p data-t="hadith-sub">The forty hadith of an-Nawawi</p></div></a>
+    <a class="tile glass" href="/names/"><div><h2 data-t="names">Names</h2><p data-t="names-sub">The 99 names of Allah</p></div></a>
+    <a class="tile glass" href="/calendar/"><div><h2 data-t="calendar">Calendar</h2><p data-t="calendar-sub">Hijri months, special days and history</p></div></a>
+    <a class="tile glass" href="/zakat/"><div><h2 data-t="zakat">Zakat</h2><p data-t="zakat-sub">Work out what you owe, step by step</p></div></a>
     <a class="tile glass" href="/times/"><div><h2 data-t="times">Times</h2><p data-t="times-sub">Prayer times for your area</p></div></a>
     <a class="tile glass" href="/qibla/"><div><h2 data-t="qibla">Qibla</h2><p data-t="qibla-sub">Direction from where you stand</p></div></a>
+    <a class="tile glass" href="/dashboard/"><div><h2 data-t="dash">Dash</h2><p data-t="dash-sub">Your day at a glance</p></div></a>
   </section>
 </main>
 
@@ -47,6 +52,11 @@ i18n({
   'duaa-sub': ['Find the words for every moment', 'دعاء لكل لحظة'],
   'times-sub': ['Prayer times for your area', 'مواقيت الصلاة لمنطقتك'],
   'qibla-sub': ['Direction from where you stand', 'اتجاه القبلة من مكانك'],
+  'hadith-sub': ['The forty hadith of an-Nawawi', 'الأربعون النووية'],
+  'names-sub': ['The 99 names of Allah', 'أسماء الله الحسنى'],
+  'calendar-sub': ['Hijri months, special days and history', 'الأشهر الهجرية والأيام الفاضلة والسيرة'],
+  'zakat-sub': ['Work out what you owe, step by step', 'احسب زكاتك خطوة بخطوة'],
+  'dash-sub': ['Your day at a glance', 'يومك في لمحة'],
 });
 </script>
 </body>

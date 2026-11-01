@@ -7,6 +7,7 @@ const AR = localStorage.lang === 'arabic';
 // strings are [english, arabic]; pages add their own with i18n({...})
 const DICT = {
   quran: ['Quran', 'القرآن'], duaa: ['Duaa', 'أدعية'], times: ['Times', 'أوقات'], qibla: ['Qibla', 'القبلة'], dash: ['Dash', 'لوحتي'],
+  hadith: ['Hadith', 'الحديث'], names: ['Names', 'الأسماء'], calendar: ['Calendar', 'التقويم'], zakat: ['Zakat', 'الزكاة'],
   madewith: ['made with', 'صُنع بـ'], bymuslims: ['by muslims for muslims', 'من المسلمين للمسلمين'], privacy: ['privacy', 'الخصوصية'], privacynote: ["we don't track anything, see for yourself =)", 'نحن لا نتتبع أي شيء، تحقق بنفسك =)'],
   settings: ['Settings', 'الإعدادات'], close: ['Close', 'إغلاق'], reset: ['Reset', 'إعادة تعيين'],
 };
@@ -55,30 +56,37 @@ langBtn.textContent = AR ? 'english' : 'عربي';
 langBtn.onclick = () => { localStorage.lang = AR ? 'english' : 'arabic'; location.reload() };
 $('.foot').append(langBtn);
 
-// fade the page photo in once it has loaded
+// page photo. Each page picks its own (html[data-bg]); to avoid a blank flash while it loads, the head script
+// first shows the photo from the previous page (already cached), and it crossfades to the new one here.
 {
-  const url = getComputedStyle(document.documentElement).getPropertyValue('--bg-img').match(/url\(["']?([^"')]+)/)?.[1];
-  const done = () => document.documentElement.classList.add('bg-ready');
-  if (url) { const img = new Image(); img.onload = img.onerror = done; img.src = url } else done();
-}
-
-// background slideshow: every ~20s fade to another photo from this page's set
-const BG_COUNT = { home: 7, quran: 6, duaa: 6, times: 6, qibla: 6 };
-const bgMatch = getComputedStyle(document.documentElement).getPropertyValue('--bg-img').match(/bg-(\w+)-(\d+)\.webp/);
-if (bgMatch && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  const [, pool] = bgMatch, root = document.documentElement;
-  let cur = +bgMatch[2];
-  setInterval(() => {
-    if (document.hidden || root.dataset.glass === 'solid') return;
-    const next = (cur + 1 + Math.floor(Math.random() * (BG_COUNT[pool] - 1))) % BG_COUNT[pool];
-    const url = `/assets/img/bg-${pool}-${next}.webp`, img = new Image();
+  const root = document.documentElement;
+  const urlOf = v => v?.match(/url\(["']?([^"')]+)/)?.[1];
+  const shown = urlOf(getComputedStyle(root).getPropertyValue('--bg-img')), want = urlOf(root.dataset.bg) || shown;
+  const BG_COUNT = { home: 7, quran: 6, duaa: 6, times: 6, qibla: 6 };
+  const swapTo = (url, done) => {
+    const img = new Image();
     img.onload = () => {
       root.style.setProperty('--bg-next', `url(${url})`);
       root.classList.add('swap');
-      setTimeout(() => { root.style.setProperty('--bg-img', `url(${url})`); root.classList.remove('swap'); cur = next }, 2600);
+      setTimeout(() => { root.style.setProperty('--bg-img', `url(${url})`); root.classList.remove('swap'); sessionStorage.bg = `url(${url})`; done?.() }, 2600);
     };
     img.src = url;
-  }, 20e3);
+  };
+  // fade the first photo in once it has loaded (instant when it came from the previous page)
+  if (shown) { const img = new Image(); img.onload = img.onerror = () => root.classList.add('bg-ready'); img.src = shown } else root.classList.add('bg-ready');
+  if (want && want !== shown) swapTo(want); else if (want) sessionStorage.bg = `url(${want})`;
+
+  // slideshow: every ~20s fade to another photo from this page's set
+  const m = want?.match(/bg-(\w+)-(\d+)\.webp/);
+  if (m && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const pool = m[1];
+    let cur = +m[2];
+    setInterval(() => {
+      if (document.hidden || root.dataset.glass === 'solid' || root.classList.contains('swap')) return;
+      const next = (cur + 1 + Math.floor(Math.random() * (BG_COUNT[pool] - 1))) % BG_COUNT[pool];
+      swapTo(`/assets/img/bg-${pool}-${next}.webp`, () => cur = next);
+    }, 20e3);
+  }
 }
 
 // settings sheets: [data-open=id] opens, tapping outside closes

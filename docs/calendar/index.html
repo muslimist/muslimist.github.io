@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>muslimist · calendar</title>
+<meta name="description" content="Hijri calendar with special days, recommended fasts and events from the life of the Prophet.">
+<meta name="theme-color" content="#111111">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/assets/icons/favicon-196.png">
+<link rel="apple-touch-icon" href="/assets/icons/apple-icon-180.png">
+<script>{const s = localStorage, d = document.documentElement; d.dataset.scheme = s.mode || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'); if (s.glass) d.dataset.glass = s.glass; d.dataset.bg = `url(/assets/img/bg-times-${Math.random() * 6 | 0}.webp)`; d.style.setProperty('--bg-img', sessionStorage.bg || d.dataset.bg); if (sessionStorage.bg) d.classList.add('bg-ready'); if (s.lang == 'arabic') { d.lang = 'ar'; d.dir = 'rtl' }}</script>
+<style>
+  .cal-head { display: flex; align-items: center; gap: 6px; margin-bottom: 10px }
+  .cal-title { flex: 1; text-align: center; font-weight: 600; font-size: 18px }
+  .cal-title small { display: block; font-weight: 400; font-size: 13px; color: var(--mute) }
+  .grid7 { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px }
+  .wd { text-align: center; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--mute); padding: 4px 0 }
+  .day { position: relative; aspect-ratio: 1 / .9; border-radius: 12px; padding: 6px 4px 4px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; background: var(--card); border: 1px solid transparent; min-width: 0 }
+  .day:hover { border-color: var(--line) }
+  .day .h { font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1.1 }
+  .day .g { font-size: 10.5px; color: var(--mute); white-space: nowrap; overflow: hidden; max-width: 100% }
+  .day .dots { display: flex; gap: 3px; height: 6px }
+  .day .dots i { width: 6px; height: 6px; border-radius: 99px; background: var(--c) }
+  .day.today { background: var(--fg); color: var(--page) }
+  .day.today .g { color: inherit; opacity: .7 }
+  .day.sel { border-color: var(--fg); border-width: 2px }
+  .day.sunnah::after { content: ""; position: absolute; top: 5px; inset-inline-end: 5px; width: 5px; height: 5px; border-radius: 99px; border: 1.5px solid currentColor; opacity: .45 }
+  .day.empty { background: none; pointer-events: none }
+  @media (max-width: 640px) { .grid7 { gap: 3px } .day { border-radius: 9px; padding: 4px 2px 3px } .day .h { font-size: 15px } .day .g { font-size: 9.5px } }
+  :root { --c-eid: #e0a526; --c-fast: #2fb34f; --c-day: #b55ce0; --c-hist: #3d8fe8; --c-nofast: #e04848 }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 12px; font-size: 12px; color: var(--mute) }
+  .legend span { display: inline-flex; align-items: center; gap: 6px }
+  .legend i { width: 8px; height: 8px; border-radius: 99px; background: var(--c) }
+  .legend .ring { background: none; border: 1.5px solid var(--mute) }
+  .detail h3 { font-size: 18px; letter-spacing: -.01em }
+  .detail .sub { color: var(--mute); font-size: 14px; margin-bottom: 8px }
+  .ev { display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; padding: 12px 0; border-top: 1px solid var(--line) }
+  .ev > i { grid-row: span 3; width: 10px; height: 10px; margin-top: 6px; border-radius: 99px; background: var(--c) }
+  .ev b { font-weight: 600 }
+  .ev p { font-size: 14.5px; line-height: 1.6 }
+  .ev small { font-size: 12px; color: var(--mute) }
+  .ev .day-n { color: var(--mute); font-weight: 500; margin-inline-end: 6px; font-variant-numeric: tabular-nums }
+  .banner { display: flex; gap: 10px; align-items: center; padding: 12px 14px; border-radius: 14px; background: var(--hilite); font-size: 14.5px; margin-bottom: 14px }
+  .banner i { flex: none; width: 10px; height: 10px; border-radius: 99px; background: var(--c-fast) }
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="/">muslimist</a>
+  <nav class="links" id="menu" popover><a href="/quran/" data-t="quran">Quran</a><a href="/duaa/" data-t="duaa">Duaa</a><a href="/hadith/" data-t="hadith">Hadith</a><a href="/names/" data-t="names">Names</a><a href="/calendar/" aria-current="page" data-t="calendar">Calendar</a><a href="/zakat/" data-t="zakat">Zakat</a><a href="/times/" data-t="times">Times</a><a href="/qibla/" data-t="qibla">Qibla</a><a href="/dashboard/" data-t="dash">Dash</a></nav>
+  <button class="pill menu" popovertarget="menu" aria-label="Menu"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</header>
+
+<section class="hero">
+  <h1 data-t="calendar">Calendar</h1>
+  <p data-t="sub">Hijri months, special days and the life of the Prophet ﷺ</p>
+</section>
+
+<main class="layout">
+  <section class="card glass">
+    <div class="banner" id="banner" hidden><i></i><span id="banner-text"></span></div>
+    <div class="cal-head">
+      <button class="icon" id="prev" data-t-label="prevm" aria-label="Previous month"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <div class="cal-title" id="title"></div>
+      <button class="icon" id="next" data-t-label="nextm" aria-label="Next month"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+      <button class="icon" data-open="settings" data-t-label="settings" aria-label="Settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg></button>
+    </div>
+    <div class="grid7" id="wd"></div>
+    <div class="grid7" id="grid"></div>
+    <div class="legend">
+      <span><i style="--c: var(--c-eid)"></i><span data-t="l-eid">Eid</span></span>
+      <span><i style="--c: var(--c-fast)"></i><span data-t="l-fast">Recommended fast</span></span>
+      <span><i style="--c: var(--c-day)"></i><span data-t="l-day">Special day</span></span>
+      <span><i style="--c: var(--c-hist)"></i><span data-t="l-hist">In the Prophet's ﷺ life</span></span>
+      <span><i style="--c: var(--c-nofast)"></i><span data-t="l-nofast">No fasting</span></span>
+      <span><i class="ring"></i><span data-t="l-sunnah">Monday / Thursday</span></span>
+    </div>
+  </section>
+
+  <section class="card glass detail" id="detail"></section>
+
+  <section class="card glass detail">
+    <h3 data-t="thismonth">This month</h3>
+    <p class="sub" id="month-sub"></p>
+    <div id="month-list"></div>
+  </section>
+</main>
+
+<dialog class="sheet" id="settings">
+  <form method="dialog">
+    <div class="sheet-head"><h2 data-t="settings" tabindex="-1" autofocus>Settings</h2><button class="close" data-t-label="close" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <label><span data-t="adjust">Adjust Hijri date</span><select id="offset">
+      <option value="-2">−2 days</option><option value="-1">−1 day</option><option value="0">0 (Umm al-Qura)</option><option value="1">+1 day</option><option value="2">+2 days</option>
+    </select></label>
+    <p class="note" data-t="adjustnote">Dates follow the Umm al-Qura calendar. Local moon sighting can differ by a day or two: adjust here to match your mosque.</p>
+    <label class="check"><input type="checkbox" id="mondays"> <span data-t="showmt">Mark Mondays and Thursdays</span></label>
+  </form>
+</dialog>
+
+<footer class="foot"><span><span data-t="madewith">made with</span> <span class="heart" aria-label="love">♥</span> <span data-t="bymuslims">by muslims for muslims</span></span><a href="https://github.com/muslimist/muslimist.github.io">github</a><button popovertarget="privacy" data-t="privacy">privacy</button></footer>
+<div class="pop" id="privacy" popover><span data-t="privacynote">we don't track anything, see for yourself =)</span> <a href="https://github.com/muslimist/muslimist.github.io">github</a></div>
+
+<script src="/assets/site.js"></script>
+<script>
+i18n({
+  sub: ['Hijri months, special days and the life of the Prophet ﷺ', 'الأشهر الهجرية والأيام الفاضلة والسيرة النبوية'],
+  prevm: ['Previous month', 'الشهر السابق'], nextm: ['Next month', 'الشهر التالي'],
+  'l-eid': ['Eid', 'عيد'], 'l-fast': ['Recommended fast', 'صيام مستحب'], 'l-day': ['Special day', 'يوم فاضل'], 'l-hist': ["In the Prophet's ﷺ life", 'من السيرة'],
+  'l-nofast': ['No fasting', 'لا صيام'], 'l-sunnah': ['Monday / Thursday', 'الاثنين / الخميس'], thismonth: ['This month', 'هذا الشهر'],
+  adjust: ['Adjust Hijri date', 'تعديل التاريخ الهجري'], showmt: ['Mark Mondays and Thursdays', 'تمييز الاثنين والخميس'],
+  adjustnote: ['Dates follow the Umm al-Qura calendar. Local moon sighting can differ by a day or two: adjust here to match your mosque.', 'التواريخ وفق تقويم أم القرى، وقد تختلف رؤية الهلال المحلية بيوم أو يومين: عدّلها هنا لتطابق مسجدك.'],
+  nothing: ['Nothing special recorded for this day.', 'لا شيء مميز لهذا اليوم.'], today: ['Today', 'اليوم'], tomorrow: ['Tomorrow', 'غدًا'],
+  mon: ['Monday fast', 'صيام الاثنين'], thu: ['Thursday fast', 'صيام الخميس'], ah: ['AH', 'هـ'],
+});
+
+// kinds: eid, fast (recommended fast), day (special day), hist (in the Prophet's ﷺ life), nofast
+// certainty for history: 'agreed' | 'common' (most commonly cited, others differ) | 'month' (only the month is known)
+const CERT = { agreed: ['Date agreed upon', 'تاريخ متفق عليه'], common: ['Most commonly cited date; other dates are also reported', 'التاريخ الأشهر، وتُروى تواريخ أخرى'], month: ['Only the month is known', 'يُعرف الشهر فقط'] };
+// [month, day (0 = whole month), kind, title, text, certainty or source]
+const EVENTS = [
+  [1, 0, 'day', 'Muharram, a sacred month', 'One of the four sacred months. "The best fasting after Ramadan is in the month of Allah, Muharram."', 'Muslim'],
+  [1, 1, 'day', 'Islamic New Year', 'The Hijri calendar counts from the Hijrah; it was adopted under \'Umar (ra).', ''],
+  [1, 9, 'fast', 'Tasu\'a', 'The Prophet ﷺ intended to fast the 9th along with the 10th.', 'Muslim'],
+  [1, 10, 'fast', 'Ashura', 'Fasting it is hoped to expiate the sins of the previous year.', 'Muslim'],
+  [1, 10, 'hist', 'Musa (as) saved from Pharaoh', 'The day Allah saved Musa and the Children of Israel; the Prophet ﷺ fasted it and told others to.', 'Bukhari'],
+  [1, 0, 'hist', 'Battle of Khaybar, 7 AH', 'The Muslims took Khaybar. Some place it in Safar.', 'month'],
+  [2, 27, 'hist', 'The Hijrah begins, 1 AH', 'The Prophet ﷺ and Abu Bakr (ra) left Makkah and hid in the cave of Thawr for three nights.', 'common'],
+  [3, 8, 'hist', 'Arrival in Quba, 1 AH', 'The Prophet ﷺ reached Quba on a Monday and founded its mosque, the first in Islam. The 12th is also reported.', 'common'],
+  [3, 12, 'hist', 'Birth of the Prophet ﷺ', 'Born in Makkah in the Year of the Elephant, on a Monday (agreed; Muslim). The 12th is the most cited date; the 8th and 9th are also reported.', 'common'],
+  [3, 12, 'hist', 'Death of the Prophet ﷺ, 11 AH', 'He passed away in Madinah on a Monday in Rabi\' al-Awwal (agreed), aged 63.', 'common'],
+  [7, 0, 'day', 'Rajab, a sacred month', 'One of the four sacred months.', ''],
+  [7, 27, 'hist', 'Al-Isra\' wal-Mi\'raj', 'The night journey to Jerusalem and ascension, when the five daily prayers were prescribed. The 27th of Rajab is widely observed, but the date is not established.', 'common'],
+  [7, 0, 'hist', 'Expedition of Tabuk, 9 AH', 'The last expedition the Prophet ﷺ led.', 'month'],
+  [8, 0, 'fast', 'Sha\'ban', 'The Prophet ﷺ fasted more in Sha\'ban than in any month other than Ramadan.', 'Bukhari & Muslim'],
+  [8, 0, 'hist', 'The qiblah turns to the Ka\'bah, 2 AH', 'Prayer had faced Jerusalem for about 16–17 months. Some place it in Rajab.', 'month'],
+  [9, 0, 'fast', 'Ramadan', 'Fasting the whole month is obligatory. The Quran was first revealed in Ramadan (2:185).', ''],
+  [9, 10, 'hist', 'Death of Khadijah (ra)', 'The first to believe in him, in the 10th year of prophethood, the "Year of Sorrow".', 'common'],
+  [9, 17, 'hist', 'Battle of Badr, 2 AH', 'About 313 Muslims met an army of about 1,000. Called the Day of Criterion (8:41).', 'common'],
+  [9, 20, 'hist', 'Conquest of Makkah, 8 AH', 'The Prophet ﷺ entered Makkah peacefully and cleared the Ka\'bah of idols.', 'common'],
+  ...[21, 23, 25, 27, 29].map(d => [9, d, 'day', `Night of the ${d}th`, 'Seek Laylat al-Qadr in the odd nights of the last ten. The night begins at sunset the evening before.', 'Bukhari']),
+  [10, 1, 'eid', 'Eid al-Fitr', 'Pay zakat al-fitr before the Eid prayer. Fasting on Eid is not allowed.', 'Bukhari & Muslim'],
+  [10, 0, 'fast', 'Six days of Shawwal', 'Fasting Ramadan then six days of Shawwal is like fasting the whole year.', 'Muslim'],
+  [10, 15, 'hist', 'Battle of Uhud, 3 AH', 'Hamzah (ra), the Prophet\'s ﷺ uncle, was martyred. The 7th and 11th are also reported.', 'common'],
+  [10, 0, 'hist', 'Battle of Hunayn, 8 AH', 'Shortly after the conquest of Makkah (9:25).', 'month'],
+  [10, 0, 'hist', 'Battle of the Trench, 5 AH', 'Madinah defended by a trench. Some place it in Dhul Qa\'dah.', 'month'],
+  [11, 0, 'day', 'Dhul Qa\'dah, a sacred month', 'All of the Prophet\'s ﷺ \'umrahs were in Dhul Qa\'dah, except the one with his Hajj.', 'Bukhari & Muslim'],
+  [11, 0, 'hist', 'Treaty of Hudaybiyyah, 6 AH', 'A ten-year truce with Quraysh; Surah al-Fath was revealed on the way back.', 'month'],
+  [12, 0, 'day', 'The first ten days', 'No days are better for good deeds than these ten days.', 'Bukhari'],
+  [12, 8, 'day', 'Day of Tarwiyah', 'Pilgrims go to Mina.', ''],
+  [12, 9, 'fast', 'Day of Arafah', 'For those not on Hajj, fasting it is hoped to expiate the past year and the coming year.', 'Muslim'],
+  [12, 9, 'hist', 'The Farewell Hajj, 10 AH', 'The Prophet ﷺ gave his sermon at Arafah, and "Today I have perfected your religion" (5:3) was revealed.', 'Bukhari'],
+  [12, 10, 'eid', 'Eid al-Adha', 'The day of sacrifice. Fasting on Eid is not allowed.', 'Bukhari & Muslim'],
+  ...[11, 12, 13].map(d => [12, d, 'nofast', 'Day of Tashreeq', 'Days of eating, drinking and remembering Allah.', 'Muslim']),
+  ...Array.from({ length: 12 }, (_, i) => [[13, 14, 15].map(d => [i + 1, d, 'fast', 'White day', 'Fasting the 13th, 14th and 15th of each month is like fasting the whole month.', 'an-Nasa\'i, at-Tirmidhi'])]).flat(2),
+].filter(e => !(e[0] === 9 && e[2] === 'fast' && e[3] === 'White day') && !(e[0] === 12 && e[1] === 13 && e[3] === 'White day'));
+
+const opts = load('calendar', { offset: 0, mondays: true });
+$('#offset').value = opts.offset; $('#mondays').checked = opts.mondays;
+$('#settings').addEventListener('change', () => { opts.offset = +$('#offset').value; opts.mondays = $('#mondays').checked; save('calendar', opts); render() });
+
+// ---------- dates (the browser's Umm al-Qura calendar; nothing is fetched) ----------
+const loc = AR ? 'ar' : 'en';
+const cal = (() => { try { new Intl.DateTimeFormat('en-u-ca-islamic-umalqura'); return 'islamic-umalqura' } catch { return 'islamic' } })();
+const hf = new Intl.DateTimeFormat('en-u-ca-' + cal + '-nu-latn', { day: 'numeric', month: 'numeric', year: 'numeric' });
+const DAY = 864e5;
+const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x };
+const hijri = d => { const p = Object.fromEntries(hf.formatToParts(addDays(d, opts.offset)).map(x => [x.type, x.value])); return { y: parseInt(p.year), m: +p.month, d: +p.day } };
+const monthName = (d, style = 'long') => new Intl.DateTimeFormat(loc + '-u-ca-' + cal, { month: style }).format(addDays(d, opts.offset));
+const num = n => AR ? n.toLocaleString('ar-EG') : n;
+const today = new Date(); today.setHours(12, 0, 0, 0);
+const firstOf = d => addDays(d, 1 - hijri(d).d);
+
+let first = firstOf(today), selected = today;
+
+function eventsOn(date) {
+  const h = hijri(date), wd = date.getDay();
+  const list = EVENTS.filter(e => e[0] === h.m && e[1] === h.d);
+  if (opts.mondays && (wd === 1 || wd === 4) && !list.some(e => e[2] === 'nofast' || e[2] === 'eid') && h.m !== 9)
+    list.push([h.m, h.d, 'sunnah', t(wd === 1 ? 'mon' : 'thu'), wd === 1 ? 'The Prophet ﷺ fasted Mondays: "That is the day I was born and the day revelation came to me."' : 'Deeds are presented to Allah on Mondays and Thursdays, "and I love that my deeds are presented while I am fasting."', wd === 1 ? 'Muslim' : 'at-Tirmidhi']);
+  return list;
+}
+const COLOR = { eid: 'var(--c-eid)', fast: 'var(--c-fast)', day: 'var(--c-day)', hist: 'var(--c-hist)', nofast: 'var(--c-nofast)', sunnah: 'var(--c-fast)' };
+const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+const evHTML = (e, withDay) => `<div class="ev"><i style="--c: ${COLOR[e[2]]}"></i><b>${withDay && e[1] ? `<span class="day-n">${num(e[1])}</span>` : ''}${esc(e[3])}</b><p>${esc(e[4])}</p><small>${CERT[e[5]] ? CERT[e[5]][AR ? 1 : 0] : e[5] ? (AR ? 'المصدر: ' : 'Source: ') + e[5] : ''}</small></div>`;
+
+function render() {
+  first = firstOf(first);
+  const h = hijri(first), days = [];
+  for (let d = first; hijri(d).m === h.m && days.length < 31; d = addDays(d, 1)) days.push(d);
+  const last = days[days.length - 1];
+  const g = new Intl.DateTimeFormat(loc, { month: 'short', year: 'numeric' });
+  $('#title').innerHTML = `${monthName(first)} ${num(h.y)} ${t('ah')}<small>${g.format(first) === g.format(last) ? g.format(first) : `${g.format(first)} – ${g.format(last)}`}</small>`;
+  // week starts on Sunday (Saturday in Arabic)
+  const start = AR ? 6 : 0;
+  const wdf = new Intl.DateTimeFormat(loc, { weekday: 'short' });
+  $('#wd').innerHTML = Array.from({ length: 7 }, (_, i) => `<div class="wd">${wdf.format(new Date(2024, 0, 7 + (start + i) % 7))}</div>`).join('');
+  const lead = (first.getDay() - start + 7) % 7;
+  $('#grid').innerHTML = '<div class="day empty"></div>'.repeat(lead) + days.map((d, i) => {
+    const ev = eventsOn(d), wd = d.getDay();
+    const kinds = [...new Set(ev.filter(e => e[2] !== 'sunnah').map(e => e[2]))];
+    const cls = ['day', +d === +today ? 'today' : '', +d === +selected ? 'sel' : '', ev.some(e => e[2] === 'sunnah') ? 'sunnah' : ''].join(' ');
+    const gd = d.getDate() === 1 || i === 0 ? new Intl.DateTimeFormat(loc, { day: 'numeric', month: 'short' }).format(d) : num(d.getDate());
+    return `<button class="${cls}" data-i="${i}"><span class="h">${num(i + 1)}</span><span class="dots">${kinds.slice(0, 3).map(k => `<i style="--c: ${COLOR[k]}"></i>`).join('')}</span><span class="g">${gd}</span></button>`;
+  }).join('');
+  $$('#grid .day[data-i]').forEach(b => b.onclick = () => { selected = days[+b.dataset.i]; render() });
+
+  // selected day
+  const sh = hijri(selected), sev = eventsOn(selected);
+  const label = +selected === +today ? t('today') + ' · ' : +selected === +addDays(today, 1) ? t('tomorrow') + ' · ' : '';
+  $('#detail').innerHTML = `<h3>${label}${num(sh.d)} ${monthName(selected)} ${num(sh.y)} ${t('ah')}</h3><p class="sub">${new Intl.DateTimeFormat(loc, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(selected)}</p>`
+    + (sev.length ? sev.map(e => evHTML(e)).join('') : `<p class="note">${t('nothing')}</p>`);
+
+  // whole month
+  const whole = EVENTS.filter(e => e[0] === h.m);
+  $('#month-sub').textContent = `${monthName(first)} · ${whole.length}`;
+  $('#month-list').innerHTML = [...whole.filter(e => !e[1]), ...whole.filter(e => e[1]).sort((a, b) => a[1] - b[1])].map(e => evHTML(e, true)).join('');
+
+  // reminder: the next recommended fast, today or tomorrow
+  const tm = addDays(today, 1), tev = eventsOn(tm).filter(e => ['fast', 'sunnah', 'eid'].includes(e[2]));
+  $('#banner').hidden = !tev.length;
+  if (tev.length) $('#banner-text').textContent = `${t('tomorrow')}: ${tev.map(e => e[3]).join(', ')}`;
+}
+
+$('#prev').onclick = () => { first = firstOf(addDays(first, -1)); render() };
+$('#next').onclick = () => { first = firstOf(addDays(first, 32)); render() };
+document.addEventListener('keydown', e => {
+  if (e.target.closest?.('input, select, dialog')) return;
+  if (e.key === 'ArrowLeft') $(AR ? '#next' : '#prev').click();
+  if (e.key === 'ArrowRight') $(AR ? '#prev' : '#next').click();
+});
+render();
+</script>
+</body>
+</html>

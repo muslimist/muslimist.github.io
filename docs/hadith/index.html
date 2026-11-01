@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>muslimist · hadith</title>
+<meta name="description" content="The forty hadith of an-Nawawi, in Arabic and English.">
+<meta name="theme-color" content="#111111">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/assets/icons/favicon-196.png">
+<link rel="apple-touch-icon" href="/assets/icons/apple-icon-180.png">
+<script>{const s = localStorage, d = document.documentElement; d.dataset.scheme = s.mode || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'); if (s.glass) d.dataset.glass = s.glass; d.dataset.bg = `url(/assets/img/bg-quran-${Math.random() * 6 | 0}.webp)`; d.style.setProperty('--bg-img', sessionStorage.bg || d.dataset.bg); if (sessionStorage.bg) d.classList.add('bg-ready'); if (s.lang == 'arabic') { d.lang = 'ar'; d.dir = 'rtl' }}</script>
+<style>
+  .hl { list-style: none; padding: 0; margin: 4px 0 0; display: grid; grid-template-columns: 1fr 1fr; column-gap: 24px }
+  .hl a { display: flex; gap: 14px; align-items: baseline; padding: 12px 6px; border-top: 1px solid var(--line); border-radius: 10px }
+  .hl a:hover { background: var(--hilite) }
+  .hl b { min-width: 2ch; text-align: end; color: var(--mute); font-weight: 500; font-variant-numeric: tabular-nums; font-size: 14px }
+  @media (max-width: 640px) { .hl { grid-template-columns: 1fr } }
+  .hr-num { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--mute) }
+  .hr-title { font-size: clamp(22px, 3vw, 28px); letter-spacing: -.02em; margin: 4px 0 20px }
+  .hr-ar { font: 1.55em/2.1 var(--arabic); direction: rtl; text-align: right; white-space: pre-line; margin-bottom: 18px }
+  .hr-en { font-size: 17px; line-height: 1.75; white-space: pre-line }
+  .hr-ar + .hr-en { padding-top: 18px; border-top: 1px solid var(--line) }
+  .hr-nav { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 24px }
+  .hr-nav .mute { font-size: 13px }
+  @media (max-width: 640px) { .hr-ar { font-size: 1.35em } }
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="/">muslimist</a>
+  <nav class="links" id="menu" popover><a href="/quran/" data-t="quran">Quran</a><a href="/duaa/" data-t="duaa">Duaa</a><a href="/hadith/" aria-current="page" data-t="hadith">Hadith</a><a href="/names/" data-t="names">Names</a><a href="/calendar/" data-t="calendar">Calendar</a><a href="/zakat/" data-t="zakat">Zakat</a><a href="/times/" data-t="times">Times</a><a href="/qibla/" data-t="qibla">Qibla</a><a href="/dashboard/" data-t="dash">Dash</a></nav>
+  <button class="pill menu" popovertarget="menu" aria-label="Menu"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</header>
+
+<section class="hero">
+  <h1 data-t="hadith">Hadith</h1>
+  <p data-t="sub">The forty hadith of an-Nawawi</p>
+</section>
+
+<main class="layout">
+  <section class="card glass">
+    <div class="card-head">
+      <button class="title" id="back" hidden></button>
+      <span class="title" id="count" data-t="all42">42 hadith</span>
+      <button class="icon" data-open="settings" data-t-label="settings" aria-label="Settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg></button>
+    </div>
+    <ol class="hl" id="list"></ol>
+    <article id="reader" hidden>
+      <p class="hr-num" id="num"></p>
+      <h2 class="hr-title" id="title"></h2>
+      <p class="hr-ar" id="ar" lang="ar"></p>
+      <p class="hr-en" id="en"></p>
+      <div class="hr-nav">
+        <button class="icon" id="prev" data-t-label="prev" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <button class="mute" id="copy" data-t="copy">copy link</button>
+        <button class="icon" id="next" data-t-label="next" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+      </div>
+    </article>
+  </section>
+</main>
+
+<dialog class="sheet" id="settings">
+  <form method="dialog">
+    <div class="sheet-head"><h2 data-t="settings" tabindex="-1" autofocus>Settings</h2><button class="close" data-t-label="close" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <label class="check"><input type="checkbox" id="opt-arabic"> <span data-t="showar">Show Arabic</span></label>
+    <label class="check"><input type="checkbox" id="opt-english"> <span data-t="showen">Show English</span></label>
+    <p class="note" data-t="srcnote">Text from the public-domain hadith-api collection, stored on this site.</p>
+  </form>
+</dialog>
+
+<footer class="foot"><span><span data-t="madewith">made with</span> <span class="heart" aria-label="love">♥</span> <span data-t="bymuslims">by muslims for muslims</span></span><a href="https://github.com/muslimist/muslimist.github.io">github</a><button popovertarget="privacy" data-t="privacy">privacy</button></footer>
+<div class="pop" id="privacy" popover><span data-t="privacynote">we don't track anything, see for yourself =)</span> <a href="https://github.com/muslimist/muslimist.github.io">github</a></div>
+
+<script src="/assets/site.js"></script>
+<script>
+i18n({
+  sub: ['The forty hadith of an-Nawawi', 'الأربعون النووية'], all42: ['42 hadith', '٤٢ حديثًا'], hadithn: ['Hadith', 'الحديث'],
+  prev: ['Previous', 'السابق'], next: ['Next', 'التالي'], copy: ['copy link', 'نسخ الرابط'], copied: ['copied', 'تم النسخ'], all: ['All hadith', 'كل الأحاديث'],
+  showar: ['Show Arabic', 'إظهار النص العربي'], showen: ['Show English', 'إظهار الترجمة الإنجليزية'],
+  srcnote: ['Text from the public-domain hadith-api collection, stored on this site.', 'النصوص من مجموعة hadith-api (ملكية عامة)، محفوظة على هذا الموقع.'],
+});
+
+// display options, also read by the dashboard
+const opts = load('hadith', { arabic: true, english: true });
+for (const k of ['arabic', 'english']) {
+  const box = $('#opt-' + k);
+  box.checked = opts[k];
+  box.onchange = () => { opts[k] = box.checked; save('hadith', opts); if (cur) show(cur) };
+}
+
+let data = [], cur = 0;
+const num = n => AR ? n.toLocaleString('ar-EG') : n;
+
+// #h12 opens hadith 12; no hash shows the list
+function route() {
+  const n = +(location.hash.match(/^#h(\d+)$/)?.[1] || 0);
+  cur = n >= 1 && n <= data.length ? n : 0;
+  $('#list').hidden = !!cur;
+  $('#reader').hidden = !cur;
+  $('#back').hidden = !cur;
+  $('#count').hidden = !!cur;
+  if (cur) show(cur);
+}
+
+function show(n) {
+  const [title, ar, en] = data[n - 1];
+  $('#back').textContent = (AR ? '› ' : '‹ ') + t('all');
+  $('#num').textContent = `${t('hadithn')} ${num(n)} / ${num(data.length)}`;
+  $('#title').textContent = title;
+  $('#ar').textContent = ar;
+  $('#en').textContent = en;
+  $('#ar').hidden = !opts.arabic;
+  $('#en').hidden = !opts.english && opts.arabic;
+}
+
+const go = n => location.hash = 'h' + ((n - 1 + data.length) % data.length + 1);
+$('#back').onclick = () => history.pushState(null, '', location.pathname) || route();
+$('#prev').onclick = () => go(cur - 1);
+$('#next').onclick = () => go(cur + 1);
+$('#copy').onclick = async () => {
+  try { await navigator.clipboard.writeText(location.href); $('#copy').textContent = t('copied') } catch {}
+  setTimeout(() => $('#copy').textContent = t('copy'), 2000);
+};
+document.addEventListener('keydown', e => {
+  if (!cur || e.target.closest?.('input, select, dialog')) return;
+  if (e.key === 'ArrowRight') $(AR ? '#prev' : '#next').click();
+  else if (e.key === 'ArrowLeft') $(AR ? '#next' : '#prev').click();
+  else if (e.key === 'Escape') $('#back').click();
+});
+addEventListener('hashchange', () => { route(); scrollTo({ top: $('.layout').offsetTop - 16, behavior: 'smooth' }) });
+
+window.pageReady = fetch('/hadith/data.json').then(r => r.json()).then(d => {
+  data = d;
+  $('#list').innerHTML = d.map(([title], i) => `<li><a href="#h${i + 1}"><b>${num(i + 1)}</b><span>${title}</span></a></li>`).join('');
+  route();
+});
+</script>
+</body>
+</html>

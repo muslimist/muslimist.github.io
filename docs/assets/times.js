@@ -37,11 +37,12 @@ function until(date) {
   return `${t('in')} ${min >= 60 ? Math.floor(min / 60) + t('h') + ' ' : ''}${min % 60}${t('m')}`;
 }
 
-// fills a block with .next-up (label, big time, countdown, progress bar) and a .prayers list
+// fills a block with .next-up (label, big time, countdown, progress bar) and, if it has one, a .prayers list
 function showPrayers(root, now = new Date()) {
   const { list, next } = prayerTimes(now);
   const isNext = p => next && p.key === next.key && +p.at === +next.at;
-  root.querySelector('.prayers').innerHTML = list.map(p => `<li class="${isNext(p) ? 'now' : p.at < now ? 'past' : ''}"><span>${t(p.key)}</span><b>${p.time}</b></li>`).join('');
+  const ul = root.querySelector('.prayers');
+  if (ul) ul.innerHTML = list.map(p => `<li class="${isNext(p) ? 'now' : p.at < now ? 'past' : ''}"><span>${t(p.key)}</span><b>${p.time}</b></li>`).join('');
   const box = root.querySelector('.next-up');
   box.hidden = !next;
   if (!next) return;

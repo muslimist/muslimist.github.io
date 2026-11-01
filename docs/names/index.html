@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>muslimist · names of Allah</title>
+<meta name="description" content="The 99 names of Allah with meanings, audio and flashcards.">
+<meta name="theme-color" content="#111111">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/assets/icons/favicon-196.png">
+<link rel="apple-touch-icon" href="/assets/icons/apple-icon-180.png">
+<script>{const s = localStorage, d = document.documentElement; d.dataset.scheme = s.mode || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'); if (s.glass) d.dataset.glass = s.glass; d.dataset.bg = `url(/assets/img/bg-qibla-${Math.random() * 6 | 0}.webp)`; d.style.setProperty('--bg-img', sessionStorage.bg || d.dataset.bg); if (sessionStorage.bg) d.classList.add('bg-ready'); if (s.lang == 'arabic') { d.lang = 'ar'; d.dir = 'rtl' }}</script>
+<style>
+  .seg { display: inline-flex; padding: 3px; border-radius: 99px; background: var(--field); border: 1px solid var(--line); margin-inline-end: auto }
+  .seg button { padding: 6px 14px; border-radius: 99px; font-size: 14px; color: var(--mute) }
+  .seg button[aria-pressed="true"] { background: var(--fg); color: var(--page) }
+  .ng { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; margin-top: 12px }
+  .nt { position: relative; text-align: center; padding: 16px 10px 14px; border-radius: 16px; background: var(--card); border: 1px solid var(--line); display: grid; gap: 2px }
+  .nt:hover { background: var(--hilite) }
+  .nt i { position: absolute; top: 8px; inset-inline-start: 12px; font-style: normal; font-size: 11px; color: var(--mute); font-variant-numeric: tabular-nums }
+  .nt .ar { font: 1.9em/1.7 var(--arabic); direction: rtl }
+  .nt b { font-weight: 600; font-size: 14px }
+  .nt small { font-size: 12.5px; color: var(--mute); line-height: 1.35 }
+  .nt.speaking { outline: 2px solid var(--fg) }
+  @media (max-width: 640px) { .ng { grid-template-columns: 1fr 1fr; gap: 8px } .nt .ar { font-size: 1.6em } }
+  .fc { display: grid; place-items: center; text-align: center; min-height: min(52vh, 420px); margin-top: 14px; padding: 28px 16px; border-radius: 20px; background: var(--card); border: 1px solid var(--line); cursor: pointer; user-select: none; gap: 6px; align-content: center }
+  .fc .ar { font: clamp(56px, 12vw, 96px)/1.6 var(--arabic); direction: rtl }
+  .fc .ans { display: grid; gap: 4px; transition: opacity .25s, transform .25s }
+  .fc:not(.open) .ans { opacity: 0; transform: translateY(6px) }
+  .fc b { font-size: 22px; font-weight: 600 }
+  .fc small { font-size: 16px; color: var(--mute) }
+  .fc .hint { font-size: 12px; color: var(--mute); margin-top: 10px }
+  .fc.open .hint { visibility: hidden }
+  .fc-bar { display: flex; justify-content: center; align-items: center; gap: 14px; margin-top: 18px }
+  .fc-count { text-align: center; color: var(--mute); font-size: 13px; margin-top: 8px; font-variant-numeric: tabular-nums }
+  .icon[aria-pressed="true"] { background: var(--fg); color: var(--page) }
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="/">muslimist</a>
+  <nav class="links" id="menu" popover><a href="/quran/" data-t="quran">Quran</a><a href="/duaa/" data-t="duaa">Duaa</a><a href="/hadith/" data-t="hadith">Hadith</a><a href="/names/" aria-current="page" data-t="names">Names</a><a href="/calendar/" data-t="calendar">Calendar</a><a href="/zakat/" data-t="zakat">Zakat</a><a href="/times/" data-t="times">Times</a><a href="/qibla/" data-t="qibla">Qibla</a><a href="/dashboard/" data-t="dash">Dash</a></nav>
+  <button class="pill menu" popovertarget="menu" aria-label="Menu"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</header>
+
+<section class="hero">
+  <h1 data-t="names">Names of Allah</h1>
+  <p data-t="sub">The 99 names of Allah</p>
+</section>
+
+<main class="layout">
+  <section class="card glass">
+    <div class="card-head">
+      <div class="seg" role="group"><button id="v-list" aria-pressed="true" data-t="list">List</button><button id="v-cards" aria-pressed="false" data-t="cards">Flashcards</button></div>
+      <button class="icon" id="say-all" data-t-label="listen" aria-label="Listen" hidden><svg viewBox="0 0 24 24"><path d="M11 5L6 9H3v6h3l5 4zM15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></button>
+    </div>
+    <div id="list-view">
+      <input class="search wide" id="q" type="search" placeholder="Search names or meanings…" data-t-placeholder="search" aria-label="Search">
+      <div class="ng" id="grid"></div>
+      <p class="note center" id="none" data-t="none" hidden>No names found.</p>
+    </div>
+    <div id="card-view" hidden>
+      <div class="fc" id="fc" role="button" tabindex="0">
+        <p class="ar" id="fc-ar" lang="ar"></p>
+        <div class="ans"><b id="fc-tl"></b><small id="fc-en"></small></div>
+        <p class="hint" data-t="tap">tap to reveal</p>
+      </div>
+      <div class="fc-bar">
+        <button class="icon" id="fc-prev" data-t-label="prev" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <button class="icon" id="fc-shuffle" data-t-label="shuffle" aria-label="Shuffle" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg></button>
+        <button class="play" id="fc-say" data-t-label="listen" aria-label="Listen" hidden><svg style="fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><path d="M11 5L6 9H3v6h3l5 4zM15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></button>
+        <button class="icon" id="fc-next" data-t-label="next" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+      </div>
+      <p class="fc-count" id="fc-count"></p>
+    </div>
+  </section>
+</main>
+
+<footer class="foot"><span><span data-t="madewith">made with</span> <span class="heart" aria-label="love">♥</span> <span data-t="bymuslims">by muslims for muslims</span></span><a href="https://github.com/muslimist/muslimist.github.io">github</a><button popovertarget="privacy" data-t="privacy">privacy</button></footer>
+<div class="pop" id="privacy" popover><span data-t="privacynote">we don't track anything, see for yourself =)</span> <a href="https://github.com/muslimist/muslimist.github.io">github</a></div>
+
+<script src="/assets/site.js"></script>
+<script>
+// the 99 names (as in the hadith of at-Tirmidhi): [arabic, transliteration, meaning]
+const NAMES = [["الرَّحْمَٰنُ", "Ar-Rahman", "The Most Merciful"], ["الرَّحِيمُ", "Ar-Raheem", "The Especially Merciful"], ["الْمَلِكُ", "Al-Malik", "The King"], ["الْقُدُّوسُ", "Al-Quddus", "The Most Holy"], ["السَّلَامُ", "As-Salam", "The Source of Peace"], ["الْمُؤْمِنُ", "Al-Mu'min", "The Giver of Security"], ["الْمُهَيْمِنُ", "Al-Muhaymin", "The Guardian"], ["الْعَزِيزُ", "Al-'Aziz", "The Almighty"], ["الْجَبَّارُ", "Al-Jabbar", "The Compeller"], ["الْمُتَكَبِّرُ", "Al-Mutakabbir", "The Supreme in Greatness"], ["الْخَالِقُ", "Al-Khaliq", "The Creator"], ["الْبَارِئُ", "Al-Bari'", "The Maker"], ["الْمُصَوِّرُ", "Al-Musawwir", "The Fashioner of Forms"], ["الْغَفَّارُ", "Al-Ghaffar", "The Ever-Forgiving"], ["الْقَهَّارُ", "Al-Qahhar", "The Subduer"], ["الْوَهَّابُ", "Al-Wahhab", "The Bestower"], ["الرَّزَّاقُ", "Ar-Razzaq", "The Provider"], ["الْفَتَّاحُ", "Al-Fattah", "The Opener"], ["الْعَلِيمُ", "Al-'Aleem", "The All-Knowing"], ["الْقَابِضُ", "Al-Qabid", "The Withholder"], ["الْبَاسِطُ", "Al-Basit", "The Extender"], ["الْخَافِضُ", "Al-Khafid", "The Abaser"], ["الرَّافِعُ", "Ar-Rafi'", "The Exalter"], ["الْمُعِزُّ", "Al-Mu'izz", "The Giver of Honour"], ["الْمُذِلُّ", "Al-Mudhill", "The Giver of Dishonour"], ["السَّمِيعُ", "As-Samee'", "The All-Hearing"], ["الْبَصِيرُ", "Al-Baseer", "The All-Seeing"], ["الْحَكَمُ", "Al-Hakam", "The Judge"], ["الْعَدْلُ", "Al-'Adl", "The Just"], ["اللَّطِيفُ", "Al-Lateef", "The Subtle, the Kind"], ["الْخَبِيرُ", "Al-Khabeer", "The All-Aware"], ["الْحَلِيمُ", "Al-Haleem", "The Forbearing"], ["الْعَظِيمُ", "Al-'Adheem", "The Magnificent"], ["الْغَفُورُ", "Al-Ghafoor", "The All-Forgiving"], ["الشَّكُورُ", "Ash-Shakoor", "The Appreciative"], ["الْعَلِيُّ", "Al-'Aliyy", "The Most High"], ["الْكَبِيرُ", "Al-Kabeer", "The Most Great"], ["الْحَفِيظُ", "Al-Hafeedh", "The Preserver"], ["الْمُقِيتُ", "Al-Muqeet", "The Sustainer"], ["الْحَسِيبُ", "Al-Haseeb", "The Reckoner"], ["الْجَلِيلُ", "Al-Jaleel", "The Majestic"], ["الْكَرِيمُ", "Al-Kareem", "The Most Generous"], ["الرَّقِيبُ", "Ar-Raqeeb", "The Watchful"], ["الْمُجِيبُ", "Al-Mujeeb", "The Responsive"], ["الْوَاسِعُ", "Al-Wasi'", "The All-Encompassing"], ["الْحَكِيمُ", "Al-Hakeem", "The All-Wise"], ["الْوَدُودُ", "Al-Wadood", "The Most Loving"], ["الْمَجِيدُ", "Al-Majeed", "The Glorious"], ["الْبَاعِثُ", "Al-Ba'ith", "The Resurrector"], ["الشَّهِيدُ", "Ash-Shaheed", "The Witness"], ["الْحَقُّ", "Al-Haqq", "The Truth"], ["الْوَكِيلُ", "Al-Wakeel", "The Trustee"], ["الْقَوِيُّ", "Al-Qawiyy", "The All-Strong"], ["الْمَتِينُ", "Al-Mateen", "The Firm"], ["الْوَلِيُّ", "Al-Waliyy", "The Protecting Friend"], ["الْحَمِيدُ", "Al-Hameed", "The Praiseworthy"], ["الْمُحْصِي", "Al-Muhsi", "The All-Counting"], ["الْمُبْدِئُ", "Al-Mubdi'", "The Originator"], ["الْمُعِيدُ", "Al-Mu'eed", "The Restorer"], ["الْمُحْيِي", "Al-Muhyi", "The Giver of Life"], ["الْمُمِيتُ", "Al-Mumeet", "The Bringer of Death"], ["الْحَيُّ", "Al-Hayy", "The Ever-Living"], ["الْقَيُّومُ", "Al-Qayyoom", "The Self-Subsisting Sustainer"], ["الْوَاجِدُ", "Al-Wajid", "The Finder"], ["الْمَاجِدُ", "Al-Majid", "The Noble"], ["الْوَاحِدُ", "Al-Wahid", "The One"], ["الْأَحَدُ", "Al-Ahad", "The Unique"], ["الصَّمَدُ", "As-Samad", "The Eternal Refuge"], ["الْقَادِرُ", "Al-Qadir", "The Able"], ["الْمُقْتَدِرُ", "Al-Muqtadir", "The All-Powerful"], ["الْمُقَدِّمُ", "Al-Muqaddim", "The Expediter"], ["الْمُؤَخِّرُ", "Al-Mu'akhkhir", "The Delayer"], ["الْأَوَّلُ", "Al-Awwal", "The First"], ["الْآخِرُ", "Al-Akhir", "The Last"], ["الظَّاهِرُ", "Adh-Dhahir", "The Manifest"], ["الْبَاطِنُ", "Al-Batin", "The Hidden"], ["الْوَالِي", "Al-Wali", "The Governor"], ["الْمُتَعَالِي", "Al-Muta'ali", "The Most Exalted"], ["الْبَرُّ", "Al-Barr", "The Source of Goodness"], ["التَّوَّابُ", "At-Tawwab", "The Acceptor of Repentance"], ["الْمُنْتَقِمُ", "Al-Muntaqim", "The Avenger"], ["الْعَفُوُّ", "Al-'Afuww", "The Pardoner"], ["الرَّءُوفُ", "Ar-Ra'oof", "The Most Kind"], ["مَالِكُ الْمُلْكِ", "Malik al-Mulk", "Owner of All Sovereignty"], ["ذُو الْجَلَالِ وَالْإِكْرَامِ", "Dhul-Jalali wal-Ikram", "Lord of Majesty and Honour"], ["الْمُقْسِطُ", "Al-Muqsit", "The Equitable"], ["الْجَامِعُ", "Al-Jami'", "The Gatherer"], ["الْغَنِيُّ", "Al-Ghaniyy", "The Self-Sufficient"], ["الْمُغْنِي", "Al-Mughni", "The Enricher"], ["الْمَانِعُ", "Al-Mani'", "The Preventer"], ["الضَّارُّ", "Ad-Darr", "The Bringer of Harm"], ["النَّافِعُ", "An-Nafi'", "The Bringer of Benefit"], ["النُّورُ", "An-Nur", "The Light"], ["الْهَادِي", "Al-Hadi", "The Guide"], ["الْبَدِيعُ", "Al-Badee'", "The Incomparable Originator"], ["الْبَاقِي", "Al-Baqi", "The Everlasting"], ["الْوَارِثُ", "Al-Warith", "The Inheritor"], ["الرَّشِيدُ", "Ar-Rasheed", "The Guide to the Right Path"], ["الصَّبُورُ", "As-Saboor", "The Patient"]];
+
+i18n({
+  sub: ['The 99 names of Allah', 'أسماء الله الحسنى'], list: ['List', 'القائمة'], cards: ['Flashcards', 'بطاقات'],
+  search: ['Search names or meanings…', 'ابحث في الأسماء أو المعاني…'], none: ['No names found.', 'لا توجد نتائج.'],
+  tap: ['tap to reveal', 'اضغط لإظهار المعنى'], prev: ['Previous', 'السابق'], next: ['Next', 'التالي'], shuffle: ['Shuffle', 'ترتيب عشوائي'],
+  listen: ['Listen', 'استمع'],
+});
+const num = n => AR ? n.toLocaleString('ar-EG') : n;
+const st = load('names', { view: 'list', i: 0, shuffle: false });
+
+// ---------- audio: the device's own Arabic voice (nothing is downloaded); hidden when there is none ----------
+let voice = null;
+function pickVoice() {
+  voice = speechSynthesis.getVoices().find(v => /^ar/i.test(v.lang)) || null;
+  $('#fc-say').hidden = $('#say-all').hidden = !voice;
+}
+if ('speechSynthesis' in window) { pickVoice(); speechSynthesis.addEventListener('voiceschanged', pickVoice) }
+function say(i, then) {
+  if (!voice) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(NAMES[i][0]);
+  u.voice = voice; u.lang = voice.lang; u.rate = .8;
+  $$('.nt.speaking').forEach(e => e.classList.remove('speaking'));
+  const tile = $(`.nt[data-i="${i}"]`);
+  tile?.classList.add('speaking');
+  u.onend = u.onerror = () => { tile?.classList.remove('speaking'); then?.() };
+  speechSynthesis.speak(u);
+}
+
+// ---------- list ----------
+$('#grid').innerHTML = NAMES.map(([ar, tl, en], i) => `<button class="nt" data-i="${i}"><i>${num(i + 1)}</i><span class="ar" lang="ar">${ar}</span><b>${tl}</b><small>${en}</small></button>`).join('');
+$('#grid').onclick = e => { const b = e.target.closest('.nt'); if (b) say(+b.dataset.i) };
+const norm = s => s.toLowerCase().normalize('NFD').replace(/[̀-ًͯ-ٰٟ']/g, '');
+$('#q').oninput = () => {
+  const q = norm($('#q').value.trim());
+  let n = 0;
+  $$('.nt').forEach(b => { const hit = !q || norm(b.textContent).includes(q); b.hidden = !hit; n += hit });
+  $('#none').hidden = n > 0;
+};
+// listen to all, one after another; press again to stop
+let playingAll = false;
+$('#say-all').onclick = () => {
+  if (playingAll) { playingAll = false; speechSynthesis.cancel(); $('#say-all').setAttribute('aria-pressed', 'false'); return }
+  playingAll = true; $('#say-all').setAttribute('aria-pressed', 'true');
+  const step = i => playingAll && i < NAMES.length ? say(i, () => setTimeout(() => step(i + 1), 350)) : ($('#say-all').setAttribute('aria-pressed', 'false'), playingAll = false);
+  step(st.view === 'cards' ? order[st.i] : 0);
+};
+
+// ---------- flashcards ----------
+let order = NAMES.map((_, i) => i);
+const shuffle = () => { order = NAMES.map((_, i) => i); for (let i = order.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [order[i], order[j]] = [order[j], order[i]] } };
+if (st.shuffle) shuffle();
+function card() {
+  const [ar, tl, en] = NAMES[order[st.i]];
+  $('#fc').classList.remove('open');
+  $('#fc-ar').textContent = ar; $('#fc-tl').textContent = tl; $('#fc-en').textContent = en;
+  $('#fc-count').textContent = `${num(st.i + 1)} / ${num(NAMES.length)}`;
+  $('#fc-shuffle').setAttribute('aria-pressed', st.shuffle);
+  save('names', st);
+}
+const step = d => { st.i = (st.i + d + NAMES.length) % NAMES.length; card() };
+const flip = () => { $('#fc').classList.toggle('open'); if ($('#fc').classList.contains('open')) say(order[st.i]) };
+$('#fc').onclick = flip;
+$('#fc-prev').onclick = () => step(AR ? 1 : -1);
+$('#fc-next').onclick = () => step(AR ? -1 : 1);
+$('#fc-say').onclick = () => say(order[st.i]);
+$('#fc-shuffle').onclick = () => { st.shuffle = !st.shuffle; if (st.shuffle) shuffle(); else order = NAMES.map((_, i) => i); st.i = 0; card() };
+document.addEventListener('keydown', e => {
+  if (st.view !== 'cards' || e.target.closest?.('input, select, dialog')) return;
+  if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flip() }
+  else if (e.key === 'ArrowRight') $('#fc-next').click();
+  else if (e.key === 'ArrowLeft') $('#fc-prev').click();
+});
+// swipe left/right on the card
+let x0 = null;
+$('#fc').addEventListener('touchstart', e => x0 = e.touches[0].clientX, { passive: true });
+$('#fc').addEventListener('touchend', e => { if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0; x0 = null; if (Math.abs(dx) > 50) { e.preventDefault(); step((dx < 0) !== AR ? 1 : -1) } });
+
+// ---------- view switch ----------
+function view(v) {
+  st.view = v; save('names', st);
+  $('#list-view').hidden = v !== 'list'; $('#card-view').hidden = v !== 'cards';
+  $('#v-list').setAttribute('aria-pressed', v === 'list'); $('#v-cards').setAttribute('aria-pressed', v === 'cards');
+  if (v === 'cards') card();
+}
+$('#v-list').onclick = () => view('list');
+$('#v-cards').onclick = () => view('cards');
+view(st.view);
+</script>
+</body>
+</html>
