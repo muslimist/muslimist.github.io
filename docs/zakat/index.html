@@ -91,37 +91,37 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;',
 // kinds: info, choice (one answer), yesno (then amount fields), fields (amounts only)
 const f = (key, label, unit = 'cur', extra = '') => ({ key, label, unit, extra });
 const STEPS = [
-  { id: 'intro', kind: 'info', title: 'Work out your zakat', help: 'A few simple questions, one at a time. Count what you own <b>on your zakat date</b>: one day each lunar year (many people use 1 Ramadan). Nothing you type leaves this device.' },
-  { id: 'currency', kind: 'fields', title: 'Which currency are you counting in?', help: 'Convert any savings in other currencies into this one.', fields: [{ key: 'currency', label: 'Currency', unit: 'select' }] },
-  { id: 'hawl', kind: 'choice', key: 'hawl', title: 'Have you had savings above the nisab for a full lunar year?', help: 'The <b>nisab</b> is the minimum amount of wealth before zakat is due: the value of 612g of silver, roughly what a month or two of basic living costs. Zakat is due once your wealth has stayed above it for one lunar year (354 days).',
-    options: [['yes', 'Yes', 'or I paid zakat last year and still have savings'], ['unsure', "I'm not sure", "we'll check against the nisab at the end"], ['notyet', 'Not yet', 'I only reached it in the last year']] },
-  { id: 'prices', kind: 'fields', title: 'Today\'s gold and silver price', help: 'Per gram, in your currency. Search "gold price per gram" and "silver price per gram", or ask your mosque for today\'s nisab. These set the nisab and value any gold or silver you own.',
-    fields: [f('goldPrice', 'Gold (24 carat), price per gram'), f('silverPrice', 'Silver, price per gram')] },
-  { id: 'standard', kind: 'choice', key: 'standard', title: 'Which nisab do you follow?', help: 'Scholars differ. Using silver is safer and gives more to those in need (National Zakat Foundation). If gold is the only thing you own, the gold nisab is used either way.',
-    options: [['silver', 'Silver (recommended)', '612.36g of silver'], ['gold', 'Gold', '87.48g of gold']] },
-  { id: 'cash', kind: 'yesno', key: 'hasCash', title: 'Do you have cash or money in bank accounts?', help: 'Include current and savings accounts, cash at home or in your wallet, and money held in other currencies. <b>Leave out interest</b>: it should be given away to charity, not counted.',
-    fields: [f('cash', 'Total cash and bank balances')] },
-  { id: 'gold', kind: 'yesno', key: 'hasGold', title: 'Do you own any gold?', help: 'Jewellery, coins or bars. Weigh only the gold, not stones. A tola is 11.66g.',
-    fields: [f('goldGrams', 'Weight of gold', 'g'), { key: 'goldKarat', label: 'Purity', unit: 'karat' }, f('goldWorn', 'Of that, jewellery you wear regularly', 'g', 'optional')] },
+  { id: 'intro', kind: 'info', title: L('Work out your zakat', 'احسب زكاتك'), help: L('A few simple questions, one at a time. Count what you own <b>on your zakat date</b>: one day each lunar year (many people use 1 Ramadan). Nothing you type leaves this device.', 'أسئلة بسيطة، واحدًا تلو الآخر. احسب ما تملكه <b>في يوم زكاتك</b>: يوم واحد كل سنة قمرية (كثيرون يختارون ١ رمضان). لا يغادر شيء مما تكتبه هذا الجهاز.') },
+  { id: 'currency', kind: 'fields', title: L('Which currency are you counting in?', 'بأي عملة تحسب؟'), help: L('Convert any savings in other currencies into this one.', 'حوّل أي مدخرات بعملات أخرى إلى هذه العملة.'), fields: [{ key: 'currency', label: L('Currency', 'العملة'), unit: 'select' }] },
+  { id: 'hawl', kind: 'choice', key: 'hawl', title: L('Have you had savings above the nisab for a full lunar year?', 'هل بقيت مدخراتك فوق النصاب سنة قمرية كاملة؟'), help: L('The <b>nisab</b> is the minimum amount of wealth before zakat is due: the value of 612g of silver, roughly what a month or two of basic living costs. Zakat is due once your wealth has stayed above it for one lunar year (354 days).', '<b>النصاب</b> هو أقل قدر من المال تجب فيه الزكاة: قيمة ٦١٢ غرامًا من الفضة تقريبًا، أي نحو نفقات شهر أو شهرين. تجب الزكاة إذا بقي مالك فوقه سنة قمرية كاملة (٣٥٤ يومًا).'),
+    options: [['yes', L('Yes', 'نعم'), L('or I paid zakat last year and still have savings', 'أو أخرجت الزكاة العام الماضي وما زالت لدي مدخرات')], ['unsure', L("I'm not sure", 'لست متأكدًا'), L("we'll check against the nisab at the end", 'سنقارن بالنصاب في النهاية')], ['notyet', L('Not yet', 'ليس بعد'), L('I only reached it in the last year', 'بلغته خلال السنة الأخيرة فقط')]] },
+  { id: 'prices', kind: 'fields', title: L("Today's gold and silver price", 'سعر الذهب والفضة اليوم'), help: L('Per gram, in your currency. Search "gold price per gram" and "silver price per gram", or ask your mosque for today\'s nisab. These set the nisab and value any gold or silver you own.', 'للغرام بعملتك. ابحث عن «سعر غرام الذهب» و«سعر غرام الفضة»، أو اسأل مسجدك عن نصاب اليوم. بهما يُحسب النصاب وقيمة ما تملكه من ذهب وفضة.'),
+    fields: [f('goldPrice', L('Gold (24 carat), price per gram', 'الذهب (عيار ٢٤)، سعر الغرام')), f('silverPrice', L('Silver, price per gram', 'الفضة، سعر الغرام'))] },
+  { id: 'standard', kind: 'choice', key: 'standard', title: L('Which nisab do you follow?', 'أي نصاب تتبع؟'), help: L('Scholars differ. Using silver is safer and gives more to those in need (National Zakat Foundation). If gold is the only thing you own, the gold nisab is used either way.', 'اختلف العلماء. الحساب بالفضة أحوط وأنفع للمستحقين (المؤسسة الوطنية للزكاة). وإن لم تملك إلا الذهب فيُعتمد نصاب الذهب.'),
+    options: [['silver', L('Silver (recommended)', 'الفضة (موصى به)'), L('612.36g of silver', '٦١٢٫٣٦ غرامًا من الفضة')], ['gold', L('Gold', 'الذهب'), L('87.48g of gold', '٨٧٫٤٨ غرامًا من الذهب')]] },
+  { id: 'cash', kind: 'yesno', key: 'hasCash', title: L('Do you have cash or money in bank accounts?', 'هل لديك نقود أو أموال في حسابات مصرفية؟'), help: L('Include current and savings accounts, cash at home or in your wallet, and money held in other currencies. <b>Leave out interest</b>: it should be given away to charity, not counted.', 'احسب الحسابات الجارية والادخارية، والنقود في البيت أو المحفظة، والأموال بعملات أخرى. <b>لا تحسب الفوائد الربوية</b>: يُتخلّص منها في وجوه الخير ولا تُحسب.'),
+    fields: [f('cash', L('Total cash and bank balances', 'مجموع النقود والأرصدة'))] },
+  { id: 'gold', kind: 'yesno', key: 'hasGold', title: L('Do you own any gold?', 'هل تملك ذهبًا؟'), help: L('Jewellery, coins or bars. Weigh only the gold, not stones. A tola is 11.66g.', 'حُليًّا أو عملات أو سبائك. احسب وزن الذهب فقط دون الأحجار. التولة = ١١٫٦٦ غرامًا.'),
+    fields: [f('goldGrams', L('Weight of gold', 'وزن الذهب'), 'g'), { key: 'goldKarat', label: L('Purity', 'العيار'), unit: 'karat' }, f('goldWorn', L('Of that, jewellery you wear regularly', 'منه: حُليّ تلبسه عادة'), 'g', L('optional', 'اختياري'))] },
   { id: 'jewel', kind: 'choice', key: 'jewel', when: () => A.hasGold === 'yes' && val('goldWorn') > 0 || A.hasSilver === 'yes' && val('silverWorn') > 0,
-    title: 'Pay zakat on jewellery you wear?', help: 'Scholars differ. The Hanafi school says yes. The Maliki, Shafi\'i and Hanbali schools say jewellery worn in a normal way is exempt. Paying on all of it is the safer choice (NZF Canada).',
-    options: [['yes', 'Yes, include it', 'safer; Hanafi view'], ['no', 'No, leave it out', 'majority view']] },
-  { id: 'silver', kind: 'yesno', key: 'hasSilver', title: 'Do you own any silver?', help: 'Jewellery, coins or bars. Other metals and gemstones have no zakat unless you trade in them.',
-    fields: [f('silverGrams', 'Weight of silver', 'g'), f('silverWorn', 'Of that, jewellery you wear regularly', 'g', 'optional')] },
-  { id: 'owed', kind: 'yesno', key: 'hasOwed', title: 'Does anyone owe you money you expect to get back?', help: 'Loans to friends or family you are confident will be repaid. Leave out money you don\'t expect back, unpaid wages, dowry, or inheritance not yet received.',
-    fields: [f('owed', 'Money owed to you')] },
-  { id: 'shares', kind: 'yesno', key: 'hasShares', title: 'Do you have shares, funds or ETFs?', help: 'Including ones held in investment and savings accounts, like an ISA, TFSA or brokerage account. Count cash in those accounts under bank accounts, not here.',
-    fields: [f('sharesShort', 'Bought to sell soon or trade (full value counts)', 'cur', 'optional'), f('sharesLong', 'Held long-term for dividends or growth (30% of value counts)', 'cur', 'optional')] },
-  { id: 'pension', kind: 'yesno', key: 'hasPension', title: 'Do you have a pension or retirement account you can take money out of now?', help: 'Like a 401(k), RRSP, IRA or a pension you can access. Enter what you would receive <b>after</b> the tax and penalty for withdrawing today. If you cannot touch it until retirement, answer no.',
-    fields: [f('pension', 'Amount you could withdraw, after tax')] },
-  { id: 'crypto', kind: 'yesno', key: 'hasCrypto', title: 'Do you own any cryptocurrency?', help: 'Coins and tokens at today\'s market value. Leave out NFTs kept only as collectibles.',
-    fields: [f('crypto', 'Market value')] },
-  { id: 'business', kind: 'yesno', key: 'hasBusiness', title: 'Do you own a business, or stock you sell?', help: 'Business cash, money customers owe you, and goods held for sale (at what you could sell them for in bulk today). Equipment, buildings and vehicles the business uses have no zakat.',
-    fields: [f('business', 'Business cash, receivables and stock')] },
-  { id: 'property', kind: 'yesno', key: 'hasProperty', title: 'Do you own property or land you bought to sell?', help: 'Only property bought in order to resell. Your home, and property you rent out, have no zakat (any rent you\'ve saved is already in your bank balance).',
-    fields: [f('property', 'Current market value')] },
-  { id: 'debts', kind: 'yesno', key: 'hasDebts', title: 'Do you have debts or bills due in the next 12 months?', help: 'Credit cards, overdue bills and loans you have to pay within the next year. For a mortgage, car or student loan, count <b>only the next 12 months\' payments, without interest</b>, not the whole loan. Business debts too, if you included your business.',
-    fields: [f('debts', 'Total due within the next year')] },
+    title: L('Pay zakat on jewellery you wear?', 'هل تزكّي الحُليّ الذي تلبسه؟'), help: L("Scholars differ. The Hanafi school says yes. The Maliki, Shafi'i and Hanbali schools say jewellery worn in a normal way is exempt. Paying on all of it is the safer choice (NZF Canada).", 'اختلف العلماء: يرى الحنفية وجوبها، ويرى المالكية والشافعية والحنابلة أن الحُليّ المعتاد لبسه لا زكاة فيه. وإخراجها عن الجميع أحوط.'),
+    options: [['yes', L('Yes, include it', 'نعم، احسبه'), L('safer; Hanafi view', 'أحوط؛ قول الحنفية')], ['no', L('No, leave it out', 'لا، استثنِه'), L('majority view', 'قول الجمهور')]] },
+  { id: 'silver', kind: 'yesno', key: 'hasSilver', title: L('Do you own any silver?', 'هل تملك فضة؟'), help: L('Jewellery, coins or bars. Other metals and gemstones have no zakat unless you trade in them.', 'حُليًّا أو عملات أو سبائك. لا زكاة في المعادن الأخرى والأحجار الكريمة إلا إن كانت للتجارة.'),
+    fields: [f('silverGrams', L('Weight of silver', 'وزن الفضة'), 'g'), f('silverWorn', L('Of that, jewellery you wear regularly', 'منه: حُليّ تلبسه عادة'), 'g', L('optional', 'اختياري'))] },
+  { id: 'owed', kind: 'yesno', key: 'hasOwed', title: L('Does anyone owe you money you expect to get back?', 'هل لك دَين على أحد تتوقّع سداده؟'), help: L("Loans to friends or family you are confident will be repaid. Leave out money you don't expect back, unpaid wages, dowry, or inheritance not yet received.", 'قروض لأصدقاء أو أقارب تثق بسدادها. لا تحسب ما لا تتوقّع عودته، ولا الأجور غير المدفوعة، ولا المهر، ولا الميراث الذي لم تستلمه.'),
+    fields: [f('owed', L('Money owed to you', 'المبالغ المستحقة لك'))] },
+  { id: 'shares', kind: 'yesno', key: 'hasShares', title: L('Do you have shares, funds or ETFs?', 'هل لديك أسهم أو صناديق استثمار؟'), help: L('Including ones held in investment and savings accounts, like an ISA, TFSA or brokerage account. Count cash in those accounts under bank accounts, not here.', 'بما فيها ما في حسابات الاستثمار والادخار. احسب النقد الموجود في تلك الحسابات مع أرصدة البنك لا هنا.'),
+    fields: [f('sharesShort', L('Bought to sell soon or trade (full value counts)', 'للبيع قريبًا أو المضاربة (تُحسب كامل القيمة)'), 'cur', L('optional', 'اختياري')), f('sharesLong', L('Held long-term for dividends or growth (30% of value counts)', 'للاستثمار الطويل (يُحسب ٣٠٪ من القيمة)'), 'cur', L('optional', 'اختياري'))] },
+  { id: 'pension', kind: 'yesno', key: 'hasPension', title: L('Do you have a pension or retirement account you can take money out of now?', 'هل لديك حساب تقاعد يمكنك السحب منه الآن؟'), help: L('Like a 401(k), RRSP, IRA or a pension you can access. Enter what you would receive <b>after</b> the tax and penalty for withdrawing today. If you cannot touch it until retirement, answer no.', 'أدخل ما ستحصل عليه <b>بعد</b> الضريبة وغرامة السحب لو سحبت اليوم. إن كنت لا تستطيع السحب قبل التقاعد فأجب بلا.'),
+    fields: [f('pension', L('Amount you could withdraw, after tax', 'المبلغ الممكن سحبه بعد الضريبة'))] },
+  { id: 'crypto', kind: 'yesno', key: 'hasCrypto', title: L('Do you own any cryptocurrency?', 'هل تملك عملات رقمية؟'), help: L("Coins and tokens at today's market value. Leave out NFTs kept only as collectibles.", 'العملات والرموز بقيمتها السوقية اليوم. لا تحسب الرموز غير القابلة للاستبدال المقتناة للهواية.'),
+    fields: [f('crypto', L('Market value', 'القيمة السوقية'))] },
+  { id: 'business', kind: 'yesno', key: 'hasBusiness', title: L('Do you own a business, or stock you sell?', 'هل تملك تجارة أو بضاعة للبيع؟'), help: L('Business cash, money customers owe you, and goods held for sale (at what you could sell them for in bulk today). Equipment, buildings and vehicles the business uses have no zakat.', 'نقد التجارة، وديون العملاء، والبضاعة المعدّة للبيع (بسعر بيعها بالجملة اليوم). لا زكاة في المعدات والمباني والمركبات المستعملة في العمل.'),
+    fields: [f('business', L('Business cash, receivables and stock', 'نقد التجارة والديون والبضاعة'))] },
+  { id: 'property', kind: 'yesno', key: 'hasProperty', title: L('Do you own property or land you bought to sell?', 'هل تملك عقارًا أو أرضًا اشتريتها بنية البيع؟'), help: L("Only property bought in order to resell. Your home, and property you rent out, have no zakat (any rent you've saved is already in your bank balance).", 'فقط ما اشتريته بنية البيع. لا زكاة في بيتك ولا في العقار المؤجَّر (والإيجار المدّخر محسوب أصلًا في رصيدك).'),
+    fields: [f('property', L('Current market value', 'القيمة السوقية الحالية'))] },
+  { id: 'debts', kind: 'yesno', key: 'hasDebts', title: L('Do you have debts or bills due in the next 12 months?', 'هل عليك ديون أو فواتير مستحقة خلال ١٢ شهرًا؟'), help: L("Credit cards, overdue bills and loans you have to pay within the next year. For a mortgage, car or student loan, count <b>only the next 12 months' payments, without interest</b>, not the whole loan. Business debts too, if you included your business.", 'بطاقات الائتمان والفواتير المتأخرة والقروض المستحقة خلال السنة. في قرض البيت أو السيارة أو الدراسة احسب <b>أقساط ١٢ شهرًا القادمة فقط دون الفوائد</b>، لا القرض كله. وديون التجارة إن حسبت تجارتك.'),
+    fields: [f('debts', L('Total due within the next year', 'المستحق خلال السنة القادمة'))] },
 ];
 const active = () => STEPS.filter(s => !s.when || s.when());
 
@@ -134,19 +134,19 @@ function calc() {
   const silverCounted = A.hasSilver === 'yes' ? Math.max(0, val('silverGrams') - (A.jewel === 'no' ? val('silverWorn') : 0)) : 0;
   const yes = k => A['has' + k] === 'yes';
   const rows = [
-    ['Cash and bank', yes('Cash') ? val('cash') : 0],
-    ['Gold', goldCounted * gp],
-    ['Silver', silverCounted * sp],
-    ['Money owed to you', yes('Owed') ? val('owed') : 0],
-    ['Shares (trading)', yes('Shares') ? val('sharesShort') : 0],
-    ['Shares (long-term, 30%)', yes('Shares') ? val('sharesLong') * LONG_TERM : 0],
-    ['Pension you can access', yes('Pension') ? val('pension') : 0],
-    ['Cryptocurrency', yes('Crypto') ? val('crypto') : 0],
-    ['Business', yes('Business') ? val('business') : 0],
-    ['Property to sell', yes('Property') ? val('property') : 0],
+    [L('Cash and bank', 'النقود والأرصدة'), yes('Cash') ? val('cash') : 0],
+    [L('Gold', 'الذهب'), goldCounted * gp],
+    [L('Silver', 'الفضة'), silverCounted * sp],
+    [L('Money owed to you', 'ديون لك'), yes('Owed') ? val('owed') : 0],
+    [L('Shares (trading)', 'أسهم (تجارة)'), yes('Shares') ? val('sharesShort') : 0],
+    [L('Shares (long-term, 30%)', 'أسهم (طويلة الأجل، ٣٠٪)'), yes('Shares') ? val('sharesLong') * LONG_TERM : 0],
+    [L('Pension you can access', 'تقاعد يمكن سحبه'), yes('Pension') ? val('pension') : 0],
+    [L('Cryptocurrency', 'عملات رقمية'), yes('Crypto') ? val('crypto') : 0],
+    [L('Business', 'التجارة'), yes('Business') ? val('business') : 0],
+    [L('Property to sell', 'عقار للبيع'), yes('Property') ? val('property') : 0],
   ].filter(r => r[1] > 0);
   const assets = rows.reduce((s, r) => s + r[1], 0), debts = yes('Debts') ? val('debts') : 0, net = Math.max(0, assets - debts);
-  const onlyGold = rows.length === 1 && rows[0][0] === 'Gold';
+  const onlyGold = rows.length === 1 && goldCounted > 0;
   const std = onlyGold ? 'gold' : A.standard || 'silver';
   const nisab = NISAB_G[std] * (std === 'gold' ? gp : sp);
   const due = A.hawl !== 'notyet' && net >= nisab && nisab > 0;
@@ -161,11 +161,11 @@ function renderStep() {
   const s = steps[Z.step];
   let inner = '';
   if (s.kind === 'choice') inner = `<div class="zopts">${s.options.map(([v, l, d]) => `<button class="zopt" data-v="${v}" aria-pressed="${A[s.key] === v}">${l}<small>${d}</small></button>`).join('')}</div>`;
-  if (s.kind === 'yesno') inner = `<div class="zopts" style="grid-template-columns:1fr 1fr">${[['yes', 'Yes'], ['no', 'No']].map(([v, l]) => `<button class="zopt" data-v="${v}" aria-pressed="${A[s.key] === v}">${l}</button>`).join('')}</div>`;
+  if (s.kind === 'yesno') inner = `<div class="zopts" style="grid-template-columns:1fr 1fr">${[['yes', L('Yes', 'نعم')], ['no', L('No', 'لا')]].map(([v, l]) => `<button class="zopt" data-v="${v}" aria-pressed="${A[s.key] === v}">${l}</button>`).join('')}</div>`;
   if (s.fields && (s.kind !== 'yesno' || A[s.key] === 'yes')) inner += `<div class="zfields">${s.fields.map(fieldHTML).join('')}</div>`;
   $('#z').innerHTML = `<div class="zprog"><i style="width:${(Z.step / steps.length) * 100}%"></i></div>
-    <p class="zstep">${Z.step ? `Question ${Z.step} of ${steps.length - 1}` : 'Zakat'}</p><h2>${s.title}</h2><p class="zhelp">${s.help}</p>${inner}
-    <div class="znav">${Z.step ? '<button class="btn" id="zback">Back</button>' : ''}<button class="btn primary" id="znext">${Z.step === steps.length - 1 ? 'See my zakat' : Z.step ? 'Next' : 'Start'}</button></div>`;
+    <p class="zstep">${Z.step ? L(`Question ${Z.step} of ${steps.length - 1}`, `السؤال ${Z.step.toLocaleString('ar-EG')} من ${(steps.length - 1).toLocaleString('ar-EG')}`) : L('Zakat', 'الزكاة')}</p><h2>${s.title}</h2><p class="zhelp">${s.help}</p>${inner}
+    <div class="znav">${Z.step ? `<button class="btn" id="zback">${L('Back', 'رجوع')}</button>` : ''}<button class="btn primary" id="znext">${Z.step === steps.length - 1 ? L('See my zakat', 'اعرض زكاتي') : Z.step ? L('Next', 'التالي') : L('Start', 'ابدأ')}</button></div>`;
   $$('#z .zopt').forEach(b => b.onclick = () => {
     A[s.key] = b.dataset.v; persist();
     if (s.kind === 'choice') next(); else { renderStep(); $('#z input')?.focus() }
@@ -179,10 +179,10 @@ function fieldHTML(fd) {
   const v = esc(A[fd.key] ?? '');
   let input;
   if (fd.unit === 'select') input = `<select data-k="${fd.key}">${CURRENCIES.map(c => `<option${c === A.currency ? ' selected' : ''}>${c}</option>`).join('')}</select>`;
-  else if (fd.unit === 'karat') input = `<select data-k="${fd.key}">${KARAT.map(k => `<option value="${k}"${+(A.goldKarat || 22) === k ? ' selected' : ''}>${k} carat${k === 24 ? ' (pure)' : ''}</option>`).join('')}</select>`;
+  else if (fd.unit === 'karat') input = `<select data-k="${fd.key}">${KARAT.map(k => `<option value="${k}"${+(A.goldKarat || 22) === k ? ' selected' : ''}>${L(`${k} carat`, `عيار ${k}`)}${k === 24 ? L(' (pure)', ' (خالص)') : ''}</option>`).join('')}</select>`;
   else input = `<input data-k="${fd.key}" type="number" inputmode="decimal" min="0" step="any" value="${v}" placeholder="0">`;
   if (fd.unit === 'karat' && !A.goldKarat) A.goldKarat = '22';
-  const unit = fd.unit === 'cur' ? A.currency : fd.unit === 'g' ? 'grams' : '';
+  const unit = fd.unit === 'cur' ? A.currency : fd.unit === 'g' ? L('grams', 'غرام') : '';
   return `<label class="zfield"><span>${fd.label}${fd.extra ? ` <i>(${fd.extra})</i>` : ''}</span><div class="in">${input}${unit ? `<span class="unit">${unit}</span>` : ''}</div></label>`;
 }
 function next() {
@@ -200,27 +200,27 @@ function renderResult() {
   const r = Z.result, d = new Date(r.date);
   const dateStr = new Intl.DateTimeFormat(AR ? 'ar' : 'en', { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
   let headline, note;
-  if (A.hawl === 'notyet') { headline = 'Not due yet'; note = 'Zakat becomes due one lunar year (354 days) after your savings first reached the nisab, if they are still above it then. Come back on that date and run this again.' }
-  else if (!r.due) { headline = 'No zakat due'; note = `What you own after debts (${money(r.net)}) is below the nisab (${money(r.nisab)}). You can still give sadaqah.` }
-  else { headline = money(r.zakat); note = `2.5% of ${money(r.net)}, which is above the ${r.std} nisab of ${money(r.nisab)}${r.onlyGold ? ' (gold is all you own, so the gold nisab applies)' : ''}.` }
+  if (A.hawl === 'notyet') { headline = L('Not due yet', 'لم تجب بعد'); note = L('Zakat becomes due one lunar year (354 days) after your savings first reached the nisab, if they are still above it then. Come back on that date and run this again.', 'تجب الزكاة بعد سنة قمرية (٣٥٤ يومًا) من بلوغ مالك النصاب، إن بقي فوقه حينها. عُد في ذلك اليوم وأعد الحساب.') }
+  else if (!r.due) { headline = L('No zakat due', 'لا زكاة عليك'); note = L(`What you own after debts (${money(r.net)}) is below the nisab (${money(r.nisab)}). You can still give sadaqah.`, `ما تملكه بعد الديون (${money(r.net)}) أقل من النصاب (${money(r.nisab)}). ويمكنك التصدّق.`) }
+  else { headline = money(r.zakat); note = L(`2.5% of ${money(r.net)}, which is above the ${r.std} nisab of ${money(r.nisab)}${r.onlyGold ? ' (gold is all you own, so the gold nisab applies)' : ''}.`, `٢٫٥٪ من ${money(r.net)}، وهو فوق نصاب ${r.std === 'gold' ? 'الذهب' : 'الفضة'} البالغ ${money(r.nisab)}${r.onlyGold ? ' (لا تملك إلا الذهب، فيُعتمد نصابه)' : ''}.`) }
   const left = Math.max(0, r.zakat - (+Z.paid || 0));
-  $('#z').innerHTML = `<p class="zstep">Your zakat for ${r.hy} AH · worked out ${dateStr}</p>
+  $('#z').innerHTML = `<p class="zstep">${L(`Your zakat for ${r.hy} AH · worked out ${dateStr}`, `زكاتك لعام ${r.hy} هـ · حُسبت ${dateStr}`)}</p>
     <p class="zbig">${headline}</p><p class="zhelp">${note}</p>
-    ${r.due ? `<div class="zpaid"><label class="zfield"><span>Paid so far</span><div class="in"><input id="zpaid" type="number" inputmode="decimal" min="0" step="any" value="${esc(Z.paid || '')}" placeholder="0"><span class="unit">${A.currency}</span></div></label></div>
-    <p class="zleft" id="zleft">${left > 0 ? `<b>${money(left)}</b> left to pay` : '✓ Paid in full. May Allah accept it.'}</p>` : ''}
+    ${r.due ? `<div class="zpaid"><label class="zfield"><span>${L('Paid so far', 'المدفوع حتى الآن')}</span><div class="in"><input id="zpaid" type="number" inputmode="decimal" min="0" step="any" value="${esc(Z.paid || '')}" placeholder="0"><span class="unit">${A.currency}</span></div></label></div>
+    <p class="zleft" id="zleft">${left > 0 ? `<b>${money(left)}</b> ${L('left to pay', 'متبقٍّ')}` : L('✓ Paid in full. May Allah accept it.', '✓ دُفعت كاملة. تقبّل الله منك.')}</p>` : ''}
     <table class="zrows">${r.rows.map(([k, v]) => `<tr><td>${k}</td><td>${money(v)}</td></tr>`).join('')}
-      ${r.debts ? `<tr class="minus"><td>Debts due this year</td><td>${money(r.debts)}</td></tr>` : ''}
-      <tr class="tot"><td>Total counted</td><td>${money(r.net)}</td></tr>
-      <tr><td>Nisab (${r.std})</td><td>${money(r.nisab)}</td></tr></table>
-    <p class="note">This is a guide. For farm produce, livestock, complex businesses or anything unusual, ask a scholar you trust.</p>
-    <div class="znav"><button class="btn" id="zrestart">Start over</button><button class="btn primary" id="zedit">Change answers</button></div>`;
+      ${r.debts ? `<tr class="minus"><td>${L('Debts due this year', 'ديون مستحقة هذه السنة')}</td><td>${money(r.debts)}</td></tr>` : ''}
+      <tr class="tot"><td>${L('Total counted', 'المجموع المحسوب')}</td><td>${money(r.net)}</td></tr>
+      <tr><td>${L(`Nisab (${r.std})`, `النصاب (${r.std === 'gold' ? 'الذهب' : 'الفضة'})`)}</td><td>${money(r.nisab)}</td></tr></table>
+    <p class="note">${L('This is a guide. For farm produce, livestock, complex businesses or anything unusual, ask a scholar you trust.', 'هذا دليل تقريبي. في الزروع والأنعام والتجارات المعقّدة أو أي حالة غير معتادة، اسأل عالمًا تثق به.')}</p>
+    <div class="znav"><button class="btn" id="zrestart">${L('Start over', 'ابدأ من جديد')}</button><button class="btn primary" id="zedit">${L('Change answers', 'عدّل الإجابات')}</button></div>`;
   $('#zpaid') && ($('#zpaid').oninput = () => {
     Z.paid = Math.max(0, +$('#zpaid').value || 0); persist();
     const l = Math.max(0, r.zakat - Z.paid);
-    $('#zleft').innerHTML = l > 0 ? `<b>${money(l)}</b> left to pay` : '✓ Paid in full. May Allah accept it.';
+    $('#zleft').innerHTML = l > 0 ? `<b>${money(l)}</b> ${L('left to pay', 'متبقٍّ')}` : L('✓ Paid in full. May Allah accept it.', '✓ دُفعت كاملة. تقبّل الله منك.');
   });
   $('#zedit').onclick = () => { Z.result = null; Z.step = 1; persist(); renderStep() };
-  $('#zrestart').onclick = () => { if (!confirm('Clear all your answers and start again?')) return; const keep = { currency: A.currency, goldPrice: A.goldPrice, silverPrice: A.silverPrice }; Z = { ...blank, a: keep }; Object.keys(A).forEach(k => delete A[k]); Object.assign(A, keep); Z.a = A; persist(); renderStep() };
+  $('#zrestart').onclick = () => { if (!confirm(L('Clear all your answers and start again?', 'مسح كل الإجابات والبدء من جديد؟'))) return; const keep = { currency: A.currency, goldPrice: A.goldPrice, silverPrice: A.silverPrice }; Z = { ...blank, a: keep }; Object.keys(A).forEach(k => delete A[k]); Object.assign(A, keep); Z.a = A; persist(); renderStep() };
 }
 
 Z.result ? renderResult() : renderStep();

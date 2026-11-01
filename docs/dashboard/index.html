@@ -269,11 +269,11 @@ const clock = d => new Intl.DateTimeFormat(AR ? 'ar' : 'en', { hour: 'numeric', 
 function fastOn(d) {
   const h = hijriOf(d), wd = d.getDay();
   if (h.m === 9 || (h.m === 10 && h.d === 1) || (h.m === 12 && h.d >= 10 && h.d <= 13)) return null;
-  if (h.m === 12 && h.d === 9) return 'Day of Arafah';
-  if (h.m === 1 && h.d === 10) return 'Ashura';
-  if (h.m === 1 && h.d === 9) return "Tasu'a";
-  if (h.d >= 13 && h.d <= 15) return 'a white day';
-  if (wd === 1) return 'Monday'; if (wd === 4) return 'Thursday';
+  if (h.m === 12 && h.d === 9) return L('Day of Arafah', 'يوم عرفة');
+  if (h.m === 1 && h.d === 10) return L('Ashura', 'عاشوراء');
+  if (h.m === 1 && h.d === 9) return L("Tasu'a", 'تاسوعاء');
+  if (h.d >= 13 && h.d <= 15) return L('a white day', 'الأيام البيض');
+  if (wd === 1) return L('Monday', 'الاثنين'); if (wd === 4) return L('Thursday', 'الخميس');
   return null;
 }
 function today() {
@@ -285,35 +285,35 @@ function today() {
   // Ramadan
   if (H.m === 9) {
     const m = at(fl.maghrib), f = at(fl.fajr);
-    items.push([now < f ? `Suhoor ends at ${clock(f)}` : now < m ? `Iftar at ${clock(m)}` : `Suhoor ends at ${clock(new Date(+f + 864e5))}`, `Ramadan, day ${H.d}`, '/ramadan/']);
+    items.push([now < f ? L(`Suhoor ends at ${clock(f)}`, `ينتهي السحور ${clock(f)}`) : now < m ? L(`Iftar at ${clock(m)}`, `الإفطار ${clock(m)}`) : L(`Suhoor ends at ${clock(new Date(+f + 864e5))}`, `ينتهي السحور ${clock(new Date(+f + 864e5))}`), L(`Ramadan, day ${H.d}`, `رمضان، اليوم ${H.d.toLocaleString('ar-EG')}`), '/ramadan/']);
   } else {
     let d = new Date(now), n = 0; while (n < 45 && !(hijriOf(d).m === 9 && hijriOf(d).d === 1)) { d.setDate(d.getDate() + 1); n++ }
-    if (n < 45) items.push([`Ramadan in ${n} days`, 'Get ready: make up missed fasts, plan your khatm', '/ramadan/']);
+    if (n < 45) items.push([L(`Ramadan in ${n} days`, `رمضان بعد ${n.toLocaleString('ar-EG')} يومًا`), L('Get ready: make up missed fasts, plan your khatm', 'استعد: اقضِ ما فاتك، وخطّط لختمتك'), '/ramadan/']);
   }
   // Jumu'ah
   if (now.getDay() === 5) {
-    items.push(["Jumu'ah: read Surah al-Kahf", 'Light between this Friday and the next', '/quran/18/1']);
-    const m = at(fl.maghrib); if (now > at(fl.asr) && now < m) items.push(['The last hour of Friday is for duaa', `${clock(new Date(+m - 36e5))} until maghrib at ${clock(m)}`, '/duaa/']);
+    items.push([L("Jumu'ah: read Surah al-Kahf", 'الجمعة: اقرأ سورة الكهف'), L('Light between this Friday and the next', 'نور ما بين الجمعتين'), '/quran/18/1']);
+    const m = at(fl.maghrib); if (now > at(fl.asr) && now < m) items.push([L('The last hour of Friday is for duaa', 'آخر ساعة من الجمعة للدعاء'), L(`${clock(new Date(+m - 36e5))} until maghrib at ${clock(m)}`, `من ${clock(new Date(+m - 36e5))} حتى المغرب ${clock(m)}`), '/duaa/']);
   }
   // adhkar: morning from fajr to asr, evening from asr until isha ends the day
   const which = now >= at(fl.fajr) && now < at(fl.asr) ? 'morning' : now >= at(fl.asr) ? 'evening' : null;
-  if (which) { const done = load('adhkar', {})[which] === now.toDateString(); items.push([`${which === 'morning' ? 'Morning' : 'Evening'} adhkar`, done ? 'Done today' : 'Not done yet', `/duaa/#adhkar-${which}`, done]) }
+  if (which) { const done = load('adhkar', {})[which] === now.toDateString(); items.push([which === 'morning' ? L('Morning adhkar', 'أذكار الصباح') : L('Evening adhkar', 'أذكار المساء'), done ? L('Done today', 'تمّت اليوم') : L('Not done yet', 'لم تُقرأ بعد'), `/duaa/#adhkar-${which}`, done]) }
   // Quran plan
   const k = load('khatm', {});
   if (k.active) {
     const total = QM.TOTAL - k.from, dayN = Math.floor((new Date(now).setHours(0, 0, 0, 0) - k.start) / 864e5);
     const goal = Math.min(QM.TOTAL, Math.ceil(k.from + total / k.days * Math.min(dayN + 1, k.days))), left = Math.max(0, goal - (k.at || 0));
     const [c, v] = QM.place((k.at || 0) + 1);
-    items.push([left ? `Quran: ${left} verses for today` : "Quran: today's portion done", left ? `From ${QM.name(c, AR)} ${c}:${v}` : `${Math.floor(((k.at || 0) - k.from) / total * 100)}% of your khatm`, left ? `/quran/${c}/${v}` : '/quran/progress/', !left]);
+    items.push([left ? L(`Quran: ${left} verses for today`, `القرآن: ${left.toLocaleString('ar-EG')} آية لليوم`) : L("Quran: today's portion done", 'القرآن: أنهيت وِرد اليوم'), left ? `${L('From', 'من')} ${QM.name(c, AR)} ${c}:${v}` : L(`${Math.floor(((k.at || 0) - k.from) / total * 100)}% of your khatm`, `${Math.floor(((k.at || 0) - k.from) / total * 100).toLocaleString('ar-EG')}٪ من ختمتك`), left ? `/quran/${c}/${v}` : '/quran/progress/', !left]);
   }
   // tomorrow's fast
   const tm = new Date(now); tm.setDate(tm.getDate() + 1);
-  const f = fastOn(tm); if (f) items.push([`Tomorrow: ${f} fast`, 'A recommended fast. Eat suhoor before fajr', '/calendar/']);
+  const f = fastOn(tm); if (f) items.push([L(`Tomorrow: ${f} fast`, `غدًا: صيام ${f}`), L('A recommended fast. Eat suhoor before fajr', 'صيام مستحب. تسحّر قبل الفجر'), '/calendar/']);
   // make-ups
   const q = load('qada', { olderFasts: 0, olderMade: 0, prayers: {} }), R = load('ramadan', { years: {} });
   const fastsOwed = Object.values(R.years).reduce((s, y) => s + Math.max(0, Object.values(y.days || {}).filter(x => x === 2 || x === 3).length - (y.madeUp || 0)), 0) + Math.max(0, q.olderFasts - q.olderMade);
   const prayersOwed = Object.values(q.prayers || {}).reduce((s, n) => s + n, 0);
-  if (fastsOwed || prayersOwed) items.push([[fastsOwed && `${fastsOwed} fast${fastsOwed > 1 ? 's' : ''}`, prayersOwed && `${prayersOwed} prayer${prayersOwed > 1 ? 's' : ''}`].filter(Boolean).join(' and ') + ' to make up', 'One at a time', fastsOwed ? '/ramadan/#makeup' : '/times/#makeup']);
+  if (fastsOwed || prayersOwed) items.push([AR ? 'عليك قضاء ' + [fastsOwed && `${fastsOwed.toLocaleString('ar-EG')} يوم صيام`, prayersOwed && `${prayersOwed.toLocaleString('ar-EG')} صلاة`].filter(Boolean).join(' و') : [fastsOwed && `${fastsOwed} fast${fastsOwed > 1 ? 's' : ''}`, prayersOwed && `${prayersOwed} prayer${prayersOwed > 1 ? 's' : ''}`].filter(Boolean).join(' and ') + ' to make up', L('One at a time', 'شيئًا فشيئًا'), fastsOwed ? '/ramadan/#makeup' : '/times/#makeup']);
   $('#today-list').innerHTML = items.map(([a, b, href, ok]) => `<a class="td${ok ? ' ok' : ''}" href="${href}"><i></i><span>${a}<small>${b}</small></span><span class="go">→</span></a>`).join('');
   $('#today-card').hidden = !items.length;
 }
