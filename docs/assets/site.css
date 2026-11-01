@@ -6,7 +6,7 @@
   --line: rgba(255,255,255,.14); --accent: #fff; --on-accent: #111; --radius: 24px;
   --tint: #161618; --base-a: 45%; --k: 1; --blur: 22px;
   --page: #111; --solid: #1c1c1e; --sheet: rgba(28,28,30,.92); --hilite: rgba(255,255,255,.16);
-  --veil: linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.8)); --tone: brightness(.7) saturate(.7) blur(2px);
+  --veil: linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.8)); --tone: brightness(.7) saturate(.75);
   --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --arabic: "me_quran", "Geeza Pro", "Noto Naskh Arabic", serif;
   color-scheme: dark;
@@ -17,7 +17,7 @@
   --line: rgba(60,40,20,.12); --accent: #1f1b16; --on-accent: #f6f1e7;
   --tint: #fdfcf9; --base-a: 70%; --lift: 1.7;
   --page: #e6dfd2; --solid: #f6f1e7; --sheet: rgba(246,241,231,.97); --hilite: rgba(60,40,20,.08);
-  --veil: linear-gradient(rgba(0,0,0,.52), rgba(0,0,0,.3) 70%); --tone: saturate(.65) blur(2px);
+  --veil: linear-gradient(rgba(0,0,0,.52), rgba(0,0,0,.3) 70%); --tone: saturate(.7);
   color-scheme: light;
 }
 [data-scheme="light"]:not([data-glass="solid"]) :is(.top, .hero, .foot) { --fg: #fff; --mute: rgba(255,255,255,.85); --card: rgba(255,255,255,.18); color: var(--fg) }
@@ -38,7 +38,7 @@ body::after { background: var(--veil), var(--bg-next, none) center/cover; opacit
 body::before { transition: opacity .9s ease }
 html:not(.bg-ready) body::before { opacity: 0 }
 .swap body::after { opacity: 1; transition: opacity 2.5s ease }
-@keyframes drift { from { transform: scale(1.06) translate(1%, .5%) } to { transform: scale(1.16) translate(-1.5%, -1%) } }
+@keyframes drift { from { transform: scale(1.03) translate(.5%, .3%) } to { transform: scale(1.07) translate(-.8%, -.5%) } }
 a { color: inherit; text-decoration: none }
 button, input, select { font: inherit; color: inherit }
 button { cursor: pointer; border: 0; background: none }
@@ -68,7 +68,7 @@ img { display: block; max-width: 100% }
 /* nav: inline on desktop; on phones it collapses behind the menu button (native popover) */
 .menu { display: none; place-items: center; padding: 7px 10px }
 .links[popover] { position: static; inset: auto; margin: 0; border: 0; padding: 0; background: none; overflow: visible; width: auto; height: auto; color: inherit; display: flex }
-@media (max-width: 640px) {
+@media (max-width: 1080px) {
   .menu { display: grid }
   .links[popover]:not(:popover-open) { display: none }
   .links[popover]:popover-open { position: fixed; top: 60px; inset-inline: auto 16px; flex-direction: column; min-width: 180px; padding: 6px; border-radius: 18px; background: var(--sheet); border: 1px solid var(--line); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px) }

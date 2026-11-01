@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>muslimist · ramadan</title>
+<meta name="description" content="Ramadan: suhoor and iftar countdown, fasting tracker and the last ten nights.">
+<meta name="theme-color" content="#111111">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/assets/icons/favicon-196.png">
+<link rel="apple-touch-icon" href="/assets/icons/apple-icon-180.png">
+<script>{const s = localStorage, d = document.documentElement; d.dataset.scheme = s.mode || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'); if (s.glass) d.dataset.glass = s.glass; d.dataset.bg = `url(/assets/img/bg-times-${Math.random() * 6 | 0}.webp)`; d.style.setProperty('--bg-img', sessionStorage.bg || d.dataset.bg); if (sessionStorage.bg) d.classList.add('bg-ready'); if (s.lang == 'arabic') { d.lang = 'ar'; d.dir = 'rtl' }}</script>
+<style>
+  .lbl { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--mute) }
+  .count { text-align: center; padding: 6px 0 4px }
+  .count .t { font-size: clamp(48px, 12vw, 84px); font-weight: 650; letter-spacing: -.04em; line-height: 1.05; font-variant-numeric: tabular-nums; direction: ltr; unicode-bidi: isolate }
+  .count .what { font-size: 15px; color: var(--mute); margin-top: 2px }
+  .pair2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px }
+  .pair2 div { padding: 12px 14px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); text-align: center }
+  .pair2 b { display: block; font-size: 22px; font-variant-numeric: tabular-nums; direction: ltr; unicode-bidi: isolate }
+  .pair2 span { font-size: 12px; color: var(--mute) }
+  .pair2 .on { border-color: var(--fg) }
+  .fast { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; margin-top: 10px }
+  .fast button { aspect-ratio: 1; border-radius: 10px; background: var(--card); border: 1px solid var(--line); font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; position: relative }
+  .fast button.today { outline: 2px solid var(--fg); outline-offset: 1px }
+  .fast button.future { opacity: .4 }
+  .fast .s1 { background: #2fb34f; border-color: #2fb34f; color: #fff }
+  .fast .s2 { background: #e04848; border-color: #e04848; color: #fff }
+  .fast .s3 { background: #e0a526; border-color: #e0a526; color: #fff }
+  .fast .odd::after { content: ""; position: absolute; top: 4px; inset-inline-end: 4px; width: 5px; height: 5px; border-radius: 99px; background: currentColor; opacity: .6 }
+  @media (max-width: 640px) { .fast { grid-template-columns: repeat(6, 1fr) } }
+  .keys { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 10px; font-size: 12.5px; color: var(--mute) }
+  .keys i { display: inline-block; width: 9px; height: 9px; border-radius: 3px; margin-inline-end: 5px; vertical-align: -1px }
+  .tally { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 12px; font-size: 14.5px }
+  .tally b { font-variant-numeric: tabular-nums }
+  .mk { display: inline-flex; align-items: center; gap: 6px }
+  .mk button { width: 28px; height: 28px; border-radius: 99px; background: var(--field); border: 1px solid var(--line) }
+  .night { padding: 14px 16px; border-radius: 16px; background: var(--hilite); margin: 10px 0 12px }
+  .night b { font-size: 18px }
+  .checks2 { display: grid; gap: 8px; margin-top: 8px }
+  .checks2 label { display: flex; gap: 10px; align-items: center; font-size: 15px }
+  .checks2 input { width: 18px; height: 18px }
+  .say { margin-top: 10px; padding: 12px 14px; border-radius: 12px; background: var(--card); border: 1px solid var(--line) }
+  .say .ar { font: 1.4em/2 var(--arabic); direction: rtl; text-align: right }
+  .say .tl { font-style: italic; font-size: 14.5px }
+  .say .mn { font-size: 14px; color: var(--mute); margin-top: 4px }
+  .say small { display: block; font-size: 12px; color: var(--mute); margin-top: 4px }
+  .row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap }
+  .row .grow { flex: 1 }
+  .bar { height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; margin: 12px 0 8px }
+  .bar i { display: block; height: 100%; background: var(--fg); border-radius: 99px }
+  .preview-note { text-align: center; font-size: 13px; color: var(--mute); margin-bottom: 8px }
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="/">muslimist</a>
+  <nav class="links" id="menu" popover><a href="/quran/" data-t="quran">Quran</a><a href="/tracker/" data-t="tracker">Tracker</a><a href="/duaa/" data-t="duaa">Duaa</a><a href="/hadith/" data-t="hadith">Hadith</a><a href="/names/" data-t="names">Names</a><a href="/salah/" data-t="salah">Salah</a><a href="/calendar/" data-t="calendar">Calendar</a><a href="/ramadan/" aria-current="page" data-t="ramadan">Ramadan</a><a href="/zakat/" data-t="zakat">Zakat</a><a href="/times/" data-t="times">Times</a><a href="/qibla/" data-t="qibla">Qibla</a><a href="/dashboard/" data-t="dash">Dash</a></nav>
+  <button class="pill menu" popovertarget="menu" aria-label="Menu"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</header>
+
+<section class="hero">
+  <h1 data-t="ramadan">Ramadan</h1>
+  <p data-t="sub">Suhoor and iftar, your fasts, and the last ten nights</p>
+</section>
+
+<main class="layout" id="main"></main>
+
+<footer class="foot"><span><span data-t="madewith">made with</span> <span class="heart" aria-label="love">♥</span> <span data-t="bymuslims">by muslims for muslims</span></span><a href="https://github.com/muslimist/muslimist.github.io">github</a><button popovertarget="privacy" data-t="privacy">privacy</button></footer>
+<div class="pop" id="privacy" popover><span data-t="privacynote">we don't track anything, see for yourself =)</span> <a href="https://github.com/muslimist/muslimist.github.io">github</a></div>
+
+<script src="/assets/site.js"></script>
+<script src="/assets/praytimes.js"></script>
+<script src="/assets/times.js"></script>
+<script src="/assets/quranmeta.js"></script>
+<script>
+i18n({ sub: ['Suhoor and iftar, your fasts, and the last ten nights', 'السحور والإفطار، وصيامك، والعشر الأواخر'] });
+const num = n => AR ? (+n).toLocaleString('ar-EG') : n;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+const DAY = 864e5;
+const offset = +load('calendar', { offset: 0 }).offset || 0; // follows the Calendar page's moon-sighting adjustment
+const cal = (() => { try { new Intl.DateTimeFormat('en-u-ca-islamic-umalqura'); return 'islamic-umalqura' } catch { return 'islamic' } })();
+const hf = new Intl.DateTimeFormat('en-u-ca-' + cal + '-nu-latn', { day: 'numeric', month: 'numeric', year: 'numeric' });
+const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x };
+const hijri = d => { const p = Object.fromEntries(hf.formatToParts(addDays(d, offset)).map(x => [x.type, x.value])); return { y: parseInt(p.year), m: +p.month, d: +p.day } };
+const fmtDate = d => new Intl.DateTimeFormat(AR ? 'ar' : 'en', { weekday: 'long', day: 'numeric', month: 'long' }).format(d);
+
+// preview: #preview shows Ramadan mode on a pretend day of Ramadan (#preview-23 for the 23rd)
+const pv = location.hash.match(/^#preview(?:-(\d+))?$/);
+const today = new Date(); today.setHours(12, 0, 0, 0);
+let H = hijri(today);
+const preview = !!pv && H.m !== 9;
+if (preview) H = { y: H.m > 9 ? H.y + 1 : H.y, m: 9, d: Math.min(30, +(pv[1] || 23)) };
+const inRamadan = H.m === 9;
+const R = load('ramadan', { years: {} });
+const year = R.years[H.y] ||= { days: {}, madeUp: 0, nights: {} };
+const persist = () => { if (!preview) save('ramadan', R) };
+
+const say = (ar, tl, mn, src) => `<div class="say"><p class="ar" lang="ar">${ar}</p><p class="tl">${tl}</p><p class="mn">${mn}</p><small>${src}</small></div>`;
+const IFTAR = say('ذَهَبَ الظَّمَأُ، وَابْتَلَّتِ الْعُرُوقُ، وَثَبَتَ الْأَجْرُ إِنْ شَاءَ اللَّهُ', "Dhahabadh-dhama', wabtallatil-'uruq, wa thabatal-ajru in sha Allah", 'The thirst has gone, the veins are moistened, and the reward is certain, if Allah wills.', 'Said at iftar · Abu Dawud');
+const QADR = say('اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي', "Allahumma innaka 'afuwwun tuhibbul-'afwa fa'fu 'anni", 'O Allah, You are Most Forgiving and love forgiveness, so forgive me.', 'Taught for Laylat al-Qadr · at-Tirmidhi');
+
+function render() {
+  const main = $('#main');
+  if (!inRamadan) {
+    // count down to the next 1 Ramadan
+    let d = today, n = 0;
+    while (n < 400 && !(hijri(d).m === 9 && hijri(d).d === 1)) { d = addDays(d, 1); n++ }
+    main.innerHTML = `<section class="card glass center"><p class="lbl">Ramadan ${num(H.m > 9 ? H.y + 1 : H.y)}</p>
+      <div class="count"><p class="t">${num(n)}</p><p class="what">days to go · expected to begin ${fmtDate(d)}</p></div>
+      <p class="note" style="margin-top:12px">Based on the Umm al-Qura calendar${offset ? ` adjusted by ${offset} day${Math.abs(offset) > 1 ? 's' : ''}` : ''}; the start depends on the moon sighting your mosque follows (adjust it on the <a href="/calendar/" style="text-decoration:underline">Calendar</a> page).</p>
+      <div class="row" style="justify-content:center;margin-top:16px"><a class="btn primary" href="#preview">Preview Ramadan mode</a></div></section>
+      <section class="card glass"><p class="lbl">Getting ready</p><ul style="margin:10px 0 0;padding-inline-start:20px;line-height:1.8">
+      <li>Fast some days of Sha'ban, as the Prophet ﷺ did, and make up any missed fasts from last Ramadan.</li>
+      <li>Set your location on the <a href="/times/" style="text-decoration:underline">Times</a> page so suhoor and iftar times are right.</li>
+      <li>Plan to finish the Quran in Ramadan with the <a href="/tracker/" style="text-decoration:underline">Tracker</a>.</li></ul></section>`;
+    return;
+  }
+  const len = 30;
+  main.innerHTML = `${preview ? '<p class="preview-note">Preview · pretending today is ' + num(H.d) + ' Ramadan · <a href="#" style="text-decoration:underline">exit</a></p>' : ''}
+    <section class="card glass"><p class="lbl">Ramadan ${num(H.y)} · day ${num(H.d)}</p>
+      <div class="count"><p class="t" id="cd">--:--:--</p><p class="what" id="cd-what"></p></div>
+      <div class="pair2"><div id="p-suhoor"><span>Suhoor ends (Fajr)</span><b id="t-suhoor"></b></div><div id="p-iftar"><span>Iftar (Maghrib)</span><b id="t-iftar"></b></div></div>
+      <p class="note center" style="margin-top:10px">For your location on the <a href="/times/" style="text-decoration:underline">Times</a> page.</p>
+      ${IFTAR}</section>
+    ${H.d >= 20 ? `<section class="card glass"><p class="lbl">The last ten nights</p><div id="nights"></div></section>` : ''}
+    <section class="card glass"><div class="row"><p class="lbl grow">Your fasts</p><span class="mute" style="font-size:13px">tap a day</span></div>
+      <div class="fast" id="fast"></div>
+      <div class="keys"><span><i style="background:#2fb34f"></i>Fasted</span><span><i style="background:#e04848"></i>Missed</span><span><i style="background:#e0a526"></i>Excused (travel, illness, period)</span></div>
+      <div class="tally" id="tally"></div></section>
+    <section class="card glass" id="quran"></section>`;
+
+  // ---------- countdown ----------
+  const tick = () => {
+    const now = new Date(), t0 = prayerTimes(now), list = Object.fromEntries(t0.list.map(p => [p.key, p]));
+    // fajr and maghrib are needed even if hidden on the Times page
+    prayTimes.setMethod(timesSet.method);
+    const fl = prayTimes.getTimes(now, [timesSet.lat, timesSet.lng], 'auto', 'auto', 'Float'), txt = prayTimes.getTimes(now, [timesSet.lat, timesSet.lng], 'auto', 'auto', timesSet.format);
+    const at = h => { const d = new Date(now); d.setHours(0, 0, 0, 0); return new Date(+d + h * 36e5) };
+    const fajr = at(fl.fajr), maghrib = at(fl.maghrib);
+    $('#t-suhoor').textContent = txt.fajr; $('#t-iftar').textContent = txt.maghrib;
+    let target, what;
+    if (now < fajr) { target = fajr; what = 'until suhoor ends' } else if (now < maghrib) { target = maghrib; what = 'until iftar' } else { target = addDays(fajr, 1); what = 'until suhoor ends tomorrow' }
+    const s = Math.max(0, Math.round((target - now) / 1e3));
+    $('#cd').textContent = `${Math.floor(s / 3600)}:${String(Math.floor(s / 60) % 60).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+    $('#cd-what').textContent = what;
+    $('#p-suhoor').classList.toggle('on', what.startsWith('until suhoor')); $('#p-iftar').classList.toggle('on', what === 'until iftar');
+  };
+  tick(); clearInterval(window.cdTimer); window.cdTimer = setInterval(tick, 1000);
+
+  // ---------- fasting tracker: tap cycles fasted → missed → excused → blank ----------
+  const fast = () => {
+    $('#fast').innerHTML = Array.from({ length: len }, (_, i) => {
+      const d = i + 1, st = year.days[d] || 0;
+      return `<button data-d="${d}" class="s${st} ${d === H.d ? 'today' : ''} ${d > H.d ? 'future' : ''} ${d > 20 && d % 2 ? 'odd' : ''}">${num(d)}</button>`;
+    }).join('');
+    $$('#fast button').forEach(b => b.onclick = () => { const d = +b.dataset.d; year.days[d] = ((year.days[d] || 0) + 1) % 4; persist(); fast() });
+    const c = [0, 0, 0, 0]; Object.values(year.days).forEach(s => c[s]++);
+    const owe = c[2] + c[3], left = Math.max(0, owe - year.madeUp);
+    $('#tally').innerHTML = `<span>Fasted <b>${num(c[1])}</b></span><span>To make up <b>${num(left)}</b>${owe ? ` of ${num(owe)}` : ''}</span>
+      ${owe ? `<span class="mk">Made up <button id="mu-" aria-label="less">−</button><b>${num(year.madeUp)}</b><button id="mu+" aria-label="more">+</button></span>` : ''}`;
+    if (owe) { $('#mu-').onclick = () => { year.madeUp = Math.max(0, year.madeUp - 1); persist(); fast() }; $('#mu\\+').onclick = () => { year.madeUp = Math.min(owe, year.madeUp + 1); persist(); fast() } }
+  };
+  fast();
+
+  // ---------- last ten nights ----------
+  if (H.d >= 20) {
+    // the coming night belongs to the next date (it begins at maghrib)
+    const night = Math.min(29, H.d + 1), odd = night % 2 === 1, rec = year.nights[night] ||= {};
+    const items = [['qiyam', 'Pray qiyam / taraweeh'], ['quran', 'Read Quran'], ['duaa', 'Make the duaa below'], ['sadaqah', 'Give sadaqah, even a little'], ['dhikr', 'Remember Allah and seek forgiveness']];
+    $('#nights').innerHTML = `<div class="night"><b>Tonight is the night of the ${night}${['th', 'st', 'nd', 'rd'][night % 10 > 3 || Math.floor(night / 10) === 1 ? 0 : night % 10]}</b><p class="mute" style="font-size:14px;margin-top:2px">${odd ? 'An odd night: seek Laylat al-Qadr tonight (Bukhari).' : 'Laylat al-Qadr is most likely in the odd nights, but it could be any of the last ten.'} It begins at maghrib.</p></div>
+      <div class="checks2">${items.map(([k, l]) => `<label><input type="checkbox" data-k="${k}"${rec[k] ? ' checked' : ''}> ${l}</label>`).join('')}</div>${QADR}`;
+    $$('#nights input').forEach(c => c.onchange = () => { rec[c.dataset.k] = c.checked; persist() });
+  }
+
+  // ---------- Quran in Ramadan (uses the Tracker's plan) ----------
+  const k = load('khatm', {});
+  const daysLeft = Math.max(1, len - H.d + 1);
+  if (k.active) {
+    const done = ((k.at || 0) - k.from) / (QM.TOTAL - k.from);
+    $('#quran').innerHTML = `<div class="row"><p class="lbl grow">Quran this Ramadan</p><a class="card-link" href="/tracker/">Tracker →</a></div><div class="bar"><i style="width:${(done * 100).toFixed(1)}%"></i></div><p class="mute">${Math.floor(done * 100)}% of your ${num(k.days)}-day khatm. <a href="/tracker/" style="text-decoration:underline">See today's portion</a>.</p>`;
+  } else {
+    $('#quran').innerHTML = `<p class="lbl">Quran this Ramadan</p><p style="margin:8px 0 12px">Finish the whole Quran by the end of Ramadan: about ${(30 / daysLeft).toFixed(1)} juz a day for the ${num(daysLeft)} days left.</p><button class="btn primary" id="plan-r">Start a ${num(daysLeft)}-day khatm</button>`;
+    $('#plan-r').onclick = () => { if (preview) return alert('This is only a preview.'); save('khatm', { ...k, active: true, start: +new Date(new Date().setHours(0, 0, 0, 0)), days: daysLeft, from: 0, at: 0 }); location.href = '/tracker/' };
+  }
+}
+addEventListener('hashchange', () => location.reload());
+render();
+</script>
+</body>
+</html>

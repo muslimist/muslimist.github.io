@@ -15,7 +15,7 @@
 <body>
 <header class="top">
   <a class="brand" href="/">muslimist</a>
-  <nav class="links" id="menu" popover><a href="/quran/" aria-current="page" data-t="quran">Quran</a><a href="/duaa/" data-t="duaa">Duaa</a><a href="/hadith/" data-t="hadith">Hadith</a><a href="/names/" data-t="names">Names</a><a href="/salah/" data-t="salah">Salah</a><a href="/calendar/" data-t="calendar">Calendar</a><a href="/zakat/" data-t="zakat">Zakat</a><a href="/times/" data-t="times">Times</a><a href="/qibla/" data-t="qibla">Qibla</a><a href="/dashboard/" data-t="dash">Dash</a></nav>
+  <nav class="links" id="menu" popover><a href="/quran/" aria-current="page" data-t="quran">Quran</a><a href="/tracker/" data-t="tracker">Tracker</a><a href="/duaa/" data-t="duaa">Duaa</a><a href="/hadith/" data-t="hadith">Hadith</a><a href="/names/" data-t="names">Names</a><a href="/salah/" data-t="salah">Salah</a><a href="/calendar/" data-t="calendar">Calendar</a><a href="/ramadan/" data-t="ramadan">Ramadan</a><a href="/zakat/" data-t="zakat">Zakat</a><a href="/times/" data-t="times">Times</a><a href="/qibla/" data-t="qibla">Qibla</a><a href="/dashboard/" data-t="dash">Dash</a></nav>
   <button class="pill menu" popovertarget="menu" aria-label="Menu"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </header>
 
@@ -28,6 +28,7 @@
   <section class="card glass reader" id="reader">
     <div class="card-head">
       <button class="title" data-open="settings" id="where"></button>
+      <button class="icon" id="bookmark" data-t-label="bookmark" aria-label="Bookmark"><svg viewBox="0 0 24 24"><path id="bmicon" d="M6 3h12v18l-6-4-6 4z"/></svg></button>
       <button class="icon" id="focus" data-t-label="fullscreen" aria-label="Full screen"><svg viewBox="0 0 24 24"><path id="focusicon" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
       <button class="icon" data-open="settings" data-t-label="settings" aria-label="Settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg></button>
     </div>
@@ -308,6 +309,7 @@
 <div class="pop" id="privacy" popover><span data-t="privacynote">we don't track anything, see for yourself =)</span> <a href="https://github.com/muslimist/muslimist.github.io">github</a></div>
 
 <script src="/assets/site.js"></script>
+<script src="/assets/quranmeta.js"></script>
 <script>
 const NAMES = [["1: Al-Faatiha", "2: Al-Baqara", "3: Aal-i-Imraan", "4: An-Nisaa", "5: Al-Maaida", "6: Al-An'aam", "7: Al-A'raaf", "8: Al-Anfaal", "9: At-Tawba", "10: Yunus", "11: Hud", "12: Yusuf", "13: Ar-Ra'd", "14: Ibrahim", "15: Al-Hijr", "16: An-Nahl", "17: Al-Israa", "18: Al-Kahf", "19: Maryam", "20: Taa-Haa", "21: Al-Anbiyaa", "22: Al-Hajj", "23: Al-Muminoon", "24: An-Noor", "25: Al-Furqaan", "26: Ash-Shu'araa", "27: An-Naml", "28: Al-Qasas", "29: Al-Ankaboot", "30: Ar-Room", "31: Luqman", "32: As-Sajda", "33: Al-Ahzaab", "34: Saba", "35: Faatir", "36: Yaseen", "37: As-Saaffaat", "38: Saad", "39: Az-Zumar", "40: Al-Ghaafir", "41: Fussilat", "42: Ash-Shura", "43: Az-Zukhruf", "44: Ad-Dukhaan", "45: Al-Jaathiya", "46: Al-Ahqaf", "47: Muhammad", "48: Al-Fath", "49: Al-Hujuraat", "50: Qaaf", "51: Adh-Dhaariyat", "52: At-Tur", "53: An-Najm", "54: Al-Qamar", "55: Ar-Rahmaan", "56: Al-Waaqia", "57: Al-Hadid", "58: Al-Mujaadila", "59: Al-Hashr", "60: Al-Mumtahana", "61: As-Saff", "62: Al-Jumu'a", "63: Al-Munaafiqoon", "64: At-Taghaabun", "65: At-Talaaq", "66: At-Tahrim", "67: Al-Mulk", "68: Al-Qalam", "69: Al-Haaqqa", "70: Al-Ma'aarij", "71: Nooh", "72: Al-Jinn", "73: Al-Muzzammil", "74: Al-Muddaththir", "75: Al-Qiyaama", "76: Al-Insaan", "77: Al-Mursalaat", "78: An-Naba", "79: An-Naazi'aat", "80: Abasa", "81: At-Takwir", "82: Al-Infitaar", "83: Al-Mutaffifin", "84: Al-Inshiqaaq", "85: Al-Burooj", "86: At-Taariq", "87: Al-A'laa", "88: Al-Ghaashiya", "89: Al-Fajr", "90: Al-Balad", "91: Ash-Shams", "92: Al-Lail", "93: Ad-Dhuhaa", "94: Ash-Sharh", "95: At-Tin", "96: Al-Alaq", "97: Al-Qadr", "98: Al-Bayyina", "99: Az-Zalzala", "100: Al-Aadiyaat", "101: Al Qaariah", "102: At-Takaathur", "103: Al-Asr", "104: Al-Humaza", "105: Al-Fil", "106: Quraish", "107: Al-Maa'un", "108: Al-Kawthar", "109: Al-Kaafiroon", "110: An-Nasr", "111: Al-Masad", "112: Al-Ikhlaas", "113: Al-Falaq", "114: An-Naas"], ["1: ٱلْفَاتِحَة", "2: ٱلْبَقَرَة", "3: آلِ عِمْرَان", "4: ٱلنِّسَاء", "5: ٱلْمَائِدَة", "6: ٱلْأَنْعَام", "7: ٱلْأَعْرَاف", "8: ٱلْأَنْفَال", "9: ٱلتَّوْبَة", "10: يُونُس", "11: هُود", "12: يُوسُف", "13: ٱلرَّعْد", "14: إِبْرَاهِيم", "15: ٱلْحِجْر", "16: ٱلنَّحْل", "17: ٱلْإِسْرَاء", "18: ٱلْكَهْف", "19: مَرْيَم", "20: طه", "21: ٱلْأَنْبِيَاء", "22: ٱلْحَجّ", "23: ٱلْمُؤْمِنُون", "24: ٱلنُّور", "25: ٱلْفُرْقَان", "26: ٱلشُّعَرَاء", "27: ٱلنَّمْل", "28: ٱلْقَصَص", "29: ٱلْعَنْكَبُوت", "30: ٱلرُّوم", "31: لُقْمَان", "32: ٱلسَّجْدَة", "33: ٱلْأَحْزَاب", "34: سَبَأ", "35: فَاطِر", "36: يس", "37: ٱلصَّافَّات", "38: ص", "39: ٱلزُّمَر", "40: غَافِر", "41: فُصِّلَت", "42: ٱلشُّورىٰ", "43: ٱلْزُّخْرُف", "44: ٱلدُّخَان", "45: ٱلْجَاثِيَة", "46: ٱلْأَحْقَاف", "47: مُحَمَّد", "48: ٱلْفَتْح", "49: ٱلْحُجُرَات", "50: ق", "51: ٱلذَّارِيَات", "52: ٱلطُّور", "53: ٱلنَّجْم", "54: ٱلْقَمَر", "55: ٱلرَّحْمَٰن", "56: ٱلْوَاقِعَة", "57: ٱلْحَدِيد", "58: ٱلْمُجَادِلَة", "59: ٱلْحَشْر", "60: ٱلْمُمْتَحَنَة", "61: ٱلصَّفّ", "62: ٱلْجُمُعَة", "63: ٱلْمُنَافِقُون", "64: ٱلتَّغَابُن", "65: ٱلطَّلَاق", "66: ٱلتَّحْرِيم", "67: ٱلْمُلْك", "68: ٱلْقَلَم", "69: ٱلْحَاقَّة", "70: ٱلْمَعَارِج", "71: نُوح", "72: ٱلْجِنّ", "73: ٱلْمُزَّمِّل", "74: ٱلْمُدَّثِّر", "75: ٱلْقِيَامَة", "76: ٱلْإِنْسَان", "77: ٱلْمُرْسَلَات", "78: ٱلنَّبَأ", "79: ٱلنَّازِعَات", "80: عَبَسَ", "81: ٱلتَّكْوِير", "82: ٱلْإِنْفِطَار", "83: ٱلْمُطَفِّفِين", "84: ٱلْإِنْشِقَاق", "85: ٱلْبُرُوج", "86: ٱلطَّارِق", "87: ٱلْأَعْلَىٰ", "88: ٱلْغَاشِيَة", "89: ٱلْفَجْر", "90: ٱلْبَلَد", "91: ٱلشَّمْس", "92: ٱللَّيْل", "93: ٱلضُّحَىٰ", "94: ٱلشَّرْح", "95: ٱلتِّين", "96: ٱلْعَلَق", "97: ٱلْقَدْر", "98: ٱلْبَيِّنَة", "99: ٱلزَّلْزَلَة", "100: ٱلْعَادِيَات", "101: ٱلْقَارِعَة", "102: ٱلتَّكَاثُر", "103: ٱلْعَصْر", "104: ٱلْهُمَزَة", "105: ٱلْفِيل", "106: قُرَيْش", "107: ٱلْمَاعُون", "108: ٱلْكَوْثَر", "109: ٱلْكَافِرُون", "110: ٱلنَّصْر", "111: ٱلْمَسَد", "112: ٱلْإِخْلَاص", "113: ٱلْفَلَق", "114: ٱلنَّاس"]];
 const VERSES = [7,286,200,176,120,165,206,75,129,109,123,111,43,52,99,128,111,110,98,135,112,78,118,64,77,227,93,88,69,60,34,30,73,54,45,83,182,88,75,85,54,53,89,59,37,35,38,29,18,45,60,49,62,55,78,96,29,22,24,13,14,11,11,18,12,12,30,52,52,44,28,28,20,56,40,31,50,40,46,42,29,19,36,25,22,17,19,26,30,20,15,21,11,8,8,19,5,8,8,11,11,8,3,9,5,4,7,3,6,3,5,4,5,6];
@@ -326,6 +328,7 @@ i18n({
   audionote: ['Recitations stream from everyayah.com, only after you press play. Everything else stays on this site.', 'التلاوات تُبث من everyayah.com فقط بعد الضغط على تشغيل. كل شيء آخر يبقى على هذا الموقع.'],
   play: ['Play', 'تشغيل'], pause: ['Pause', 'إيقاف مؤقت'], prev: ['Previous verse', 'الآية السابقة'], next: ['Next verse', 'الآية التالية'],
   audiofail: ['Could not load this recitation. Try another reciter.', 'تعذر تحميل التلاوة. جرّب قارئًا آخر.'],
+  bookmark: ['Bookmark', 'علامة'], bookmarked: ['Bookmarked', 'محفوظة'],
   repeatof: ['Repeat', 'تكرار'], fullscreen: ['Full screen', 'ملء الشاشة'], exitfull: ['Exit full screen', 'الخروج من ملء الشاشة'],
 });
 
@@ -445,6 +448,7 @@ function go(c, v, keepLoop = true) {
   if (!keepLoop || c !== Q.chapter) Q.loopFrom = Q.loopTo = 0;
   Q.chapter = c; Q.verse = v;
   save('quran', Q);
+  QM.record(c, v); // progress for the Tracker page
   history.replaceState(null, '', `/quran/${c}/${v}`);
   fill();
   renderText();
@@ -549,8 +553,25 @@ const wake = async () => { try { lock = await navigator.wakeLock.request('screen
 $('#wake').onchange = () => $('#wake').checked ? wake() : (lock?.release(), lock = null);
 document.addEventListener('visibilitychange', () => { if ($('#wake').checked && document.visibilityState === 'visible') wake() });
 
+// bookmarks, listed on the Tracker page
+const isMarked = () => QM.bookmarks().some(b => b.c === Q.chapter && b.v === Q.verse);
+function syncMark() {
+  const on = isMarked();
+  $('#bmicon').style.fill = on ? 'currentColor' : '';
+  $('#bookmark').style.color = on ? 'var(--fg)' : '';
+  $('#bookmark').setAttribute('aria-label', t(on ? 'bookmarked' : 'bookmark'));
+}
+$('#bookmark').onclick = () => {
+  const list = QM.bookmarks().filter(b => !(b.c === Q.chapter && b.v === Q.verse));
+  if (!isMarked()) list.unshift({ c: Q.chapter, v: Q.verse, at: Date.now() });
+  QM.saveBookmarks(list); syncMark();
+};
+const renderText_ = renderText;
+renderText = async (...a) => { syncMark(); return renderText_(...a) };
+
 fill();
 setFont();
+QM.record(Q.chapter, Q.verse);
 window.pageReady = renderText();
 history.replaceState(null, '', `/quran/${Q.chapter}/${Q.verse}`);
 </script>

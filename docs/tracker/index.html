@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>muslimist · quran tracker</title>
+<meta name="description" content="Plan a Quran khatm, track your progress by juz and keep bookmarks.">
+<meta name="theme-color" content="#111111">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/assets/icons/favicon-196.png">
+<link rel="apple-touch-icon" href="/assets/icons/apple-icon-180.png">
+<script>{const s = localStorage, d = document.documentElement; d.dataset.scheme = s.mode || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'); if (s.glass) d.dataset.glass = s.glass; d.dataset.bg = `url(/assets/img/bg-quran-${Math.random() * 6 | 0}.webp)`; d.style.setProperty('--bg-img', sessionStorage.bg || d.dataset.bg); if (sessionStorage.bg) d.classList.add('bg-ready'); if (s.lang == 'arabic') { d.lang = 'ar'; d.dir = 'rtl' }}</script>
+<style>
+  .big { font-size: clamp(30px, 6vw, 44px); font-weight: 650; letter-spacing: -.03em; line-height: 1.15 }
+  .lbl { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--mute) }
+  .row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap }
+  .row .grow { flex: 1; min-width: 0 }
+  .bar { height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; margin: 14px 0 8px }
+  .bar i { display: block; height: 100%; background: var(--fg); border-radius: 99px; transition: width .5s }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 14px 0 }
+  .stats div { padding: 12px; border-radius: 14px; background: var(--card); border: 1px solid var(--line) }
+  .stats b { display: block; font-size: 20px; font-variant-numeric: tabular-nums }
+  .stats span { font-size: 12px; color: var(--mute) }
+  .today { padding: 14px 16px; border-radius: 16px; background: var(--hilite); margin: 12px 0; line-height: 1.6 }
+  .today b { font-weight: 600 }
+  .chips2 { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 14px }
+  .chips2 button { padding: 9px 14px; border-radius: 99px; border: 1px solid var(--line); background: var(--field); font-size: 14.5px }
+  .chips2 button[aria-pressed="true"] { background: var(--fg); color: var(--page); border-color: var(--fg) }
+  .juz { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; margin-top: 10px }
+  .juz a { position: relative; aspect-ratio: 1; border-radius: 10px; background: var(--card); border: 1px solid var(--line); display: grid; place-items: center; font-size: 13px; font-weight: 600; overflow: hidden; font-variant-numeric: tabular-nums }
+  .juz a i { position: absolute; inset: auto 0 0; height: var(--p); background: var(--fg); opacity: .22 }
+  .juz a.done { background: var(--fg); color: var(--page) }
+  .juz a.cur { outline: 2px solid var(--fg); outline-offset: 1px }
+  @media (max-width: 640px) { .juz { grid-template-columns: repeat(6, 1fr) } .stats { gap: 6px } .stats div { padding: 10px } .stats b { font-size: 17px } }
+  .bm { display: flex; align-items: center; gap: 10px; padding: 11px 4px; border-top: 1px solid var(--line) }
+  .bm a { flex: 1; min-width: 0 }
+  .bm small { color: var(--mute); font-size: 12.5px; display: block }
+  .days { display: grid; grid-template-columns: repeat(14, 1fr); gap: 4px; margin-top: 10px }
+  .days i { aspect-ratio: 1; border-radius: 4px; background: var(--card); border: 1px solid var(--line) }
+  .days i.on { background: #2fb34f; border-color: #2fb34f }
+  .setplace { display: grid; grid-template-columns: 1fr 110px auto; gap: 8px; margin-top: 8px }
+  .setplace select, .setplace input { background: var(--field); border: 1px solid var(--line); border-radius: 10px; padding: 9px 10px; color: var(--fg); font-size: 15px; min-width: 0 }
+  details.more summary { cursor: pointer; color: var(--mute); font-size: 14px; margin-top: 10px }
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="/">muslimist</a>
+  <nav class="links" id="menu" popover><a href="/quran/" data-t="quran">Quran</a><a href="/tracker/" aria-current="page" data-t="tracker">Tracker</a><a href="/duaa/" data-t="duaa">Duaa</a><a href="/hadith/" data-t="hadith">Hadith</a><a href="/names/" data-t="names">Names</a><a href="/salah/" data-t="salah">Salah</a><a href="/calendar/" data-t="calendar">Calendar</a><a href="/ramadan/" data-t="ramadan">Ramadan</a><a href="/zakat/" data-t="zakat">Zakat</a><a href="/times/" data-t="times">Times</a><a href="/qibla/" data-t="qibla">Qibla</a><a href="/dashboard/" data-t="dash">Dash</a></nav>
+  <button class="pill menu" popovertarget="menu" aria-label="Menu"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</header>
+
+<section class="hero">
+  <h1 data-t="tracker">Quran tracker</h1>
+  <p data-t="sub">Plan a khatm, see your progress and bookmarks</p>
+</section>
+
+<main class="layout">
+  <section class="card glass" id="where"></section>
+  <section class="card glass" id="plan"></section>
+  <section class="card glass">
+    <div class="card-head"><span class="lbl" data-t="juzprog">Juz progress</span></div>
+    <div class="juz" id="juz"></div>
+  </section>
+  <section class="card glass">
+    <div class="card-head"><span class="lbl" data-t="readdays">Days you read</span><span class="mute" id="streak" style="font-size:14px"></span></div>
+    <div class="days" id="days"></div>
+  </section>
+  <section class="card glass">
+    <div class="card-head"><span class="lbl" data-t="bookmarks">Bookmarks</span></div>
+    <div id="bms"></div>
+  </section>
+</main>
+
+<footer class="foot"><span><span data-t="madewith">made with</span> <span class="heart" aria-label="love">♥</span> <span data-t="bymuslims">by muslims for muslims</span></span><a href="https://github.com/muslimist/muslimist.github.io">github</a><button popovertarget="privacy" data-t="privacy">privacy</button></footer>
+<div class="pop" id="privacy" popover><span data-t="privacynote">we don't track anything, see for yourself =)</span> <a href="https://github.com/muslimist/muslimist.github.io">github</a></div>
+
+<script src="/assets/site.js"></script>
+<script src="/assets/quranmeta.js"></script>
+<script>
+i18n({ sub: ['Plan a khatm, see your progress and bookmarks', 'خطّط لختمة، وتابع تقدّمك وعلاماتك'],
+  juzprog: ['Juz progress', 'تقدّم الأجزاء'], readdays: ['Days you read', 'أيام القراءة'], bookmarks: ['Bookmarks', 'العلامات'] });
+const num = n => AR ? (+n).toLocaleString('ar-EG') : n;
+const fmt = n => num(Math.round(n));
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+const DAY = 864e5;
+const midnight = d => { const x = new Date(d); x.setHours(0, 0, 0, 0); return x };
+const placeText = i => { const [c, v] = QM.place(i); return `${QM.name(c, AR)} ${num(c)}:${num(v)}` };
+const link = i => { const [c, v] = QM.place(i); return `/quran/${c}/${v}` };
+
+// where you are in the Quran page
+function where() {
+  const q = load('quran', { chapter: 1, verse: 1 }), i = QM.index(q.chapter, q.verse);
+  $('#where').innerHTML = `<div class="row"><div class="grow"><p class="lbl">You're at</p><p class="big">${esc(QM.name(q.chapter, AR))} ${num(q.chapter)}:${num(q.verse)}</p>
+    <p class="mute">Juz ${num(QM.juzOf(i))} · ${Math.floor(i / QM.TOTAL * 100)}% through the Quran</p></div><a class="btn primary" href="/quran/${q.chapter}/${q.verse}">Continue reading →</a></div>`;
+}
+
+// ---------- khatm plan ----------
+let pick = 30;
+function plan() {
+  const k = load('khatm', {}), q = load('quran', { chapter: 1, verse: 1 }), here = QM.index(q.chapter, q.verse);
+  if (!k.active) {
+    const doneList = (k.done || []).map(d => new Intl.DateTimeFormat(AR ? 'ar' : 'en', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(d)));
+    $('#plan').innerHTML = `<p class="lbl">Khatm plan</p><h2 style="margin:6px 0 4px;letter-spacing:-.02em">Finish the Quran in…</h2>
+      <p class="mute">Pick a number of days. Each day you'll get a portion to read on the Quran page, and your progress moves as you read in order.</p>
+      <div class="chips2" id="days-pick">${[3, 7, 10, 15, 20, 30, 60, 90].map(d => `<button data-d="${d}" aria-pressed="${d === pick}">${num(d)} days</button>`).join('')}</div>
+      <p class="mute" id="perday"></p>
+      <div class="row" style="margin-top:12px"><button class="btn" id="from-here">Start from ${esc(placeText(here))}</button><button class="btn primary" id="from-start">Start from the beginning</button></div>
+      ${doneList.length ? `<p class="note" style="margin-top:14px">Completed: ${doneList.length} khatm${doneList.length > 1 ? 's' : ''} (last ${doneList[doneList.length - 1]}). May Allah accept it.</p>` : ''}`;
+    const per = () => $('#perday').textContent = `About ${fmt(QM.TOTAL / pick)} verses, or ${(30 / pick).toFixed(30 % pick ? 1 : 0)} juz, a day.`;
+    per();
+    $$('#days-pick button').forEach(b => b.onclick = () => { pick = +b.dataset.d; $$('#days-pick button').forEach(x => x.setAttribute('aria-pressed', x === b)); per() });
+    const start = from => { save('khatm', { ...k, active: true, start: +midnight(new Date()), days: pick, from, at: from }); if (from === 0) { const q2 = load('quran', {}); save('quran', { ...q2, chapter: 1, verse: 1 }) } render() };
+    $('#from-here').onclick = () => start(here - 1);
+    $('#from-start').onclick = () => start(0);
+    return;
+  }
+  const at = k.at || 0, total = QM.TOTAL - k.from, dayN = Math.floor((midnight(new Date()) - k.start) / DAY); // 0 on the first day
+  if (at >= QM.TOTAL) {
+    k.active = false; k.done = [...(k.done || []), Date.now()]; save('khatm', k);
+    $('#plan').innerHTML = `<p class="lbl">Khatm plan</p><p class="big">Khatm complete 🎉</p><p class="mute">You finished the Quran. May Allah accept it from you. Consider the duaa of completing the Quran, and start another whenever you're ready.</p><div class="row" style="margin-top:12px"><button class="btn primary" id="again">Plan another</button></div>`;
+    $('#again').onclick = render; return;
+  }
+  const perDay = total / k.days, goal = Math.min(QM.TOTAL, Math.ceil(k.from + perDay * Math.min(dayN + 1, k.days)));
+  const diff = at - Math.ceil(k.from + perDay * Math.min(dayN, k.days)); // vs where you should be at the start of today
+  const left = Math.max(0, k.days - dayN), done = (at - k.from) / total;
+  const todayLeft = Math.max(0, goal - at);
+  const status = diff >= 0 ? (todayLeft === 0 ? "✓ Today's portion done" : 'On track') : `${fmt(-diff)} verses behind`;
+  $('#plan').innerHTML = `<div class="row"><p class="lbl grow">Khatm plan · ${num(k.days)} days</p><span class="mute" style="font-size:14px">${status}</span></div>
+    <div class="bar"><i style="width:${(done * 100).toFixed(1)}%"></i></div>
+    <div class="stats"><div><b>${Math.floor(done * 100)}%</b><span>done</span></div><div><b>${num(Math.min(dayN + 1, k.days))} / ${num(k.days)}</b><span>day</span></div><div><b>${num(left)}</b><span>days left</span></div></div>
+    <div class="today">${todayLeft ? `<b>Today:</b> from ${esc(placeText(at + 1))} to ${esc(placeText(goal))} (${fmt(todayLeft)} verses)` : `<b>Today's portion is done.</b> Keep going if you like: tomorrow's starts at ${esc(placeText(at + 1))}.`}</div>
+    <div class="row"><a class="btn primary" href="${link(at + 1)}">${todayLeft ? "Read today's portion →" : 'Keep reading →'}</a></div>
+    <details class="more"><summary>Reading from a printed mushaf? Set your place</summary>
+      <div class="setplace"><select id="sp-c">${QM.NAMES[AR ? 1 : 0].map((n, i) => `<option value="${i + 1}">${esc(n)}</option>`).join('')}</select><input id="sp-v" type="number" min="1" inputmode="numeric" placeholder="verse"><button class="btn" id="sp-set">Set</button></div>
+    </details>
+    <details class="more"><summary>End this plan</summary><p class="mute" style="margin:8px 0">Your progress in this plan will be cleared.</p><button class="btn" id="end">End plan</button></details>`;
+  const [ac, av] = QM.place(Math.max(1, at)); $('#sp-c').value = ac; $('#sp-v').value = av;
+  $('#sp-set').onclick = () => { const c = +$('#sp-c').value, v = Math.min(Math.max(1, +$('#sp-v').value || 1), QM.VERSES[c - 1]); k.at = QM.index(c, v); save('khatm', k); render() };
+  $('#end').onclick = () => { save('khatm', { done: k.done || [] }); render() };
+}
+
+// ---------- juz grid ----------
+function juz() {
+  const k = load('khatm', {}), q = load('quran', { chapter: 1, verse: 1 });
+  const at = k.active ? k.at || 0 : QM.index(q.chapter, q.verse);
+  $('#juz').innerHTML = QM.juzStart.map((s, j) => {
+    const e = j < 29 ? QM.juzStart[j + 1] - 1 : QM.TOTAL, p = Math.max(0, Math.min(1, (at - s + 1) / (e - s + 1)));
+    const [c, v] = QM.place(s);
+    return `<a href="/quran/${c}/${v}" class="${p >= 1 ? 'done' : p > 0 ? 'cur' : ''}" style="--p:${p * 100}%" title="Juz ${j + 1}: ${QM.name(c)} ${c}:${v}">${p > 0 && p < 1 ? '<i></i>' : ''}<span style="position:relative">${num(j + 1)}</span></a>`;
+  }).join('');
+}
+
+// ---------- days read (last 28) ----------
+function days() {
+  const set = new Set(load('quran-days', { list: [] }).list), out = [];
+  let streak = 0, counting = true;
+  for (let i = 0; i < 28; i++) {
+    const d = new Date(); d.setDate(d.getDate() - i); const on = set.has(QM.dayKey(d));
+    if (counting) { if (on) streak++; else if (i > 0) counting = false }
+    out.unshift(`<i class="${on ? 'on' : ''}" title="${QM.dayKey(d)}"></i>`);
+  }
+  $('#days').innerHTML = out.join('');
+  $('#streak').textContent = streak ? `${num(streak)} day streak` : '';
+}
+
+// ---------- bookmarks ----------
+function bookmarks() {
+  const list = QM.bookmarks();
+  $('#bms').innerHTML = list.length ? list.map((b, i) => `<div class="bm"><a href="/quran/${b.c}/${b.v}">${esc(QM.name(b.c, AR))} ${num(b.c)}:${num(b.v)}<small>${new Intl.DateTimeFormat(AR ? 'ar' : 'en', { day: 'numeric', month: 'short' }).format(b.at)}</small></a><button class="icon" data-i="${i}" aria-label="Remove"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>`).join('')
+    : '<p class="note">No bookmarks yet. Tap the bookmark icon on the Quran page to save a verse.</p>';
+  $$('#bms button').forEach(b => b.onclick = () => { const l = QM.bookmarks(); l.splice(+b.dataset.i, 1); QM.saveBookmarks(l); bookmarks() });
+}
+
+function render() { where(); plan(); juz(); days(); bookmarks() }
+render();
+</script>
+</body>
+</html>
