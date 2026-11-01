@@ -11,7 +11,10 @@ i18n({
   play: ['Play', 'تشغيل'], pause: ['Pause', 'إيقاف مؤقت'], prev: ['Previous', 'السابق'], next: ['Next', 'التالي'],
   empty: ['No duas found. Try another word or category.', 'لا توجد نتائج. جرّب كلمة أو تصنيفًا آخر.'],
   showtr: ['Show translation', 'إظهار الترجمة الإنجليزية'], showtl: ['Show transliteration', 'إظهار النطق بالحروف اللاتينية'],
-  copylink: ['copy link', 'نسخ الرابط'], copied: ['copied', 'تم النسخ'], sources: ['source', 'المصدر'],
+  copylink: ['copy link', 'نسخ الرابط'],
+  morning: ['Morning adhkar', 'أذكار الصباح'], evening: ['Evening adhkar', 'أذكار المساء'], start: ['Start', 'ابدأ'], tap: ['Tap to count', 'اضغط للعدّ'],
+  donetoday: ['Done today', 'تمت اليوم'], adhkardone: ['Done. May Allah accept it.', 'تمّت. تقبّل الله منك.'], back: ['Duaa', 'الأدعية'], of: ['of', 'من'],
+  adhkarsub: ['Step through them with a counter', 'خطوة بخطوة مع عدّاد'], copied: ['copied', 'تم النسخ'], sources: ['source', 'المصدر'],
 });
 
 const search = $('#duaa-search');
@@ -61,6 +64,11 @@ if (duas.length) {
     cats.append(card);
   }
   list.before(cats);
+  // morning / evening adhkar: the two sets from "Dua in the morning & evening", one at a time with a counter
+  const ad = document.createElement('div');
+  ad.className = 'adhkar-start'; ad.id = 'adhkar-start';
+  ad.innerHTML = ['morning', 'evening'].map(k => `<a class="ad-card" href="#adhkar-${k}" data-k="${k}"><b>${t(k)}</b><small>${t('adhkarsub')}</small><span class="ad-done" hidden>✓ ${t('donetoday')}</span></a>`).join('');
+  cats.before(ad);
 
   list.insertAdjacentHTML('afterend', `
   <div id="reader" class="dr" hidden>
@@ -72,6 +80,7 @@ if (duas.length) {
       <button class="play" id="dr-play" aria-label="${t('play')}"><svg viewBox="0 0 24 24"><path id="dr-icon" d="M8 5v14l11-7z"/></svg></button>
       <button class="icon" id="dr-next" aria-label="${t('next')}"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
     </div>
+    <button class="dr-tap" id="dr-tap" hidden></button>
     <p class="dr-count" id="dr-count"></p>
     <div class="dr-meta"><a href="#" id="dr-link">${t('copylink')}</a><button id="dr-src">${t('sources')}</button></div>
     <div class="dr-sources" id="dr-sources" hidden></div>
@@ -109,6 +118,8 @@ function show(view) {
   if (!duas.length) return;
   if (reader.dua) view = 'reader';
   $('#cats').hidden = view !== 'cats';
+  $('#adhkar-start').hidden = view !== 'cats';
+  if (view === 'cats') $$('.ad-card').forEach(c => { c.querySelector('.ad-done').hidden = !adhkarDone(c.dataset.k); c.classList.toggle('now', c.dataset.k === adhkarNow()) });
   list.hidden = view !== 'list';
   $('#reader').hidden = view !== 'reader';
   $('#chips').hidden = view === 'reader';
@@ -128,6 +139,8 @@ function render() {
   body.querySelectorAll('audio, .dua-actions, .dua-sources, .dua-version, h3').forEach(e => e.remove());
   $('#dr-body').replaceChildren(...body.childNodes);
   $('#dr-count').textContent = n > 1 ? `${reader.i + 1} / ${n}` : '';
+  $('#dr-tap').hidden = !reader.adhkar;
+  if (reader.adhkar) { reader.count = 0; syncTap() }
   $('#dr-prev').style.visibility = $('#dr-next').style.visibility = n > 1 ? '' : 'hidden';
   $('#dr-play').hidden = !audioOf();
   const src = v.querySelector('.dua-sources');
@@ -137,7 +150,39 @@ function render() {
   syncPlay();
 }
 
+// ---------- adhkar mode ----------
+// how many times each recitation is said, and when (b = both, m = morning only, e = evening only), from its own notes
+const ADHKAR = { '': [1, 'b'], 'dua-73': [1, 'b'], 'dua-74': [3, 'b'], 'dua-75': [1, 'b'], 'dua-76': [1, 'b'], 'dua-77': [1, 'b'], 'dua-78': [4, 'b'], 'dua-79': [1, 'b'],
+  'dua-80': [3, 'b'], 'dua-81': [7, 'b'], 'dua-82': [1, 'b'], 'dua-83': [1, 'b'], 'dua-84': [3, 'b'], 'dua-85': [3, 'b'], 'dua-86': [1, 'b'], 'dua-87': [1, 'b'], 'dua-88': [1, 'b'],
+  'dua-89': [100, 'b'], 'dua-90': [10, 'b'], 'dua-91': [3, 'm'], 'dua-92': [1, 'm'], 'dua-93': [100, 'm'], 'dua-94': [3, 'e'], 'dua-95': [10, 'b'] };
+const today = () => new Date().toDateString();
+const adhkarDone = k => load('adhkar', {})[k] === today();
+// morning from fajr until asr, evening from asr until the night (falls back to clock hours without prayer times)
+function adhkarNow() { const h = new Date().getHours(); return h >= 3 && h < 15 ? 'morning' : 'evening' }
+const timesOf = () => reader.versions.map(v => (ADHKAR[v.id] || [1])[0]);
+function syncTap() {
+  const need = timesOf()[reader.i];
+  $('#dr-tap').innerHTML = `<b>${reader.count}</b> / ${need}<small>${t('tap')}</small>`;
+  $('#dr-tap').classList.toggle('full', reader.count >= need);
+}
+function openAdhkar(k) {
+  const dua = $('#dua-72');
+  if (!dua) return;
+  reader.dua = dua; reader.adhkar = k; reader.i = 0;
+  reader.versions = versionsOf(dua).filter(v => { const w = (ADHKAR[v.id] || [1, 'b'])[1]; return w === 'b' || w === k[0] });
+  $('#dr-back').textContent = (AR ? '› ' : '‹ ') + t('back');
+  $('#dr-title').textContent = t(k);
+  render(); show('reader');
+  $('.layout').scrollIntoView({ block: 'start', behavior: 'smooth' });
+}
+function finishAdhkar() {
+  const done = load('adhkar', {}); done[reader.adhkar] = today(); save('adhkar', done);
+  $('#dr-body').innerHTML = `<p class="ad-finish">✓ ${t('adhkardone')}</p>`;
+  $('#dr-tap').hidden = true; $('#dr-count').textContent = '';
+}
+
 function openReader(dua, at) {
+  reader.adhkar = null;
   reader.dua = dua;
   reader.versions = versionsOf(dua);
   reader.i = Math.max(0, reader.versions.findIndex(v => v === at || v.contains(at)));
@@ -151,13 +196,14 @@ function openReader(dua, at) {
 
 function closeReader() {
   $$('audio').forEach(a => a.pause());
-  reader.dua = null;
+  reader.dua = null; reader.adhkar = null;
   if (location.hash) history.pushState(null, '', location.pathname);
   filterDuas();
 }
 
 function go(step) {
   const n = reader.versions.length;
+  if (reader.adhkar) { reader.i = Math.min(n - 1, Math.max(0, reader.i + step)); $$('audio').forEach(a => a.pause()); render(); return }
   $$('audio').forEach(a => a.pause());
   reader.i = (reader.i + step + n) % n;
   history.replaceState(null, '', '#' + idOf());
@@ -176,6 +222,13 @@ if (duas.length) {
   $('#dr-prev').onclick = () => go(AR ? 1 : -1);
   $('#dr-next').onclick = () => go(AR ? -1 : 1);
   $('#dr-play').onclick = () => { const a = audioOf(); if (a) a.paused ? a.play() : a.pause() };
+  $('#dr-tap').onclick = () => {
+    const need = timesOf()[reader.i];
+    if (reader.count < need) reader.count++;
+    if (navigator.vibrate) navigator.vibrate(reader.count >= need ? [30, 60, 30] : 15);
+    syncTap();
+    if (reader.count >= need) setTimeout(() => { if (!reader.adhkar) return; if (reader.i < reader.versions.length - 1) go(1); else finishAdhkar() }, 450);
+  };
   $('#dr-src').onclick = () => $('#dr-sources').hidden = !$('#dr-sources').hidden;
   $('#dr-link').onclick = async e => {
     e.preventDefault();
@@ -194,6 +247,8 @@ document.addEventListener('keydown', e => {
 
 // links: /duaa/#dua-12 opens that duaa (or that recitation) in the reader
 function fromHash() {
+  const ak = location.hash.match(/^#adhkar-(morning|evening)$/);
+  if (ak) { filterDuas(); openAdhkar(ak[1]); return }
   const target = location.hash && document.getElementById(location.hash.slice(1));
   const dua = target?.closest?.('.dua');
   if (!dua) { if (reader.dua) closeReader(); return }
