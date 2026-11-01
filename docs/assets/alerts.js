@@ -74,9 +74,8 @@
     await ensureTimes();
     prayTimes.setMethod(timesSet.method);
     const now = new Date(), h = prayTimes.getTimes(now, [timesSet.lat, timesSet.lng], 'auto', 'auto', 'Float'), txt = prayTimes.getTimes(now, [timesSet.lat, timesSet.lng], 'auto', 'auto', timesSet.format);
-    const day = new Date(now); day.setHours(0, 0, 0, 0);
     for (const k of s.prayers) {
-      const at = +day + h[k] * 36e5, id = `${day.toDateString()} ${k}`;
+      const at = atClock(now, h[k]), id = `${now.toDateString()} ${k}`;
       if (now >= at && now - at < 3 * 60e3 && localStorage['alerts-last'] !== id) { localStorage['alerts-last'] = id; return fire(k, txt[k]) }
     }
   }

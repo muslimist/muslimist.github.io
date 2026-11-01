@@ -19,16 +19,22 @@ const timesSet = load('times', {
   show: oldList || ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'],
 });
 
+// a prayer time ("13.25" hours) as a Date on the given day, counted on the wall clock: adding hours to midnight
+// would be an hour off on the days the clocks change
+const atClock = (day, hours) => new Date(day.getFullYear(), day.getMonth(), day.getDate(), 0, 0, Math.round(hours * 3600));
+const daysBetween = (a, b) => Math.round((new Date(b.getFullYear(), b.getMonth(), b.getDate()) - new Date(a.getFullYear(), a.getMonth(), a.getDate())) / 864e5);
+
 // returns [{key, time, at}] for the shown prayers today, plus the next one (rolls over to tomorrow's first)
 function prayerTimes(now = new Date()) {
   prayTimes.setMethod(timesSet.method);
   const coords = [timesSet.lat, timesSet.lng];
   const text = prayTimes.getTimes(now, coords, 'auto', 'auto', timesSet.format, timesSet.seconds ? 'show' : 'hide');
   const hours = prayTimes.getTimes(now, coords, 'auto', 'auto', 'Float');
-  const day = new Date(now); day.setHours(0, 0, 0, 0);
   const list = PRAYERS.filter(k => timesSet.show.includes(k))
-    .map(k => ({ key: k, time: text[k], at: new Date(+day + hours[k] * 3600e3) }));
-  const next = list.find(p => p.at > now) || (list[0] && { ...list[0], at: new Date(+list[0].at + 864e5) });
+    .map(k => ({ key: k, time: text[k], at: atClock(now, hours[k]) }));
+  // after the last one, the next is tomorrow's first (with tomorrow's own time)
+  const tm = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 12);
+  const next = list.find(p => p.at > now) || (list[0] && { ...list[0], time: prayTimes.getTimes(tm, coords, 'auto', 'auto', timesSet.format, timesSet.seconds ? 'show' : 'hide')[list[0].key], at: atClock(tm, prayTimes.getTimes(tm, coords, 'auto', 'auto', 'Float')[list[0].key]) });
   return { list, next };
 }
 

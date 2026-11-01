@@ -347,12 +347,12 @@ function today() {
   const now = new Date(), items = [];
   prayTimes.setMethod(timesSet.method);
   const fl = prayTimes.getTimes(now, [timesSet.lat, timesSet.lng], 'auto', 'auto', 'Float');
-  const at = hrs => { const d = new Date(now); d.setHours(0, 0, 0, 0); return new Date(+d + hrs * 36e5) };
+  const at = hrs => atClock(now, hrs);
   const H = hijriOf(now);
   // Ramadan
   if (H.m === 9) {
     const m = at(fl.maghrib), f = at(fl.fajr);
-    items.push([now < f ? L(`Suhoor ends at ${clock(f)}`, `ينتهي السحور ${clock(f)}`) : now < m ? L(`Iftar at ${clock(m)}`, `الإفطار ${clock(m)}`) : L(`Suhoor ends at ${clock(new Date(+f + 864e5))}`, `ينتهي السحور ${clock(new Date(+f + 864e5))}`), L(`Ramadan, day ${H.d}`, `رمضان، اليوم ${H.d.toLocaleString('ar-EG')}`), '/ramadan/']);
+    items.push([now < f ? L(`Suhoor ends at ${clock(f)}`, `ينتهي السحور ${clock(f)}`) : now < m ? L(`Iftar at ${clock(m)}`, `الإفطار ${clock(m)}`) : L(`Suhoor ends at ${clock(f)}`, `ينتهي السحور ${clock(f)}`), L(`Ramadan, day ${H.d}`, `رمضان، اليوم ${H.d.toLocaleString('ar-EG')}`), '/ramadan/']);
   } else {
     let d = new Date(now), n = 0; while (n < 45 && !(hijriOf(d).m === 9 && hijriOf(d).d === 1)) { d.setDate(d.getDate() + 1); n++ }
     if (n < 45) items.push([L(`Ramadan in ${n} days`, `رمضان بعد ${n.toLocaleString('ar-EG')} يومًا`), L('Get ready: make up missed fasts, plan your khatm', 'استعد: اقضِ ما فاتك، وخطّط لختمتك'), '/ramadan/']);
@@ -368,7 +368,7 @@ function today() {
   // Quran plan
   const k = load('khatm', {});
   if (k.active) {
-    const total = QM.TOTAL - k.from, dayN = Math.floor((new Date(now).setHours(0, 0, 0, 0) - k.start) / 864e5);
+    const total = QM.TOTAL - k.from, dayN = daysBetween(new Date(k.start), now);
     const goal = Math.min(QM.TOTAL, Math.ceil(k.from + total / k.days * Math.min(dayN + 1, k.days))), left = Math.max(0, goal - (k.at || 0));
     const [c, v] = QM.place((k.at || 0) + 1);
     items.push([left ? L(`Quran: ${left} verses for today`, `القرآن: ${left.toLocaleString('ar-EG')} آية لليوم`) : L("Quran: today's portion done", 'القرآن: أنهيت وِرد اليوم'), left ? `${L('From', 'من')} ${QM.name(c, AR)} ${c}:${v}` : L(`${Math.floor(((k.at || 0) - k.from) / total * 100)}% of your khatm`, `${Math.floor(((k.at || 0) - k.from) / total * 100).toLocaleString('ar-EG')}٪ من ختمتك`), left ? `/quran/${c}/${v}` : '/quran/progress/', !left]);

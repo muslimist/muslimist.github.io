@@ -148,7 +148,7 @@ function render() {
     // fajr and maghrib are needed even if hidden on the Times page
     prayTimes.setMethod(timesSet.method);
     const fl = prayTimes.getTimes(now, [timesSet.lat, timesSet.lng], 'auto', 'auto', 'Float'), txt = prayTimes.getTimes(now, [timesSet.lat, timesSet.lng], 'auto', 'auto', timesSet.format);
-    const at = h => { const d = new Date(now); d.setHours(0, 0, 0, 0); return new Date(+d + h * 36e5) };
+    const at = h => atClock(now, h);
     const fajr = at(fl.fajr), maghrib = at(fl.maghrib);
     $('#t-suhoor').textContent = txt.fajr; $('#t-iftar').textContent = txt.maghrib;
     let target, what;
