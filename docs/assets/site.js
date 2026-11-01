@@ -143,7 +143,13 @@ addEventListener('DOMContentLoaded', () =>
     requestAnimationFrame(() => document.documentElement.classList.add('ready'))));
 
 // offline support and prayer alerts, on every page
-if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('/service-worker.js').catch(() => {}));
+if ('serviceWorker' in navigator) {
+  addEventListener('load', () => navigator.serviceWorker.register('/service-worker.js', { updateViaCache: 'none' }).then(r => r.update()).catch(() => {}));
+  // a new version took over: reload once so this page shows it (not on the very first install)
+  const hadController = !!navigator.serviceWorker.controller;
+  let reloaded = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => { if (hadController && !reloaded) { reloaded = true; location.reload() } });
+}
 { const s = document.createElement('script'); s.src = '/assets/alerts.js'; s.defer = true; document.head.append(s) }
 
 // sub-page switches (Quran: Read | Progress) slide sideways instead of the usual page fade
