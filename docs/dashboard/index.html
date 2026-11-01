@@ -303,7 +303,7 @@ $('#dua-ar').textContent = dua.ar;
 $('#dua-tr').textContent = dua.tr;
 $('#dua-tl').textContent = dua.tl;
 // translation and transliteration follow the Duaa page's settings
-const duaOpts = load('duaa', { translation: true, transliteration: false });
+const duaOpts = load('duaa', { translation: !AR, transliteration: false });
 $('#dua-tr').hidden = !duaOpts.translation;
 $('#dua-tl').hidden = !duaOpts.transliteration;
 $('#dua-link').href = `/duaa/#${dua.id}`;
@@ -398,7 +398,8 @@ function today() {
   const now = new Date(), day = Math.floor((now - now.getTimezoneOffset() * 6e4) / 864e5), i = day % NAMES.length, [ar, tl, en] = NAMES[i];
   $('#nm-label').textContent = `${t('nameday')} · ${AR ? (i + 1).toLocaleString('ar-EG') : i + 1}`;
   $('#nm-ar').textContent = ar; $('#nm-tl').textContent = tl; $('#nm-en').textContent = en;
-  $('#nm-tl').hidden = $('#nm-en').hidden = AR;
+  if (AR) $('#nm-en').textContent = NAMES_AR[i];
+  $('#nm-tl').hidden = AR;
 }
 
 // ---------- coming up: the next special days from the calendar ----------

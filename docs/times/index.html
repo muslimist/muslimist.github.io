@@ -87,8 +87,8 @@
       <option value="LondonUIPT">London Unified Islamic Prayer Timetable</option>
     </select></label>
     <div class="row2">
-      <label><span data-t="format">Time format</span><select id="format"><option value="12h">12-hour</option><option value="12hNS">12-hour (no am/pm)</option><option value="24h">24-hour</option></select></label>
-      <label><span data-t="secs">Seconds</span><select id="seconds"><option value="">Hide</option><option value="1">Show</option></select></label>
+      <label><span data-t="format">Time format</span><select id="format"><option value="12h" data-t="f12">12-hour</option><option value="12hNS" data-t="f12ns">12-hour (no am/pm)</option><option value="24h" data-t="f24">24-hour</option></select></label>
+      <label><span data-t="secs">Seconds</span><select id="seconds"><option value="" data-t="hide">Hide</option><option value="1" data-t="showopt">Show</option></select></label>
     </div>
     <label><span data-t="show">Show</span></label>
     <div class="checks" id="show"></div>
@@ -110,6 +110,7 @@
 <script src="/assets/times.js"></script>
 <script>
 i18n({
+  f12: ['12-hour', '١٢ ساعة'], f12ns: ['12-hour (no am/pm)', '١٢ ساعة (بلا ص/م)'], f24: ['24-hour', '٢٤ ساعة'], hide: ['Hide', 'إخفاء'], showopt: ['Show', 'إظهار'],
   sub: ['Prayer times for your area, calculated on your device', 'مواقيت الصلاة لمنطقتك، تُحسب على جهازك'],
   today: ['Today', 'اليوم'], locate: ['Use my location', 'استخدم موقعي'], locating: ['Getting location…', 'جارٍ تحديد الموقع…'],
   denied: ['Location unavailable', 'تعذر تحديد الموقع'],

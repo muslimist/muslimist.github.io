@@ -124,7 +124,8 @@ function say(i, then) {
 }
 
 // ---------- list ----------
-$('#grid').innerHTML = NAMES.map(([ar, tl, en], i) => `<button class="nt" data-i="${i}"><i>${num(i + 1)}</i><span class="ar" lang="ar">${ar}</span><b>${tl}</b><small>${en}</small></button>`).join('');
+const meaning = i => AR ? NAMES_AR[i] : NAMES[i][2];
+$('#grid').innerHTML = NAMES.map(([ar, tl], i, _, en = meaning(i)) => `<button class="nt" data-i="${i}"><i>${num(i + 1)}</i><span class="ar" lang="ar">${ar}</span><b>${tl}</b><small>${en}</small></button>`).join('');
 $('#grid').onclick = e => { const b = e.target.closest('.nt'); if (b) say(+b.dataset.i) };
 const norm = s => s.toLowerCase().normalize('NFD').replace(/[̀-ًͯ-ٰٟ']/g, '');
 $('#q').oninput = () => {
@@ -147,7 +148,7 @@ let order = NAMES.map((_, i) => i);
 const shuffle = () => { order = NAMES.map((_, i) => i); for (let i = order.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [order[i], order[j]] = [order[j], order[i]] } };
 if (st.shuffle) shuffle();
 function card() {
-  const [ar, tl, en] = NAMES[order[st.i]];
+  const [ar, tl] = NAMES[order[st.i]], en = meaning(order[st.i]);
   $('#fc').classList.remove('open');
   $('#fc-n').textContent = `#${num(order[st.i] + 1)}`;
   $('#fc-ar').textContent = ar; $('#fc-tl').textContent = tl; $('#fc-en').textContent = en;

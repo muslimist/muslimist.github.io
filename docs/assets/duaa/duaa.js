@@ -30,6 +30,11 @@ duas.forEach(dua => {
   dua.dataset.search += ' ' + ar;
   if (AR) dua.querySelector('summary > span:last-child').textContent = ar;
 });
+// in Arabic, short notes (instructions, counts, references) get their Arabic; longer narrations stay in English, shown left to right
+if (AR) $$('.dua p:not([class])').forEach(p => {
+  const ar = arabicDuaNotes[p.textContent.trim()];
+  if (ar) p.textContent = ar; else { p.lang = 'en'; p.dir = 'ltr'; p.classList.add('en-note') }
+});
 const titleOf = dua => dua.querySelector('summary > span:last-child').textContent;
 
 // recitations of a duaa: each .dua-version, or the whole body when there is only one
@@ -138,6 +143,8 @@ function render() {
   const body = v.cloneNode(true);
   body.querySelectorAll('audio, .dua-actions, .dua-sources, .dua-version, h3').forEach(e => e.remove());
   $('#dr-body').replaceChildren(...body.childNodes);
+  // an item with no Arabic text keeps its English notes, so it isn't empty
+  if (!$('#dr-body .dua-arabic')) $$('#dr-body .en-note').forEach(n => n.classList.add('keep'));
   $('#dr-count').textContent = n > 1 ? `${reader.i + 1} / ${n}` : '';
   $('#dr-tap').hidden = !reader.adhkar;
   if (reader.adhkar) { reader.count = 0; syncTap() }
@@ -259,7 +266,7 @@ function fromHash() {
 addEventListener('hashchange', fromHash);
 
 // ---------- display options, remembered on this device ----------
-const opts = load('duaa', { translation: true, transliteration: false });
+const opts = load('duaa', { translation: !AR, transliteration: false }); // in Arabic the English translation starts off
 for (const k of ['translation', 'transliteration']) {
   const box = $('#duaa-' + k);
   box.checked = opts[k];

@@ -101,7 +101,7 @@
   <form method="dialog">
     <div class="sheet-head"><h2 data-t="settings" tabindex="-1" autofocus>Settings</h2><button class="close" data-t-label="close" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <label><span data-t="adjust">Adjust Hijri date</span><select id="offset">
-      <option value="-2">−2 days</option><option value="-1">−1 day</option><option value="0">0 (Umm al-Qura)</option><option value="1">+1 day</option><option value="2">+2 days</option>
+      <option value="-2" data-t="o-2">−2 days</option><option value="-1" data-t="o-1">−1 day</option><option value="0" data-t="o0">0 (Umm al-Qura)</option><option value="1" data-t="o1">+1 day</option><option value="2" data-t="o2">+2 days</option>
     </select></label>
     <p class="note" data-t="adjustnote">Dates follow the Umm al-Qura calendar. Local moon sighting can differ by a day or two: adjust here to match your mosque.</p>
     <label class="check"><input type="checkbox" id="mondays"> <span data-t="showmt">Mark Mondays and Thursdays</span></label>
@@ -114,6 +114,7 @@
 <script src="/assets/site.js"></script>
 <script>
 i18n({
+  'o-2': ['−2 days', '−٢ يوم'], 'o-1': ['−1 day', '−١ يوم'], o0: ['0 (Umm al-Qura)', '٠ (أم القرى)'], o1: ['+1 day', '+١ يوم'], o2: ['+2 days', '+٢ يوم'],
   sub: ['Hijri months, special days and the life of the Prophet ﷺ', 'الأشهر الهجرية والأيام الفاضلة والسيرة النبوية'],
   prevm: ['Previous month', 'الشهر السابق'], nextm: ['Next month', 'الشهر التالي'],
   'l-eid': ['Eid', 'عيد'], 'l-fast': ['Recommended fast', 'صيام مستحب'], 'l-day': ['Special day', 'يوم فاضل'], 'l-hist': ["In the Prophet's ﷺ life", 'من السيرة'],

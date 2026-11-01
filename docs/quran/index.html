@@ -261,13 +261,13 @@
     <div class="row2">
       <label><span data-t="script">Arabic script</span><select id="script">
         <option value="none" data-t="none">None</option>
-        <option value="quran-uthmani-tajweed">Uthmani, tajweed colours</option>
-        <option value="quran-uthmani">Uthmani</option>
-        <option value="quran-uthmani-min">Uthmani, minimal</option>
-        <option value="quran-simple">Simple</option>
-        <option value="quran-simple-enhanced">Simple, enhanced</option>
-        <option value="quran-simple-min">Simple, minimal</option>
-        <option value="quran-simple-clean">Simple, clean</option>
+        <option value="quran-uthmani-tajweed" data-t="s-tajweed">Uthmani, tajweed colours</option>
+        <option value="quran-uthmani" data-t="s-uthmani">Uthmani</option>
+        <option value="quran-uthmani-min" data-t="s-uthmanimin">Uthmani, minimal</option>
+        <option value="quran-simple" data-t="s-simple">Simple</option>
+        <option value="quran-simple-enhanced" data-t="s-enhanced">Simple, enhanced</option>
+        <option value="quran-simple-min" data-t="s-simplemin">Simple, minimal</option>
+        <option value="quran-simple-clean" data-t="s-clean">Simple, clean</option>
       </select></label>
       <label><span data-t="font">Arabic font</span><select id="font">
         <option value="">me_quran</option>
@@ -320,6 +320,8 @@ const NAMES = [["1: Al-Faatiha", "2: Al-Baqara", "3: Aal-i-Imraan", "4: An-Nisaa
 const VERSES = [7,286,200,176,120,165,206,75,129,109,123,111,43,52,99,128,111,110,98,135,112,78,118,64,77,227,93,88,69,60,34,30,73,54,45,83,182,88,75,85,54,53,89,59,37,35,38,29,18,45,60,49,62,55,78,96,29,22,24,13,14,11,11,18,12,12,30,52,52,44,28,28,20,56,40,31,50,40,46,42,29,19,36,25,22,17,19,26,30,20,15,21,11,8,8,19,5,8,8,11,11,8,3,9,5,4,7,3,6,3,5,4,5,6];
 
 i18n({
+  's-tajweed': ['Uthmani, tajweed colours', 'الرسم العثماني، بألوان التجويد'], 's-uthmani': ['Uthmani', 'الرسم العثماني'], 's-uthmanimin': ['Uthmani, minimal', 'الرسم العثماني، مختصر التشكيل'],
+  's-simple': ['Simple', 'الرسم الإملائي'], 's-enhanced': ['Simple, enhanced', 'الرسم الإملائي، محسّن'], 's-simplemin': ['Simple, minimal', 'الرسم الإملائي، مختصر التشكيل'], 's-clean': ['Simple, clean', 'الرسم الإملائي، بلا تشكيل'],
   read: ['Read', 'اقرأ'], progress: ['Progress', 'التقدّم'],
   sub: ['Read and listen till your heart is content', 'اقرأ واستمع حتى يرضى قلبك'],
   chapter: ['Chapter', 'السورة'], verse: ['Verse', 'الآية'], loopto: ['Loop until verse', 'التكرار حتى الآية'], off: ['Off', 'إيقاف'],

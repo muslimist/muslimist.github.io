@@ -71,3 +71,7 @@
 .dr-tap.full b, .dr-tap.full i, .dr-tap.full small { color: #fff }
 .ad-finish { text-align: center; font-size: 20px; font-weight: 600; padding: 40px 0 }
 @media (max-width: 640px) { .adhkar-start { gap: 10px } }
+
+/* English narrations shown on the Arabic site */
+.dr-body .en-note { text-align: left; font-size: 13.5px; color: var(--mute) }
+body:not(.show-translation) .dr-body .en-note:not(.keep) { display: none }
