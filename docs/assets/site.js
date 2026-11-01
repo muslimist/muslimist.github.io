@@ -130,6 +130,19 @@ Object.assign(DICT, {
   }
 }
 
+// menu: on devices with a mouse it opens on hover and closes shortly after the pointer leaves it
+{
+  const btn = $('.menu'), menu = $('#menu');
+  if (btn && menu?.showPopover && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    let timer;
+    const open = () => { clearTimeout(timer); if (!menu.matches(':popover-open')) menu.showPopover() };
+    const close = () => { clearTimeout(timer); timer = setTimeout(() => menu.matches(':popover-open') && menu.hidePopover(), 250) };
+    for (const el of [btn, menu]) { el.addEventListener('pointerenter', open); el.addEventListener('pointerleave', close) }
+    // a click on the button while hover-opened keeps it open instead of toggling it shut
+    btn.addEventListener('click', e => { if (menu.matches(':popover-open')) { e.preventDefault(); open() } });
+  }
+}
+
 // settings sheets: [data-open=id] opens, tapping outside closes
 $$('[data-open]').forEach(b => b.onclick = () => document.getElementById(b.dataset.open).showModal());
 $$('dialog').forEach(d => d.addEventListener('click', e => { if (e.target === d) d.close() }));
