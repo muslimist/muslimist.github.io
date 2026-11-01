@@ -5,7 +5,7 @@
 /* start view: a photo card per category */
 .dua-cats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px }
 .dua-cat { --h: 132px; position: relative; overflow: hidden; height: var(--h); padding: 0; border-radius: 16px; display: flex; align-items: flex-end; text-align: start;
-  background: var(--img) center/cover; border: 1px solid var(--line); transition: transform .2s; isolation: isolate }
+  background: var(--img) center/cover padding-box; border: 1px solid var(--line); transition: transform .2s; isolation: isolate }
 .dua-cat:hover { transform: translateY(-3px) }
 /* label: a blurred copy of the same photo, oversized so the blur reaches every edge (backdrop-filter leaves sharp pixels at the edges) */
 .dua-cat span { position: relative; overflow: hidden; isolation: isolate; width: 100%; display: grid; gap: 0; padding: 9px 14px; color: var(--fg) }
