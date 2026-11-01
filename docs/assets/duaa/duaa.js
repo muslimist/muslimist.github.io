@@ -162,7 +162,7 @@ function adhkarNow() { const h = new Date().getHours(); return h >= 3 && h < 15 
 const timesOf = () => reader.versions.map(v => (ADHKAR[v.id] || [1])[0]);
 function syncTap() {
   const need = timesOf()[reader.i];
-  $('#dr-tap').innerHTML = `<b>${reader.count}</b> / ${need}<small>${t('tap')}</small>`;
+  $('#dr-tap').innerHTML = `<span class="tap-n"><b>${reader.count}</b><i>/ ${need}</i></span><small>${t('tap')}</small>`;
   $('#dr-tap').classList.toggle('full', reader.count >= need);
 }
 function openAdhkar(k) {
