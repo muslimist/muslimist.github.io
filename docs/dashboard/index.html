@@ -47,6 +47,17 @@
   .td small { display: block; color: var(--mute); font-size: 13px }
   .td .go { color: var(--mute); font-size: 14px; white-space: nowrap }
   .td.ok > i { background: #2fb34f }
+  .nm-ar { font: 2.6em/1.5 var(--arabic); direction: rtl; text-align: center; margin: 4px 0 2px }
+  .nm-tl { text-align: center; font-weight: 600 }
+  .nm-en { text-align: center; color: var(--mute); font-size: 14px }
+  .up { display: flex; flex-direction: column; gap: 1px; padding: 9px 0; border-top: 1px solid var(--line) }
+  .up:first-of-type { border-top: 0 }
+  .up span { flex: 1; min-width: 0 }
+  .up small { color: var(--mute); font-size: 12.5px }
+  @media (max-width: 640px) { #name-card, #up-card { grid-column: 1 / -1 } }
+  .kh { display: flex; align-items: center; gap: 10px; margin-top: 14px; font-size: 13px; color: var(--mute) }
+  .kh .bar { flex: 1; height: 5px; margin: 0; max-width: none }
+  .alert-state { font-size: 12.5px; color: var(--mute); margin-top: 10px; text-align: center }
   .hd-title { font-size: 19px; letter-spacing: -.01em; margin-bottom: 8px }
   .hd-ar, .hd-en { display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden }
   .hd-ar { font: 1.35em/2 var(--arabic); direction: rtl; -webkit-line-clamp: 3; margin-bottom: 10px }
@@ -77,6 +88,7 @@
       <p class="mute next-in"></p>
       <div class="bar"><i></i></div>
     </div>
+    <p class="alert-state" id="alert-state"></p>
   </a>
 
   <a class="card glass center pair" href="/qibla/">
@@ -91,16 +103,29 @@
     <p class="qibla-deg"><b id="deg"></b> <span class="mute" data-t="fromnorth">from north</span></p>
   </a>
 
-  <section class="card glass wide">
-    <div class="card-head"><span class="label" id="ayah-label"></span><a class="card-link" id="ayah-link" href="/quran/" data-t="continue">Continue →</a></div>
-    <div class="ayah" id="ayah" lang="ar"></div>
-    <p class="trans" id="ayah-tr"></p>
-  </section>
-
   <section class="card glass wide" id="today-card" hidden>
     <div class="card-head"><span class="label" data-t="todaylist">Today</span></div>
     <div id="today-list"></div>
   </section>
+
+  <section class="card glass wide">
+    <div class="card-head"><span class="label" id="ayah-label"></span><a class="card-link" id="ayah-link" href="/quran/" data-t="continue">Continue →</a></div>
+    <div class="ayah" id="ayah" lang="ar"></div>
+    <p class="trans" id="ayah-tr"></p>
+    <a class="kh" id="kh" href="/quran/progress/" hidden><span id="kh-l"></span><span class="bar"><i id="kh-bar"></i></span><span id="kh-r"></span></a>
+  </section>
+
+  <a class="card glass pair" href="/names/" id="name-card">
+    <div class="card-head"><span class="label" id="nm-label"></span><span class="card-link" data-t="more">More →</span></div>
+    <p class="nm-ar" id="nm-ar" lang="ar"></p>
+    <p class="nm-tl" id="nm-tl"></p>
+    <p class="nm-en" id="nm-en"></p>
+  </a>
+
+  <a class="card glass pair" href="/calendar/" id="up-card">
+    <div class="card-head"><span class="label" data-t="comingup">Coming up</span><span class="card-link" data-t="more">More →</span></div>
+    <div id="up-list"></div>
+  </a>
 
   <section class="card glass wide" id="hadith-card" hidden>
     <div class="card-head"><span class="label" id="hd-label"></span><a class="card-link" id="hd-link" href="/hadith/" data-t="read">Read →</a></div>
@@ -126,8 +151,9 @@
 <script src="/assets/praytimes.js"></script>
 <script src="/assets/times.js"></script>
 <script src="/assets/quranmeta.js"></script>
+<script src="/assets/names.js"></script>
 <script>
-i18n({ todaylist: ['Today', 'اليوم'], hadithday: ['Hadith of the day', 'حديث اليوم'], read: ['Read →', 'اقرأ ←'], more: ['More →', 'المزيد ←'],
+i18n({ comingup: ['Coming up', 'قادم'], nameday: ['Name of the day', 'اسم اليوم'], todaylist: ['Today', 'اليوم'], hadithday: ['Hadith of the day', 'حديث اليوم'], read: ['Read →', 'اقرأ ←'], more: ['More →', 'المزيد ←'],
   continue: ['Continue →', 'تابع ←'], lastread: ['Continue reading', 'تابع القراءة'], startread: ['Start reading', 'ابدأ القراءة'],
   fromnorth: ['from north', 'من الشمال'], forthis: ['For this moment', 'لهذه اللحظة'], play: ['Play', 'تشغيل'],
   waking: ['After waking', 'عند الاستيقاظ'], morning: ['Morning remembrance', 'أذكار الصباح'], afterprayer: ['After prayer', 'بعد الصلاة'],
@@ -306,6 +332,14 @@ function today() {
     const [c, v] = QM.place((k.at || 0) + 1);
     items.push([left ? L(`Quran: ${left} verses for today`, `القرآن: ${left.toLocaleString('ar-EG')} آية لليوم`) : L("Quran: today's portion done", 'القرآن: أنهيت وِرد اليوم'), left ? `${L('From', 'من')} ${QM.name(c, AR)} ${c}:${v}` : L(`${Math.floor(((k.at || 0) - k.from) / total * 100)}% of your khatm`, `${Math.floor(((k.at || 0) - k.from) / total * 100).toLocaleString('ar-EG')}٪ من ختمتك`), left ? `/quran/${c}/${v}` : '/quran/progress/', !left]);
   }
+  // zakat: what's left to pay, or a nudge when a lunar year has passed since you worked it out
+  const z = load('zakat', {});
+  if (z.result) {
+    const leftZ = Math.max(0, (z.result.zakat || 0) - (+z.paid || 0)), age = (now - new Date(z.result.date)) / 864e5;
+    const cur = n => { try { return new Intl.NumberFormat(AR ? 'ar' : 'en', { style: 'currency', currency: z.a?.currency || 'USD', maximumFractionDigits: 0 }).format(n) } catch { return Math.round(n) } };
+    if (age >= 354) items.push([L('Zakat is due again', 'حان موعد الزكاة مجددًا'), L('A lunar year since you worked it out', 'مرّت سنة قمرية منذ حسابها'), '/zakat/']);
+    else if (z.result.due && leftZ > 0) items.push([L(`Zakat: ${cur(leftZ)} left to pay`, `الزكاة: متبقٍّ ${cur(leftZ)}`), L(`For ${z.result.hy} AH`, `لعام ${z.result.hy} هـ`), '/zakat/']);
+  }
   // tomorrow's fast
   const tm = new Date(now); tm.setDate(tm.getDate() + 1);
   const f = fastOn(tm); if (f) items.push([L(`Tomorrow: ${f} fast`, `غدًا: صيام ${f}`), L('A recommended fast. Eat suhoor before fajr', 'صيام مستحب. تسحّر قبل الفجر'), '/calendar/']);
@@ -314,8 +348,48 @@ function today() {
   const fastsOwed = Object.values(R.years).reduce((s, y) => s + Math.max(0, Object.values(y.days || {}).filter(x => x === 2 || x === 3).length - (y.madeUp || 0)), 0) + Math.max(0, q.olderFasts - q.olderMade);
   const prayersOwed = Object.values(q.prayers || {}).reduce((s, n) => s + n, 0);
   if (fastsOwed || prayersOwed) items.push([AR ? 'عليك قضاء ' + [fastsOwed && `${fastsOwed.toLocaleString('ar-EG')} يوم صيام`, prayersOwed && `${prayersOwed.toLocaleString('ar-EG')} صلاة`].filter(Boolean).join(' و') : [fastsOwed && `${fastsOwed} fast${fastsOwed > 1 ? 's' : ''}`, prayersOwed && `${prayersOwed} prayer${prayersOwed > 1 ? 's' : ''}`].filter(Boolean).join(' and ') + ' to make up', L('One at a time', 'شيئًا فشيئًا'), fastsOwed ? '/ramadan/#makeup' : '/times/#makeup']);
-  $('#today-list').innerHTML = items.map(([a, b, href, ok]) => `<a class="td${ok ? ' ok' : ''}" href="${href}"><i></i><span>${a}<small>${b}</small></span><span class="go">→</span></a>`).join('');
+  $('#today-list').innerHTML = items.map(([a, b, href, ok]) => `<a class="td${ok ? ' ok' : ''}" href="${href}"><i></i><span>${a}<small>${b}</small></span><span class="go">${AR ? '←' : '→'}</span></a>`).join('');
   $('#today-card').hidden = !items.length;
+}
+
+// ---------- name of the day (same one all day) ----------
+{
+  const now = new Date(), day = Math.floor((now - now.getTimezoneOffset() * 6e4) / 864e5), i = day % NAMES.length, [ar, tl, en] = NAMES[i];
+  $('#nm-label').textContent = `${t('nameday')} · ${AR ? (i + 1).toLocaleString('ar-EG') : i + 1}`;
+  $('#nm-ar').textContent = ar; $('#nm-tl').textContent = tl; $('#nm-en').textContent = en;
+  $('#nm-tl').hidden = $('#nm-en').hidden = AR;
+}
+
+// ---------- coming up: the next special days from the calendar ----------
+{
+  const SPECIAL = [[1, 1, L('Islamic New Year', 'رأس السنة الهجرية')], [1, 10, L('Ashura', 'عاشوراء')], [9, 1, L('Ramadan begins', 'بداية رمضان')], [10, 1, L('Eid al-Fitr', 'عيد الفطر')],
+    [12, 1, L('First ten days of Dhul Hijjah', 'العشر من ذي الحجة')], [12, 9, L('Day of Arafah', 'يوم عرفة')], [12, 10, L('Eid al-Adha', 'عيد الأضحى')]];
+  const out = [], d = new Date(); d.setHours(12, 0, 0, 0);
+  let white = false;
+  for (let n = 1; n <= 400 && out.length < 3; n++) {
+    d.setDate(d.getDate() + 1);
+    const h = hijriOf(d), sp = SPECIAL.find(x => x[0] === h.m && x[1] === h.d);
+    if (sp) out.push([sp[2], n, new Date(d)]);
+    else if (!white && h.d === 13 && h.m !== 9 && h.m !== 12) { white = true; out.push([L('White days (fasting 13–15)', 'الأيام البيض (صيام ١٣–١٥)'), n, new Date(d)]) }
+  }
+  const df = new Intl.DateTimeFormat(AR ? 'ar' : 'en', { day: 'numeric', month: 'short' });
+  $('#up-list').innerHTML = out.map(([name, n, date]) => `<div class="up"><span>${name}</span><small>${n === 1 ? L('tomorrow', 'غدًا') : L(`in ${n} days`, `بعد ${n.toLocaleString('ar-EG')} يومًا`)} · ${df.format(date)}</small></div>`).join('');
+}
+
+// ---------- khatm progress on the reading card ----------
+{
+  const k = load('khatm', {}), q = load('quran', { chapter: 1, verse: 1 });
+  const at = k.active ? k.at || 0 : QM.index(q.chapter, q.verse), pct = k.active ? ((k.at || 0) - k.from) / (QM.TOTAL - k.from) : at / QM.TOTAL;
+  $('#kh').hidden = false;
+  $('#kh-l').textContent = `${L('Juz', 'الجزء')} ${AR ? QM.juzOf(Math.max(1, at)).toLocaleString('ar-EG') : QM.juzOf(Math.max(1, at))}`;
+  $('#kh-bar').style.width = `${Math.max(1, pct * 100).toFixed(1)}%`;
+  $('#kh-r').textContent = k.active ? L(`${Math.floor(pct * 100)}% of your khatm`, `${Math.floor(pct * 100).toLocaleString('ar-EG')}٪ من ختمتك`) : L(`${Math.floor(pct * 100)}% through`, `${Math.floor(pct * 100).toLocaleString('ar-EG')}٪`);
+}
+
+// ---------- prayer alerts on or off (set on the Times page) ----------
+{
+  const a = load('alerts', { on: false });
+  $('#alert-state').textContent = a.on ? L('🔔 Prayer alerts on', '🔔 تنبيهات الصلاة مفعّلة') : L('Prayer alerts off · turn on in Times', 'تنبيهات الصلاة متوقفة · فعّلها من الأوقات');
 }
 
 prayers(); today();
