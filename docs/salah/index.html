@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>muslimist · salah</title>
+<meta name="description" content="How to make wudu and pray, step by step, for new Muslims.">
+<meta name="theme-color" content="#111111">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/assets/icons/favicon-196.png">
+<link rel="apple-touch-icon" href="/assets/icons/apple-icon-180.png">
+<script>{const s = localStorage, d = document.documentElement; d.dataset.scheme = s.mode || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'); if (s.glass) d.dataset.glass = s.glass; d.dataset.bg = `url(/assets/img/bg-qibla-${Math.random() * 6 | 0}.webp)`; d.style.setProperty('--bg-img', sessionStorage.bg || d.dataset.bg); if (sessionStorage.bg) d.classList.add('bg-ready'); if (s.lang == 'arabic') { d.lang = 'ar'; d.dir = 'rtl' }}</script>
+<style>
+  .seg { display: inline-flex; padding: 3px; border-radius: 99px; background: var(--field); border: 1px solid var(--line) }
+  .seg a, .seg button { padding: 7px 16px; border-radius: 99px; font-size: 14.5px; color: var(--mute) }
+  .seg [aria-current="true"] { background: var(--fg); color: var(--page) }
+  .sg h2 { font-size: 22px; letter-spacing: -.02em; margin: 18px 0 6px }
+  .sg h2:first-child { margin-top: 0 }
+  .sg > p { color: var(--mute); line-height: 1.65; margin-bottom: 10px }
+  .steps { list-style: none; padding: 0; counter-reset: s; display: grid; gap: 10px; margin-top: 12px }
+  .steps li { counter-increment: s; display: grid; grid-template-columns: 34px 1fr; gap: 4px 12px; padding: 14px; border-radius: 16px; background: var(--card); border: 1px solid var(--line) }
+  .steps li::before { content: counter(s); display: grid; place-items: center; width: 30px; height: 30px; border-radius: 99px; background: var(--fg); color: var(--page); font-weight: 600; font-size: 14px; grid-row: span 3 }
+  .steps b { font-size: 16px }
+  .steps p { line-height: 1.6; font-size: 15px }
+  .say { grid-column: 2; margin-top: 6px; padding: 12px 14px; border-radius: 12px; background: var(--hilite) }
+  .say .ar { font: 1.45em/2 var(--arabic); direction: rtl; text-align: right }
+  .say .tl { font-style: italic; font-size: 14.5px; margin-top: 4px }
+  .say .mn { font-size: 14px; color: var(--mute); margin-top: 4px }
+  .say small { display: block; font-size: 12px; color: var(--mute); margin-top: 6px }
+  .table { width: 100%; border-collapse: collapse; margin: 8px 0 14px; font-size: 15px }
+  .table td, .table th { padding: 9px 4px; border-top: 1px solid var(--line); text-align: start }
+  .table th { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--mute); font-weight: 500; border: 0 }
+  .checklist { display: grid; gap: 6px; margin: 8px 0 14px; padding: 0; list-style: none }
+  .checklist li { padding-inline-start: 26px; position: relative; line-height: 1.55 }
+  .checklist li::before { content: "✓"; position: absolute; inset-inline-start: 4px; color: #2fb34f; font-weight: 700 }
+  .checklist a { text-decoration: underline }
+  .pick { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 10px 0 4px }
+  .pick button { padding: 12px 4px; border-radius: 14px; background: var(--field); border: 1px solid var(--line); font-weight: 600 }
+  .pick button small { display: block; font-weight: 400; color: var(--mute); font-size: 12px }
+  @media (max-width: 640px) { .pick { grid-template-columns: repeat(3, 1fr) } }
+  .guide { display: flex; flex-direction: column; min-height: 60vh }
+  .g-top { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--mute); margin-bottom: 8px }
+  .g-bar { height: 4px; border-radius: 99px; background: var(--line); overflow: hidden; margin-bottom: 20px }
+  .g-bar i { display: block; height: 100%; background: var(--fg); transition: width .3s }
+  .g-pose { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--mute) }
+  .g-title { font-size: clamp(24px, 4vw, 32px); letter-spacing: -.02em; margin: 2px 0 8px }
+  .g-do { font-size: 16px; line-height: 1.6; margin-bottom: 12px }
+  .guide .say { margin: 0 }
+  .g-nav { display: flex; gap: 10px; margin-top: auto; padding-top: 18px }
+  .g-nav .primary { margin-inline-start: auto; min-width: 130px; padding-block: 14px }
+  .g-nav .btn { padding-block: 14px }
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="/">muslimist</a>
+  <nav class="links" id="menu" popover><a href="/quran/" data-t="quran">Quran</a><a href="/duaa/" data-t="duaa">Duaa</a><a href="/hadith/" data-t="hadith">Hadith</a><a href="/names/" data-t="names">Names</a><a href="/salah/" data-t="salah">Salah</a><a href="/calendar/" data-t="calendar">Calendar</a><a href="/zakat/" data-t="zakat">Zakat</a><a href="/times/" data-t="times">Times</a><a href="/qibla/" data-t="qibla">Qibla</a><a href="/dashboard/" data-t="dash">Dash</a></nav>
+  <button class="pill menu" popovertarget="menu" aria-label="Menu"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</header>
+
+<section class="hero">
+  <h1 data-t="salah">Salah</h1>
+  <p data-t="sub">How to make wudu and pray, step by step</p>
+</section>
+
+<main class="layout">
+  <section class="card glass sg">
+    <div class="card-head"><div class="seg" role="tablist"><a href="#wudu" id="t-wudu" data-t="wudu">Wudu</a><a href="#prayer" id="t-prayer" data-t="prayer">Prayer</a><a href="#guide" id="t-guide" data-t="guideme">Guide me</a></div></div>
+    <div id="v-wudu"></div>
+    <div id="v-prayer" hidden></div>
+    <div id="v-guide" hidden></div>
+  </section>
+</main>
+
+<footer class="foot"><span><span data-t="madewith">made with</span> <span class="heart" aria-label="love">♥</span> <span data-t="bymuslims">by muslims for muslims</span></span><a href="https://github.com/muslimist/muslimist.github.io">github</a><button popovertarget="privacy" data-t="privacy">privacy</button></footer>
+<div class="pop" id="privacy" popover><span data-t="privacynote">we don't track anything, see for yourself =)</span> <a href="https://github.com/muslimist/muslimist.github.io">github</a></div>
+
+<script src="/assets/site.js"></script>
+<script>
+const R = {"bismillah": ["بِسْمِ اللَّهِ", "Bismillah", "In the name of Allah", ""], "afterwudu": ["أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ", "Ash-hadu an la ilaha illallahu wahdahu la sharika lah, wa ash-hadu anna Muhammadan 'abduhu wa rasuluh", "I bear witness that there is no god but Allah alone, with no partner, and I bear witness that Muhammad is His servant and messenger.", "Muslim"], "takbir": ["اللَّهُ أَكْبَرُ", "Allahu akbar", "Allah is the Greatest", ""], "opening": ["سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، وَتَبَارَكَ اسْمُكَ، وَتَعَالَى جَدُّكَ، وَلَا إِلَهَ غَيْرُكَ", "Subhanaka Allahumma wa bihamdik, wa tabarakas-muk, wa ta'ala jadduk, wa la ilaha ghayruk", "Glory be to You, O Allah, and praise. Blessed is Your name, exalted is Your majesty, and there is no god but You.", "Optional. Abu Dawud, at-Tirmidhi"], "taawwudh": ["أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ", "A'udhu billahi minash-shaytanir-rajim", "I seek refuge in Allah from Satan, the accursed.", ""], "fatihah": ["بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ ﴿1﴾ ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ ﴿2﴾ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ ﴿3﴾ مَٰلِكِ يَوْمِ ٱلدِّينِ ﴿4﴾ إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ ﴿5﴾ ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ ﴿6﴾ صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ ﴿7﴾", "Bismillahir-Rahmanir-Rahim. Al-hamdu lillahi Rabbil-'alamin. Ar-Rahmanir-Rahim. Maliki yawmid-din. Iyyaka na'budu wa iyyaka nasta'in. Ihdinas-siratal-mustaqim. Siratal-ladhina an'amta 'alayhim, ghayril-maghdubi 'alayhim wa lad-dallin.", "In the name of Allah, the Entirely Merciful, the Especially Merciful. [All] praise is [due] to Allah, Lord of the worlds - The Entirely Merciful, the Especially Merciful, Sovereign of the Day of Recompense. It is You we worship and You we ask for help. Guide us to the straight path - The path of those upon whom You have bestowed favor, not of those who have evoked [Your] anger or of those who are astray.", "Surah al-Fatihah (1). Required in every rak'ah. Say \"Ameen\" (آمين) after it."], "ikhlas": ["بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ قُلْ هُوَ ٱللَّهُ أَحَدٌ ﴿1﴾ ٱللَّهُ ٱلصَّمَدُ ﴿2﴾ لَمْ يَلِدْ وَلَمْ يُولَدْ ﴿3﴾ وَلَمْ يَكُن لَّهُۥ كُفُوًا أَحَدٌۢ ﴿4﴾", "Bismillahir-Rahmanir-Rahim. Qul huwallahu ahad. Allahus-samad. Lam yalid wa lam yulad. Wa lam yakun lahu kufuwan ahad.", "Say, \"He is Allah, [who is] One, Allah, the Eternal Refuge. He neither begets nor is born, Nor is there to Him any equivalent.\"", "Surah al-Ikhlas (112), a short surah to start with. Any surah or a few verses is fine."], "ruku": ["سُبْحَانَ رَبِّيَ الْعَظِيمِ", "Subhana Rabbiyal-'Adhim", "Glory be to my Lord, the Most Great", "Say it 3 times."], "rise": ["سَمِعَ اللَّهُ لِمَنْ حَمِدَهُ ‧ رَبَّنَا وَلَكَ الْحَمْدُ", "Sami'Allahu liman hamidah. Rabbana wa lakal-hamd", "Allah hears the one who praises Him. Our Lord, to You is all praise.", "Say the first while rising, the second once standing."], "sujud": ["سُبْحَانَ رَبِّيَ الْأَعْلَى", "Subhana Rabbiyal-A'la", "Glory be to my Lord, the Most High", "Say it 3 times."], "between": ["رَبِّ اغْفِرْ لِي، رَبِّ اغْفِرْ لِي", "Rabbighfir li, Rabbighfir li", "My Lord, forgive me. My Lord, forgive me.", "Abu Dawud, Ibn Majah"], "tashahhud": ["التَّحِيَّاتُ لِلَّهِ وَالصَّلَوَاتُ وَالطَّيِّبَاتُ، السَّلَامُ عَلَيْكَ أَيُّهَا النَّبِيُّ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ، السَّلَامُ عَلَيْنَا وَعَلَى عِبَادِ اللَّهِ الصَّالِحِينَ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ، وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ", "At-tahiyyatu lillahi was-salawatu wat-tayyibat. As-salamu 'alayka ayyuhan-Nabiyyu wa rahmatullahi wa barakatuh. As-salamu 'alayna wa 'ala 'ibadillahis-salihin. Ash-hadu an la ilaha illallah, wa ash-hadu anna Muhammadan 'abduhu wa rasuluh.", "All greetings, prayers and good things are for Allah. Peace be upon you, O Prophet, and the mercy of Allah and His blessings. Peace be upon us and upon the righteous servants of Allah. I bear witness that there is no god but Allah, and I bear witness that Muhammad is His servant and messenger.", "The tashahhud of Ibn Mas'ud. Bukhari & Muslim"], "ibrahimiyyah": ["اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ، اللَّهُمَّ بَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا بَارَكْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ", "Allahumma salli 'ala Muhammadin wa 'ala ali Muhammad, kama sallayta 'ala Ibrahima wa 'ala ali Ibrahim, innaka Hamidun Majid. Allahumma barik 'ala Muhammadin wa 'ala ali Muhammad, kama barakta 'ala Ibrahima wa 'ala ali Ibrahim, innaka Hamidun Majid.", "O Allah, send prayers upon Muhammad and the family of Muhammad, as You sent prayers upon Ibrahim and the family of Ibrahim; You are Praiseworthy, Glorious. O Allah, bless Muhammad and the family of Muhammad, as You blessed Ibrahim and the family of Ibrahim; You are Praiseworthy, Glorious.", "Bukhari"], "salam": ["السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ", "As-salamu 'alaykum wa rahmatullah", "Peace be upon you, and the mercy of Allah", "Turn your head to the right and say it, then to the left and say it again."]};
+const WUDU = [["Intention", "Intend in your heart that you are making wudu for prayer. You don't need to say it out loud. Then say:", "bismillah"], ["Hands", "Wash both hands up to the wrists, 3 times, between the fingers too.", ""], ["Mouth", "Take water into your mouth with your right hand, rinse it around and spit it out, 3 times.", ""], ["Nose", "Sniff a little water into your nose with your right hand and blow it out with your left, 3 times.", ""], ["Face", "Wash your whole face, from the hairline to the chin and from ear to ear, 3 times.", ""], ["Arms", "Wash your right arm from the fingertips up to and including the elbow, 3 times, then the left arm the same.", ""], ["Head", "Wet your hands and wipe over your head once, from the front to the back and back to the front.", ""], ["Ears", "With wet fingers, wipe inside your ears with your index fingers and behind them with your thumbs, once.", ""], ["Feet", "Wash your right foot up to and including the ankle, 3 times, getting between the toes, then the left foot the same.", ""], ["After wudu", "Say:", "afterwudu"]];
+i18n({ sub: ['How to make wudu and pray, step by step', 'كيف تتوضأ وتصلي، خطوة بخطوة'], wudu: ['Wudu', 'الوضوء'], prayer: ['Prayer', 'الصلاة'], guideme: ['Guide me', 'علّمني'] });
+const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+const say = k => { const [ar, tl, mn, note] = R[k]; return `<div class="say"><p class="ar" lang="ar">${ar}</p><p class="tl">${esc(tl)}</p><p class="mn">${esc(mn)}</p>${note ? `<small>${esc(note)}</small>` : ''}</div>` };
+
+// ---------- wudu ----------
+$('#v-wudu').innerHTML = `<h2>Wudu (ablution)</h2><p>You need wudu before every prayer. It takes about two minutes. Use clean water and don't waste it.</p>
+  <ol class="steps">${WUDU.map(([t, d, k]) => `<li><b>${t}</b><p>${d}</p>${k ? say(k) : ''}</li>`).join('')}</ol>
+  <h2>What breaks wudu</h2><ul class="checklist"><li>Using the toilet, or passing wind</li><li>Deep sleep, or losing consciousness</li><li>Anything that requires a full bath (ghusl), such as intercourse or the end of a period</li></ul>
+  <p>If none of these has happened, your wudu is still valid and you can pray again without renewing it.</p>`;
+
+// ---------- prayer ----------
+const PRAYERS = [['Fajr', 2, 'aloud'], ['Dhuhr', 4, 'quietly'], ['Asr', 4, 'quietly'], ['Maghrib', 3, 'aloud'], ['Isha', 4, 'aloud']];
+const STEPS = [
+  ['Stand facing the qiblah', 'Stand straight, facing the direction of Makkah. Make the intention in your heart for the prayer you are about to pray (for example, "the two rak\'ahs of Fajr").', ''],
+  ['Begin the prayer', 'Raise your hands to your ears (or shoulders) and say the takbir. You are now in prayer: don\'t talk, eat or look around.', 'takbir'],
+  ['Place your hands', 'Place your right hand over your left on your chest or stomach. Then you may say the opening supplication:', 'opening'],
+  ['Seek refuge', 'Quietly say:', 'taawwudh'],
+  ['Recite al-Fatihah', 'Recite the opening chapter of the Quran.', 'fatihah'],
+  ['Recite another surah', 'In the first two rak\'ahs, recite any other surah or a few verses after al-Fatihah.', 'ikhlas'],
+  ['Bow (ruku\')', 'Say "Allahu akbar" and bow, hands on your knees, back straight.', 'ruku'],
+  ['Stand up', 'Rise back to standing.', 'rise'],
+  ['Prostrate (sujud)', 'Say "Allahu akbar" and go down so your forehead, nose, both palms, both knees and toes touch the ground.', 'sujud'],
+  ['Sit', 'Say "Allahu akbar" and sit up on your left foot, right foot upright.', 'between'],
+  ['Prostrate again', 'Say "Allahu akbar" and make a second sujud exactly like the first.', 'sujud'],
+  ['That is one rak\'ah', 'Say "Allahu akbar" and stand up for the next rak\'ah, starting again from al-Fatihah.', ''],
+  ['Sit for the tashahhud', 'After every second rak\'ah, sit (as between the two sujuds) and recite the tashahhud, raising your right index finger at "Ash-hadu".', 'tashahhud'],
+  ['In the last sitting', 'If this is the final rak\'ah, after the tashahhud send prayers on the Prophet ﷺ. In a 3 or 4 rak\'ah prayer, the first sitting ends after the tashahhud and you stand for the rest, reciting only al-Fatihah.', 'ibrahimiyyah'],
+  ['End with salam', 'Turn your head to the right, then to the left. The prayer is complete.', 'salam'],
+];
+$('#v-prayer').innerHTML = `<h2>The five daily prayers</h2><p>Each prayer is made of units called <b>rak'ahs</b>. Every rak'ah is the same set of movements.</p>
+  <table class="table"><tr><th>Prayer</th><th>Rak'ahs</th><th>Recite</th></tr>${PRAYERS.map(([n, r, a]) => `<tr><td>${n}</td><td>${r}</td><td class="mute">${a}</td></tr>`).join('')}</table>
+  <p>"Aloud" applies to al-Fatihah and the surah in the first two rak'ahs; everything else is said quietly. Find today's times on the <a href="/times/" style="text-decoration:underline">Times</a> page.</p>
+  <h2>Before you pray</h2><ul class="checklist"><li>You have wudu</li><li>Your body, clothes and place of prayer are clean</li><li>You're covered: men from navel to knee at least; women everything except face and hands</li><li>You're facing the qiblah (see <a href="/qibla/">Qibla</a>)</li><li>The prayer's time has started</li></ul>
+  <h2>How to pray</h2><ol class="steps">${STEPS.map(([t, d, k]) => `<li><b>${t}</b><p>${d}</p>${k ? say(k) : ''}</li>`).join('')}</ol>
+  <p style="margin-top:14px">Small details (where hands go, when to raise them) differ between the schools of thought, and all are valid. If you're new, it's fine to read from this page while you learn. Ask at your local mosque, they'll be happy to help.</p>`;
+
+// ---------- guided prayer: one screen per step, built for the chosen prayer ----------
+function sequence(n, loud) {
+  const s = [], A = loud === 'aloud';
+  for (let r = 1; r <= n; r++) {
+    const tag = `Rak'ah ${r} of ${n}`;
+    if (r === 1) s.push([tag, 'Standing', 'Begin', 'Face the qiblah, intend the prayer in your heart, raise your hands and say:', 'takbir'], [tag, 'Standing', 'Opening', 'Right hand over left. Quietly say (optional):', 'opening'], [tag, 'Standing', 'Seek refuge', 'Quietly:', 'taawwudh']);
+    s.push([tag, 'Standing', 'Al-Fatihah', `Recite ${r <= 2 && A ? 'aloud (if alone, aloud is optional)' : 'quietly'}, then say "Ameen".`, 'fatihah']);
+    if (r <= 2) s.push([tag, 'Standing', 'A short surah', `Recite ${A ? 'aloud' : 'quietly'} any surah, for example:`, 'ikhlas']);
+    s.push([tag, 'Bowing', 'Ruku\'', 'Say "Allahu akbar", bow with hands on knees, and say:', 'ruku'], [tag, 'Standing', 'Rise', 'Come up, saying:', 'rise'],
+      [tag, 'Prostrating', 'Sujud', 'Say "Allahu akbar" and prostrate, then say:', 'sujud'], [tag, 'Sitting', 'Sit', 'Say "Allahu akbar", sit up and say:', 'between'],
+      [tag, 'Prostrating', 'Sujud again', 'Say "Allahu akbar", prostrate again and say:', 'sujud']);
+    if (r === n) s.push([tag, 'Sitting', 'Tashahhud', 'Say "Allahu akbar" and sit. Recite:', 'tashahhud'], [tag, 'Sitting', 'Prayers on the Prophet ﷺ', 'Then:', 'ibrahimiyyah'], [tag, 'Sitting', 'Salam', 'Turn right, then left, saying:', 'salam']);
+    else if (r === 2) s.push([tag, 'Sitting', 'First tashahhud', 'Say "Allahu akbar" and sit. Recite:', 'tashahhud'], [tag, 'Standing', 'Stand up', `Say "Allahu akbar" and stand for rak'ah 3. From now on, recite only al-Fatihah, quietly.`, 'takbir']);
+    else s.push([tag, 'Standing', 'Stand up', `Say "Allahu akbar" and stand for rak'ah ${r + 1}.`, 'takbir']);
+  }
+  return s;
+}
+let G = null;
+function guide() {
+  if (!G) {
+    $('#v-guide').innerHTML = `<h2>Pray along</h2><p>Pick a prayer and follow it one step at a time. Keep your phone in front of you and tap Next as you go.</p>
+      <div class="pick">${PRAYERS.map(([n, r, a], i) => `<button data-i="${i}">${n}<small>${r} rak'ahs</small></button>`).join('')}</div>`;
+    $$('#v-guide .pick button').forEach(b => b.onclick = () => { const [n, r, a] = PRAYERS[+b.dataset.i]; G = { name: n, seq: sequence(r, a), i: 0 }; guide() });
+    return;
+  }
+  const [tag, pose, title, doIt, k] = G.seq[G.i], last = G.i === G.seq.length - 1;
+  $('#v-guide').innerHTML = `<div class="guide"><div class="g-top"><span>${G.name} · ${tag}</span><button id="g-quit">✕ Stop</button></div>
+    <div class="g-bar"><i style="width:${(G.i + 1) / G.seq.length * 100}%"></i></div>
+    <p class="g-pose">${pose}</p><h2 class="g-title">${title}</h2><p class="g-do">${doIt}</p>${k ? say(k) : ''}
+    <div class="g-nav">${G.i ? '<button class="btn" id="g-back">Back</button>' : ''}<button class="btn primary" id="g-next">${last ? 'Done' : 'Next'}</button></div></div>`;
+  $('#g-quit').onclick = () => { G = null; guide() };
+  $('#g-back') && ($('#g-back').onclick = () => { G.i--; guide() });
+  $('#g-next').onclick = () => { if (last) { G = null; guide(); return } G.i++; guide() };
+}
+document.addEventListener('keydown', e => {
+  if (!G || location.hash !== '#guide') return;
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); $('#g-next')?.click() }
+  if (e.key === 'ArrowLeft') $('#g-back')?.click();
+});
+
+function route() {
+  const v = ['wudu', 'prayer', 'guide'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'wudu';
+  for (const k of ['wudu', 'prayer', 'guide']) { $('#v-' + k).hidden = k !== v; $('#t-' + k).setAttribute('aria-current', k === v) }
+  if (v === 'guide') guide();
+}
+addEventListener('hashchange', route);
+route();
+</script>
+</body>
+</html>

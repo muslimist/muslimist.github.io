@@ -36,6 +36,10 @@
   .dua-ar { font: 1.8em/2.1 var(--arabic); direction: rtl; text-align: center; margin: 4px 0 10px }
   .dua-tr, .dua-tl { text-align: center; font-size: 17px }
   .dua-tl { font-style: italic; color: var(--mute); font-size: 15px; margin-bottom: 8px; direction: ltr }
+  .hd-title { font-size: 19px; letter-spacing: -.01em; margin-bottom: 8px }
+  .hd-ar, .hd-en { display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden }
+  .hd-ar { font: 1.35em/2 var(--arabic); direction: rtl; -webkit-line-clamp: 3; margin-bottom: 10px }
+  .hd-en { font-size: 15.5px; line-height: 1.65; color: var(--mute); -webkit-line-clamp: 5 }
   .row-play { display: flex; justify-content: center; margin-top: 16px }
   .row-play .play { width: 44px; height: 44px }
   @media (max-width: 640px) { .dash { grid-template-columns: 1.2fr 1fr; gap: 12px } .dash .pair { padding: 16px 14px } .dash .pair .card-link { display: none } }
@@ -44,7 +48,7 @@
 <body class="home">
 <header class="top">
   <a class="brand" href="/">muslimist</a>
-  <nav class="links" id="menu" popover><a href="/quran/" data-t="quran">Quran</a><a href="/duaa/" data-t="duaa">Duaa</a><a href="/hadith/" data-t="hadith">Hadith</a><a href="/names/" data-t="names">Names</a><a href="/calendar/" data-t="calendar">Calendar</a><a href="/zakat/" data-t="zakat">Zakat</a><a href="/times/" data-t="times">Times</a><a href="/qibla/" data-t="qibla">Qibla</a><a href="/dashboard/" aria-current="page" data-t="dash">Dash</a></nav>
+  <nav class="links" id="menu" popover><a href="/quran/" data-t="quran">Quran</a><a href="/duaa/" data-t="duaa">Duaa</a><a href="/hadith/" data-t="hadith">Hadith</a><a href="/names/" data-t="names">Names</a><a href="/salah/" data-t="salah">Salah</a><a href="/calendar/" data-t="calendar">Calendar</a><a href="/zakat/" data-t="zakat">Zakat</a><a href="/times/" data-t="times">Times</a><a href="/qibla/" data-t="qibla">Qibla</a><a href="/dashboard/" aria-current="page" data-t="dash">Dash</a></nav>
   <button class="pill menu" popovertarget="menu" aria-label="Menu"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </header>
 
@@ -82,6 +86,13 @@
     <p class="trans" id="ayah-tr"></p>
   </section>
 
+  <section class="card glass wide" id="hadith-card" hidden>
+    <div class="card-head"><span class="label" id="hd-label"></span><a class="card-link" id="hd-link" href="/hadith/" data-t="read">Read →</a></div>
+    <h3 class="hd-title" id="hd-title"></h3>
+    <p class="hd-ar" id="hd-ar" lang="ar"></p>
+    <p class="hd-en" id="hd-en"></p>
+  </section>
+
   <section class="card glass wide dua-card">
     <div class="card-head"><span class="label" id="dua-label"></span><a class="card-link" id="dua-link" href="/duaa/" data-t="more">More →</a></div>
     <p class="dua-ar" id="dua-ar" lang="ar"></p>
@@ -99,7 +110,7 @@
 <script src="/assets/praytimes.js"></script>
 <script src="/assets/times.js"></script>
 <script>
-i18n({ more: ['More →', 'المزيد ←'],
+i18n({ hadithday: ['Hadith of the day', 'حديث اليوم'], read: ['Read →', 'اقرأ ←'], more: ['More →', 'المزيد ←'],
   continue: ['Continue →', 'تابع ←'], lastread: ['Continue reading', 'تابع القراءة'], startread: ['Start reading', 'ابدأ القراءة'],
   fromnorth: ['from north', 'من الشمال'], forthis: ['For this moment', 'لهذه اللحظة'], play: ['Play', 'تشغيل'],
   waking: ['After waking', 'عند الاستيقاظ'], morning: ['Morning remembrance', 'أذكار الصباح'], afterprayer: ['After prayer', 'بعد الصلاة'],
@@ -219,6 +230,18 @@ $('#dua-play').onclick = () => {
   audio.paused ? audio.play() : audio.pause();
 };
 audio.onplay = audio.onpause = audio.onended = () => $('#dua-icon').setAttribute('d', audio.paused ? 'M8 5v14l11-7z' : 'M7 5h4v14H7zM13 5h4v14h-4z');
+
+// hadith of the day: the same one all day, cycling through the 42 (follows the Hadith page's settings)
+fetch('/hadith/data.json').then(r => r.json()).then(list => {
+  const now = new Date(), day = Math.floor((now - now.getTimezoneOffset() * 6e4) / 864e5), n = day % list.length, [title, ar, en] = list[n];
+  const o = load('hadith', { arabic: true, english: true });
+  $('#hd-label').textContent = `${t('hadithday')} · ${AR ? (n + 1).toLocaleString('ar-EG') : n + 1}`;
+  $('#hd-title').textContent = title;
+  $('#hd-ar').textContent = ar; $('#hd-ar').hidden = !o.arabic;
+  $('#hd-en').textContent = en; $('#hd-en').hidden = !o.english && o.arabic;
+  $('#hd-link').href = `/hadith/#h${n + 1}`;
+  $('#hadith-card').hidden = false;
+}).catch(() => {});
 
 prayers();
 setInterval(prayers, 30e3);
