@@ -250,7 +250,7 @@ audio.onplay = audio.onpause = audio.onended = () => $('#dua-icon').setAttribute
 
 // hadith of the day: the same one all day, cycling through the 42 (follows the Hadith page's settings)
 fetch('/hadith/data.json').then(r => r.json()).then(list => {
-  const now = new Date(), day = Math.floor((now - now.getTimezoneOffset() * 6e4) / 864e5), n = day % list.length, [title, ar, en] = list[n];
+  const now = new Date(), day = Math.floor((now - now.getTimezoneOffset() * 6e4) / 864e5), n = day % list.length, [titleEn, ar, en, titleAr] = list[n], title = AR ? titleAr : titleEn;
   const o = load('hadith', { arabic: true, english: true });
   $('#hd-label').textContent = `${t('hadithday')} · ${AR ? (n + 1).toLocaleString('ar-EG') : n + 1}`;
   $('#hd-title').textContent = title;

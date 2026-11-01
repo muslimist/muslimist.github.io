@@ -109,7 +109,7 @@ function route() {
 }
 
 function show(n) {
-  const [title, ar, en] = data[n - 1];
+  const [titleEn, ar, en, titleAr] = data[n - 1], title = AR ? titleAr : titleEn;
   $('#back').textContent = (AR ? '› ' : '‹ ') + t('all');
   $('#num').textContent = `${t('hadithn')} ${num(n)} / ${num(data.length)}`;
   $('#title').textContent = title;
@@ -137,7 +137,7 @@ addEventListener('hashchange', () => { route(); scrollTo({ top: $('.layout').off
 
 window.pageReady = fetch('/hadith/data.json').then(r => r.json()).then(d => {
   data = d;
-  $('#list').innerHTML = d.map(([title], i) => `<li><a href="#h${i + 1}"><b>${num(i + 1)}</b><span>${title}</span></a></li>`).join('');
+  $('#list').innerHTML = d.map(([titleEn, , , titleAr], i) => { const title = AR ? titleAr : titleEn; return `<li><a href="#h${i + 1}"><b>${num(i + 1)}</b><span>${title}</span></a></li>` }).join('');
   route();
 });
 </script>
