@@ -51,7 +51,7 @@
 <body>
 <header class="top">
   <a class="brand" href="/">muslimist</a>
-  <nav class="links" id="menu" popover><a href="/quran/" aria-current="page" data-t="quran">Quran</a><a href="/duaa/" data-t="duaa">Duaa</a><a href="/hadith/" data-t="hadith">Hadith</a><a href="/names/" data-t="names">Names</a><a href="/salah/" data-t="salah">Salah</a><a href="/calendar/" data-t="calendar">Calendar</a><a href="/ramadan/" data-t="ramadan">Ramadan</a><a href="/qada/" data-t="qada">Make-up</a><a href="/zakat/" data-t="zakat">Zakat</a><a href="/times/" data-t="times">Times</a><a href="/qibla/" data-t="qibla">Qibla</a><a href="/dashboard/" data-t="dash">Dash</a></nav>
+  <nav class="links" id="menu" popover><a href="/" data-t="home">Home</a><a href="/quran/" aria-current="page" data-t="quran">Quran</a><a href="/duaa/" data-t="duaa">Duaa</a><a href="/hadith/" data-t="hadith">Hadith</a><a href="/names/" data-t="names">Names</a><a href="/salah/" data-t="salah">Salah</a><a href="/calendar/" data-t="calendar">Calendar</a><a href="/ramadan/" data-t="ramadan">Ramadan</a><a href="/zakat/" data-t="zakat">Zakat</a><a href="/times/" data-t="times">Times</a><a href="/qibla/" data-t="qibla">Qibla</a><a href="/dashboard/" data-t="dash">Dash</a></nav>
   <button class="pill menu" popovertarget="menu" aria-label="Menu"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </header>
 
@@ -97,8 +97,8 @@ const link = i => { const [c, v] = QM.place(i); return `/quran/${c}/${v}` };
 // where you are in the Quran page
 function where() {
   const q = load('quran', { chapter: 1, verse: 1 }), i = QM.index(q.chapter, q.verse);
-  $('#where').innerHTML = `<div class="row"><div class="grow"><p class="lbl">You're at</p><p class="big">${esc(QM.name(q.chapter, AR))} ${num(q.chapter)}:${num(q.verse)}</p>
-    <p class="mute">Juz ${num(QM.juzOf(i))} · ${Math.floor(i / QM.TOTAL * 100)}% through the Quran</p></div><a class="btn primary" href="/quran/${q.chapter}/${q.verse}">Continue reading →</a></div>`;
+  $('#where').innerHTML = `<div class="row"><div class="grow"><p class="lbl">${L("You're at", 'موضعك')}</p><p class="big">${esc(QM.name(q.chapter, AR))} ${num(q.chapter)}:${num(q.verse)}</p>
+    <p class="mute">${L('Juz', 'الجزء')} ${num(QM.juzOf(i))} · ${L(`${Math.floor(i / QM.TOTAL * 100)}% through the Quran`, `قرأت ${num(Math.floor(i / QM.TOTAL * 100))}٪ من القرآن`)}</p></div><a class="btn primary" href="/quran/${q.chapter}/${q.verse}">${L('Continue reading →', 'تابع القراءة ←')}</a></div>`;
 }
 
 // ---------- khatm plan ----------
@@ -107,13 +107,13 @@ function plan() {
   const k = load('khatm', {}), q = load('quran', { chapter: 1, verse: 1 }), here = QM.index(q.chapter, q.verse);
   if (!k.active) {
     const doneList = (k.done || []).map(d => new Intl.DateTimeFormat(AR ? 'ar' : 'en', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(d)));
-    $('#plan').innerHTML = `<p class="lbl">Khatm plan</p><h2 style="margin:6px 0 4px;letter-spacing:-.02em">Finish the Quran in…</h2>
-      <p class="mute">Pick a number of days. Each day you'll get a portion to read on the Quran page, and your progress moves as you read in order.</p>
-      <div class="chips2" id="days-pick">${[3, 7, 10, 15, 20, 30, 60, 90].map(d => `<button data-d="${d}" aria-pressed="${d === pick}">${num(d)} days</button>`).join('')}</div>
+    $('#plan').innerHTML = `<p class="lbl">${L('Khatm plan', 'خطة الختمة')}</p><h2 style="margin:6px 0 4px;letter-spacing:-.02em">${L('Finish the Quran in…', 'اختم القرآن في…')}</h2>
+      <p class="mute">${L("Pick a number of days. Each day you'll get a portion to read on the Quran page, and your progress moves as you read in order.", 'اختر عدد الأيام. كل يوم يظهر لك وِردك في صفحة القرآن، ويتقدّم موضعك كلما قرأت بالترتيب.')}</p>
+      <div class="chips2" id="days-pick">${[3, 7, 10, 15, 20, 30, 60, 90].map(d => `<button data-d="${d}" aria-pressed="${d === pick}">${num(d)} ${L('days', 'يومًا')}</button>`).join('')}</div>
       <p class="mute" id="perday"></p>
-      <div class="row" style="margin-top:12px"><button class="btn" id="from-here">Start from ${esc(placeText(here))}</button><button class="btn primary" id="from-start">Start from the beginning</button></div>
-      ${doneList.length ? `<p class="note" style="margin-top:14px">Completed: ${doneList.length} khatm${doneList.length > 1 ? 's' : ''} (last ${doneList[doneList.length - 1]}). May Allah accept it.</p>` : ''}`;
-    const per = () => $('#perday').textContent = `About ${fmt(QM.TOTAL / pick)} verses, or ${(30 / pick).toFixed(30 % pick ? 1 : 0)} juz, a day.`;
+      <div class="row" style="margin-top:12px"><button class="btn" id="from-here">${L('Start from', 'ابدأ من')} ${esc(placeText(here))}</button><button class="btn primary" id="from-start">${L('Start from the beginning', 'ابدأ من البداية')}</button></div>
+      ${doneList.length ? `<p class="note" style="margin-top:14px">${L(`Completed: ${doneList.length} khatm${doneList.length > 1 ? 's' : ''} (last ${doneList[doneList.length - 1]}). May Allah accept it.`, `ختمات مكتملة: ${num(doneList.length)} (آخرها ${doneList[doneList.length - 1]}). تقبّل الله منك.`)}</p>` : ''}`;
+    const per = () => $('#perday').textContent = L(`About ${fmt(QM.TOTAL / pick)} verses, or ${(30 / pick).toFixed(30 % pick ? 1 : 0)} juz, a day.`, `نحو ${fmt(QM.TOTAL / pick)} آية، أي ${num((30 / pick).toFixed(30 % pick ? 1 : 0))} جزء، كل يوم.`);
     per();
     $$('#days-pick button').forEach(b => b.onclick = () => { pick = +b.dataset.d; $$('#days-pick button').forEach(x => x.setAttribute('aria-pressed', x === b)); per() });
     const start = from => { save('khatm', { ...k, active: true, start: +midnight(new Date()), days: pick, from, at: from }); if (from === 0) { const q2 = load('quran', {}); save('quran', { ...q2, chapter: 1, verse: 1 }) } render() };
@@ -124,23 +124,23 @@ function plan() {
   const at = k.at || 0, total = QM.TOTAL - k.from, dayN = Math.floor((midnight(new Date()) - k.start) / DAY); // 0 on the first day
   if (at >= QM.TOTAL) {
     k.active = false; k.done = [...(k.done || []), Date.now()]; save('khatm', k);
-    $('#plan').innerHTML = `<p class="lbl">Khatm plan</p><p class="big">Khatm complete 🎉</p><p class="mute">You finished the Quran. May Allah accept it from you. Consider the duaa of completing the Quran, and start another whenever you're ready.</p><div class="row" style="margin-top:12px"><button class="btn primary" id="again">Plan another</button></div>`;
+    $('#plan').innerHTML = `<p class="lbl">${L('Khatm plan', 'خطة الختمة')}</p><p class="big">${L('Khatm complete', 'تمّت الختمة')} 🎉</p><p class="mute">${L("You finished the Quran. May Allah accept it from you. Consider the duaa of completing the Quran, and start another whenever you're ready.", 'ختمت القرآن، تقبّل الله منك. ادعُ بدعاء الختم، وابدأ ختمة جديدة متى شئت.')}</p><div class="row" style="margin-top:12px"><button class="btn primary" id="again">${L('Plan another', 'خطّط لختمة أخرى')}</button></div>`;
     $('#again').onclick = render; return;
   }
   const perDay = total / k.days, goal = Math.min(QM.TOTAL, Math.ceil(k.from + perDay * Math.min(dayN + 1, k.days)));
   const diff = at - Math.ceil(k.from + perDay * Math.min(dayN, k.days)); // vs where you should be at the start of today
   const left = Math.max(0, k.days - dayN), done = (at - k.from) / total;
   const todayLeft = Math.max(0, goal - at);
-  const status = diff >= 0 ? (todayLeft === 0 ? "✓ Today's portion done" : 'On track') : `${fmt(-diff)} verses behind`;
-  $('#plan').innerHTML = `<div class="row"><p class="lbl grow">Khatm plan · ${num(k.days)} days</p><span class="mute" style="font-size:14px">${status}</span></div>
+  const status = diff >= 0 ? (todayLeft === 0 ? L("✓ Today's portion done", '✓ أنهيت وِرد اليوم') : L('On track', 'على الخطة')) : L(`${fmt(-diff)} verses behind`, `متأخر ${fmt(-diff)} آية`);
+  $('#plan').innerHTML = `<div class="row"><p class="lbl grow">${L('Khatm plan', 'خطة الختمة')} · ${num(k.days)} ${L('days', 'يومًا')}</p><span class="mute" style="font-size:14px">${status}</span></div>
     <div class="bar"><i style="width:${(done * 100).toFixed(1)}%"></i></div>
-    <div class="stats"><div><b>${Math.floor(done * 100)}%</b><span>done</span></div><div><b>${num(Math.min(dayN + 1, k.days))} / ${num(k.days)}</b><span>day</span></div><div><b>${num(left)}</b><span>days left</span></div></div>
-    <div class="today">${todayLeft ? `<b>Today:</b> from ${esc(placeText(at + 1))} to ${esc(placeText(goal))} (${fmt(todayLeft)} verses)` : `<b>Today's portion is done.</b> Keep going if you like: tomorrow's starts at ${esc(placeText(at + 1))}.`}</div>
-    <div class="row"><a class="btn primary" href="${link(at + 1)}">${todayLeft ? "Read today's portion →" : 'Keep reading →'}</a></div>
-    <details class="more"><summary>Reading from a printed mushaf? Set your place</summary>
-      <div class="setplace"><select id="sp-c">${QM.NAMES[AR ? 1 : 0].map((n, i) => `<option value="${i + 1}">${esc(n)}</option>`).join('')}</select><input id="sp-v" type="number" min="1" inputmode="numeric" placeholder="verse"><button class="btn" id="sp-set">Set</button></div>
+    <div class="stats"><div><b>${Math.floor(done * 100)}%</b><span>${L('done', 'مُنجز')}</span></div><div><b>${num(Math.min(dayN + 1, k.days))} / ${num(k.days)}</b><span>${L('day', 'اليوم')}</span></div><div><b>${num(left)}</b><span>${L('days left', 'أيام متبقية')}</span></div></div>
+    <div class="today">${todayLeft ? `<b>${L('Today:', 'اليوم:')}</b> ${L('from', 'من')} ${esc(placeText(at + 1))} ${L('to', 'إلى')} ${esc(placeText(goal))} (${fmt(todayLeft)} ${L('verses', 'آية')})` : `<b>${L("Today's portion is done.", 'أنهيت وِرد اليوم.')}</b> ${L("Keep going if you like: tomorrow's starts at", 'تابع إن شئت: وِرد الغد يبدأ من')} ${esc(placeText(at + 1))}.`}</div>
+    <div class="row"><a class="btn primary" href="${link(at + 1)}">${todayLeft ? L("Read today's portion →", 'اقرأ وِرد اليوم ←') : L('Keep reading →', 'تابع القراءة ←')}</a></div>
+    <details class="more"><summary>${L('Reading from a printed mushaf? Set your place', 'تقرأ من مصحف ورقي؟ حدّد موضعك')}</summary>
+      <div class="setplace"><select id="sp-c">${QM.NAMES[AR ? 1 : 0].map((n, i) => `<option value="${i + 1}">${esc(n)}</option>`).join('')}</select><input id="sp-v" type="number" min="1" inputmode="numeric" placeholder="${L('verse', 'الآية')}"><button class="btn" id="sp-set">${L('Set', 'حفظ')}</button></div>
     </details>
-    <details class="more"><summary>End this plan</summary><p class="mute" style="margin:8px 0">Your progress in this plan will be cleared.</p><button class="btn" id="end">End plan</button></details>`;
+    <details class="more"><summary>${L('End this plan', 'إنهاء هذه الخطة')}</summary><p class="mute" style="margin:8px 0">${L('Your progress in this plan will be cleared.', 'سيُمسح تقدّمك في هذه الخطة.')}</p><button class="btn" id="end">${L('End plan', 'إنهاء الخطة')}</button></details>`;
   const [ac, av] = QM.place(Math.max(1, at)); $('#sp-c').value = ac; $('#sp-v').value = av;
   $('#sp-set').onclick = () => { const c = +$('#sp-c').value, v = Math.min(Math.max(1, +$('#sp-v').value || 1), QM.VERSES[c - 1]); k.at = QM.index(c, v); save('khatm', k); render() };
   $('#end').onclick = () => { save('khatm', { done: k.done || [] }); render() };
@@ -167,14 +167,14 @@ function days() {
     out.unshift(`<i class="${on ? 'on' : ''}" title="${QM.dayKey(d)}"></i>`);
   }
   $('#days').innerHTML = out.join('');
-  $('#streak').textContent = streak ? `${num(streak)} day streak` : '';
+  $('#streak').textContent = streak ? L(`${num(streak)} day streak`, `${num(streak)} أيام متتالية`) : '';
 }
 
 // ---------- bookmarks ----------
 function bookmarks() {
   const list = QM.bookmarks();
-  $('#bms').innerHTML = list.length ? list.map((b, i) => `<div class="bm"><a href="/quran/${b.c}/${b.v}">${esc(QM.name(b.c, AR))} ${num(b.c)}:${num(b.v)}<small>${new Intl.DateTimeFormat(AR ? 'ar' : 'en', { day: 'numeric', month: 'short' }).format(b.at)}</small></a><button class="icon" data-i="${i}" aria-label="Remove"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>`).join('')
-    : '<p class="note">No bookmarks yet. Tap the bookmark icon on the Quran page to save a verse.</p>';
+  $('#bms').innerHTML = list.length ? list.map((b, i) => `<div class="bm"><a href="/quran/${b.c}/${b.v}">${esc(QM.name(b.c, AR))} ${num(b.c)}:${num(b.v)}<small>${new Intl.DateTimeFormat(AR ? 'ar' : 'en', { day: 'numeric', month: 'short' }).format(b.at)}</small></a><button class="icon" data-i="${i}" aria-label="${L('Remove', 'حذف')}"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>`).join('')
+    : `<p class="note">${L('No bookmarks yet. Tap the bookmark icon on the Quran page to save a verse.', 'لا علامات بعد. اضغط أيقونة العلامة في صفحة القرآن لحفظ آية.')}</p>`;
   $$('#bms button').forEach(b => b.onclick = () => { const l = QM.bookmarks(); l.splice(+b.dataset.i, 1); QM.saveBookmarks(l); bookmarks() });
 }
 

@@ -54,13 +54,20 @@
   .row .grow { flex: 1 }
   .bar { height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; margin: 12px 0 8px }
   .bar i { display: block; height: 100%; background: var(--fg); border-radius: 99px }
+  .ctr { display: flex; align-items: center; gap: 10px; padding: 12px 2px; border-top: 1px solid var(--line) }
+  .ctr .name { flex: 1; min-width: 0 }
+  .ctr .name small { display: block; color: var(--mute); font-size: 12.5px }
+  .ctr b { min-width: 3ch; text-align: center; font-size: 20px; font-variant-numeric: tabular-nums }
+  .ctr button { width: 36px; height: 36px; border-radius: 99px; background: var(--field); border: 1px solid var(--line); font-size: 18px; line-height: 1 }
+  .ctr .made { width: auto; padding: 0 12px; font-size: 13.5px }
+  .big2 { font-size: clamp(32px, 7vw, 46px); font-weight: 650; letter-spacing: -.03em; font-variant-numeric: tabular-nums }
   .preview-note { text-align: center; font-size: 13px; color: var(--mute); margin-bottom: 8px }
 </style>
 </head>
 <body>
 <header class="top">
   <a class="brand" href="/">muslimist</a>
-  <nav class="links" id="menu" popover><a href="/quran/" data-t="quran">Quran</a><a href="/duaa/" data-t="duaa">Duaa</a><a href="/hadith/" data-t="hadith">Hadith</a><a href="/names/" data-t="names">Names</a><a href="/salah/" data-t="salah">Salah</a><a href="/calendar/" data-t="calendar">Calendar</a><a href="/ramadan/" aria-current="page" data-t="ramadan">Ramadan</a><a href="/qada/" data-t="qada">Make-up</a><a href="/zakat/" data-t="zakat">Zakat</a><a href="/times/" data-t="times">Times</a><a href="/qibla/" data-t="qibla">Qibla</a><a href="/dashboard/" data-t="dash">Dash</a></nav>
+  <nav class="links" id="menu" popover><a href="/" data-t="home">Home</a><a href="/quran/" data-t="quran">Quran</a><a href="/duaa/" data-t="duaa">Duaa</a><a href="/hadith/" data-t="hadith">Hadith</a><a href="/names/" data-t="names">Names</a><a href="/salah/" data-t="salah">Salah</a><a href="/calendar/" data-t="calendar">Calendar</a><a href="/ramadan/" aria-current="page" data-t="ramadan">Ramadan</a><a href="/zakat/" data-t="zakat">Zakat</a><a href="/times/" data-t="times">Times</a><a href="/qibla/" data-t="qibla">Qibla</a><a href="/dashboard/" data-t="dash">Dash</a></nav>
   <button class="pill menu" popovertarget="menu" aria-label="Menu"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </header>
 
@@ -102,8 +109,8 @@ const year = R.years[H.y] ||= { days: {}, madeUp: 0, nights: {} };
 const persist = () => { if (!preview) save('ramadan', R) };
 
 const say = (ar, tl, mn, src) => `<div class="say"><p class="ar" lang="ar">${ar}</p><p class="tl">${tl}</p><p class="mn">${mn}</p><small>${src}</small></div>`;
-const IFTAR = say('ذَهَبَ الظَّمَأُ، وَابْتَلَّتِ الْعُرُوقُ، وَثَبَتَ الْأَجْرُ إِنْ شَاءَ اللَّهُ', "Dhahabadh-dhama', wabtallatil-'uruq, wa thabatal-ajru in sha Allah", 'The thirst has gone, the veins are moistened, and the reward is certain, if Allah wills.', 'Said at iftar · Abu Dawud');
-const QADR = say('اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي', "Allahumma innaka 'afuwwun tuhibbul-'afwa fa'fu 'anni", 'O Allah, You are Most Forgiving and love forgiveness, so forgive me.', 'Taught for Laylat al-Qadr · at-Tirmidhi');
+const IFTAR = say('ذَهَبَ الظَّمَأُ، وَابْتَلَّتِ الْعُرُوقُ، وَثَبَتَ الْأَجْرُ إِنْ شَاءَ اللَّهُ', "Dhahabadh-dhama', wabtallatil-'uruq, wa thabatal-ajru in sha Allah", L('The thirst has gone, the veins are moistened, and the reward is certain, if Allah wills.', 'ذهب العطش وابتلّت العروق وثبت الأجر إن شاء الله.'), L('Said at iftar · Abu Dawud', 'يُقال عند الإفطار · أبو داود'));
+const QADR = say('اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي', "Allahumma innaka 'afuwwun tuhibbul-'afwa fa'fu 'anni", L('O Allah, You are Most Forgiving and love forgiveness, so forgive me.', 'دعاء ليلة القدر.'), L('Taught for Laylat al-Qadr · at-Tirmidhi', 'علّمه النبي ﷺ لليلة القدر · الترمذي'));
 
 function render() {
   const main = $('#main');
@@ -111,27 +118,27 @@ function render() {
     // count down to the next 1 Ramadan
     let d = today, n = 0;
     while (n < 400 && !(hijri(d).m === 9 && hijri(d).d === 1)) { d = addDays(d, 1); n++ }
-    main.innerHTML = `<section class="card glass center"><p class="lbl">Ramadan ${num(H.m > 9 ? H.y + 1 : H.y)}</p>
-      <div class="count"><p class="t">${num(n)}</p><p class="what">days to go · expected to begin ${fmtDate(d)}</p></div>
-      <p class="note" style="margin-top:12px">Based on the Umm al-Qura calendar${offset ? ` adjusted by ${offset} day${Math.abs(offset) > 1 ? 's' : ''}` : ''}; the start depends on the moon sighting your mosque follows (adjust it on the <a href="/calendar/" style="text-decoration:underline">Calendar</a> page).</p>
-      <div class="row" style="justify-content:center;margin-top:16px"><a class="btn primary" href="#preview">Preview Ramadan mode</a></div></section>
-      <section class="card glass"><p class="lbl">Getting ready</p><ul style="margin:10px 0 0;padding-inline-start:20px;line-height:1.8">
-      <li>Fast some days of Sha'ban, as the Prophet ﷺ did, and make up any missed fasts from last Ramadan.</li>
-      <li>Set your location on the <a href="/times/" style="text-decoration:underline">Times</a> page so suhoor and iftar times are right.</li>
-      <li>Plan to finish the Quran in Ramadan with the .</li></ul></section>`;
+    main.innerHTML = `<section class="card glass center"><p class="lbl">${L('Ramadan', 'رمضان')} ${num(H.m > 9 ? H.y + 1 : H.y)}</p>
+      <div class="count"><p class="t">${num(n)}</p><p class="what">${L('days to go · expected to begin', 'يومًا متبقيًا · يُتوقّع أن يبدأ')} ${fmtDate(d)}</p></div>
+      <p class="note" style="margin-top:12px">${L(`Based on the Umm al-Qura calendar${offset ? ` adjusted by ${offset} day${Math.abs(offset) > 1 ? 's' : ''}` : ''}; the start depends on the moon sighting your mosque follows (adjust it on the`, `وفق تقويم أم القرى${offset ? ` معدّلًا بـ ${num(offset)} يوم` : ''}؛ وبدايته تعتمد على رؤية الهلال التي يتبعها مسجدك (عدّلها في صفحة`)} <a href="/calendar/" style="text-decoration:underline">${L('Calendar', 'التقويم')}</a>${L(' page).', ').')}</p>
+      <div class="row" style="justify-content:center;margin-top:16px"><a class="btn primary" href="#preview">${L('Preview Ramadan mode', 'معاينة وضع رمضان')}</a></div></section>
+      <section class="card glass"><p class="lbl">${L('Getting ready', 'الاستعداد')}</p><ul style="margin:10px 0 0;padding-inline-start:20px;line-height:1.8">
+      <li>${L("Fast some days of Sha'ban, as the Prophet ﷺ did, and make up any missed fasts from last Ramadan.", 'صُم أيامًا من شعبان كما كان النبي ﷺ يفعل، واقضِ ما فاتك من رمضان الماضي.')} <a href="#makeup" style="text-decoration:underline">${L('Make-up', 'القضاء')}</a></li>
+      <li>${L('Set your location on the', 'حدّد موقعك في صفحة')} <a href="/times/" style="text-decoration:underline">${L('Times', 'الأوقات')}</a> ${L('page so suhoor and iftar times are right.', 'لتكون أوقات السحور والإفطار صحيحة.')}</li>
+      <li>${L('Plan to finish the Quran in Ramadan on the', 'خطّط لختم القرآن في رمضان في صفحة')} <a href="/quran/progress/" style="text-decoration:underline">${L('Quran progress', 'تقدّم القراءة')}</a> ${L('page.', '')}</li></ul></section>`;
     return;
   }
   const len = 30;
-  main.innerHTML = `${preview ? '<p class="preview-note">Preview · pretending today is ' + num(H.d) + ' Ramadan · <a href="#" style="text-decoration:underline">exit</a></p>' : ''}
-    <section class="card glass"><p class="lbl">Ramadan ${num(H.y)} · day ${num(H.d)}</p>
+  main.innerHTML = `${preview ? `<p class="preview-note">${L(`Preview · pretending today is ${num(H.d)} Ramadan`, `معاينة · كأن اليوم ${num(H.d)} رمضان`)} · <a href="#" style="text-decoration:underline">${L('exit', 'خروج')}</a></p>` : ''}
+    <section class="card glass"><p class="lbl">${L('Ramadan', 'رمضان')} ${num(H.y)} · ${L('day', 'اليوم')} ${num(H.d)}</p>
       <div class="count"><p class="t" id="cd">--:--:--</p><p class="what" id="cd-what"></p></div>
-      <div class="pair2"><div id="p-suhoor"><span>Suhoor ends (Fajr)</span><b id="t-suhoor"></b></div><div id="p-iftar"><span>Iftar (Maghrib)</span><b id="t-iftar"></b></div></div>
-      <p class="note center" style="margin-top:10px">For your location on the <a href="/times/" style="text-decoration:underline">Times</a> page.</p>
+      <div class="pair2"><div id="p-suhoor"><span>${L('Suhoor ends (Fajr)', 'نهاية السحور (الفجر)')}</span><b id="t-suhoor"></b></div><div id="p-iftar"><span>${L('Iftar (Maghrib)', 'الإفطار (المغرب)')}</span><b id="t-iftar"></b></div></div>
+      <p class="note center" style="margin-top:10px">${L('For your location on the', 'لموقعك في صفحة')} <a href="/times/" style="text-decoration:underline">${L('Times', 'الأوقات')}</a>${L(' page.', '.')}</p>
       ${IFTAR}</section>
-    ${H.d >= 20 ? `<section class="card glass"><p class="lbl">The last ten nights</p><div id="nights"></div></section>` : ''}
-    <section class="card glass"><div class="row"><p class="lbl grow">Your fasts</p><span class="mute" style="font-size:13px">tap a day</span></div>
+    ${H.d >= 20 ? `<section class="card glass"><p class="lbl">${L('The last ten nights', 'العشر الأواخر')}</p><div id="nights"></div></section>` : ''}
+    <section class="card glass"><div class="row"><p class="lbl grow">${L('Your fasts', 'صيامك')}</p><span class="mute" style="font-size:13px">${L('tap a day', 'اضغط على يوم')}</span></div>
       <div class="fast" id="fast"></div>
-      <div class="keys"><span><i style="background:#2fb34f"></i>Fasted</span><span><i style="background:#e04848"></i>Missed</span><span><i style="background:#e0a526"></i>Excused (travel, illness, period)</span></div>
+      <div class="keys"><span><i style="background:#2fb34f"></i>${L('Fasted', 'صُمت')}</span><span><i style="background:#e04848"></i>${L('Missed', 'فاتني')}</span><span><i style="background:#e0a526"></i>${L('Excused (travel, illness, period)', 'بعذر (سفر، مرض، حيض)')}</span></div>
       <div class="tally" id="tally"></div></section>
     <section class="card glass" id="quran"></section>`;
 
@@ -145,11 +152,11 @@ function render() {
     const fajr = at(fl.fajr), maghrib = at(fl.maghrib);
     $('#t-suhoor').textContent = txt.fajr; $('#t-iftar').textContent = txt.maghrib;
     let target, what;
-    if (now < fajr) { target = fajr; what = 'until suhoor ends' } else if (now < maghrib) { target = maghrib; what = 'until iftar' } else { target = addDays(fajr, 1); what = 'until suhoor ends tomorrow' }
+    if (now < fajr) { target = fajr; what = 'suhoor' } else if (now < maghrib) { target = maghrib; what = 'iftar' } else { target = addDays(fajr, 1); what = 'suhoor2' }
     const s = Math.max(0, Math.round((target - now) / 1e3));
     $('#cd').textContent = `${Math.floor(s / 3600)}:${String(Math.floor(s / 60) % 60).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
-    $('#cd-what').textContent = what;
-    $('#p-suhoor').classList.toggle('on', what.startsWith('until suhoor')); $('#p-iftar').classList.toggle('on', what === 'until iftar');
+    $('#cd-what').textContent = { suhoor: L('until suhoor ends', 'حتى نهاية السحور'), iftar: L('until iftar', 'حتى الإفطار'), suhoor2: L('until suhoor ends tomorrow', 'حتى نهاية سحور الغد') }[what];
+    $('#p-suhoor').classList.toggle('on', what !== 'iftar'); $('#p-iftar').classList.toggle('on', what === 'iftar');
   };
   tick(); clearInterval(window.cdTimer); window.cdTimer = setInterval(tick, 1000);
 
@@ -159,21 +166,21 @@ function render() {
       const d = i + 1, st = year.days[d] || 0;
       return `<button data-d="${d}" class="s${st} ${d === H.d ? 'today' : ''} ${d > H.d ? 'future' : ''} ${d > 20 && d % 2 ? 'odd' : ''}">${num(d)}</button>`;
     }).join('');
-    $$('#fast button').forEach(b => b.onclick = () => { const d = +b.dataset.d; year.days[d] = ((year.days[d] || 0) + 1) % 4; persist(); fast() });
+    $$('#fast button').forEach(b => b.onclick = () => { const d = +b.dataset.d; year.days[d] = ((year.days[d] || 0) + 1) % 4; persist(); fast(); makeup() });
     const c = [0, 0, 0, 0]; Object.values(year.days).forEach(s => c[s]++);
     const owe = c[2] + c[3], left = Math.max(0, owe - year.madeUp);
-    $('#tally').innerHTML = `<span>Fasted <b>${num(c[1])}</b></span><a href="/qada/">To make up <b>${num(left)}</b>${owe ? ` of ${num(owe)}` : ''} →</a>
-      ${owe ? `<span class="mk">Made up <button id="mu-" aria-label="less">−</button><b>${num(year.madeUp)}</b><button id="mu+" aria-label="more">+</button></span>` : ''}`;
-    if (owe) { $('#mu-').onclick = () => { year.madeUp = Math.max(0, year.madeUp - 1); persist(); fast() }; $('#mu\\+').onclick = () => { year.madeUp = Math.min(owe, year.madeUp + 1); persist(); fast() } }
+    $('#tally').innerHTML = `<span>${L('Fasted', 'صُمت')} <b>${num(c[1])}</b></span><a href="#makeup">${L('To make up', 'للقضاء')} <b>${num(left)}</b>${owe ? ` ${L('of', 'من')} ${num(owe)}` : ''} →</a>
+      ${owe ? `<span class="mk">${L('Made up', 'قضيت')} <button id="mu-" aria-label="less">−</button><b>${num(year.madeUp)}</b><button id="mu+" aria-label="more">+</button></span>` : ''}`;
+    if (owe) { $('#mu-').onclick = () => { year.madeUp = Math.max(0, year.madeUp - 1); persist(); fast(); makeup() }; $('#mu\\+').onclick = () => { year.madeUp = Math.min(owe, year.madeUp + 1); persist(); fast(); makeup() } }
   };
-  fast();
+  fast(); fastRefresh = fast;
 
   // ---------- last ten nights ----------
   if (H.d >= 20) {
     // the coming night belongs to the next date (it begins at maghrib)
     const night = Math.min(29, H.d + 1), odd = night % 2 === 1, rec = year.nights[night] ||= {};
-    const items = [['qiyam', 'Pray qiyam / taraweeh'], ['quran', 'Read Quran'], ['duaa', 'Make the duaa below'], ['sadaqah', 'Give sadaqah, even a little'], ['dhikr', 'Remember Allah and seek forgiveness']];
-    $('#nights').innerHTML = `<div class="night"><b>Tonight is the night of the ${night}${['th', 'st', 'nd', 'rd'][night % 10 > 3 || Math.floor(night / 10) === 1 ? 0 : night % 10]}</b><p class="mute" style="font-size:14px;margin-top:2px">${odd ? 'An odd night: seek Laylat al-Qadr tonight (Bukhari).' : 'Laylat al-Qadr is most likely in the odd nights, but it could be any of the last ten.'} It begins at maghrib.</p></div>
+    const items = [['qiyam', L('Pray qiyam / taraweeh', 'صلِّ القيام / التراويح')], ['quran', L('Read Quran', 'اقرأ القرآن')], ['duaa', L('Make the duaa below', 'ادعُ بالدعاء أدناه')], ['sadaqah', L('Give sadaqah, even a little', 'تصدّق ولو بالقليل')], ['dhikr', L('Remember Allah and seek forgiveness', 'اذكر الله واستغفره')]];
+    $('#nights').innerHTML = `<div class="night"><b>${L(`Tonight is the night of the ${night}${['th', 'st', 'nd', 'rd'][night % 10 > 3 || Math.floor(night / 10) === 1 ? 0 : night % 10]}`, `الليلة ليلة ${num(night)}`)}</b><p class="mute" style="font-size:14px;margin-top:2px">${odd ? L('An odd night: seek Laylat al-Qadr tonight (Bukhari).', 'ليلة وتر: تحرَّ ليلة القدر الليلة (البخاري).') : L('Laylat al-Qadr is most likely in the odd nights, but it could be any of the last ten.', 'ليلة القدر أرجى في الليالي الوتر، وقد تكون في أي ليلة من العشر.')} ${L('It begins at maghrib.', 'وتبدأ من المغرب.')}</p></div>
       <div class="checks2">${items.map(([k, l]) => `<label><input type="checkbox" data-k="${k}"${rec[k] ? ' checked' : ''}> ${l}</label>`).join('')}</div>${QADR}`;
     $$('#nights input').forEach(c => c.onchange = () => { rec[c.dataset.k] = c.checked; persist() });
   }
@@ -183,14 +190,34 @@ function render() {
   const daysLeft = Math.max(1, len - H.d + 1);
   if (k.active) {
     const done = ((k.at || 0) - k.from) / (QM.TOTAL - k.from);
-    $('#quran').innerHTML = `<div class="row"><p class="lbl grow">Quran this Ramadan</p><a class="card-link" href="/quran/progress/">Progress →</a></div><div class="bar"><i style="width:${(done * 100).toFixed(1)}%"></i></div><p class="mute">${Math.floor(done * 100)}% of your ${num(k.days)}-day khatm. <a href="/quran/progress/" style="text-decoration:underline">See today's portion</a>.</p>`;
+    $('#quran').innerHTML = `<div class="row"><p class="lbl grow">${L('Quran this Ramadan', 'القرآن في رمضان')}</p><a class="card-link" href="/quran/progress/">${L('Progress →', 'التقدّم ←')}</a></div><div class="bar"><i style="width:${(done * 100).toFixed(1)}%"></i></div><p class="mute">${L(`${Math.floor(done * 100)}% of your ${num(k.days)}-day khatm.`, `${num(Math.floor(done * 100))}٪ من ختمتك في ${num(k.days)} يومًا.`)} <a href="/quran/progress/" style="text-decoration:underline">${L("See today's portion", 'وِرد اليوم')}</a>.</p>`;
   } else {
-    $('#quran').innerHTML = `<p class="lbl">Quran this Ramadan</p><p style="margin:8px 0 12px">Finish the whole Quran by the end of Ramadan: about ${(30 / daysLeft).toFixed(1)} juz a day for the ${num(daysLeft)} days left.</p><button class="btn primary" id="plan-r">Start a ${num(daysLeft)}-day khatm</button>`;
-    $('#plan-r').onclick = () => { if (preview) return alert('This is only a preview.'); save('khatm', { ...k, active: true, start: +new Date(new Date().setHours(0, 0, 0, 0)), days: daysLeft, from: 0, at: 0 }); location.href = '/quran/progress/' };
+    $('#quran').innerHTML = `<p class="lbl">${L('Quran this Ramadan', 'القرآن في رمضان')}</p><p style="margin:8px 0 12px">${L(`Finish the whole Quran by the end of Ramadan: about ${(30 / daysLeft).toFixed(1)} juz a day for the ${num(daysLeft)} days left.`, `اختم القرآن قبل نهاية رمضان: نحو ${num((30 / daysLeft).toFixed(1))} جزء يوميًا في ${num(daysLeft)} يومًا متبقيًا.`)}</p><button class="btn primary" id="plan-r">${L(`Start a ${num(daysLeft)}-day khatm`, `ابدأ ختمة في ${num(daysLeft)} يومًا`)}</button>`;
+    $('#plan-r').onclick = () => { if (preview) return alert(L('This is only a preview.', 'هذه معاينة فقط.')); save('khatm', { ...k, active: true, start: +new Date(new Date().setHours(0, 0, 0, 0)), days: daysLeft, from: 0, at: 0 }); location.href = '/quran/progress/' };
   }
 }
-addEventListener('hashchange', () => location.reload());
-render();
+// ---------- fasts to make up: every Ramadan tracked here, plus older ones (dash reads the same numbers) ----------
+function makeup() {
+  let el = $('#makeup');
+  if (!el) { el = document.createElement('section'); el.className = 'card glass'; el.id = 'makeup'; $('#main').append(el) }
+  const Q = load('qada', { olderFasts: 0, olderMade: 0, prayers: {}, prayed: 0 }), RR = preview ? R : load('ramadan', { years: {} });
+  const rows = Object.entries(RR.years).map(([y, yr]) => { const owe = Object.values(yr.days || {}).filter(s => s === 2 || s === 3).length; return { y, yr, owe, made: Math.min(yr.madeUp || 0, owe) } }).filter(r => r.owe > 0).sort((a, b) => b.y - a.y);
+  const total = rows.reduce((s, r) => s + r.owe - r.made, 0) + Math.max(0, Q.olderFasts - Q.olderMade);
+  el.innerHTML = `<p class="lbl">${L('Fasts to make up', 'أيام صيام للقضاء')}</p><p class="big2">${num(total)}</p>
+    <p class="mute" style="margin-bottom:8px">${total ? L('Tap "Made up one" each time you fast one.', 'اضغط «قضيت يومًا» كلما صمت يومًا.') : L('Nothing owed. Alhamdulillah.', 'لا شيء عليك. الحمد لله.')}</p>
+    ${rows.map(r => `<div class="ctr"><div class="name">${L('Ramadan', 'رمضان')} ${num(r.y)}<small>${L(`${num(r.made)} of ${num(r.owe)} made up`, `قضيت ${num(r.made)} من ${num(r.owe)}`)}</small></div>
+      <button data-y="${r.y}" data-d="-1" aria-label="undo">−</button><b>${num(r.owe - r.made)}</b><button class="made" data-y="${r.y}" data-d="1">${L('Made up one', 'قضيت يومًا')}</button></div>`).join('')}
+    <div class="ctr"><div class="name">${L('Older fasts', 'صيام سابق')}<small>${L('From before you used this site', 'من قبل استخدامك لهذا الموقع')}</small></div>
+      <button data-old="-1" aria-label="fewer">−</button><b>${num(Q.olderFasts - Q.olderMade)}</b><button data-old="1" aria-label="more">+</button>
+      ${Q.olderFasts > Q.olderMade ? `<button class="made" data-oldmade="1">${L('Made up one', 'قضيت يومًا')}</button>` : ''}</div>`;
+  const keep = () => { save('qada', Q); if (!preview) save('ramadan', RR); makeup(); if (inRamadan) fastRefresh?.() };
+  $$('#makeup [data-y]').forEach(b => b.onclick = () => { const yr = RR.years[b.dataset.y], owe = Object.values(yr.days).filter(x => x === 2 || x === 3).length; yr.madeUp = Math.min(owe, Math.max(0, (yr.madeUp || 0) + +b.dataset.d)); keep() });
+  $$('#makeup [data-old]').forEach(b => b.onclick = () => { Q.olderFasts = Math.max(Q.olderMade, Q.olderFasts + +b.dataset.old); keep() });
+  $('#makeup [data-oldmade]') && ($('#makeup [data-oldmade]').onclick = () => { Q.olderMade++; keep() });
+}
+let fastRefresh = null;
+addEventListener('hashchange', () => { if (location.hash !== '#makeup') location.reload() });
+render(); makeup();
 </script>
 </body>
 </html>

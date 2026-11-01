@@ -11,6 +11,17 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#111111">
 <link rel="stylesheet" href="/assets/site.css">
+<style>
+  .lbl { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--mute) }
+  .big2 { font-size: clamp(32px, 7vw, 46px); font-weight: 650; letter-spacing: -.03em; font-variant-numeric: tabular-nums }
+  .ctr { display: flex; align-items: center; gap: 10px; padding: 12px 2px; border-top: 1px solid var(--line) }
+  .ctr .name { flex: 1; min-width: 0 }
+  .ctr b { min-width: 3ch; text-align: center; font-size: 20px; font-variant-numeric: tabular-nums }
+  .ctr button { width: 36px; height: 36px; border-radius: 99px; background: var(--field); border: 1px solid var(--line); font-size: 18px; line-height: 1 }
+  .ctr .made { width: auto; padding: 0 12px; font-size: 13.5px }
+  .add { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 12px; font-size: 14px }
+  .add input { width: 80px; background: var(--field); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; color: var(--fg); font-size: 15px }
+</style>
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" href="/assets/icons/favicon-196.png?v=3">
 <link rel="apple-touch-icon" href="/assets/icons/apple-icon-180.png?v=3">
@@ -19,7 +30,7 @@
 <body>
 <header class="top">
   <a class="brand" href="/">muslimist</a>
-  <nav class="links" id="menu" popover><a href="/quran/" data-t="quran">Quran</a><a href="/duaa/" data-t="duaa">Duaa</a><a href="/hadith/" data-t="hadith">Hadith</a><a href="/names/" data-t="names">Names</a><a href="/salah/" data-t="salah">Salah</a><a href="/calendar/" data-t="calendar">Calendar</a><a href="/ramadan/" data-t="ramadan">Ramadan</a><a href="/qada/" data-t="qada">Make-up</a><a href="/zakat/" data-t="zakat">Zakat</a><a href="/times/" aria-current="page" data-t="times">Times</a><a href="/qibla/" data-t="qibla">Qibla</a><a href="/dashboard/" data-t="dash">Dash</a></nav>
+  <nav class="links" id="menu" popover><a href="/" data-t="home">Home</a><a href="/quran/" data-t="quran">Quran</a><a href="/duaa/" data-t="duaa">Duaa</a><a href="/hadith/" data-t="hadith">Hadith</a><a href="/names/" data-t="names">Names</a><a href="/salah/" data-t="salah">Salah</a><a href="/calendar/" data-t="calendar">Calendar</a><a href="/ramadan/" data-t="ramadan">Ramadan</a><a href="/zakat/" data-t="zakat">Zakat</a><a href="/times/" aria-current="page" data-t="times">Times</a><a href="/qibla/" data-t="qibla">Qibla</a><a href="/dashboard/" data-t="dash">Dash</a></nav>
   <button class="pill menu" popovertarget="menu" aria-label="Menu"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </header>
 
@@ -42,6 +53,7 @@
     </div>
     <ul class="prayers" id="prayers"></ul>
   </section>
+  <section class="card glass" id="makeup"></section>
 </main>
 
 <dialog class="sheet" id="settings">
@@ -167,6 +179,21 @@ function alertsUI() {
   };
 }
 alertsUI();
+
+// ---------- missed prayers to make up (the dash shows the total) ----------
+function makeup() {
+  const Q = load('qada', { olderFasts: 0, olderMade: 0, prayers: { fajr: 0, dhuhr: 0, asr: 0, maghrib: 0, isha: 0 }, prayed: 0 });
+  const P = ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'];
+  P.forEach(k => Q.prayers[k] ||= 0);
+  const total = P.reduce((s, k) => s + Q.prayers[k], 0);
+  $('#makeup').innerHTML = `<p class="lbl">${L('Missed prayers to make up', 'صلوات فائتة للقضاء')}</p><p class="big2">${AR ? total.toLocaleString('ar-EG') : total}</p>
+    <p class="mute" style="margin-bottom:8px">${total ? L(`${Q.prayed} made up so far. Pray them in order when you can; even one a day adds up.`, `قضيت ${Q.prayed.toLocaleString('ar-EG')} حتى الآن. صلّها بالترتيب متى استطعت، ولو واحدة كل يوم.`) : L('Nothing owed. Alhamdulillah.', 'لا شيء عليك. الحمد لله.')}</p>
+    ${P.map(k => `<div class="ctr"><div class="name">${t(k)}</div><button data-k="${k}" data-d="1" aria-label="add">+</button><b>${AR ? Q.prayers[k].toLocaleString('ar-EG') : Q.prayers[k]}</b>${Q.prayers[k] ? `<button class="made" data-k="${k}" data-d="-1">${L('Prayed one', 'صليت واحدة')}</button>` : ''}</div>`).join('')}
+    <div class="add">${L('Missed whole days? Add', 'فاتتك أيام كاملة؟ أضف')} <input id="mdays" type="number" min="1" inputmode="numeric" placeholder="${L('days', 'أيام')}"> <button class="btn" id="add-days">${L('Add 5 prayers a day', 'أضف ٥ صلوات لكل يوم')}</button></div>`;
+  $$('#makeup [data-k]').forEach(b => b.onclick = () => { const k = b.dataset.k, d = +b.dataset.d; if (d < 0 && Q.prayers[k] > 0) Q.prayed++; Q.prayers[k] = Math.max(0, Q.prayers[k] + d); save('qada', Q); makeup() });
+  $('#add-days').onclick = () => { const n = Math.max(0, Math.round(+$('#mdays').value || 0)); if (!n) return; P.forEach(k => Q.prayers[k] += n); save('qada', Q); makeup() };
+}
+makeup();
 
 fill(); render();
 setInterval(render, 30e3);

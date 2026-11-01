@@ -4,8 +4,9 @@
 (() => {
   const DEF = { on: false, sound: true, prayers: ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'] };
   const get = () => load('alerts', DEF);
-  const ADHAN = '/assets/athan/adhan.mp3';
-  let hasAdhan = null, audio = null;
+  // a recording for each prayer (Fajr's has its extra line); sunrise and the like fall back to Dhuhr's
+  const ADHAN = k => `/assets/athan/${['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'].includes(k) ? k : 'dhuhr'}.mp3`;
+  let audio = null;
   i18n({ timefor: ['Time for', 'حان وقت'], stop: ['Stop', 'إيقاف'], playadhan: ['Play adhan', 'تشغيل الأذان'], testalert: ['Test alert', 'تنبيه تجريبي'] });
 
   // prayer-time scripts: already on the Times, Dash and Ramadan pages; loaded here for the rest
@@ -15,10 +16,6 @@
     if (typeof prayerTimes !== 'function') await loadScript('/assets/times.js');
   };
 
-  async function soundFile() {
-    if (hasAdhan === null) try { const r = await fetch(ADHAN, { method: 'HEAD' }); hasAdhan = r.ok && !/text\/html/.test(r.headers.get('content-type') || '') } catch { hasAdhan = false }
-    return hasAdhan;
-  }
   // a soft three-note chime when no adhan recording has been added
   function chime() {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -30,20 +27,20 @@
     });
     return ctx.resume();
   }
-  async function play() {
+  async function play(key) {
     stopSound();
-    if (await soundFile()) { audio = new Audio(ADHAN); return audio.play() }
-    return chime();
+    audio = new Audio(ADHAN(key));
+    try { await audio.play() } catch (e) { if (e.name === 'NotAllowedError') throw e; audio = null; return chime() } // chime if the file can't load
   }
   function stopSound() { if (audio) { audio.pause(); audio = null } }
 
-  function toast(text, canPlay) {
+  function toast(key, text, canPlay) {
     document.querySelector('.athan-toast')?.remove();
     const el = document.createElement('div');
-    el.className = 'athan-toast glass';
+    el.className = 'athan-toast glass'; el.dataset.key = key;
     el.innerHTML = `<a href="/times/">${text}</a>${canPlay ? `<button class="btn" data-play>${t('playadhan')}</button>` : ''}<button class="btn" data-stop>${t('stop')}</button>`;
     el.querySelector('[data-stop]').onclick = () => { stopSound(); el.remove() };
-    el.querySelector('[data-play]')?.addEventListener('click', e => { play(); e.target.remove() });
+    el.querySelector('[data-play]')?.addEventListener('click', e => { play(el.dataset.key); e.target.remove() });
     // an open settings sheet blocks the rest of the page, so the banner goes inside it until it closes
     const sheet = document.querySelector('dialog[open]');
     (sheet || document.body).append(el);
@@ -64,8 +61,8 @@
     const title = `${t('timefor')} ${t(key)}`;
     notify(title, timeText || '');
     let blocked = false;
-    if (s.sound) try { await play() } catch { blocked = true } // autoplay can be blocked until you've tapped the page
-    toast(`<b>${title}</b>${timeText ? ` · ${timeText}` : ''}`, blocked);
+    if (s.sound) try { await play(key) } catch { blocked = true } // autoplay can be blocked until you've tapped the page
+    toast(key, `<b>${title}</b>${timeText ? ` · ${timeText}` : ''}`, blocked);
   }
 
   // check every 10s whether a chosen prayer has just begun; one alert per prayer per day across all open tabs
@@ -86,7 +83,7 @@
   setInterval(check, 5e3); setTimeout(check, 1500);
 
   window.Alerts = {
-    get, set: v => save('alerts', v), fire, stopSound, hasAdhan: soundFile,
+    get, set: v => save('alerts', v), fire, stopSound,
     permission: async () => 'Notification' in window ? (Notification.permission === 'default' ? Notification.requestPermission() : Notification.permission) : 'unsupported',
     simulate: secs => { localStorage['alerts-sim'] = Date.now() + secs * 1e3 },
   };

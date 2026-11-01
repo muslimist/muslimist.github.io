@@ -2,7 +2,7 @@
 // Pages are fetched fresh when online (so updates show up) and fall back to the saved copy offline;
 // other files are served from the saved copy and refreshed in the background.
 const CACHE = 'muslimist-v1';
-const CORE = ['/', '/quran/', '/quran/progress/', '/duaa/', '/hadith/', '/names/', '/salah/', '/calendar/', '/ramadan/', '/zakat/', '/times/', '/qibla/', '/dashboard/', '/qada/',
+const CORE = ['/', '/quran/', '/quran/progress/', '/duaa/', '/hadith/', '/names/', '/salah/', '/calendar/', '/ramadan/', '/zakat/', '/times/', '/qibla/', '/dashboard/',
   '/assets/site.css', '/assets/site.js', '/assets/alerts.js', '/assets/praytimes.js', '/assets/times.js', '/assets/quranmeta.js',
   '/assets/duaa/duaa.css', '/assets/duaa/duaa.js', '/assets/duaa/arabic.js', '/hadith/data.json', '/quran/fonts/me_quran.ttf', '/manifest.webmanifest', '/assets/icons/favicon-196.png'];
 

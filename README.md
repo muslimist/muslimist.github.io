@@ -44,3 +44,7 @@ Each page's background is a random photo from its set (`docs/assets/img/bg-<page
 - times 1–5: [David Billings](https://unsplash.com/photos/EwcvNe53bdM), [Simon Infanger](https://unsplash.com/photos/ECctP9oPtio), [adam hilles](https://unsplash.com/photos/Bh_NL4I4GI0), [nurhan](https://unsplash.com/photos/yC70QqvrPRk), [Dimitris Asproloupos](https://unsplash.com/photos/GitzSoxKSjs)
 - qibla 1–5: [Untung Bekti Nugroho](https://unsplash.com/photos/6Aa4EeZTdqw), [ekrem osmanoglu](https://unsplash.com/photos/FLFjAn3gQI8), [Sam Riz](https://unsplash.com/photos/ceNCWYqL8DY), [Rumman Amin](https://unsplash.com/photos/tvEDhFhBhXM), [Izuddin Helmi Adnan](https://unsplash.com/photos/JFirQekVo3U)
 - duaa categories: [Zach Reiner](https://unsplash.com/photos/2vKgG0pSKkM) (daily), [Mustafa akın](https://unsplash.com/photos/5LXejuCs-qE) (thikr), [Kelli McClintock](https://unsplash.com/photos/wBgAVAGjzFg) (people), [Nathan Anderson](https://unsplash.com/photos/L95xDkSSuWw) (iman), [Marcelo Leal](https://unsplash.com/photos/6pcGTJDuf6M) (illness); the other four reuse photos credited above
+
+## Adhan
+
+Prayer alerts play the adhan recorded in Doha, Qatar (2013–2014), one for each prayer, from the Internet Archive's [Adhan Recordings from Doha, Qatar](https://archive.org/details/adhan.recordings.from.doha.qatar) (Public Domain Mark). The files in `docs/assets/athan/` are trimmed, loudness-matched and converted to mono.
