@@ -56,7 +56,7 @@
 <body>
 <header class="top">
   <a class="brand" href="/">muslimist</a>
-  <nav class="links" id="menu" popover><a href="/quran/" data-t="quran">Quran</a><a href="/tracker/" data-t="tracker">Tracker</a><a href="/duaa/" data-t="duaa">Duaa</a><a href="/hadith/" data-t="hadith">Hadith</a><a href="/names/" data-t="names">Names</a><a href="/salah/" data-t="salah">Salah</a><a href="/calendar/" data-t="calendar">Calendar</a><a href="/ramadan/" aria-current="page" data-t="ramadan">Ramadan</a><a href="/zakat/" data-t="zakat">Zakat</a><a href="/times/" data-t="times">Times</a><a href="/qibla/" data-t="qibla">Qibla</a><a href="/dashboard/" data-t="dash">Dash</a></nav>
+  <nav class="links" id="menu" popover><a href="/quran/" data-t="quran">Quran</a><a href="/duaa/" data-t="duaa">Duaa</a><a href="/hadith/" data-t="hadith">Hadith</a><a href="/names/" data-t="names">Names</a><a href="/salah/" data-t="salah">Salah</a><a href="/calendar/" data-t="calendar">Calendar</a><a href="/ramadan/" aria-current="page" data-t="ramadan">Ramadan</a><a href="/zakat/" data-t="zakat">Zakat</a><a href="/times/" data-t="times">Times</a><a href="/qibla/" data-t="qibla">Qibla</a><a href="/dashboard/" data-t="dash">Dash</a></nav>
   <button class="pill menu" popovertarget="menu" aria-label="Menu"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </header>
 
@@ -114,7 +114,7 @@ function render() {
       <section class="card glass"><p class="lbl">Getting ready</p><ul style="margin:10px 0 0;padding-inline-start:20px;line-height:1.8">
       <li>Fast some days of Sha'ban, as the Prophet ﷺ did, and make up any missed fasts from last Ramadan.</li>
       <li>Set your location on the <a href="/times/" style="text-decoration:underline">Times</a> page so suhoor and iftar times are right.</li>
-      <li>Plan to finish the Quran in Ramadan with the <a href="/tracker/" style="text-decoration:underline">Tracker</a>.</li></ul></section>`;
+      <li>Plan to finish the Quran in Ramadan with the .</li></ul></section>`;
     return;
   }
   const len = 30;
@@ -174,15 +174,15 @@ function render() {
     $$('#nights input').forEach(c => c.onchange = () => { rec[c.dataset.k] = c.checked; persist() });
   }
 
-  // ---------- Quran in Ramadan (uses the Tracker's plan) ----------
+  // ---------- Quran in Ramadan (uses the Quran progress plan) ----------
   const k = load('khatm', {});
   const daysLeft = Math.max(1, len - H.d + 1);
   if (k.active) {
     const done = ((k.at || 0) - k.from) / (QM.TOTAL - k.from);
-    $('#quran').innerHTML = `<div class="row"><p class="lbl grow">Quran this Ramadan</p><a class="card-link" href="/tracker/">Tracker →</a></div><div class="bar"><i style="width:${(done * 100).toFixed(1)}%"></i></div><p class="mute">${Math.floor(done * 100)}% of your ${num(k.days)}-day khatm. <a href="/tracker/" style="text-decoration:underline">See today's portion</a>.</p>`;
+    $('#quran').innerHTML = `<div class="row"><p class="lbl grow">Quran this Ramadan</p><a class="card-link" href="/quran/progress/">Progress →</a></div><div class="bar"><i style="width:${(done * 100).toFixed(1)}%"></i></div><p class="mute">${Math.floor(done * 100)}% of your ${num(k.days)}-day khatm. <a href="/quran/progress/" style="text-decoration:underline">See today's portion</a>.</p>`;
   } else {
     $('#quran').innerHTML = `<p class="lbl">Quran this Ramadan</p><p style="margin:8px 0 12px">Finish the whole Quran by the end of Ramadan: about ${(30 / daysLeft).toFixed(1)} juz a day for the ${num(daysLeft)} days left.</p><button class="btn primary" id="plan-r">Start a ${num(daysLeft)}-day khatm</button>`;
-    $('#plan-r').onclick = () => { if (preview) return alert('This is only a preview.'); save('khatm', { ...k, active: true, start: +new Date(new Date().setHours(0, 0, 0, 0)), days: daysLeft, from: 0, at: 0 }); location.href = '/tracker/' };
+    $('#plan-r').onclick = () => { if (preview) return alert('This is only a preview.'); save('khatm', { ...k, active: true, start: +new Date(new Date().setHours(0, 0, 0, 0)), days: daysLeft, from: 0, at: 0 }); location.href = '/quran/progress/' };
   }
 }
 addEventListener('hashchange', () => location.reload());

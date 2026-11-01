@@ -15,7 +15,7 @@
 <body>
 <header class="top">
   <a class="brand" href="/">muslimist</a>
-  <nav class="links" id="menu" popover><a href="/quran/" aria-current="page" data-t="quran">Quran</a><a href="/tracker/" data-t="tracker">Tracker</a><a href="/duaa/" data-t="duaa">Duaa</a><a href="/hadith/" data-t="hadith">Hadith</a><a href="/names/" data-t="names">Names</a><a href="/salah/" data-t="salah">Salah</a><a href="/calendar/" data-t="calendar">Calendar</a><a href="/ramadan/" data-t="ramadan">Ramadan</a><a href="/zakat/" data-t="zakat">Zakat</a><a href="/times/" data-t="times">Times</a><a href="/qibla/" data-t="qibla">Qibla</a><a href="/dashboard/" data-t="dash">Dash</a></nav>
+  <nav class="links" id="menu" popover><a href="/quran/" aria-current="page" data-t="quran">Quran</a><a href="/duaa/" data-t="duaa">Duaa</a><a href="/hadith/" data-t="hadith">Hadith</a><a href="/names/" data-t="names">Names</a><a href="/salah/" data-t="salah">Salah</a><a href="/calendar/" data-t="calendar">Calendar</a><a href="/ramadan/" data-t="ramadan">Ramadan</a><a href="/zakat/" data-t="zakat">Zakat</a><a href="/times/" data-t="times">Times</a><a href="/qibla/" data-t="qibla">Qibla</a><a href="/dashboard/" data-t="dash">Dash</a></nav>
   <button class="pill menu" popovertarget="menu" aria-label="Menu"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </header>
 
@@ -23,6 +23,7 @@
   <h1 data-t="quran">Quran</h1>
   <p data-t="sub">Read and listen till your heart is content</p>
 </section>
+<nav class="subnav"><a href="/quran/" aria-current="page" data-t="read">Read</a><a href="/quran/progress/" data-t="progress">Progress</a></nav>
 
 <main class="layout">
   <section class="card glass reader" id="reader">
@@ -315,6 +316,7 @@ const NAMES = [["1: Al-Faatiha", "2: Al-Baqara", "3: Aal-i-Imraan", "4: An-Nisaa
 const VERSES = [7,286,200,176,120,165,206,75,129,109,123,111,43,52,99,128,111,110,98,135,112,78,118,64,77,227,93,88,69,60,34,30,73,54,45,83,182,88,75,85,54,53,89,59,37,35,38,29,18,45,60,49,62,55,78,96,29,22,24,13,14,11,11,18,12,12,30,52,52,44,28,28,20,56,40,31,50,40,46,42,29,19,36,25,22,17,19,26,30,20,15,21,11,8,8,19,5,8,8,11,11,8,3,9,5,4,7,3,6,3,5,4,5,6];
 
 i18n({
+  read: ['Read', 'اقرأ'], progress: ['Progress', 'التقدّم'],
   sub: ['Read and listen till your heart is content', 'اقرأ واستمع حتى يرضى قلبك'],
   chapter: ['Chapter', 'السورة'], verse: ['Verse', 'الآية'], loopto: ['Loop until verse', 'التكرار حتى الآية'], off: ['Off', 'إيقاف'],
   reciter: ['Reciter', 'القارئ'], speed: ['Speed', 'السرعة'], repeat: ['Repeat each verse', 'تكرار كل آية'],
@@ -448,7 +450,7 @@ function go(c, v, keepLoop = true) {
   if (!keepLoop || c !== Q.chapter) Q.loopFrom = Q.loopTo = 0;
   Q.chapter = c; Q.verse = v;
   save('quran', Q);
-  QM.record(c, v); // progress for the Tracker page
+  QM.record(c, v); // progress for the Quran progress page
   history.replaceState(null, '', `/quran/${c}/${v}`);
   fill();
   renderText();
@@ -553,7 +555,7 @@ const wake = async () => { try { lock = await navigator.wakeLock.request('screen
 $('#wake').onchange = () => $('#wake').checked ? wake() : (lock?.release(), lock = null);
 document.addEventListener('visibilitychange', () => { if ($('#wake').checked && document.visibilityState === 'visible') wake() });
 
-// bookmarks, listed on the Tracker page
+// bookmarks, listed on the Quran progress page
 const isMarked = () => QM.bookmarks().some(b => b.c === Q.chapter && b.v === Q.verse);
 function syncMark() {
   const on = isMarked();

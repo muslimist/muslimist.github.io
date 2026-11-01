@@ -232,6 +232,7 @@ select option { background: var(--page) }
 .checks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px }
 .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px }
 .note { color: var(--mute); font-size: 13px }
+.sheet-sub { font-size: 15px; margin-top: 8px; padding-top: 14px; border-top: 1px solid var(--line) }
 
 /* solid: no photo, no frost, plain cards */
 [data-glass="solid"] body::before, [data-glass="solid"] body::after { display: none }
@@ -268,3 +269,14 @@ html:not(.ready) :is(.hero, main, .foot) { opacity: 0 }
 @keyframes page-out { to { opacity: 0; transform: translateY(-8px) } }
 @keyframes page-in { from { opacity: 0; transform: translateY(12px) } }
 @media (prefers-reduced-motion: reduce) { @view-transition { navigation: none } body::before, body::after, .ready :is(.hero, main > *, .foot) { animation: none } }
+
+/* prayer alert banner */
+.athan-toast { position: fixed; z-index: 50; inset: auto auto calc(16px + env(safe-area-inset-bottom)) 50%; margin: 0; border: 1px solid var(--line); color: var(--fg); transform: translateX(-50%); display: flex; align-items: center; gap: 10px; padding: 10px 10px 10px 18px; border-radius: 18px; max-width: calc(100vw - 24px); box-shadow: 0 12px 40px rgba(0,0,0,.3); animation: rise .4s both }
+.athan-toast a { flex: 1; font-size: 15px }
+.athan-toast .btn { padding: 8px 12px }
+
+/* sub-pages switch (Quran: Read | Progress) */
+.subnav { display: flex; width: fit-content; max-width: calc(100% - 32px); margin: -2vh auto 16px; margin-inline-start: max(16px, calc((100% - 1040px) / 2 + 16px)); padding: 3px; border-radius: 99px; background: var(--card); border: 1px solid var(--line); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px) }
+.subnav a { padding: 7px 16px; border-radius: 99px; font-size: 14.5px; color: var(--mute) }
+.subnav a[aria-current] { background: var(--fg); color: var(--page) }
+.focus .subnav { display: none }

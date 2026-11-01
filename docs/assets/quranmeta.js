@@ -1,4 +1,4 @@
-// Quran structure shared by the Quran, Tracker and Ramadan pages: verse counts, chapter names, juz starts,
+// Quran structure shared by the Quran, Quran progress and Ramadan pages: verse counts, chapter names, juz starts,
 // and the reading progress the Quran page records (furthest verse read in order, days read, bookmarks)
 
 const QM = {
