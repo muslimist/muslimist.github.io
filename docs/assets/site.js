@@ -103,7 +103,7 @@ Object.assign(DICT, {
   const pool = u => u?.match(/bg-(\w+)-\d+/)?.[1];
   // moving between pages that share a photo set (Quran: Read and Progress) keeps the current photo
   const want = pool(shown) && pool(shown) === pool(urlOf(root.dataset.bg)) ? shown : urlOf(root.dataset.bg) || shown;
-  const BG_COUNT = { home: 7, quran: 6, duaa: 6, times: 6, qibla: 6 };
+  const BG_COUNT = { home: 7, quran: 6, duaa: 6, times: 6, qibla: 6, hadith: 5, names: 5, salah: 5, calendar: 5, ramadan: 5, zakat: 5 };
   const swapTo = (url, done) => {
     const img = new Image();
     img.onload = () => {
