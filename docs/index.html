@@ -112,7 +112,8 @@ function now() {
   let html = next ? `<a href="/times/"><span class="dim">${L('Next', 'التالية')}</span> <b>${t(next.key)}</b> ${next.time} <span class="dim">· ${until(next.at)}</span></a>` : '';
   try {
     const last = JSON.parse(localStorage['quran-last']);
-    if (last?.c) html += `<a href="/quran/${last.c}/${last.v}"><span class="dim">${L('Continue', 'تابع')}</span> <b>${last.name[AR ? 1 : 0]}</b> ${last.c}:${last.v}</a>`;
+    const c = +last?.c, v = +last?.v, nm = String(last?.name?.[AR ? 1 : 0] ?? '').replace(/[<>&"]/g, '');
+    if (c >= 1 && c <= 114 && v >= 1) html += `<a href="/quran/${c}/${v}"><span class="dim">${L('Continue', 'تابع')}</span> <b>${nm}</b> ${c}:${v}</a>`;
   } catch {}
   $('#now').innerHTML = html;
 }

@@ -12,6 +12,18 @@ const DICT = {
   settings: ['Settings', 'الإعدادات'], close: ['Close', 'إغلاق'], reset: ['Reset', 'إعادة تعيين'],
 };
 const t = k => (DICT[k] || [k])[AR ? 1 : 0];
+// saved Quran text may carry tajweed colour markup: keep only <span class="rule"> and plain text, drop anything else
+function safeTajweed(html) {
+  const tpl = document.createElement('template'); tpl.innerHTML = String(html ?? ''); // template content is inert: nothing in it runs
+  const out = document.createElement('div');
+  const copy = (from, to) => from.childNodes.forEach(n => {
+    if (n.nodeType === 3) to.append(n.textContent);
+    else if (n.nodeType === 1 && n.tagName === 'SPAN') { const s = document.createElement('span'); const c = (n.getAttribute('class') || '').replace(/[^a-z_ ]/g, ''); if (c) s.className = c; copy(n, s); to.append(s) }
+    else if (n.nodeType === 1 && !/^(SCRIPT|STYLE|TEMPLATE|NOSCRIPT)$/.test(n.tagName)) copy(n, to); // other elements: keep their text only
+  });
+  copy(tpl.content, out);
+  return out.innerHTML;
+}
 // inline pair for page text: L('English', 'العربية')
 const L = (en, ar) => AR ? ar : en;
 function i18n(dict) {
@@ -47,6 +59,35 @@ Object.assign(DICT, {
 });
 {
   const SKIP = /^(alerts-last|alerts-sim)$/;
+  // a backup is only restored as far as it looks like what this site saves: known names, simple values, no markup
+  const CHOICE = { lang: ['english', 'arabic'], mode: ['light', 'dark'], glass: ['clear', 'frosted', 'solid'] };
+  const JSON_KEYS = /^(times|quran|quran-last|quran-days|quran-bookmarks|khatm|duaa|adhkar|hadith|names|calendar|ramadan|qada|zakat|alerts)$/;
+  const OLD_KEYS = /^(times|quran)_[a-z_]{1,30}$/; // settings saved by the older site
+  const safeText = s => typeof s === 'string' && s.length <= 500 && !/[<>"`\\]|javascript:/i.test(s);
+  const plain = (v, depth = 0) => depth > 6 ? false
+    : v === null || typeof v === 'boolean' || (typeof v === 'number' && isFinite(v)) ? true
+    : typeof v === 'string' ? safeText(v)
+    : Array.isArray(v) ? v.length <= 2000 && v.every(x => plain(x, depth + 1))
+    : typeof v === 'object' ? Object.keys(v).length <= 400 && Object.entries(v).every(([k, x]) => safeText(k) && k.length <= 60 && plain(x, depth + 1))
+    : false;
+  function checkBackup(data) {
+    const keep = {}; let skipped = 0;
+    for (const [k, v] of Object.entries(data)) {
+      let ok = false, val = v;
+      try {
+        if (typeof v !== 'string' || v.length > 200000) ok = false;
+        else if (CHOICE[k]) ok = CHOICE[k].includes(v);
+        else if (OLD_KEYS.test(k)) ok = v.length <= 500 && !/[<>`]|javascript:/i.test(v); // may hold a small JSON list
+        else if (JSON_KEYS.test(k)) {
+          const o = JSON.parse(v);
+          if (k === 'quran-last' && o && typeof o === 'object') { o.ar = safeTajweed(o.ar); o.tr = safeTajweed(o.tr); val = JSON.stringify(o); ok = plain({ ...o, ar: '', tr: '' }) }
+          else ok = !!o && typeof o === 'object' && plain(o);
+        }
+      } catch { ok = false }
+      if (ok) keep[k] = val; else skipped++;
+    }
+    return { keep, skipped };
+  }
   const seg = (key, opts) => `<div class="seg2" data-key="${key}">${opts.map(([v, label]) => `<button type="button" data-v="${v}" aria-pressed="${(localStorage[key] || '') === v}">${label}</button>`).join('')}</div>`;
   const dlg = document.createElement('dialog');
   dlg.className = 'sheet'; dlg.id = 'site-settings';
@@ -75,10 +116,14 @@ Object.assign(DICT, {
   };
   $('#bk-file').onchange = async e => {
     try {
-      const b = JSON.parse(await e.target.files[0].text());
-      if (!b.muslimist || typeof b.data !== 'object') throw 0;
-      if (!confirm(t('restoreask'))) return;
-      localStorage.clear(); Object.entries(b.data).forEach(([k, v]) => localStorage[k] = v);
+      const file = e.target.files[0];
+      if (!file || file.size > 2e6) throw 0;
+      const b = JSON.parse(await file.text());
+      if (!b || b.muslimist !== 1 || !b.data || typeof b.data !== 'object' || Array.isArray(b.data)) throw 0;
+      const { keep, skipped } = checkBackup(b.data);
+      if (!Object.keys(keep).length) throw 0;
+      if (!confirm(t('restoreask') + (skipped ? '\n' + L(`${skipped} item(s) that didn't look right will be skipped.`, `سيُتجاوز ${skipped} عنصر لا يبدو سليمًا.`) : ''))) return;
+      localStorage.clear(); Object.entries(keep).forEach(([k, v]) => localStorage[k] = v);
       $('#bk-msg').textContent = t('restored'); setTimeout(() => location.reload(), 600);
     } catch { $('#bk-msg').textContent = t('badfile') }
   };

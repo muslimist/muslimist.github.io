@@ -188,8 +188,8 @@ function prayers() { showPrayers($('#prayers-card')) }
   $('#ayah-label').textContent = `${t(last.fresh ? 'startread' : 'lastread')} · ${last.name[AR ? 1 : 0]} ${last.c}:${last.v}`;
   // only what is switched on in the Quran page's settings
   const q = load('quran', { translation: 'en.pickthall', script: 'quran-uthmani-tajweed' });
-  $('#ayah').innerHTML = last.ar;
-  $('#ayah-tr').innerHTML = last.tr;
+  $('#ayah').innerHTML = safeTajweed(last.ar);
+  $('#ayah-tr').innerHTML = safeTajweed(last.tr);
   $('#ayah').hidden = q.script === 'none' || !last.ar;
   $('#ayah-tr').hidden = q.translation === 'none' || !last.tr;
   $('#ayah-link').href = `/quran/${last.c}/${last.v}`;
