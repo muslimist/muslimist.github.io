@@ -178,9 +178,14 @@ function render() {
   // ---------- last ten nights ----------
   if (H.d >= 20) {
     // the coming night belongs to the next date (it begins at maghrib)
-    const night = Math.min(29, H.d + 1), odd = night % 2 === 1, rec = year.nights[night] ||= {};
+    const night = H.d + 1, odd = night % 2 === 1, rec = year.nights[night] ||= {};
+    // after the 30th day, tonight is the night of Eid; after the 29th it may be either, depending on the moon
+    if (night > 30) {
+      $('#nights').innerHTML = `<div class="night"><b>${L('Tonight is the night of Eid', 'الليلة ليلة العيد')}</b><p class="mute" style="font-size:14px;margin-top:2px">${L('Ramadan is complete. Say the takbir, pay zakat al-fitr before the Eid prayer, and may Allah accept from you.', 'اكتمل رمضان. كبّروا، وأخرجوا زكاة الفطر قبل صلاة العيد، وتقبّل الله منكم.')}</p></div>`;
+      return;
+    }
     const items = [['qiyam', L('Pray qiyam / taraweeh', 'صلِّ القيام / التراويح')], ['quran', L('Read Quran', 'اقرأ القرآن')], ['duaa', L('Make the duaa below', 'ادعُ بالدعاء أدناه')], ['sadaqah', L('Give sadaqah, even a little', 'تصدّق ولو بالقليل')], ['dhikr', L('Remember Allah and seek forgiveness', 'اذكر الله واستغفره')]];
-    $('#nights').innerHTML = `<div class="night"><b>${L(`Tonight is the night of the ${night}${['th', 'st', 'nd', 'rd'][night % 10 > 3 || Math.floor(night / 10) === 1 ? 0 : night % 10]}`, `الليلة ليلة ${num(night)}`)}</b><p class="mute" style="font-size:14px;margin-top:2px">${odd ? L('An odd night: seek Laylat al-Qadr tonight (Bukhari).', 'ليلة وتر: تحرَّ ليلة القدر الليلة (البخاري).') : L('Laylat al-Qadr is most likely in the odd nights, but it could be any of the last ten.', 'ليلة القدر أرجى في الليالي الوتر، وقد تكون في أي ليلة من العشر.')} ${L('It begins at maghrib.', 'وتبدأ من المغرب.')}</p></div>
+    $('#nights').innerHTML = `<div class="night"><b>${L(`Tonight is the night of the ${night}${['th', 'st', 'nd', 'rd'][night % 10 > 3 || Math.floor(night / 10) === 1 ? 0 : night % 10]}`, `الليلة ليلة ${num(night)}`)}</b><p class="mute" style="font-size:14px;margin-top:2px">${night === 30 ? L('If the moon is not sighted tonight. Otherwise it is the night of Eid.', 'إن لم يُرَ الهلال الليلة، وإلا فهي ليلة العيد.') : odd ? L('An odd night: seek Laylat al-Qadr tonight (Bukhari).', 'ليلة وتر: تحرَّ ليلة القدر الليلة (البخاري).') : L('Laylat al-Qadr is most likely in the odd nights, but it could be any of the last ten.', 'ليلة القدر أرجى في الليالي الوتر، وقد تكون في أي ليلة من العشر.')} ${L('It begins at maghrib.', 'وتبدأ من المغرب.')}</p></div>
       <div class="checks2">${items.map(([k, l]) => `<label><input type="checkbox" data-k="${k}"${rec[k] ? ' checked' : ''}> ${l}</label>`).join('')}</div>${QADR}`;
     $$('#nights input').forEach(c => c.onchange = () => { rec[c.dataset.k] = c.checked; persist() });
   }
