@@ -98,7 +98,10 @@ $('.foot').append(langBtn);
 {
   const root = document.documentElement;
   const urlOf = v => v?.match(/url\(["']?([^"')]+)/)?.[1];
-  const shown = urlOf(getComputedStyle(root).getPropertyValue('--bg-img')), want = urlOf(root.dataset.bg) || shown;
+  const shown = urlOf(getComputedStyle(root).getPropertyValue('--bg-img'));
+  const pool = u => u?.match(/bg-(\w+)-\d+/)?.[1];
+  // moving between pages that share a photo set (Quran: Read and Progress) keeps the current photo
+  const want = pool(shown) && pool(shown) === pool(urlOf(root.dataset.bg)) ? shown : urlOf(root.dataset.bg) || shown;
   const BG_COUNT = { home: 7, quran: 6, duaa: 6, times: 6, qibla: 6 };
   const swapTo = (url, done) => {
     const img = new Image();
@@ -141,3 +144,16 @@ addEventListener('DOMContentLoaded', () =>
 // offline support and prayer alerts, on every page
 if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('/service-worker.js').catch(() => {}));
 { const s = document.createElement('script'); s.src = '/assets/alerts.js'; s.defer = true; document.head.append(s) }
+
+// sub-page switches (Quran: Read | Progress) slide sideways instead of the usual page fade
+const SLIDES = [['/quran/', '/quran/progress/']];
+const slideIndex = path => { for (const g of SLIDES) { const i = g.findIndex((p, j) => j ? path.startsWith(p) : path.startsWith(p) && !g.slice(1).some(q => path.startsWith(q))); if (i >= 0) return [g, i] } return [] };
+addEventListener('pagereveal', e => {
+  const from = window.navigation?.activation?.from?.url;
+  if (!e.viewTransition || !from) return;
+  const [g1, a] = slideIndex(new URL(from).pathname), [g2, b] = slideIndex(location.pathname);
+  if (!g1 || g1 !== g2 || a === b) return;
+  e.viewTransition.types.add(b > a ? 'slide-fwd' : 'slide-back');
+  // the content is already in place: skip the fade-up that normally follows page load
+  document.documentElement.classList.add('ready', 'no-rise');
+});

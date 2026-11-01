@@ -143,11 +143,11 @@ img { display: block; max-width: 100% }
 .madd_munfasil { color: #19b383 } .hamzat_wasl { color: #84b82c } .lam_shamsiyyah { color: #c050e8 } .silent { color: #999 }
 
 /* quran full screen: the reader card fills the window, everything else hides */
-.reader { view-transition-name: reader }
-.reader .card-head { view-transition-name: qhead }
-#text { view-transition-name: qtext }
-#trans { view-transition-name: qtrans }
-.reader .player { view-transition-name: qplayer }
+:root.vt-focus .reader { view-transition-name: reader }
+:root.vt-focus .reader .card-head { view-transition-name: qhead }
+:root.vt-focus #text { view-transition-name: qtext }
+:root.vt-focus #trans { view-transition-name: qtrans }
+:root.vt-focus .reader .player { view-transition-name: qplayer }
 /* each piece glides to its new place; text swaps with a quick fade instead of stretching */
 :root.vt-focus::view-transition-group(*) { animation-duration: .5s; animation-timing-function: cubic-bezier(.2, .8, .2, 1) }
 :root.vt-focus::view-transition-old(qtext), :root.vt-focus::view-transition-old(qtrans) { animation: .18s ease-out both vt-fade-out }
@@ -280,3 +280,20 @@ html:not(.ready) :is(.hero, main, .foot) { opacity: 0 }
 .subnav a { padding: 7px 16px; border-radius: 99px; font-size: 14.5px; color: var(--mute) }
 .subnav a[aria-current] { background: var(--fg); color: var(--page) }
 .focus .subnav { display: none }
+
+/* sliding between sub-pages: the card area slides, the header, title and switch stay; the pill moves across */
+.subnav { view-transition-name: subnav }
+.subnav a[aria-current] { view-transition-name: subnav-pill }
+main.layout { view-transition-name: page-main }
+html:active-view-transition-type(slide-fwd, slide-back)::view-transition-old(root),
+html:active-view-transition-type(slide-fwd, slide-back)::view-transition-new(root) { animation: none }
+html:active-view-transition-type(slide-fwd, slide-back)::view-transition-group(subnav-pill) { animation-duration: .35s; animation-timing-function: cubic-bezier(.3, .8, .2, 1) }
+html:active-view-transition-type(slide-fwd)::view-transition-old(page-main) { animation: .32s cubic-bezier(.4, 0, .2, 1) both slide-out-left }
+html:active-view-transition-type(slide-fwd)::view-transition-new(page-main) { animation: .32s cubic-bezier(.4, 0, .2, 1) both slide-in-right }
+html:active-view-transition-type(slide-back)::view-transition-old(page-main) { animation: .32s cubic-bezier(.4, 0, .2, 1) both slide-out-right }
+html:active-view-transition-type(slide-back)::view-transition-new(page-main) { animation: .32s cubic-bezier(.4, 0, .2, 1) both slide-in-left }
+@keyframes slide-out-left { to { transform: translateX(-30%); opacity: 0 } }
+@keyframes slide-in-right { from { transform: translateX(30%); opacity: 0 } }
+@keyframes slide-out-right { to { transform: translateX(30%); opacity: 0 } }
+@keyframes slide-in-left { from { transform: translateX(-30%); opacity: 0 } }
+.no-rise :is(.hero, main > *, .foot) { animation: none !important }
