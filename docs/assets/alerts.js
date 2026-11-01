@@ -9,7 +9,7 @@
   let audio = null;
   i18n({ timefor: ['Time for', 'حان وقت'], stop: ['Stop', 'إيقاف'], playadhan: ['Play adhan', 'تشغيل الأذان'], testalert: ['Test alert', 'تنبيه تجريبي'] });
 
-  // prayer-time scripts: already on the Times, Dash and Ramadan pages; loaded here for the rest
+  // prayer-time scripts: already on the Times, Dashboard and Ramadan pages; loaded here for the rest
   const loadScript = src => new Promise((ok, no) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = no; document.head.append(s) });
   const ensureTimes = async () => {
     if (typeof prayTimes === 'undefined') await loadScript('/assets/praytimes.js');
