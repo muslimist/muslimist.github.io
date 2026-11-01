@@ -82,8 +82,8 @@ img { display: block; max-width: 100% }
 .foot button:hover { color: var(--fg) }
 
 /* page title */
-.hero { padding-block: clamp(44px, 7vh, 76px) clamp(20px, 3vh, 32px); padding-inline-end: 64px }
-.home .hero { padding-block: clamp(44px, 7vh, 76px) clamp(20px, 3vh, 32px) }
+.hero { padding-block: clamp(44px, 7vh, 76px) clamp(28px, 4.5vh, 48px); padding-inline-end: 64px }
+.home .hero { padding-block: clamp(44px, 7vh, 76px) clamp(28px, 4.5vh, 48px) }
 .landing .top { display: none }
 .landing .hero { padding-block: 20vh 8vh }
 .hero { text-shadow: 0 1px 24px color-mix(in srgb, var(--page) 70%, transparent) }
