@@ -442,6 +442,11 @@ function setPlaying(on) {
 }
 
 $('#play').onclick = () => setPlaying(!playing);
+// the adhan pauses the recitation, which carries on when it ends (unless you've pressed play or pause meanwhile)
+let adhanHeld = false;
+addEventListener('adhan-start', () => { if (playing) { adhanHeld = true; setPlaying(false) } });
+addEventListener('adhan-end', () => { if (adhanHeld && !playing) setPlaying(true); adhanHeld = false });
+$('#play').addEventListener('click', () => adhanHeld = false);
 audio.onplaying = () => $('#status').textContent = left < +Q.repeat ? `${t('repeatof')} ${+Q.repeat - left + 1}/${Q.repeat}` : '';
 audio.onerror = () => { if (playing) { $('#status').textContent = t('audiofail'); setPlaying(false) } };
 audio.onended = () => {

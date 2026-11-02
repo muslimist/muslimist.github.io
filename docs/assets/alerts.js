@@ -27,12 +27,49 @@
     });
     return ctx.resume();
   }
-  async function play(key) {
-    stopSound();
-    audio = new Audio(ADHAN(key));
-    try { await audio.play() } catch (e) { if (e.name === 'NotAllowedError') throw e; audio = null; return chime() } // chime if the file can't load
+  // while the adhan plays, everything else goes quiet (Quran, duaa, names, read-aloud, in every open tab)
+  // and whatever was playing picks up again when it ends
+  const media = new Set(); // detached players (new Audio()) aren't in the page, so note each one as it plays
+  const origPlay = HTMLMediaElement.prototype.play;
+  HTMLMediaElement.prototype.play = function () {
+    if (this !== audio) { media.add(this); held = held.filter(m => m !== this) } // started again by hand: leave it be
+    return origPlay.apply(this, arguments);
+  };
+  let held = [], heldSpeech = false, quiet = false, safety = 0;
+  const tabs = 'BroadcastChannel' in window ? new BroadcastChannel('muslimist-adhan') : null;
+  function hush() {
+    if (quiet) return;
+    quiet = true;
+    dispatchEvent(new Event('adhan-start')); // pages with their own play buttons pause themselves
+    for (const m of new Set([...media, ...document.querySelectorAll('audio, video')]))
+      if (m !== audio && !m.paused) { m.pause(); held.push(m) }
+    if (window.speechSynthesis?.speaking && !speechSynthesis.paused) { speechSynthesis.pause(); heldSpeech = true }
+    clearTimeout(safety); safety = setTimeout(release, 8 * 60e3); // in case the tab playing the adhan is closed
   }
-  function stopSound() { if (audio) { audio.pause(); audio = null } }
+  function release() {
+    if (!quiet) return;
+    quiet = false; clearTimeout(safety);
+    held.forEach(m => m.paused && m.play().catch(() => {})); held = [];
+    if (heldSpeech) speechSynthesis.resume(); heldSpeech = false;
+    dispatchEvent(new Event('adhan-end'));
+  }
+  if (tabs) tabs.onmessage = e => e.data === 'start' ? hush() : release();
+  const quietAll = () => { hush(); tabs?.postMessage('start') };
+  const releaseAll = () => { release(); tabs?.postMessage('end') };
+
+  async function play(key) {
+    if (audio) { audio.onended = audio.onerror = null; audio.pause(); audio = null }
+    const a = audio = new Audio(ADHAN(key));
+    quietAll();
+    a.onended = () => { if (audio === a) { audio = null; releaseAll(); document.querySelector('.athan-toast')?.remove() } };
+    try { await a.play() }
+    catch (e) {
+      if (audio === a) audio = null;
+      if (e.name === 'NotAllowedError') { releaseAll(); throw e }
+      setTimeout(releaseAll, 2600); return chime(); // chime if the file can't load
+    }
+  }
+  function stopSound() { if (audio) { audio.onended = null; audio.pause(); audio = null } releaseAll() }
 
   function toast(key, text, canPlay) {
     document.querySelector('.athan-toast')?.remove();
