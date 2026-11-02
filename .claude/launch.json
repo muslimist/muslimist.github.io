@@ -1,0 +1,6 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    { "name": "site", "runtimeExecutable": "npx", "runtimeArgs": ["--yes", "http-server", "docs", "-a", "127.0.0.1", "-p", "8081", "-c-1"], "port": 8081 }
+  ]
+}

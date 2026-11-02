@@ -59,16 +59,17 @@ img { display: block; max-width: 100% }
 .top, .hero, .layout, .foot { width: 100%; max-width: 1040px; margin-inline: auto; padding-inline: 16px }
 .foot { margin-top: auto } /* short pages: footer sits at the bottom of the screen */
 /* header: just the menu button, top right, floating over the page title; the menu opens as a popup with every page */
-.top { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: flex-end; align-items: center; height: 68px; pointer-events: none; z-index: 5 }
+.top { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: flex-end; align-items: center; height: calc(2 * clamp(44px, 7vh, 76px) + 1.05 * clamp(34px, 6vw, 64px)); /* buttons line up with the page title */ pointer-events: none; z-index: 5 }
 .top > * { pointer-events: auto }
 .brand { display: none }
 .menu { display: grid; place-items: center; width: 40px; height: 40px; padding: 0 }
 .links[popover] { margin: 0; border: 0; color: inherit; overflow: visible }
 .links[popover]:not(:popover-open) { display: none }
-.links[popover]:popover-open { position: fixed; top: 64px; inset-inline: auto max(16px, calc((100vw - 1040px) / 2 + 16px)); display: grid; grid-template-columns: 1fr 1fr; gap: 2px; width: min(340px, calc(100vw - 32px)); padding: 8px; border-radius: 20px;
+.links[popover]:popover-open { position: fixed; top: calc(clamp(44px, 7vh, 76px) + .525 * clamp(34px, 6vw, 64px) + 30px); inset-inline: auto max(16px, calc((100vw - 1040px) / 2 + 16px)); display: grid; grid-template-columns: 1fr 1fr; gap: 2px; width: min(340px, calc(100vw - 32px)); padding: 8px; border-radius: 20px;
   background: var(--sheet); border: 1px solid var(--line); box-shadow: 0 18px 50px rgba(0,0,0,.35); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); animation: menu-in .18s ease-out }
 @keyframes menu-in { from { opacity: 0; transform: translateY(-6px) scale(.98) } }
-.links a { padding: 11px 14px; border-radius: 12px; font-size: 15.5px; color: var(--fg) }
+.links a { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-radius: 12px; font-size: 15.5px; font-weight: 600; color: var(--fg) }
+.links a svg { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round }
 .links a:hover { background: var(--hilite) }
 .links a[aria-current] { background: var(--fg); color: var(--page) }
 .pill { padding: 6px 12px; border-radius: 99px; font-size: 14px; white-space: nowrap; color: var(--fg); background: var(--card) }
@@ -85,10 +86,20 @@ img { display: block; max-width: 100% }
 .hero { padding-block: clamp(44px, 7vh, 76px) clamp(36px, 6vh, 64px); padding-inline-end: 64px }
 .home .hero { padding-block: clamp(44px, 7vh, 76px) clamp(36px, 6vh, 64px) }
 .landing .top { display: none }
-.landing .hero { padding-block: 20vh 8vh }
 .hero { text-shadow: 0 1px 24px color-mix(in srgb, var(--page) 70%, transparent) }
 .hero h1 { font-size: clamp(34px, 6vw, 64px); letter-spacing: -.035em; line-height: 1.05 }
 .hero p { color: var(--mute); margin-top: 4px; font-size: 16px }
+.hero h1.title-btn { cursor: pointer; width: fit-content; user-select: none }
+.title-row { display: flex; align-items: center; gap: 16px }
+.title-list, :is(.top, .title-row) .title-x, .title-home, .title-open .title-row h1, .title-open .top .menu { display: none }
+.title-open .title-home { display: block; font-size: clamp(34px, 6vw, 64px); font-weight: 700; letter-spacing: -.035em; line-height: 1.05; color: var(--mute) }
+.title-open .title-home:hover { color: var(--fg) }
+.title-open :is(.top, .title-row) .title-x { display: grid; flex: none }
+.title-open .title-list { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; margin-top: 4px }
+.title-open body > :not(.top, .hero), .title-open .hero > :not(.title-row, .title-list) { display: none !important }
+.hero h1, .title-list a, .title-home, .tile h2, .links a, .menu-settings { text-transform: lowercase }
+.title-list a { font-size: clamp(34px, 6vw, 64px); font-weight: 700; letter-spacing: -.035em; line-height: 1.05; color: var(--mute) }
+.title-list a:hover, .title-list a[aria-current] { color: var(--fg) }
 
 /* cards */
 .layout { display: grid; gap: 16px; margin-block: 0 16px }
@@ -301,5 +312,25 @@ html:active-view-transition-type(slide-back)::view-transition-new(page-main) { a
 .seg2 { display: flex; padding: 3px; border-radius: 12px; background: var(--field); border: 1px solid var(--line) }
 .seg2 button { flex: 1; padding: 8px 6px; border-radius: 9px; font-size: 14px; color: var(--mute) }
 .seg2 button[aria-pressed="true"] { background: var(--fg); color: var(--page) }
-.menu-settings { grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 4px; padding: 11px; border-top: 1px solid var(--line); border-radius: 0 0 12px 12px; font-size: 15px; color: var(--mute) }
+.menu-settings { grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 4px; padding: 11px; border-top: 1px solid var(--line); border-radius: 0 0 12px 12px; font-size: 15px; font-weight: 600; color: var(--mute) }
 .menu-settings:hover { color: var(--fg) }
+
+/* title menu: the title morphs into "Home" (and a tapped page name into the next page's title), the list rises in */
+.hero h1, .title-home { view-transition-name: page-title }
+::view-transition-group(page-title) { animation-duration: .4s; animation-timing-function: cubic-bezier(.2, .8, .2, 1) }
+::view-transition-old(page-title), ::view-transition-new(page-title) { height: 100%; object-fit: none; object-position: left center }
+[dir="rtl"]::view-transition-old(page-title), [dir="rtl"]::view-transition-new(page-title) { object-position: right center }
+:root.vt-title::view-transition-old(root) { animation: .15s ease-out both vt-fade-out }
+:root.vt-title::view-transition-new(root) { animation: .25s ease-in both vt-fade-in }
+@media (prefers-reduced-motion: no-preference) {
+  .title-open .title-list a { animation: rise .4s cubic-bezier(.2, .8, .2, 1) both; animation-delay: calc(var(--i) * 25ms) }
+}
+/* homepage: its header is hidden, so show it for the X */
+.title-open .landing .top { display: flex }
+/* header buttons (menu and the title menu's X): bigger, bolder */
+.top :is(.menu, .title-x) { width: 48px; height: 48px; border: 1.5px solid var(--line) }
+.top :is(.menu, .title-x) svg { width: 22px; height: 22px; stroke-width: 2.4 }
+/* title menu hint: the title grows a little on hover */
+.hero h1.title-btn { transform-origin: left center; transition: transform .2s cubic-bezier(.2, .8, .2, 1) }
+[dir="rtl"] .hero h1.title-btn { transform-origin: right center }
+.hero h1.title-btn:is(:hover, :focus-visible) { transform: scale(1.04) }
