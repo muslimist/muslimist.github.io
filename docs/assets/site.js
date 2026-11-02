@@ -175,12 +175,17 @@ Object.assign(DICT, {
   }
 }
 
+// hamburger menu: tapping the page you are already on just closes the menu (no reload, no new photo)
+$$('#menu a').forEach(a => a.addEventListener('click', e => { if (location.pathname === a.getAttribute('href')) { e.preventDefault(); $('#menu').hidePopover?.() } }));
+
 // menu: on devices with a mouse it opens on hover and closes shortly after the pointer leaves it
 {
   const btn = $('.menu'), menu = $('#menu');
   if (btn && menu?.showPopover && matchMedia('(hover: hover) and (pointer: fine)').matches) {
     let timer;
-    const open = () => { clearTimeout(timer); if (!menu.matches(':popover-open')) menu.showPopover() };
+    // data-skip: the button just appeared under the pointer (title menu closed), so wait for a fresh hover
+    const open = e => { clearTimeout(timer); if (e?.type === 'pointerenter' && btn.hasAttribute('data-skip')) return; if (!menu.matches(':popover-open')) menu.showPopover() };
+    btn.addEventListener('pointerleave', () => btn.removeAttribute('data-skip'));
     const close = () => { clearTimeout(timer); timer = setTimeout(() => menu.matches(':popover-open') && menu.hidePopover(), 250) };
     for (const el of [btn, menu]) { el.addEventListener('pointerenter', open); el.addEventListener('pointerleave', close) }
     // a click on the button while hover-opened keeps it open instead of toggling it shut
@@ -204,21 +209,18 @@ Object.assign(DICT, {
     ($('.top') || head).append(x); // top right, in place of the menu button
     h.classList.add('title-btn'); h.tabIndex = 0; h.role = 'button'; h.setAttribute('aria-controls', 'title-list'); h.setAttribute('aria-expanded', 'false');
     others.forEach((a, i) => a.style.setProperty('--i', i));
-    const apply = open => { root.classList.toggle('title-open', open); h.setAttribute('aria-expanded', open); if (open) scrollTo(0, 0) };
-    // the title morphs into "Home" and the page crossfades into the list
-    const set = open => {
-      if (!document.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches) return apply(open);
-      root.classList.add('vt-title');
-      const vt = document.startViewTransition(() => apply(open));
-      vt.ready.catch(() => {}); // a quick second tap skips the first animation: fine
-      vt.finished.finally(() => root.classList.remove('vt-title'));
-    };
+    // plain CSS animations (no page snapshot, so the background photo keeps drifting untouched): the list rises in on open;
+    // on close the page content rises back in by itself, since its load animation replays when it is shown again
+    const set = open => { root.classList.toggle('title-open', open); h.setAttribute('aria-expanded', open); if (open) scrollTo(0, 0) };
     // the tapped page name flies up into the next page's title
-    others.forEach(a => a.addEventListener('click', () => { home.style.viewTransitionName = 'none'; a.style.viewTransitionName = 'page-title' }));
+    others.forEach(a => a.addEventListener('click', e => {
+      if (location.pathname === a.getAttribute('href')) { e.preventDefault(); set(false); return } // already here: just close, no reload
+      home.style.viewTransitionName = 'none'; a.style.viewTransitionName = 'page-title';
+    }));
     addEventListener('pageshow', () => { home.style.viewTransitionName = ''; others.forEach(a => a.style.viewTransitionName = '') });
     h.onclick = () => set(!root.classList.contains('title-open'));
     h.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); h.onclick() } };
-    x.onclick = () => { set(false); h.focus() };
+    x.onclick = e => { if (e) $('.top .menu')?.setAttribute('data-skip', ''); set(false); h.focus() }; // clicked: the menu button appears under the pointer
     addEventListener('keydown', e => { if (e.key === 'Escape' && root.classList.contains('title-open')) x.onclick() });
   }
 }

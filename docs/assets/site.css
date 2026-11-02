@@ -315,15 +315,14 @@ html:active-view-transition-type(slide-back)::view-transition-new(page-main) { a
 .menu-settings { grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 4px; padding: 11px; border-top: 1px solid var(--line); border-radius: 0 0 12px 12px; font-size: 15px; font-weight: 600; color: var(--mute) }
 .menu-settings:hover { color: var(--fg) }
 
-/* title menu: the title morphs into "Home" (and a tapped page name into the next page's title), the list rises in */
+/* title menu: a tapped page name flies into the next page's title; the list rises in, the page fades back on close */
 .hero h1, .title-home { view-transition-name: page-title }
 ::view-transition-group(page-title) { animation-duration: .4s; animation-timing-function: cubic-bezier(.2, .8, .2, 1) }
 ::view-transition-old(page-title), ::view-transition-new(page-title) { height: 100%; object-fit: none; object-position: left center }
 [dir="rtl"]::view-transition-old(page-title), [dir="rtl"]::view-transition-new(page-title) { object-position: right center }
-:root.vt-title::view-transition-old(root) { animation: .15s ease-out both vt-fade-out }
-:root.vt-title::view-transition-new(root) { animation: .25s ease-in both vt-fade-in }
 @media (prefers-reduced-motion: no-preference) {
-  .title-open .title-list a { animation: rise .4s cubic-bezier(.2, .8, .2, 1) both; animation-delay: calc(var(--i) * 25ms) }
+  .title-open :is(.title-list a, .title-home) { animation: rise .4s cubic-bezier(.2, .8, .2, 1) both; animation-delay: calc(var(--i, -1) * 25ms + 25ms) }
+  .title-row h1, .hero:has(.title-btn) > p { animation: vt-fade-in .3s ease-out both }
 }
 /* homepage: its header is hidden, so show it for the X */
 .title-open .landing .top { display: flex }
