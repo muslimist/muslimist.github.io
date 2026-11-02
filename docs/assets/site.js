@@ -204,7 +204,7 @@ $$('#menu a').forEach(a => a.addEventListener('click', e => { if (location.pathn
     x.className = 'close title-x'; x.setAttribute('aria-label', t('close'));
     x.innerHTML = '<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>';
     const head = document.createElement('div'); head.className = 'title-row';
-    const home = document.createElement('a'); home.className = 'title-home'; home.href = '/'; home.textContent = t('home');
+    const home = document.createElement('a'); home.className = 'title-home'; home.href = '/'; home.textContent = 'muslimist';
     h.before(head); head.append(h, home); head.after(list);
     ($('.top') || head).append(x); // top right, in place of the menu button
     h.classList.add('title-btn'); h.tabIndex = 0; h.role = 'button'; h.setAttribute('aria-controls', 'title-list'); h.setAttribute('aria-expanded', 'false');
@@ -217,6 +217,7 @@ $$('#menu a').forEach(a => a.addEventListener('click', e => { if (location.pathn
       if (location.pathname === a.getAttribute('href')) { e.preventDefault(); set(false); return } // already here: just close, no reload
       home.style.viewTransitionName = 'none'; a.style.viewTransitionName = 'page-title';
     }));
+    home.addEventListener('click', e => { if (location.pathname === '/') { e.preventDefault(); set(false) } }); // already home: just close
     addEventListener('pageshow', () => { home.style.viewTransitionName = ''; others.forEach(a => a.style.viewTransitionName = '') });
     h.onclick = () => set(!root.classList.contains('title-open'));
     h.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); h.onclick() } };
