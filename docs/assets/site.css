@@ -28,7 +28,7 @@
 @font-face { font-family: me_quran; src: url(/quran/fonts/me_quran.ttf); font-display: swap }
 
 * { box-sizing: border-box; margin: 0 }
-html { background: var(--page) }
+html { background: var(--page); touch-action: manipulation } /* no double-tap zoom: quick taps (the adhkar counter) register right away; pinch zoom still works */
 body { color: var(--fg); font: 16px/1.5 var(--font); min-height: 100vh; min-height: 100dvh; -webkit-text-size-adjust: 100%; display: flex; flex-direction: column }
 /* page photo, sharp; a veil keeps text readable */
 body::before, body::after { content: ""; position: fixed; inset: 0; z-index: -1; background: var(--veil), var(--bg-img) center/cover; filter: var(--tone); animation: drift 40s ease-in-out infinite alternate; pointer-events: none }
