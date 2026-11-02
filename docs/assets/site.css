@@ -220,7 +220,7 @@ img { display: block; max-width: 100% }
 .chips button[aria-pressed="true"] { background: var(--fg); color: var(--page); border-color: var(--fg) }
 
 /* settings sheet */
-.sheet { margin: auto auto 0; width: 100%; max-width: 560px; max-height: 88vh; padding: 0; background: var(--sheet); color: var(--fg); border-radius: var(--radius) var(--radius) 0 0; overscroll-behavior: contain }
+.sheet { margin: auto auto 0; width: 100%; max-width: 560px; max-height: 88vh; padding: 0; border: 0; background: var(--sheet); color: var(--fg); border-radius: var(--radius) var(--radius) 0 0; overscroll-behavior: contain }
 @media (min-width: 640px) { .sheet { margin: auto; border-radius: var(--radius) } }
 .sheet::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(4px) }
 .sheet form { display: grid; gap: 14px; padding: 0 24px calc(28px + env(safe-area-inset-bottom)) }
@@ -306,6 +306,7 @@ html:active-view-transition-type(slide-back)::view-transition-new(page-main) { a
 @keyframes slide-out-right { to { transform: translateX(30%); opacity: 0 } }
 @keyframes slide-in-left { from { transform: translateX(-30%); opacity: 0 } }
 .no-rise :is(.hero, main > *, .foot) { animation: none !important }
+.title-quiet :is(main > *, .foot, .title-row h1, .hero > p) { animation: none !important }
 
 /* site settings popup */
 .sheet .field { display: grid; gap: 4px; font-size: 12px; color: var(--mute) }
@@ -329,7 +330,6 @@ html:active-view-transition-type(slide-back)::view-transition-new(page-main) { a
 /* header buttons (menu and the title menu's X): bigger, bolder */
 .top :is(.menu, .title-x) { width: 48px; height: 48px; border: 1.5px solid var(--line) }
 .top :is(.menu, .title-x) svg { width: 22px; height: 22px; stroke-width: 2.4 }
-/* title menu hint: the title grows a little on hover */
-.hero h1.title-btn { transform-origin: left center; transition: transform .2s cubic-bezier(.2, .8, .2, 1) }
-[dir="rtl"] .hero h1.title-btn { transform-origin: right center }
-.hero h1.title-btn:is(:hover, :focus-visible) { transform: scale(1.04) }
+/* homepage: the title and the menu's first entry are the same word, so it stays put (no fade, no dimming) */
+.title-open .landing .title-home { color: var(--fg); animation: none !important }
+.landing .title-row h1 { animation: none !important }

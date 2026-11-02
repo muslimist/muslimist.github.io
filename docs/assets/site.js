@@ -211,13 +211,14 @@ $$('#menu a').forEach(a => a.addEventListener('click', e => { if (location.pathn
     others.forEach((a, i) => a.style.setProperty('--i', i));
     // plain CSS animations (no page snapshot, so the background photo keeps drifting untouched): the list rises in on open;
     // on close the page content rises back in by itself, since its load animation replays when it is shown again
-    const set = open => { root.classList.toggle('title-open', open); h.setAttribute('aria-expanded', open); if (open) scrollTo(0, 0) };
+    // quiet: close without the page fading back in (tapped the page you are already on)
+    const set = (open, quiet) => { root.classList.toggle('title-quiet', !!quiet); root.classList.toggle('title-open', open); h.setAttribute('aria-expanded', open); if (open) scrollTo(0, 0) };
     // the tapped page name flies up into the next page's title
     others.forEach(a => a.addEventListener('click', e => {
-      if (location.pathname === a.getAttribute('href')) { e.preventDefault(); set(false); return } // already here: just close, no reload
+      if (location.pathname === a.getAttribute('href')) { e.preventDefault(); set(false, true); return } // already here: just close, no reload
       home.style.viewTransitionName = 'none'; a.style.viewTransitionName = 'page-title';
     }));
-    home.addEventListener('click', e => { if (location.pathname === '/') { e.preventDefault(); set(false) } }); // already home: just close
+    home.addEventListener('click', e => { if (location.pathname === '/') { e.preventDefault(); set(false, true) } }); // already home: just close
     addEventListener('pageshow', () => { home.style.viewTransitionName = ''; others.forEach(a => a.style.viewTransitionName = '') });
     h.onclick = () => set(!root.classList.contains('title-open'));
     h.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); h.onclick() } };
