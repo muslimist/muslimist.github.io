@@ -91,7 +91,7 @@ function render() {
   bearing = qiblaBearing(timesSet.lat, timesSet.lng);
   $('#deg').textContent = `${Math.round(bearing)}°`;
   $('#where').innerHTML = `<bdi dir="ltr">${(+timesSet.lat).toFixed(2)}, ${(+timesSet.lng).toFixed(2)}</bdi>`;
-  $('#needle').setAttribute('transform', `rotate(${bearing} 100 100)`);
+  $('#needle').style.setProperty('--deg', `${bearing}deg`);
   $('#lat').value = timesSet.lat; $('#lng').value = timesSet.lng;
 }
 

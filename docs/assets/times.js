@@ -38,6 +38,26 @@ function prayerTimes(now = new Date()) {
   return { list, next };
 }
 
+// the part of the day from today's prayer times: fajr, sunrise, duha, dhuhr, asr, maghrib, isha, night or lastthird
+function dayPart(now = new Date()) {
+  prayTimes.setMethod(timesSet.method);
+  const h = prayTimes.getTimes(now, [timesSet.lat, timesSet.lng], 'auto', 'auto', 'Float'), x = now.getHours() + now.getMinutes() / 60;
+  // the last third of the night: between isha's night and fajr (night = maghrib → fajr)
+  const night = (h.fajr + 24 - h.maghrib) % 24, lastThird = (h.fajr - night / 3 + 24) % 24;
+  const inLastThird = (x - lastThird + 24) % 24 < night / 3; // from the start of the last third until fajr, across midnight
+  let part;
+  if (x < h.fajr) part = inLastThird ? 'lastthird' : 'night';
+  else if (x < h.sunrise) part = 'fajr';
+  else if (x < h.sunrise + 1.5) part = 'sunrise';
+  else if (x < h.dhuhr) part = 'duha';
+  else if (x < h.asr) part = 'dhuhr';
+  else if (x < h.maghrib - .5) part = 'asr';
+  else if (x < h.maghrib + .4) part = 'maghrib';
+  else if (x < h.isha + 1.5) part = 'isha';
+  else part = inLastThird ? 'lastthird' : 'night';
+  return { part, h, x };
+}
+
 function until(date) {
   const min = Math.max(0, Math.round((date - Date.now()) / 6e4));
   return `${t('in')} ${min >= 60 ? Math.floor(min / 60) + t('h') + ' ' : ''}${min % 60}${t('m')}`;
@@ -56,6 +76,34 @@ function showPrayers(root, now = new Date()) {
   const prev = [...list].reverse().find(p => p.at <= now)?.at || new Date(now).setHours(0, 0, 0, 0);
   box.querySelector('.label').textContent = `${t('next')} · ${t(next.key)}`;
   box.querySelector('.next-time').textContent = next.time;
-  box.querySelector('.next-in').textContent = until(next.at);
-  box.querySelector('.bar i').style.width = `${Math.min(100, Math.max(2, (now - prev) / (next.at - prev) * 100))}%`;
+  box.querySelector('.next-in').textContent = soonText(next.at) || until(next.at);
+  box.querySelector('.bar i')?.style.setProperty('width', `${Math.min(100, Math.max(2, (now - prev) / (next.at - prev) * 100))}%`);
+  root._next = next;
+  root.classList.toggle('soon', !!soonText(next.at));
+  // the day's prayers as dots on one line, with a marker for now
+  const line = root.querySelector('.day-line');
+  if (!line) return;
+  line.hidden = list.length < 2;
+  if (line.hidden) return;
+  const pad = 45 * 6e4, a = list[0].at - pad, b = list.at(-1).at - -pad, pos = d => (d - a) / (b - a) * 100;
+  const upNext = list.find(p => p.at > now);
+  line.innerHTML = `<i class="fill" style="width:${Math.min(100, Math.max(0, pos(now)))}%"></i>`
+    + list.map(p => `<span class="${p === upNext ? 'next' : p.at <= now ? 'past' : ''}" style="inset-inline-start:${pos(p.at)}%"><b></b><small>${t(p.key)}</small></span>`).join('')
+    + (now > a && now < b ? `<em style="inset-inline-start:${pos(now)}%"></em>` : '');
+}
+
+// the last ten minutes before a prayer count down by the second ("in 4:16"); '' before that
+function soonText(at) {
+  const sec = Math.round((at - Date.now()) / 1e3);
+  return sec > 0 && sec <= 600 ? `${t('in')} ${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}` : '';
+}
+// keeps a showPrayers block ticking each second; refresh() re-renders once the prayer time arrives
+function liveCountdown(root, refresh) {
+  setInterval(() => {
+    const n = root._next; if (!n) return;
+    if (n.at <= Date.now()) return refresh();
+    const s = soonText(n.at);
+    root.classList.toggle('soon', !!s);
+    if (s) root.querySelector('.next-in').textContent = s;
+  }, 1e3);
 }

@@ -2,21 +2,22 @@
 #duaa-count { margin: 10px 0 0 }
 #duaa-count:empty { display: none }
 
-/* start view: a photo card per category */
-.dua-cats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px }
-.dua-cat { --h: 132px; position: relative; overflow: hidden; height: var(--h); padding: 0; border-radius: 16px; display: flex; align-items: flex-end; text-align: start;
-  background: var(--img) center/cover padding-box; border: 1px solid var(--line); transition: transform .2s; isolation: isolate }
-.dua-cat:hover { transform: translateY(-3px) }
-/* label: a blurred copy of the same photo, oversized so the blur reaches every edge (backdrop-filter leaves sharp pixels at the edges) */
-.dua-cat span { position: relative; overflow: hidden; isolation: isolate; width: 100%; display: grid; gap: 0; padding: 9px 14px; color: var(--fg) }
+/* start view: a card per category, its photo fully blurred behind a glass tint, label centred */
+.dua-cats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 16px }
+.dua-cat { --h: 78px; position: relative; overflow: hidden; height: var(--h); padding: 0; border-radius: 16px; display: flex; text-align: center;
+  border: 1px solid var(--line); isolation: isolate; transition: translate .25s ease, border-color .25s ease, box-shadow .25s ease }
+.dua-cat:hover { translate: 0 -2px; border-color: color-mix(in srgb, var(--gold) 45%, transparent); box-shadow: 0 12px 30px rgba(0,0,0,.22) }
+/* a blurred copy of the photo, oversized so the blur reaches every edge (backdrop-filter leaves sharp pixels at the edges) */
+.dua-cat span { position: relative; isolation: isolate; width: 100%; display: grid; place-content: center; gap: 1px; padding: 8px 12px; color: var(--fg) }
 .dua-cat span::before, .dua-cat span::after { content: ""; position: absolute; z-index: -1 }
-.dua-cat span::before { inset: auto -40px -40px; height: calc(var(--h) + 80px); background: var(--img) center/cover; filter: blur(calc(var(--blur) * .8)) saturate(1.4) brightness(var(--lift, 1)) }
+.dua-cat span::before { inset: -40px; background: var(--img) center/cover; filter: blur(calc(var(--blur) * 1.2)) saturate(1.4) brightness(var(--lift, 1)) }
 .dua-cat span::after { inset: 0; background: color-mix(in srgb, var(--tint) min(calc(var(--base-a) * var(--k)), 94%), transparent) }
 [data-glass="solid"] .dua-cat span::before { display: none }
 [data-glass="solid"] .dua-cat span::after { background: var(--solid) }
-.dua-cat b { font-size: 16px; font-weight: 600; letter-spacing: -.01em }
-.dua-cat small { font-size: 12px; color: var(--mute) }
-@media (max-width: 640px) { .dua-cats { grid-template-columns: 1fr 1fr; gap: 10px } .dua-cat { --h: 112px } }
+.dua-cat b { font-size: 15.5px; font-weight: 600; letter-spacing: -.01em; white-space: nowrap }
+.dua-cat small { font-size: 12px; color: var(--mute); white-space: nowrap }
+@media (max-width: 640px) { .dua-cats { grid-template-columns: 1fr 1fr; gap: 8px } .dua-cat { --h: 68px } }
+@media (prefers-reduced-motion: reduce) { .dua-cat:hover { translate: none } }
 
 /* list: just titles; tapping one opens the reader */
 .dua-group { margin-top: 20px }
@@ -26,6 +27,10 @@
 .dua { border-top: 1px solid var(--line) }
 .dua summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 12px; padding: 14px 6px; font-weight: 500; border-radius: 10px }
 .dua summary:hover { background: var(--hilite) }
+.dua-group { counter-reset: dua }
+.dua { counter-increment: dua }
+.dua summary::before { content: counter(dua); flex: none; min-width: 22px; font-size: 12px; font-weight: 600; color: var(--gold); font-variant-numeric: tabular-nums; opacity: .85 }
+.dua summary:hover::after { border-color: var(--gold) }
 .dua summary::-webkit-details-marker { display: none }
 .dua summary::after { content: ""; margin-inline-start: auto; width: 7px; height: 7px; border: solid var(--mute); border-width: 1.5px 1.5px 0 0; transform: rotate(45deg) }
 [dir="rtl"] .dua summary::after { transform: rotate(-135deg) }
@@ -55,11 +60,22 @@
 
 /* morning / evening adhkar */
 .adhkar-start { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px }
-.ad-card { display: grid; gap: 2px; padding: 14px 16px; border-radius: 16px; border: 1px solid var(--line); background: var(--card) }
-.ad-card:hover { background: var(--hilite) }
+.ad-card { position: relative; overflow: hidden; isolation: isolate; display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 16px; border: 1px solid var(--line); background: var(--card); transition: border-color .25s, translate .25s }
+.ad-card > span { display: grid; gap: 2px; min-width: 0 }
+/* a soft sunrise or dusk glow behind each */
+.ad-card::before { content: ""; position: absolute; inset: -60% auto -60% -10%; width: 60%; z-index: -1; opacity: .5; transition: opacity .3s; pointer-events: none }
+[dir="rtl"] .ad-card::before { inset: -60% -10% -60% auto }
+.ad-card[data-k="morning"]::before { background: radial-gradient(closest-side, #ffb36b55, transparent) }
+.ad-card[data-k="evening"]::before { background: radial-gradient(closest-side, #6a5acd66, transparent) }
+.ad-card:hover { border-color: color-mix(in srgb, var(--gold) 45%, transparent); translate: 0 -2px }
+.ad-card:hover::before, .ad-card.now::before { opacity: 1 }
+.ad-ic { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: color-mix(in srgb, var(--gold) 12%, transparent); border: 1px solid color-mix(in srgb, var(--gold) 25%, transparent) }
+.ad-ic svg { width: 20px; height: 20px; fill: none; stroke: var(--gold); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round }
 .ad-card b { font-size: 16px }
 .ad-card small { font-size: 12.5px; color: var(--mute) }
-.ad-card.now { border-color: var(--fg) }
+.ad-card.now { border-color: color-mix(in srgb, var(--gold) 60%, transparent); box-shadow: 0 0 24px color-mix(in srgb, var(--gold) 12%, transparent) }
+.ad-card.now .ad-ic { box-shadow: 0 0 16px color-mix(in srgb, var(--gold) 35%, transparent) }
+@media (prefers-reduced-motion: reduce) { .ad-card:hover { translate: none } }
 .ad-done { font-size: 12.5px; color: #2fb34f; font-weight: 600 }
 .dr-tap { position: sticky; bottom: 16px; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; width: 112px; height: 112px; margin: 22px auto 0; padding: 0; border-radius: 99px; border: 2px solid var(--fg); background: var(--sheet); box-shadow: 0 8px 24px rgba(0,0,0,.18); color: var(--mute); transition: transform .08s, background .2s; user-select: none; -webkit-tap-highlight-color: transparent }
 .dr-tap .tap-n { display: flex; align-items: baseline; gap: 4px; line-height: 1; direction: ltr }

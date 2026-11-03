@@ -251,6 +251,15 @@ $$('#menu a').forEach(a => a.addEventListener('click', e => { if (location.pathn
   });
 }
 
+// sky: tint the page photo for the time of day. Exact from prayer times where times.js is loaded, else by the clock
+// ponytail: clock fallback ignores location and season; load times.js on a page to make it exact
+function setSky() {
+  const x = new Date().getHours();
+  document.documentElement.dataset.sky = typeof dayPart === 'function' && typeof prayTimes !== 'undefined' ? dayPart().part
+    : x < 3 ? 'night' : x < 5 ? 'lastthird' : x < 6 ? 'fajr' : x < 8 ? 'sunrise' : x < 12 ? 'duha' : x < 15 ? 'dhuhr' : x < 17 ? 'asr' : x < 19 ? 'maghrib' : x < 22 ? 'isha' : 'night';
+}
+addEventListener('DOMContentLoaded', () => { setSky(); setInterval(setSky, 60e3) }); // after every page script, so dayPart is defined
+
 // settings sheets: [data-open=id] opens, tapping outside closes
 $$('[data-open]').forEach(b => b.onclick = () => document.getElementById(b.dataset.open).showModal());
 $$('dialog').forEach(d => d.addEventListener('click', e => { if (e.target === d) d.close() }));

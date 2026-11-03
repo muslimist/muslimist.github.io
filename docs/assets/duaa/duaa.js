@@ -72,7 +72,8 @@ if (duas.length) {
   // morning / evening adhkar: the two sets from "Dua in the morning & evening", one at a time with a counter
   const ad = document.createElement('div');
   ad.className = 'adhkar-start'; ad.id = 'adhkar-start';
-  ad.innerHTML = ['morning', 'evening'].map(k => `<a class="ad-card" href="#adhkar-${k}" data-k="${k}"><b>${t(k)}</b><small>${t('adhkarsub')}</small><span class="ad-done" hidden>✓ ${t('donetoday')}</span></a>`).join('');
+  const AD_ICON = { morning: 'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4', evening: 'M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z' };
+  ad.innerHTML = ['morning', 'evening'].map(k => `<a class="ad-card" href="#adhkar-${k}" data-k="${k}"><i class="ad-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${AD_ICON[k]}"/></svg></i><span><b>${t(k)}</b><small>${t('adhkarsub')}</small><span class="ad-done" hidden>✓ ${t('donetoday')}</span></span></a>`).join('');
   cats.before(ad);
 
   list.insertAdjacentHTML('afterend', `

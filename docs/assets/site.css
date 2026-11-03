@@ -31,13 +31,25 @@
 html { background: var(--page); touch-action: manipulation } /* no double-tap zoom: quick taps (the adhkar counter) register right away; pinch zoom still works */
 body { color: var(--fg); font: 16px/1.5 var(--font); min-height: 100vh; min-height: 100dvh; -webkit-text-size-adjust: 100%; display: flex; flex-direction: column }
 /* page photo, sharp; a veil keeps text readable */
-body::before, body::after { content: ""; position: fixed; inset: 0; z-index: -1; background: var(--veil), var(--bg-img) center/cover; filter: var(--tone); animation: drift 40s ease-in-out infinite alternate; pointer-events: none }
+body::before, body::after { content: ""; position: fixed; inset: 0; z-index: -1; background: var(--sky), var(--veil), var(--bg-img) center/cover; filter: var(--tone); animation: drift 40s ease-in-out infinite alternate; pointer-events: none }
 /* the next photo waits on ::after and fades in over the current one (site.js swaps them) */
-body::after { background: var(--veil), var(--bg-next, none) center/cover; opacity: 0 }
+body::after { background: var(--sky), var(--veil), var(--bg-next, none) center/cover; opacity: 0 }
 /* the page photo fades in once it has loaded (site.js adds .bg-ready) */
 body::before { transition: opacity .9s ease }
 html:not(.bg-ready) body::before { opacity: 0 }
 .swap body::after { opacity: 1; transition: opacity 2.5s ease }
+/* gold accent, and a sky wash over the photo that follows the time of day (pages set html[data-sky]) */
+:root { --gold: #e3bd74; --sky: linear-gradient(transparent, transparent) }
+[data-scheme="light"] { --gold: #b58a3c }
+[data-sky="fajr"] { --sky: linear-gradient(#ff9a8b66, #6a5acd33 60%, transparent) }
+[data-sky="sunrise"] { --sky: linear-gradient(#ffb36b66, #ffd8a033 55%, transparent) }
+[data-sky="duha"] { --sky: linear-gradient(#7ec8ff4d, #bfe6ff22 55%, transparent) }
+[data-sky="dhuhr"] { --sky: linear-gradient(#a8dcff4d, #fff4d022 55%, transparent) }
+[data-sky="asr"] { --sky: linear-gradient(#ffc76b55, #ffe2a822 55%, transparent) }
+[data-sky="maghrib"] { --sky: linear-gradient(#ff6f6166, #c0469a40 50%, #3b2a6b33) }
+[data-sky="isha"] { --sky: linear-gradient(#3a4aa066, #1b1f5a40 60%, transparent) }
+[data-sky="night"] { --sky: linear-gradient(#141a4a66, #0a0d2a44 70%, transparent) }
+[data-sky="lastthird"] { --sky: linear-gradient(#4b2e8a66, #1a145044 70%, transparent) }
 @keyframes drift { from { transform: scale(1.03) translate(.5%, .3%) } to { transform: scale(1.07) translate(-.8%, -.5%) } }
 a { color: inherit; text-decoration: none }
 button, input, select { font: inherit; color: inherit }
@@ -69,9 +81,9 @@ img { display: block; max-width: 100% }
   background: var(--sheet); border: 1px solid var(--line); box-shadow: 0 18px 50px rgba(0,0,0,.35); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); animation: menu-in .18s ease-out }
 @keyframes menu-in { from { opacity: 0; transform: translateY(-6px) scale(.98) } }
 .links a { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-radius: 12px; font-size: 15.5px; font-weight: 600; color: var(--fg) }
-.links a svg { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round }
+.links a svg { width: 18px; height: 18px; flex: none; fill: none; stroke: var(--gold); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round }
 .links a:hover { background: var(--hilite) }
-.links a[aria-current] { background: var(--fg); color: var(--page) }
+.links a[aria-current] { background: color-mix(in srgb, var(--gold) 16%, transparent); color: var(--fg); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--gold) 50%, transparent) }
 .pill { padding: 6px 12px; border-radius: 99px; font-size: 14px; white-space: nowrap; color: var(--fg); background: var(--card) }
 /* small popover (privacy note) */
 .pop { margin: auto auto 24px; max-width: min(92vw, 420px); padding: 14px 18px; border-radius: 16px; border: 1px solid var(--line); background: var(--sheet); color: var(--fg); font-size: 14px; backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px) }
@@ -89,7 +101,9 @@ img { display: block; max-width: 100% }
 .hero { text-shadow: 0 1px 24px color-mix(in srgb, var(--page) 70%, transparent) }
 .hero h1 { font-size: clamp(34px, 6vw, 64px); letter-spacing: -.035em; line-height: 1.05 }
 .hero p { color: var(--mute); margin-top: 4px; font-size: 16px }
-.hero h1.title-btn { cursor: pointer; width: fit-content; user-select: none }
+.hero h1.title-btn { cursor: pointer; width: fit-content; user-select: none; transition: color .3s ease, text-shadow .3s ease }
+/* hover hint: the title warms to gold with a faint glow; only color changes, so nothing moves */
+.hero h1.title-btn:is(:hover, :focus-visible) { color: color-mix(in srgb, var(--gold) 70%, var(--fg)); text-shadow: 0 0 28px color-mix(in srgb, var(--gold) 35%, transparent) }
 .title-row { display: flex; align-items: center; gap: 16px }
 .title-list, .title-row .title-x, .title-home, .title-open .title-row h1 { display: none }
 .title-open .title-home { display: block; font-size: clamp(34px, 6vw, 64px); font-weight: 700; letter-spacing: -.035em; line-height: 1.05; color: var(--mute) }
@@ -107,12 +121,15 @@ img { display: block; max-width: 100% }
 .card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 12px }
 .title { font-weight: 600; font-size: 17px; margin-inline-end: auto; text-align: start }
 .icon { display: grid; place-items: center; flex: none; width: 40px; height: 40px; border-radius: 99px; color: var(--mute) }
-.icon:hover { background: var(--field); color: var(--fg) }
+.icon:hover { background: var(--field); color: var(--gold) }
 .icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round }
 
 /* buttons */
 .btn { padding: 10px 16px; border-radius: 12px; background: var(--field); border: 1px solid var(--line); font-size: 14px }
 .btn.primary { background: var(--accent); color: var(--on-accent); border-color: var(--accent) }
+/* shared gold hover: cards, tiles and plain buttons get a gold edge */
+.btn { transition: border-color .2s }
+.btn:not(.primary):hover, :is(a.card, .tile):hover { border-color: color-mix(in srgb, var(--gold) 45%, transparent) }
 .btns { display: flex; flex-wrap: wrap; gap: 8px }
 .wide { width: 100% }
 
@@ -135,10 +152,14 @@ img { display: block; max-width: 100% }
 .trans { text-align: center; font-size: 1.1em }
 .whole { font: inherit; text-align: start; direction: ltr; padding: 0 }
 .whole [data-v] { cursor: pointer; padding: 12px 10px; border-top: 1px solid var(--line); border-radius: 12px }
-.whole [data-v].on { background: var(--hilite) }
+.whole [data-v].on { background: color-mix(in srgb, var(--gold) 9%, transparent) }
+/* reading progress: a thin gold line along the top of the reader */
+.reader { position: relative }
+.reader::before { content: ""; position: absolute; top: 0; inset-inline-start: 24px; width: calc((100% - 48px) * var(--qp, 0)); height: 2px; border-radius: 2px; background: linear-gradient(90deg, transparent, var(--gold)); transition: width .4s ease; pointer-events: none }
+[dir="rtl"] .reader::before { background: linear-gradient(-90deg, transparent, var(--gold)) }
 .whole .ar { font: var(--asize, 2.2em)/2.1 var(--qfont, var(--arabic)); direction: rtl; text-align: right }
 .whole .tr { font-size: var(--tsize, 1.1em) }
-.num { font: .5em var(--font); color: var(--mute); border: 1px solid var(--line); border-radius: 99px; padding: 0 .5em; margin: 0 .3em; vertical-align: middle }
+.num { font: .5em var(--font); color: var(--gold); border: 1px solid color-mix(in srgb, var(--gold) 40%, transparent); border-radius: 99px; padding: 0 .5em; margin: 0 .3em; vertical-align: middle }
 .player { display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 24px }
 .whole ~ .player { position: sticky; bottom: 16px }
 .player .icon { background: var(--sheet) }
@@ -184,13 +205,37 @@ img { display: block; max-width: 100% }
 .prayers li { display: flex; justify-content: space-between; align-items: baseline; padding: 14px 4px; border-top: 1px solid var(--line); font-size: 18px; color: var(--mute) }
 .prayers li:first-child { border: 0 }
 .prayers b { font-variant-numeric: tabular-nums; font-weight: 500 }
-.prayers .now { color: var(--fg); font-weight: 700; background: var(--hilite); border-radius: 12px; border-color: transparent; padding-inline: 12px }
+.prayers .now { color: var(--fg); font-weight: 700; background: color-mix(in srgb, var(--gold) 12%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--gold) 40%, transparent); border-radius: 12px; border-color: transparent; padding-inline: 12px }
+.prayers .now > span::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-inline-end: 10px; vertical-align: middle; border-radius: 99px; background: var(--gold); box-shadow: 0 0 10px var(--gold) }
+.prayers .now b { color: var(--gold) }
 .prayers .now + li { border-color: transparent }
-.prayers .past { opacity: .45 }
+.prayers .past { opacity: .4 }
 /* times: next prayer up top */
 .next-up { text-align: center; padding: 6px 0 20px }
 .next-up .label { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--mute) }
 .next-time { font-size: clamp(40px, 7vw, 56px); font-weight: 600; letter-spacing: -.03em; line-height: 1.1; margin: 4px 0; direction: ltr; unicode-bidi: isolate }
+/* hijri date as a small gold pill */
+.hj { display: inline-block; margin-inline-start: 8px; padding: 1px 10px; border-radius: 99px; border: 1px solid color-mix(in srgb, var(--gold) 40%, transparent); color: var(--gold); font-size: 14px; text-shadow: none; white-space: nowrap }
+/* the day's prayers as dots on one line (showPrayers fills .day-line) */
+/* day timeline: replaces the plain progress bar */
+.day-line { position: relative; height: 3px; margin: 34px 12px 32px; border-radius: 99px; background: var(--line) }
+.day-line .fill { position: absolute; inset-block: 0; inset-inline-start: 0; border-radius: inherit; background: linear-gradient(90deg, transparent, var(--gold)) }
+[dir="rtl"] .day-line .fill { background: linear-gradient(-90deg, transparent, var(--gold)) }
+.day-line span { position: absolute; top: 50%; translate: -50% -50%; display: grid; justify-items: center }
+[dir="rtl"] .day-line span, [dir="rtl"] .day-line em { translate: 50% -50% }
+.day-line b { width: 9px; height: 9px; border-radius: 99px; background: var(--solid); border: 1.5px solid var(--mute) }
+.day-line .past b { background: var(--gold); border-color: var(--gold) }
+.day-line .next b { width: 13px; height: 13px; border-color: var(--gold); background: transparent; box-shadow: 0 0 0 4px color-mix(in srgb, var(--gold) 25%, transparent), 0 0 16px var(--gold) }
+.day-line small { position: absolute; top: 15px; font-size: 10.5px; letter-spacing: .04em; color: var(--mute); white-space: nowrap }
+.day-line span:nth-of-type(even) small { top: auto; bottom: 15px }
+.day-line .next small { color: var(--fg); font-weight: 600 }
+.day-line em { position: absolute; top: 50%; translate: -50% -50%; width: 2px; height: 15px; border-radius: 2px; background: var(--fg); box-shadow: 0 0 10px var(--fg) }
+@media (max-width: 640px) { .day-line small { display: none } .day-line { margin: 18px 4px 14px } }
+/* 9. last ten minutes: the next dot pulses */
+.soon .next-in { color: var(--gold); font-variant-numeric: tabular-nums; font-weight: 600 }
+.soon .day-line .next b { animation: pulse 1.6s ease-in-out infinite }
+@keyframes pulse { 50% { box-shadow: 0 0 0 8px color-mix(in srgb, var(--gold) 10%, transparent), 0 0 22px var(--gold) } }
+@media (prefers-reduced-motion: reduce) { .soon .day-line .next b { animation: none } }
 .next-up .bar { height: 4px; max-width: 280px; margin: 14px auto 0; border-radius: 99px; background: var(--line); overflow: hidden }
 .next-up .bar i { display: block; height: 100%; background: var(--fg); border-radius: 99px; transition: width .6s ease }
 .prayers .now b { font-weight: 700 }
@@ -204,20 +249,32 @@ img { display: block; max-width: 100% }
 .compass .north { fill: var(--fg) }
 .compass .kaaba { font-size: 22px }
 .compass .needle { fill: var(--fg); transition: fill .3s }
-.compass.facing .needle { fill: #2fb34f }
-.compass.facing .ring { stroke: #2fb34f; stroke-width: 3 }
+.compass.facing .needle { fill: var(--gold) }
+.compass.facing .ring { stroke: var(--gold); stroke-width: 3; filter: drop-shadow(0 0 6px var(--gold)) }
+/* gold north, kaaba and hub; the needle swings into place on load */
+.compass .north { fill: var(--gold) }
+.compass .ticks line:first-child { stroke: var(--gold); stroke-width: 2.5 }
+.compass .kaaba { filter: drop-shadow(0 0 6px var(--gold)) }
+.compass .hub { fill: var(--gold) }
+#needle { transform-box: view-box; transform-origin: 100px 100px; transform: rotate(var(--deg, 0deg)) }
+.ready #needle { animation: swing 1.4s .3s cubic-bezier(.3, 1.35, .5, 1) both }
+@keyframes swing { from { transform: rotate(calc(var(--deg, 0deg) - 140deg)) } }
+@media (prefers-reduced-motion: reduce) { .ready #needle { animation: none } }
 .compass .hub { fill: var(--fg) }
 .qibla-deg { font-size: 15px }
 .qibla-deg b { font-size: 44px; font-weight: 600; letter-spacing: -.03em; font-variant-numeric: tabular-nums }
 .qibla-msg { color: var(--mute); font-size: 14px; min-height: 21px; margin: 6px 0 14px }
-.compass.facing ~ .qibla-msg { color: #2fb34f; font-weight: 600 }
+.compass.facing ~ .qibla-msg { color: var(--gold); font-weight: 600 }
 #dial { transition: transform .15s ease-out; transform-origin: 100px 100px }
 
 /* duaa */
-.search { flex: 1; min-width: 0; background: var(--field); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px }
+.search { flex: 1; min-width: 0; background: var(--field) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-3.5-3.5'/%3E%3C/svg%3E") no-repeat 12px 50% / 17px; border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px 10px 38px; transition: border-color .2s, box-shadow .2s }
+[dir="rtl"] .search { background-position: calc(100% - 12px) 50%; padding: 10px 38px 10px 14px }
+.search:focus { outline: none; border-color: color-mix(in srgb, var(--gold) 65%, transparent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 15%, transparent) }
 .chips { display: flex; gap: 6px; overflow-x: auto; margin-bottom: 4px; scrollbar-width: none }
-.chips button { padding: 6px 12px; border-radius: 99px; border: 1px solid var(--line); font-size: 14px; white-space: nowrap; color: var(--mute) }
-.chips button[aria-pressed="true"] { background: var(--fg); color: var(--page); border-color: var(--fg) }
+.chips button { padding: 6px 12px; border-radius: 99px; border: 1px solid var(--line); font-size: 14px; white-space: nowrap; color: var(--mute); transition: border-color .2s, color .2s }
+.chips button:hover { border-color: color-mix(in srgb, var(--gold) 45%, transparent); color: var(--fg) }
+.chips button[aria-pressed="true"] { background: color-mix(in srgb, var(--gold) 14%, transparent); color: var(--gold); border-color: color-mix(in srgb, var(--gold) 60%, transparent) }
 
 /* settings sheet */
 .sheet { margin: auto auto 0; width: 100%; max-width: 560px; max-height: 88vh; padding: 0; border: 0; background: var(--sheet); color: var(--fg); border-radius: var(--radius) var(--radius) 0 0; overscroll-behavior: contain }

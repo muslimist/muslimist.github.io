@@ -49,8 +49,8 @@
       <p class="label"></p>
       <p class="next-time"></p>
       <p class="mute next-in"></p>
-      <div class="bar"><i></i></div>
     </div>
+    <div class="day-line" aria-hidden="true"></div>
     <ul class="prayers" id="prayers"></ul>
   </section>
   <section class="card glass" id="makeup"></section>
@@ -126,8 +126,8 @@ PRAYERS.forEach(k => $('#show').insertAdjacentHTML('beforeend', `<label class="c
 
 function render() {
   const now = new Date(), loc = AR ? 'ar' : 'en';
-  $('#date').textContent = new Intl.DateTimeFormat(loc, { weekday: 'long', day: 'numeric', month: 'long' }).format(now) + ' · '
-    + new Intl.DateTimeFormat(loc + '-u-ca-islamic-umalqura', { day: 'numeric', month: 'long' }).format(now);
+  $('#date').innerHTML = new Intl.DateTimeFormat(loc, { weekday: 'long', day: 'numeric', month: 'long' }).format(now)
+    + `<span class="hj">${new Intl.DateTimeFormat(loc + '-u-ca-islamic-umalqura', { day: 'numeric', month: 'long' }).format(now)}</span>`;
   $('#where').innerHTML = `· <bdi dir="ltr">${(+timesSet.lat).toFixed(2)}, ${(+timesSet.lng).toFixed(2)}</bdi>`;
   showPrayers($('main'), now);
 }
@@ -198,6 +198,7 @@ makeup();
 
 fill(); render();
 setInterval(render, 30e3);
+liveCountdown($('main'), render);
 </script>
 </body>
 </html>

@@ -394,6 +394,7 @@ async function renderText() {
     Q.translation === 'none' ? [] : json(`/quran/data/${Q.translation}.json`).then(d => d.quran.sura[Q.chapter - 1].aya.map(a => esc(a._text))),
   ]);
   if (v !== Q.verse) return; // a newer render started
+  $('.reader').style.setProperty('--qp', v / Math.max(ar.length, tr.length, 1)); // gold progress line
   // remembered so the home dashboard can show where you left off without loading the Quran data
   localStorage['quran-last'] = JSON.stringify({ c: Q.chapter, v, name: NAMES.map(n => n[Q.chapter - 1].replace(/^\d+: /, '')), ar: ar[v - 1] || '', tr: tr[v - 1] || '' });
   if (whole) {

@@ -18,8 +18,14 @@
 <style>
   /* dashboard layout, only used here */
   /* next prayer and qibla share a row and a height; widths follow their content */
-  .dash { grid-template-columns: 1.4fr 1fr }
+  /* 12 columns: times wide, qibla narrow, name between; today and coming up in halves */
+  .dash { grid-template-columns: repeat(12, minmax(0, 1fr)) }
+  .dash > * { grid-column: span 6 }
   .dash .wide { grid-column: 1 / -1 }
+  #prayers-card { grid-column: span 5 }
+  #qibla-card { grid-column: span 3 }
+  #name-card { grid-column: span 4 }
+  .dash:has(#today-card[hidden]) #up-card { grid-column: 1 / -1 }
   .dash .pair { display: flex; flex-direction: column }
   .dash .pair > .card-head + * { margin-top: auto }
   .dash .pair > :last-child { margin-bottom: auto }
@@ -31,8 +37,15 @@
   .dash .compass { width: min(150px, 100%); margin: 0 auto 4px }
   .dash .qibla-deg { font-size: 13px }
   .dash .qibla-deg b { font-size: clamp(24px, 6vw, 34px) }
-  .dash .ayah { font-size: 1.8em }
-  .dash .trans { font-size: 1em; color: var(--mute) }
+  /* ayah: the hero card */
+  .ayah-card { position: relative; overflow: hidden; isolation: isolate; padding-block: 28px }
+  .ayah-card::before { content: ""; position: absolute; inset: -40% 10% auto; height: 120%; z-index: -1; background: radial-gradient(closest-side, color-mix(in srgb, var(--gold) 16%, transparent), transparent); pointer-events: none }
+  .dash .ayah { font-size: clamp(1.9em, 5vw, 2.7em); line-height: 2.2; padding: 18px 0 6px }
+  .orn { display: flex; align-items: center; justify-content: center; gap: 12px; color: var(--gold); font-size: 13px; margin: 4px auto 14px; max-width: 260px }
+  .orn::before, .orn::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--gold)) }
+  .orn::after { scale: -1 1 }
+  .orn[hidden] { display: none }
+  .dash .trans { font-size: 1.08em; line-height: 1.7; color: var(--mute); max-width: 640px; margin-inline: auto }
   /* the moment's photo sits faintly behind the duaa */
   .dua-card { position: relative; overflow: hidden; isolation: isolate }
   .dua-card::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--dua-img) center/cover; opacity: .16; filter: saturate(.8) }
@@ -54,19 +67,73 @@
   .up:first-of-type { border-top: 0 }
   .up span { flex: 1; min-width: 0 }
   .up small { color: var(--mute); font-size: 12.5px }
-  @media (max-width: 640px) { #name-card, #up-card { grid-column: 1 / -1 } }
+  @media (max-width: 640px) { .dash > *, #prayers-card, #qibla-card { grid-column: span 6 } #name-card, #today-card, #up-card { grid-column: 1 / -1 } }
   .kh { display: flex; align-items: center; gap: 10px; margin-top: 14px; font-size: 13px; color: var(--mute) }
   .kh .bar { flex: 1; height: 5px; margin: 0; max-width: none }
   .alert-state { font-size: 12.5px; color: var(--mute); margin-top: 10px; text-align: center }
-  .nudge { margin-top: 10px !important; font-size: 15px !important; color: var(--fg) !important; opacity: .9 }
-  .nudge a { text-decoration: underline; text-underline-offset: 3px }
+  /* nudge: a small glass pill under the date */
+  .nudge { margin-top: 16px !important; font-size: 14.5px !important; color: var(--fg) !important }
+  .nudge:empty { display: none }
+  .nudge a { display: inline-flex; align-items: center; gap: 10px; padding: 8px 16px 8px 13px; border-radius: 99px; background: color-mix(in srgb, var(--fg) 9%, transparent); border: 1px solid color-mix(in srgb, var(--gold) 35%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); text-shadow: none; transition: background .2s, border-color .2s }
+  .nudge a::before { content: ""; width: 7px; height: 7px; border-radius: 99px; background: var(--gold); box-shadow: 0 0 10px var(--gold) }
+  .nudge a::after { content: "→"; color: var(--gold); transition: translate .2s }
+  [dir="rtl"] .nudge a::after { content: "←" }
+  .nudge a:hover { background: color-mix(in srgb, var(--fg) 14%, transparent); border-color: var(--gold) }
+  .nudge a:hover::after { translate: 3px 0 }
+  [dir="rtl"] .nudge a:hover::after { translate: -3px 0 }
   .hd-title { font-size: 19px; letter-spacing: -.01em; margin-bottom: 8px }
   .hd-ar, .hd-en { display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden }
   .hd-ar { font: 1.35em/2 var(--arabic); direction: rtl; -webkit-line-clamp: 3; margin-bottom: 10px }
   .hd-en { font-size: 15.5px; line-height: 1.65; color: var(--mute); -webkit-line-clamp: 5 }
   .row-play { display: flex; justify-content: center; margin-top: 16px }
   .row-play .play { width: 44px; height: 44px }
-  @media (max-width: 640px) { .dash { grid-template-columns: 1.2fr 1fr; gap: 12px } .dash .pair { padding: 16px 14px } .dash .pair .card-link { display: none } }
+  @media (max-width: 640px) { .dash { gap: 12px } .dash .pair { padding: 16px 14px } .dash .pair .card-link { display: none } }
+
+  /* ---------- polish ---------- */
+  /* 1. cards rise in one after another */
+  .ready .dash > :nth-child(5) { animation-delay: .24s }
+  .ready .dash > :nth-child(6) { animation-delay: .3s }
+  .ready .dash > :nth-child(7) { animation-delay: .36s }
+  .ready .dash > :nth-child(8) { animation-delay: .42s }
+  .ready .dash > :nth-child(9) { animation-delay: .48s }
+  /* 10. link cards lift on hover */
+  @media (hover: hover) {
+    .dash > a.card { transition: translate .25s ease, border-color .25s ease, box-shadow .25s ease }
+    .dash > a.card:hover { translate: 0 -3px; border-color: color-mix(in srgb, var(--gold) 45%, transparent); box-shadow: 0 16px 40px rgba(0,0,0,.25) }
+  }
+  .card-link:hover { color: var(--gold) }
+  /* 2. coming up as a vertical timeline */
+  #up-list { position: relative; padding-inline-start: 22px }
+  #up-list::before { content: ""; position: absolute; inset-block: 16px 16px; inset-inline-start: 4px; width: 1.5px; background: linear-gradient(var(--gold), color-mix(in srgb, var(--gold) 15%, transparent)) }
+  .up { position: relative; padding: 10px 0; border-top: 0; gap: 4px }
+  .up::before { content: ""; position: absolute; top: 16px; inset-inline-start: -22px; width: 9px; height: 9px; border-radius: 99px; background: var(--solid); border: 1.5px solid color-mix(in srgb, var(--gold) 60%, transparent) }
+  .up:first-child::before { background: var(--gold); border-color: var(--gold); box-shadow: 0 0 10px var(--gold) }
+  .up:first-child > span { font-weight: 600 }
+  .up small em { font-style: normal; display: inline-block; padding: 1px 8px; margin-inline-end: 6px; border-radius: 99px; background: color-mix(in srgb, var(--gold) 16%, transparent); color: var(--gold); font-size: 12px }
+  /* 3. today: bigger rows, and a calm state when all is done */
+  #today-card { display: flex; flex-direction: column }
+  #today-card[hidden] { display: none }
+  #today-list { flex: 1; display: flex; flex-direction: column }
+  .td { padding: 14px 2px; font-size: 16px }
+  .td > i { width: 10px; height: 10px; background: transparent; border: 1.5px solid var(--gold) }
+  .td.ok > i { background: var(--gold); border-color: var(--gold) }
+  .td:hover .go { color: var(--gold) }
+  .td-done { margin: auto; padding: 18px 0; text-align: center; color: var(--mute); font-size: 15px }
+  .td-done b { display: grid; place-items: center; width: 44px; height: 44px; margin: 0 auto 10px; border-radius: 99px; color: var(--gold); font-size: 20px; border: 1px solid color-mix(in srgb, var(--gold) 50%, transparent); box-shadow: 0 0 24px color-mix(in srgb, var(--gold) 25%, transparent) }
+  .td-done + .td { border-top: 1px solid var(--line) }
+  /* 5. name of the day in gold with a soft glow */
+  #name-card { position: relative; overflow: hidden; isolation: isolate }
+  #name-card::before { content: ""; position: absolute; inset: 15% 0 auto; height: 70%; z-index: -1; background: radial-gradient(closest-side, color-mix(in srgb, var(--gold) 14%, transparent), transparent); pointer-events: none }
+  .nm-ar { color: var(--gold); text-shadow: 0 0 28px color-mix(in srgb, var(--gold) 35%, transparent) }
+  /* 6. hadith: room to breathe, english fades out */
+  .hd-ar { line-height: 2.3; padding-inline: 4px; -webkit-line-clamp: 2 }
+  .hd-en { display: block; max-height: calc(1.65em * 4); -webkit-mask-image: linear-gradient(#000 50%, transparent); mask-image: linear-gradient(#000 50%, transparent) }
+  #hd-link { color: var(--gold) }
+  /* 7. dua: a listen pill instead of a lone circle */
+  .row-play .play { display: inline-flex; align-items: center; gap: 8px; width: auto; height: 42px; padding: 0 20px 0 16px; background: transparent; color: var(--gold); border: 1px solid color-mix(in srgb, var(--gold) 55%, transparent); font: 600 14.5px var(--font); transition: background .2s }
+  .row-play .play:hover { background: color-mix(in srgb, var(--gold) 14%, transparent) }
+  .row-play .play svg { width: 16px; height: 16px }
+  @media (prefers-reduced-motion: reduce) { .dash > a.card:hover { translate: none } }
 </style>
 </head>
 <body class="home">
@@ -89,12 +156,12 @@
       <p class="label"></p>
       <p class="next-time"></p>
       <p class="mute next-in"></p>
-      <div class="bar"><i></i></div>
     </div>
+    <div class="day-line" aria-hidden="true"></div>
     <p class="alert-state" id="alert-state"></p>
   </a>
 
-  <a class="card glass center pair" href="/qibla/">
+  <a class="card glass center pair" href="/qibla/" id="qibla-card">
     <div class="card-head"><span class="label" data-t="qibla">Qibla</span></div>
     <svg class="compass" viewBox="0 0 200 200" aria-hidden="true">
       <circle cx="100" cy="100" r="94" class="ring"/>
@@ -106,18 +173,6 @@
     <p class="qibla-deg"><b id="deg"></b> <span class="mute" data-t="fromnorth">from north</span></p>
   </a>
 
-  <section class="card glass wide" id="today-card" hidden>
-    <div class="card-head"><span class="label" data-t="todaylist">Today</span></div>
-    <div id="today-list"></div>
-  </section>
-
-  <section class="card glass wide">
-    <div class="card-head"><span class="label" id="ayah-label"></span><a class="card-link" id="ayah-link" href="/quran/" data-t="continue">Continue →</a></div>
-    <div class="ayah" id="ayah" lang="ar"></div>
-    <p class="trans" id="ayah-tr"></p>
-    <a class="kh" id="kh" href="/quran/progress/" hidden><span id="kh-l"></span><span class="bar"><i id="kh-bar"></i></span><span id="kh-r"></span></a>
-  </section>
-
   <a class="card glass pair" href="/names/" id="name-card">
     <div class="card-head"><span class="label" id="nm-label"></span><span class="card-link" data-t="more">More →</span></div>
     <p class="nm-ar" id="nm-ar" lang="ar"></p>
@@ -125,10 +180,23 @@
     <p class="nm-en" id="nm-en"></p>
   </a>
 
+  <section class="card glass" id="today-card" hidden>
+    <div class="card-head"><span class="label" data-t="todaylist">Today</span></div>
+    <div id="today-list"></div>
+  </section>
+
   <a class="card glass pair" href="/calendar/" id="up-card">
     <div class="card-head"><span class="label" data-t="comingup">Coming up</span><span class="card-link" data-t="more">More →</span></div>
     <div id="up-list"></div>
   </a>
+
+  <section class="card glass wide ayah-card">
+    <div class="card-head"><span class="label" id="ayah-label"></span><a class="card-link" id="ayah-link" href="/quran/" data-t="continue">Continue →</a></div>
+    <div class="ayah" id="ayah" lang="ar"></div>
+    <div class="orn" aria-hidden="true">۞</div>
+    <p class="trans" id="ayah-tr"></p>
+    <a class="kh" id="kh" href="/quran/progress/" hidden><span id="kh-l"></span><span class="bar"><i id="kh-bar"></i></span><span id="kh-r"></span></a>
+  </section>
 
   <section class="card glass wide" id="hadith-card" hidden>
     <div class="card-head"><span class="label" id="hd-label"></span><a class="card-link" id="hd-link" href="/hadith/" data-t="read">Read →</a></div>
@@ -142,7 +210,7 @@
     <p class="dua-ar" id="dua-ar" lang="ar"></p>
     <p class="dua-tl" id="dua-tl" hidden></p>
     <p class="dua-tr" id="dua-tr"></p>
-    <div class="row-play"><button class="play" id="dua-play" data-t-label="play" aria-label="Play"><svg viewBox="0 0 24 24"><path id="dua-icon" d="M8 5v14l11-7z"/></svg></button></div>
+    <div class="row-play"><button class="play" id="dua-play" data-t-label="play" aria-label="Play"><svg viewBox="0 0 24 24"><path id="dua-icon" d="M8 5v14l11-7z"/></svg><span id="dua-word" data-t="listen">Listen</span></button></div>
     <audio id="dua-audio" preload="none"></audio>
   </section>
 </main>
@@ -158,7 +226,7 @@
 <script>
 i18n({ comingup: ['Coming up', 'قادم'], nameday: ['Name of the day', 'اسم اليوم'], todaylist: ['Today', 'اليوم'], hadithday: ['Hadith of the day', 'حديث اليوم'], read: ['Read →', 'اقرأ ←'], more: ['More →', 'المزيد ←'],
   continue: ['Continue →', 'تابع ←'], lastread: ['Continue reading', 'تابع القراءة'], startread: ['Start reading', 'ابدأ القراءة'],
-  fromnorth: ['from north', 'من الشمال'], forthis: ['For this moment', 'لهذه اللحظة'], play: ['Play', 'تشغيل'],
+  fromnorth: ['from north', 'من الشمال'], forthis: ['For this moment', 'لهذه اللحظة'], play: ['Play', 'تشغيل'], listen: ['Listen', 'استمع'], pause: ['Pause', 'إيقاف'], alldone: ['All done today', 'أتممت كل شيء اليوم'],
   waking: ['After waking', 'عند الاستيقاظ'], morning: ['Morning remembrance', 'أذكار الصباح'], afterprayer: ['After prayer', 'بعد الصلاة'],
   leaving: ['Leaving home', 'عند الخروج من المنزل'], evening: ['Evening remembrance', 'أذكار المساء'], sleep: ['Before sleep', 'قبل النوم'],
 });
@@ -166,17 +234,18 @@ i18n({ comingup: ['Coming up', 'قادم'], nameday: ['Name of the day', 'اسم
 // date, Gregorian and Hijri (the browser knows the Umm al-Qura calendar, nothing is fetched)
 const loc = AR ? 'ar' : 'en';
 { const h = new Date(); h.setDate(h.getDate() + (+load('calendar', { offset: 0 }).offset || 0)); // the Calendar page's moon-sighting adjustment
-$('#date').textContent = new Intl.DateTimeFormat(loc, { weekday: 'long', day: 'numeric', month: 'long' }).format() + ' · '
-  + new Intl.DateTimeFormat(loc + '-u-ca-islamic-umalqura', { day: 'numeric', month: 'long', year: 'numeric' }).format(h); }
+$('#date').innerHTML = new Intl.DateTimeFormat(loc, { weekday: 'long', day: 'numeric', month: 'long' }).format()
+  + `<span class="hj">${new Intl.DateTimeFormat(loc + '-u-ca-islamic-umalqura', { day: 'numeric', month: 'long', year: 'numeric' }).format(h)}</span>`; }
 
-// prayers
+// prayers: next one, the day's timeline, and a live countdown in the last ten minutes
 function prayers() { showPrayers($('#prayers-card')) }
+liveCountdown($('#prayers-card'), prayers);
 
 // qibla, from the saved location
 {
   const r = Math.PI / 180, k = { lat: 21.422487 * r, lng: 39.826206 * r }, lat = timesSet.lat * r, lng = timesSet.lng * r;
   const deg = (Math.atan2(Math.sin(k.lng - lng), Math.cos(lat) * Math.tan(k.lat) - Math.sin(lat) * Math.cos(k.lng - lng)) / r + 360) % 360;
-  $('#needle').setAttribute('transform', `rotate(${deg} 100 100)`);
+  $('#needle').style.setProperty('--deg', `${deg}deg`);
   $('#deg').textContent = `${Math.round(deg)}°`;
 }
 
@@ -192,6 +261,7 @@ function prayers() { showPrayers($('#prayers-card')) }
   $('#ayah-tr').innerHTML = safeTajweed(last.tr);
   $('#ayah').hidden = q.script === 'none' || !last.ar;
   $('#ayah-tr').hidden = q.translation === 'none' || !last.tr;
+  $('.orn').hidden = $('#ayah').hidden || $('#ayah-tr').hidden;
   $('#ayah-link').href = `/quran/${last.c}/${last.v}`;
 }
 
@@ -221,21 +291,7 @@ function momentNow(now = new Date()) {
 const HF = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura-nu-latn', { day: 'numeric', month: 'numeric' });
 const hijriNow = (d = new Date()) => { const x = new Date(d); x.setDate(x.getDate() + (+load('calendar', { offset: 0 }).offset || 0)); return Object.fromEntries(HF.formatToParts(x).map(p => [p.type, +p.value])) };
 function moments(now = new Date()) {
-  prayTimes.setMethod(timesSet.method);
-  const h = prayTimes.getTimes(now, [timesSet.lat, timesSet.lng], 'auto', 'auto', 'Float'), x = now.getHours() + now.getMinutes() / 60;
-  // the last third of the night: between isha's night and fajr (night = maghrib → fajr)
-  const night = (h.fajr + 24 - h.maghrib) % 24, lastThird = (h.fajr - night / 3 + 24) % 24;
-  const inLastThird = (x - lastThird + 24) % 24 < night / 3; // from the start of the last third until fajr, across midnight
-  let part;
-  if (x < h.fajr) part = inLastThird ? 'lastthird' : 'night';
-  else if (x < h.sunrise) part = 'fajr';
-  else if (x < h.sunrise + 1.5) part = 'sunrise';
-  else if (x < h.dhuhr) part = 'duha';
-  else if (x < h.asr) part = 'dhuhr';
-  else if (x < h.maghrib - .5) part = 'asr';
-  else if (x < h.maghrib + .4) part = 'maghrib';
-  else if (x < h.isha + 1.5) part = 'isha';
-  else part = inLastThird ? 'lastthird' : 'night';
+  const { part, h, x } = dayPart(now);
   const H = hijriNow(now), wd = now.getDay(), days = [];
   if (H.month === 9) days.push(H.day >= 21 ? 'lastten' : 'ramadan');
   if ((H.month === 10 && H.day <= 3) || (H.month === 12 && H.day >= 10 && H.day <= 13)) days.push('eid');
@@ -314,7 +370,7 @@ $('#dua-play').onclick = () => {
   if (!audio.src) audio.src = `/assets/duaa/audio/${dua.audio}.mp3`;
   audio.paused ? audio.play() : audio.pause();
 };
-audio.onplay = audio.onpause = audio.onended = () => $('#dua-icon').setAttribute('d', audio.paused ? 'M8 5v14l11-7z' : 'M7 5h4v14H7zM13 5h4v14h-4z');
+audio.onplay = audio.onpause = audio.onended = () => { $('#dua-icon').setAttribute('d', audio.paused ? 'M8 5v14l11-7z' : 'M7 5h4v14H7zM13 5h4v14h-4z'); $('#dua-word').textContent = t(audio.paused ? 'listen' : 'pause') };
 
 // hadith of the day: the same one all day, cycling through the 42 (follows the Hadith page's settings)
 fetch('/hadith/data.json').then(r => r.json()).then(list => {
@@ -390,8 +446,9 @@ function today() {
   const fastsOwed = Object.values(R.years).reduce((s, y) => s + Math.max(0, Object.values(y.days || {}).filter(x => x === 2 || x === 3).length - (y.madeUp || 0)), 0) + Math.max(0, q.olderFasts - q.olderMade);
   const prayersOwed = Object.values(q.prayers || {}).reduce((s, n) => s + n, 0);
   if (fastsOwed || prayersOwed) items.push([AR ? 'عليك قضاء ' + [fastsOwed && `${fastsOwed.toLocaleString('ar-EG')} يوم صيام`, prayersOwed && `${prayersOwed.toLocaleString('ar-EG')} صلاة`].filter(Boolean).join(' و') : [fastsOwed && `${fastsOwed} fast${fastsOwed > 1 ? 's' : ''}`, prayersOwed && `${prayersOwed} prayer${prayersOwed > 1 ? 's' : ''}`].filter(Boolean).join(' and ') + ' to make up', L('One at a time', 'شيئًا فشيئًا'), fastsOwed ? '/ramadan/#makeup' : '/times/#makeup']);
-  $('#today-list').innerHTML = items.map(([a, b, href, ok]) => `<a class="td${ok ? ' ok' : ''}" href="${href}"><i></i><span>${a}<small>${b}</small></span><span class="go">${AR ? '←' : '→'}</span></a>`).join('');
-  $('#today-card').hidden = !items.length;
+  const done = items.every(x => x[3]) ? `<div class="td-done"><b>✓</b>${t('alldone')}</div>` : '';
+  $('#today-list').innerHTML = done + items.map(([a, b, href, ok]) => `<a class="td${ok ? ' ok' : ''}" href="${href}"><i></i><span>${a}<small>${b}</small></span><span class="go">${AR ? '←' : '→'}</span></a>`).join('');
+  $('#today-card').hidden = false;
 }
 
 // ---------- name of the day (same one all day) ----------
@@ -416,7 +473,7 @@ function today() {
     else if (!white && h.d === 13 && h.m !== 9 && h.m !== 12) { white = true; out.push([L('White days (fasting 13–15)', 'الأيام البيض (صيام ١٣–١٥)'), n, new Date(d)]) }
   }
   const df = new Intl.DateTimeFormat(AR ? 'ar' : 'en', { day: 'numeric', month: 'short' });
-  $('#up-list').innerHTML = out.map(([name, n, date]) => `<div class="up"><span>${name}</span><small>${n === 1 ? L('tomorrow', 'غدًا') : L(`in ${n} days`, `بعد ${n.toLocaleString('ar-EG')} يومًا`)} · ${df.format(date)}</small></div>`).join('');
+  $('#up-list').innerHTML = out.map(([name, n, date]) => `<div class="up"><span>${name}</span><small><em>${n === 1 ? L('tomorrow', 'غدًا') : L(`in ${n} days`, `بعد ${n.toLocaleString('ar-EG')} يومًا`)}</em>${df.format(date)}</small></div>`).join('');
 }
 
 // ---------- khatm progress on the reading card ----------
