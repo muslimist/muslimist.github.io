@@ -90,6 +90,17 @@
   @media (max-width: 640px) { .dash { gap: 12px } .dash .pair { padding: 16px 14px } .dash .pair .card-link { display: none } }
 
   /* ---------- polish ---------- */
+  /* title: page name fades into the greeting */
+  #greeting { white-space: nowrap; overflow: hidden; max-width: 100%; padding-block: .08em }
+  #greeting > span { display: inline-block }
+  #greeting.quick, #greeting.quick.swap-out { transition-duration: .09s, .09s }
+  #greeting.quick:not(.swap-out) { transition-duration: .18s, .18s }
+  /* long titles fade at the far edge while they slide */
+  #greeting.long { -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent); mask-image: linear-gradient(90deg, #000 88%, transparent) }
+  [dir="rtl"] #greeting.long, #greeting.long.end { -webkit-mask-image: linear-gradient(-90deg, #000 88%, transparent); mask-image: linear-gradient(-90deg, #000 88%, transparent) }
+  [dir="rtl"] #greeting.long.end { -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent); mask-image: linear-gradient(90deg, #000 88%, transparent) }
+  #greeting { transition: opacity .6s cubic-bezier(.2, .8, .2, 1), filter .6s cubic-bezier(.2, .8, .2, 1) }
+  #greeting.swap-out { opacity: 0; filter: blur(4px); transition-duration: .3s; transition-timing-function: ease-in-out }
   /* 1. cards rise in one after another */
   .ready .dash > :nth-child(5) { animation-delay: .24s }
   .ready .dash > :nth-child(6) { animation-delay: .3s }
@@ -144,7 +155,7 @@
 </header>
 
 <section class="hero">
-  <h1 id="greeting">Peace be upon you</h1>
+  <h1 id="greeting">Dashboard</h1>
   <p id="date"></p>
   <p class="nudge" id="nudge"></p>
 </section>
@@ -346,12 +357,40 @@ const GREET = {
   monday: [['A Monday fast is sunnah', 'The day the Prophet ﷺ was born'], ['صيام الاثنين سنة']],
   thursday: [['A Thursday fast is sunnah', 'Deeds are raised on Thursdays'], ['صيام الخميس سنة', 'تُعرض الأعمال يوم الخميس']],
 };
-const pickFrom = list => list[Math.floor(Math.random() * list.length)];
 {
-  const m = moments();
-  // a special day usually wins, but not always, so the time of day still shows through
-  const pool = m.days.length && Math.random() < .65 ? pickFrom(m.days) : m.part;
-  $('#greeting').textContent = pickFrom(GREET[pool][AR ? 1 : 0]);
+  // every line for today's special days and this time of day, shuffled, then cycled every 6s
+  const m = moments(), h1 = $('#greeting');
+  const lines = [...new Set([...m.days, m.part].flatMap(k => GREET[k][AR ? 1 : 0]))].sort(() => Math.random() - .5);
+  h1.innerHTML = '<span></span>';
+  const span = h1.firstChild, PAUSE = 1200;
+  let i = -1, timer;
+  // one line always: if the text is wider than the title, pause, slide to its end, pause, then move on
+  const show = text => {
+    span.getAnimations().forEach(a => a.cancel());
+    span.textContent = text;
+    const over = span.scrollWidth - h1.clientWidth;
+    h1.classList.toggle('long', over > 0); h1.classList.remove('end');
+    if (over <= 0) return 6e3;
+    const dur = Math.max(1500, over / 100 * 1e3), dir = document.dir === 'rtl' ? 1 : -1; // ~100px a second
+    span.animate([{ transform: 'translateX(0)' }, { transform: `translateX(${dir * over}px)` }], { duration: dur, delay: PAUSE, easing: 'ease-in-out', fill: 'forwards' })
+      .finished.then(() => h1.classList.add('end'), () => {});
+    return Math.max(6e3, PAUSE + dur + PAUSE + 300);
+  };
+  // fade out, change the text, fade back in; then queue the next greeting (paused while hovered)
+  let hover = false;
+  const fadeTo = (text, quick) => {
+    clearTimeout(timer);
+    h1.classList.toggle('quick', !!quick);
+    h1.classList.add('swap-out');
+    timer = setTimeout(() => { const wait = show(text); h1.classList.remove('swap-out'); if (!hover && lines.length > 1) timer = setTimeout(next, wait) }, quick ? 90 : 300);
+  };
+  const next = () => fadeTo(lines[i = (i + 1) % lines.length]);
+  // hovering the title shows the page name again (it opens the page list)
+  h1.addEventListener('pointerenter', e => { if (e.pointerType !== 'mouse' || i < 0) return; hover = true; fadeTo(t('dash'), true) });
+  h1.addEventListener('pointerleave', e => { if (e.pointerType !== 'mouse' || i < 0) return; hover = false; fadeTo(lines[i], true) });
+  // the page name ("dashboard") shows as the title first, then fades into the greetings
+  show(t('dash'));
+  setTimeout(next, 1000);
 }
 
 const moment = momentNow(), dua = DUAS[moment];
