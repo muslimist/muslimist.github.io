@@ -1,6 +1,6 @@
 // offline support: every page and file is fetched fresh when online (checked against the server, so changes
 // show up straight away) and saved; the saved copy is used only when there's no connection.
-const CACHE = 'muslimist-v2';
+const CACHE = 'muslimist-v3';
 const CORE = ['/', '/quran/', '/quran/progress/', '/duaa/', '/hadith/', '/names/', '/salah/', '/calendar/', '/ramadan/', '/zakat/', '/times/', '/qibla/', '/dashboard/',
   '/assets/site.css', '/assets/site.js', '/assets/alerts.js', '/assets/praytimes.js', '/assets/times.js', '/assets/quranmeta.js', '/assets/names.js',
   '/assets/duaa/duaa.css', '/assets/duaa/duaa.js', '/assets/duaa/arabic.js', '/hadith/data.json', '/quran/fonts/me_quran.ttf', '/manifest.webmanifest', '/assets/icons/favicon-196.png'];
@@ -15,6 +15,14 @@ self.addEventListener('fetch', e => {
   const r = e.request, url = new URL(r.url);
   // only this site's GET requests; audio is streamed (range requests) and left to the network
   if (r.method !== 'GET' || url.origin !== location.origin || r.headers.has('range') || /\.(mp3|m4a|ogg)$/.test(url.pathname)) return;
+  // images, fonts and data: answer straight from the saved copy (instant), refresh it in the background for next time.
+  // Pages, styles and scripts stay network-first so a new page never pairs with an old script.
+  if (/\.(webp|png|jpe?g|svg|ttf|otf|woff2?|json)$/.test(url.pathname)) {
+    const net = fetch(r).then(res => { if (res.ok) { const copy = res.clone(); caches.open(CACHE).then(c => c.put(r, copy)) } return res });
+    e.waitUntil(net.catch(() => {}));
+    e.respondWith(caches.match(r).then(hit => hit || net));
+    return;
+  }
   const key = r.mode === 'navigate' ? url.pathname : r;
   e.respondWith(fetch(r, { cache: 'no-cache' }).then(res => {
     if (res.ok) { const copy = res.clone(); caches.open(CACHE).then(c => c.put(key, copy)) }

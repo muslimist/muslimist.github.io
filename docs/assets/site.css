@@ -52,7 +52,12 @@ html:not(.bg-ready) body::before { opacity: 0 }
 [data-sky="lastthird"] { --sky: linear-gradient(#4b2e8a66, #1a145044 70%, transparent) }
 @keyframes drift { from { transform: scale(1.03) translate(.5%, .3%) } to { transform: scale(1.07) translate(-.8%, -.5%) } }
 /* phones: no drift; every glass card re-blurs the moving photo behind it each frame, which made scrolling lag */
-@media (pointer: coarse) { body::before, body::after { animation: none } }
+/* phones: no drift, and the photo is blurred once as a still layer instead of every glass card blurring it live
+   (live backdrop blur re-runs on every scroll, tap and photo change, which made phones lag). Cards look the same. */
+@media (pointer: coarse) {
+  body::before, body::after { animation: none; inset: -40px; filter: var(--tone) blur(var(--blur)) }
+  :is(.glass, .links, .pop, .subnav, .sheet::backdrop, .now a, .nudge a) { backdrop-filter: none !important; -webkit-backdrop-filter: none !important }
+}
 a { color: inherit; text-decoration: none }
 button, input, select { font: inherit; color: inherit }
 button { cursor: pointer; border: 0; background: none }

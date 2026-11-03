@@ -203,7 +203,7 @@ function openReader(dua, at) {
 }
 
 function closeReader() {
-  $$('audio').forEach(a => a.pause());
+  $$('audio').forEach(a => a.paused || a.pause());
   reader.dua = null; reader.adhkar = null;
   if (location.hash) history.pushState(null, '', location.pathname);
   filterDuas();
@@ -211,8 +211,8 @@ function closeReader() {
 
 function go(step) {
   const n = reader.versions.length;
-  if (reader.adhkar) { reader.i = Math.min(n - 1, Math.max(0, reader.i + step)); $$('audio').forEach(a => a.pause()); render(); return }
-  $$('audio').forEach(a => a.pause());
+  if (reader.adhkar) { reader.i = Math.min(n - 1, Math.max(0, reader.i + step)); $$('audio').forEach(a => a.paused || a.pause()); render(); return }
+  $$('audio').forEach(a => a.paused || a.pause());
   reader.i = (reader.i + step + n) % n;
   history.replaceState(null, '', '#' + idOf());
   render();

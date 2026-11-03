@@ -24,7 +24,7 @@
 .dua-group h3 { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--mute); padding: 0 4px 6px }
 .one-cat .dua-group { margin-top: 6px }
 .one-cat .dua-group h3 { display: none }
-.dua { border-top: 1px solid var(--line) }
+.dua { border-top: 1px solid var(--line); content-visibility: auto; contain-intrinsic-size: auto 50px } /* off-screen rows skip layout and paint */
 .dua summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 12px; padding: 14px 6px; font-weight: 500; border-radius: 10px }
 .dua summary:hover { background: var(--hilite) }
 .dua-group { counter-reset: dua }
@@ -91,3 +91,5 @@
 /* English narrations shown on the Arabic site */
 .dr-body .en-note { text-align: left; font-size: 13.5px; color: var(--mute) }
 body:not(.show-translation) .dr-body .en-note:not(.keep) { display: none }
+/* phones: adhkar cards keep to one line (the subtitle is hidden) */
+@media (max-width: 640px) { .ad-card { padding: 12px; gap: 10px } .ad-card small { display: none } .ad-card b { white-space: nowrap; font-size: 15px } .ad-ic { width: 34px; height: 34px } }
