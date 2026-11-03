@@ -101,7 +101,7 @@ function filterDuas() {
   let count = 0;
   duas.forEach((dua, i) => {
     const match = (!category || dua.dataset.category === category) && words.every(w => searchable[i].includes(w));
-    dua.hidden = !match;
+    if (dua.hidden === match) dua.hidden = !match; // only touch rows that change
     if (match) count++;
   });
   for (const g of groups.values()) g.hidden = !g.querySelector('.dua:not([hidden])');
@@ -136,6 +136,9 @@ function show(view) {
 // ---------- reader: one duaa, one recitation at a time ----------
 const reader = { dua: null, versions: [], i: 0 };
 const audioOf = () => reader.versions[reader.i]?.querySelector('audio') || null;
+// the one player that is playing (if any): stopping it is all a pause needs, no scan of the 300+ players on the page
+let playing = null;
+const stopAudio = () => playing?.pause();
 const idOf = () => reader.versions[reader.i].id || reader.dua.id;
 
 function render() {
@@ -203,7 +206,7 @@ function openReader(dua, at) {
 }
 
 function closeReader() {
-  $$('audio').forEach(a => a.paused || a.pause());
+  stopAudio();
   reader.dua = null; reader.adhkar = null;
   if (location.hash) history.pushState(null, '', location.pathname);
   filterDuas();
@@ -211,8 +214,14 @@ function closeReader() {
 
 function go(step) {
   const n = reader.versions.length;
-  if (reader.adhkar) { reader.i = Math.min(n - 1, Math.max(0, reader.i + step)); $$('audio').forEach(a => a.paused || a.pause()); render(); return }
-  $$('audio').forEach(a => a.paused || a.pause());
+  if (reader.adhkar) {
+    reader.i = Math.min(n - 1, Math.max(0, reader.i + step)); stopAudio(); render();
+    // after a long one, start the next from its top instead of mid-page
+    const top = $('#reader').getBoundingClientRect().top + scrollY - 16;
+    if (scrollY > top) scrollTo({ top, behavior: 'instant' });
+    return;
+  }
+  stopAudio();
   reader.i = (reader.i + step + n) % n;
   history.replaceState(null, '', '#' + idOf());
   render();
@@ -278,7 +287,9 @@ for (const k of ['translation', 'transliteration']) {
 // ---------- audio: one at a time; when one ends, the next recitation of the same duaa plays ----------
 document.addEventListener('play', e => {
   if (e.target.tagName !== 'AUDIO') return;
-  $$('audio').forEach(a => { if (a !== e.target) a.pause() });
+  // one at a time: stop the previous player only (calling pause() on all 300+ idle players froze iPhones)
+  if (playing && playing !== e.target) playing.pause();
+  playing = e.target;
   // keep the reader on the recitation that is playing
   if (reader.dua) {
     const i = reader.versions.findIndex(v => v.contains(e.target));
@@ -286,7 +297,7 @@ document.addEventListener('play', e => {
   }
   syncPlay();
 }, true);
-document.addEventListener('pause', () => syncPlay(), true);
+document.addEventListener('pause', e => { if (e.target === playing) playing = null; syncPlay() }, true);
 document.addEventListener('ended', async e => {
   if (e.target.tagName !== 'AUDIO') return;
   syncPlay();

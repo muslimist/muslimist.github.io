@@ -48,7 +48,8 @@
   .dash .trans { font-size: 1.08em; line-height: 1.7; color: var(--mute); max-width: 640px; margin-inline: auto }
   /* the moment's photo sits faintly behind the duaa */
   .dua-card { position: relative; overflow: hidden; isolation: isolate }
-  .dua-card::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--dua-img) center/cover; opacity: .16; filter: saturate(.8) }
+  .dua-card::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--dua-img, none) center/cover; opacity: .16; filter: saturate(.8) }
+  #hadith-card:not(.loaded) { min-height: 260px }
   [data-glass="solid"] .dua-card::before { opacity: .1 }
   .dua-ar { font: 1.8em/2.1 var(--arabic); direction: rtl; text-align: center; margin: 4px 0 10px }
   .dua-tr, .dua-tl { text-align: center; font-size: 17px }
@@ -93,14 +94,14 @@
   /* title: page name fades into the greeting */
   #greeting { white-space: nowrap; overflow: hidden; max-width: 100%; padding-block: .08em }
   #greeting > span { display: inline-block }
-  #greeting.quick, #greeting.quick.swap-out { transition-duration: .09s, .09s }
-  #greeting.quick:not(.swap-out) { transition-duration: .18s, .18s }
+  #greeting.quick, #greeting.quick.swap-out { transition-duration: .09s }
+  #greeting.quick:not(.swap-out) { transition-duration: .18s }
   /* long titles fade at the far edge while they slide */
   #greeting.long { -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent); mask-image: linear-gradient(90deg, #000 88%, transparent) }
   [dir="rtl"] #greeting.long, #greeting.long.end { -webkit-mask-image: linear-gradient(-90deg, #000 88%, transparent); mask-image: linear-gradient(-90deg, #000 88%, transparent) }
   [dir="rtl"] #greeting.long.end { -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent); mask-image: linear-gradient(90deg, #000 88%, transparent) }
-  #greeting { transition: opacity .6s cubic-bezier(.2, .8, .2, 1), filter .6s cubic-bezier(.2, .8, .2, 1) }
-  #greeting.swap-out { opacity: 0; filter: blur(4px); transition-duration: .3s; transition-timing-function: ease-in-out }
+  #greeting { transition: opacity .6s cubic-bezier(.2, .8, .2, 1) }
+  #greeting.swap-out { opacity: 0; transition-duration: .3s; transition-timing-function: ease-in-out }
   /* 1. cards rise in one after another */
   .ready .dash > :nth-child(5) { animation-delay: .24s }
   .ready .dash > :nth-child(6) { animation-delay: .3s }
@@ -403,7 +404,7 @@ const duaOpts = load('duaa', { translation: !AR, transliteration: false });
 $('#dua-tr').hidden = !duaOpts.translation;
 $('#dua-tl').hidden = !duaOpts.transliteration;
 $('#dua-link').href = `/duaa/#${dua.id}`;
-$('.dua-card').style.setProperty('--dua-img', `url(/assets/img/cat-${dua.img}.webp)`);
+whenNear($('.dua-card'), () => $('.dua-card').style.setProperty('--dua-img', `url(/assets/img/cat-${dua.img}-sm.webp)`)); // a 400px copy: it shows at 16% opacity
 const audio = $('#dua-audio');
 $('#dua-play').onclick = () => {
   if (!audio.src) audio.src = `/assets/duaa/audio/${dua.audio}.mp3`;
@@ -411,8 +412,16 @@ $('#dua-play').onclick = () => {
 };
 audio.onplay = audio.onpause = audio.onended = () => { $('#dua-icon').setAttribute('d', audio.paused ? 'M8 5v14l11-7z' : 'M7 5h4v14H7zM13 5h4v14h-4z'); $('#dua-word').textContent = t(audio.paused ? 'listen' : 'pause') };
 
+// runs fn once el is within a screen of view: things lower on the page load only if you scroll toward them
+function whenNear(el, fn) {
+  if (!('IntersectionObserver' in window)) return fn();
+  const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); fn() } }, { rootMargin: '100% 0px' });
+  io.observe(el);
+}
+
 // hadith of the day: the same one all day, cycling through the 42 (follows the Hadith page's settings)
-fetch('/hadith/data.json').then(r => r.json()).then(list => {
+$('#hadith-card').hidden = false; // shown now with room kept for it, filled once it is close to the screen
+whenNear($('#hadith-card'), () => fetch('/hadith/data.json').then(r => r.json()).then(list => {
   const now = new Date(), day = Math.floor((now - now.getTimezoneOffset() * 6e4) / 864e5), n = day % list.length, [titleEn, ar, en, titleAr] = list[n], title = AR ? titleAr : titleEn;
   const o = load('hadith', { arabic: true, english: true });
   $('#hd-label').textContent = `${t('hadithday')} · ${AR ? (n + 1).toLocaleString('ar-EG') : n + 1}`;
@@ -420,8 +429,8 @@ fetch('/hadith/data.json').then(r => r.json()).then(list => {
   $('#hd-ar').textContent = ar; $('#hd-ar').hidden = !o.arabic;
   $('#hd-en').textContent = en; $('#hd-en').hidden = !o.english && o.arabic;
   $('#hd-link').href = `/hadith/#h${n + 1}`;
-  $('#hadith-card').hidden = false;
-}).catch(() => {});
+  $('#hadith-card').classList.add('loaded');
+}).catch(() => $('#hadith-card').hidden = true));
 
 // ---------- today: one list that pulls from the other pages ----------
 const hijriFmt = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura-nu-latn', { day: 'numeric', month: 'numeric', year: 'numeric' });

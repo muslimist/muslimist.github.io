@@ -183,7 +183,7 @@ Object.assign(DICT, {
 
   // slideshow: every ~20s fade to another photo from this page's set
   const m = want?.match(/bg-(\w+)-(\d+)\.webp/);
-  if (m && !matchMedia('(prefers-reduced-motion: reduce)').matches && !navigator.connection?.saveData) { // data saver: no extra photos
+  if (m && !matchMedia('(prefers-reduced-motion: reduce)').matches && !navigator.connection?.saveData && !matchMedia('(pointer: coarse)').matches) { // phones and data saver: one photo, no slideshow
     const pool = m[1];
     let cur = +m[2];
     setInterval(() => {

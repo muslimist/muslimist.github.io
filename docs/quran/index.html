@@ -506,7 +506,7 @@ function setFont() {
   const file = $('#font').selectedOptions[0]?.dataset.file;
   $('#text').style.setProperty('--qfont', file ? `"q-${Q.font}", var(--arabic)` : 'var(--arabic)');
   if (file && ![...document.fonts].some(f => f.family === `q-${Q.font}`))
-    new FontFace(`q-${Q.font}`, `url(/quran/fonts/${file})`).load().then(f => document.fonts.add(f));
+    new FontFace(`q-${Q.font}`, `url(/quran/fonts/${file.replace(/\.[ot]tf$/, '.woff2')}) format('woff2'), url(/quran/fonts/${file})`).load().then(f => document.fonts.add(f));
 }
 
 $('#rverse').onclick = () => go(Q.chapter, rand(VERSES[Q.chapter - 1]), false);

@@ -96,13 +96,20 @@ function render() {
 }
 
 // compass: start by itself where the browser allows it; only iPhone/iPad needs a tap to grant access
-let gotHeading = false;
+let gotHeading = false, heading = null, frame = 0, wasFacing = null;
+// the sensor fires ~60 times a second: keep the latest reading and draw once per frame, touching the text only when it changes
 function onHeading(e) {
-  const heading = e.webkitCompassHeading ?? (e.absolute || e.type === 'deviceorientationabsolute' ? 360 - e.alpha : null);
-  if (heading == null || isNaN(heading)) return;
-  gotHeading = true;
+  const h = e.webkitCompassHeading ?? (e.absolute || e.type === 'deviceorientationabsolute' ? 360 - e.alpha : null);
+  if (h == null || isNaN(h)) return;
+  gotHeading = true; heading = h;
+  frame ||= requestAnimationFrame(draw);
+}
+function draw() {
+  frame = 0;
   $('#dial').style.transform = `rotate(${-heading}deg)`;
   const facing = Math.abs(((bearing - heading + 540) % 360) - 180) < 8;
+  if (facing === wasFacing) return;
+  wasFacing = facing;
   $('#compass').classList.toggle('facing', facing);
   $('#msg').textContent = t(facing ? 'facing' : 'turn');
 }

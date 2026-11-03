@@ -143,11 +143,15 @@ function render() {
     <section class="card glass" id="quran"></section>`;
 
   // ---------- countdown ----------
+  let memo = {};
   const tick = () => {
-    const now = new Date(), t0 = prayerTimes(now), list = Object.fromEntries(t0.list.map(p => [p.key, p]));
+    const now = new Date();
     // fajr and maghrib are needed even if hidden on the Times page
     prayTimes.setMethod(timesSet.method);
-    const fl = prayTimes.getTimes(now, [timesSet.lat, timesSet.lng], 'auto', 'auto', 'Float'), txt = prayTimes.getTimes(now, [timesSet.lat, timesSet.lng], 'auto', 'auto', timesSet.format);
+    // the day's times only change at midnight: work them out once per day, not on every tick
+    const day = `${now.toDateString()} ${timesSet.lat} ${timesSet.lng} ${timesSet.method} ${timesSet.format}`;
+    if (memo.day !== day) memo = { day, fl: prayTimes.getTimes(now, [timesSet.lat, timesSet.lng], 'auto', 'auto', 'Float'), txt: prayTimes.getTimes(now, [timesSet.lat, timesSet.lng], 'auto', 'auto', timesSet.format) };
+    const { fl, txt } = memo;
     const at = h => atClock(now, h);
     const fajr = at(fl.fajr), maghrib = at(fl.maghrib);
     $('#t-suhoor').textContent = txt.fajr; $('#t-iftar').textContent = txt.maghrib;
