@@ -1,5 +1,15 @@
 // shared helpers for every page: translation, settings sheets, saved options
 
+// self-heal after a deploy: GitHub Pages lets browsers keep files for 10 minutes, so a new page can load with an old
+// cached script and fail ("x is not defined"). On such an error, refetch this page's files past the cache and reload once.
+// The time guard stops a loop if the error is a real bug rather than a stale file.
+addEventListener('error', e => {
+  if (!(e.error instanceof ReferenceError || e.error instanceof TypeError)) return;
+  try { if (Date.now() - (+sessionStorage.healed || 0) < 6e4) return; sessionStorage.healed = Date.now() } catch { return }
+  const files = [...document.querySelectorAll('script[src], link[rel="stylesheet"]')].map(n => n.src || n.href).filter(u => u.startsWith(location.origin));
+  Promise.all(files.map(u => fetch(u, { cache: 'reload' }).catch(() => {}))).then(() => location.reload());
+});
+
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
 const AR = localStorage.lang === 'arabic';
