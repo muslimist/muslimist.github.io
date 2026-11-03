@@ -169,12 +169,21 @@ Object.assign(DICT, {
     img.src = url;
   };
   // fade the first photo in once it has loaded (instant when it came from the previous page)
-  if (shown) { const img = new Image(); img.onload = img.onerror = () => root.classList.add('bg-ready'); img.src = shown } else root.classList.add('bg-ready');
-  if (want && want !== shown) swapTo(want); else if (want) sessionStorage.bg = `url(${want})`;
+  const ready = url => { const img = new Image(); img.onload = img.onerror = () => root.classList.add('bg-ready'); img.src = url };
+  if (shown && !sessionStorage.bg && /bg-\w+-\d+\.webp/.test(shown)) {
+    // first visit: show a 24px copy right away (stretched, it reads as a soft blur), then crossfade to the full photo
+    const tiny = shown.replace(/\.webp$/, '-tiny.webp');
+    root.style.setProperty('--bg-img', `url(${tiny})`);
+    ready(tiny);
+    swapTo(want);
+  } else {
+    if (shown) ready(shown); else root.classList.add('bg-ready');
+    if (want && want !== shown) swapTo(want); else if (want) sessionStorage.bg = `url(${want})`;
+  }
 
   // slideshow: every ~20s fade to another photo from this page's set
   const m = want?.match(/bg-(\w+)-(\d+)\.webp/);
-  if (m && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (m && !matchMedia('(prefers-reduced-motion: reduce)').matches && !navigator.connection?.saveData) { // data saver: no extra photos
     const pool = m[1];
     let cur = +m[2];
     setInterval(() => {

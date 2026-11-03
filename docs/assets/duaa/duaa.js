@@ -63,7 +63,7 @@ if (duas.length) {
     const n = g.querySelectorAll('.dua').length;
     const card = document.createElement('button');
     card.className = 'dua-cat';
-    card.style.setProperty('--img', `url(/assets/img/cat-${cat}.webp)`);
+    card.style.setProperty('--img', `url(/assets/img/cat-${cat}-soft.webp)`); // 32px wide: stretched, it reads as a blur with no live filter
     card.innerHTML = `<span><b>${catName(cat)}</b><small>${n} ${t(n === 1 ? 'duaone' : 'duamany')}</small></span>`;
     card.onclick = () => $(`#chips button[data-cat="${cat}"]`).click();
     cats.append(card);

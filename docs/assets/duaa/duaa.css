@@ -7,10 +7,10 @@
 .dua-cat { --h: 78px; position: relative; overflow: hidden; height: var(--h); padding: 0; border-radius: 16px; display: flex; text-align: center;
   border: 1px solid var(--line); isolation: isolate; transition: translate .25s ease, border-color .25s ease, box-shadow .25s ease }
 .dua-cat:hover { translate: 0 -2px; border-color: color-mix(in srgb, var(--gold) 45%, transparent); box-shadow: 0 12px 30px rgba(0,0,0,.22) }
-/* a blurred copy of the photo, oversized so the blur reaches every edge (backdrop-filter leaves sharp pixels at the edges) */
+/* a tiny copy of the photo, stretched: smooth color with no live blur filter (blurring 9 photos made phones lag) */
 .dua-cat span { position: relative; isolation: isolate; width: 100%; display: grid; place-content: center; gap: 1px; padding: 8px 12px; color: var(--fg) }
 .dua-cat span::before, .dua-cat span::after { content: ""; position: absolute; z-index: -1 }
-.dua-cat span::before { inset: -40px; background: var(--img) center/cover; filter: blur(calc(var(--blur) * 1.2)) saturate(1.4) brightness(var(--lift, 1)) }
+.dua-cat span::before { inset: 0; background: var(--img) center/cover }
 .dua-cat span::after { inset: 0; background: color-mix(in srgb, var(--tint) min(calc(var(--base-a) * var(--k)), 94%), transparent) }
 [data-glass="solid"] .dua-cat span::before { display: none }
 [data-glass="solid"] .dua-cat span::after { background: var(--solid) }

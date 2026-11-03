@@ -51,6 +51,8 @@ html:not(.bg-ready) body::before { opacity: 0 }
 [data-sky="night"] { --sky: linear-gradient(#141a4a66, #0a0d2a44 70%, transparent) }
 [data-sky="lastthird"] { --sky: linear-gradient(#4b2e8a66, #1a145044 70%, transparent) }
 @keyframes drift { from { transform: scale(1.03) translate(.5%, .3%) } to { transform: scale(1.07) translate(-.8%, -.5%) } }
+/* phones: no drift; every glass card re-blurs the moving photo behind it each frame, which made scrolling lag */
+@media (pointer: coarse) { body::before, body::after { animation: none } }
 a { color: inherit; text-decoration: none }
 button, input, select { font: inherit; color: inherit }
 button { cursor: pointer; border: 0; background: none }
